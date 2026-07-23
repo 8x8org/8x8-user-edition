@@ -1,0 +1,19 @@
+{
+  "name": "8x8 OS Public Beta",
+  "short_name": "8x8 OS",
+  "description": "A public-safe, permission-first cockpit for supervised human–AI work.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#050816",
+  "orientation": "any",
+  "categories": ["productivity", "utilities", "developer"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
