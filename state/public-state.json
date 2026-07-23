@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "product": "8x8 User Edition",
+  "release": "0.1.0-beta",
+  "truth_class": "DEPLOYMENT_CANDIDATE",
+  "public_beta": true,
+  "private_control_plane_connected": false,
+  "private_repositories_connected": false,
+  "private_memory_connected": false,
+  "private_messages_connected": false,
+  "credentials_included": false,
+  "wallet_material_included": false,
+  "remote_shell_enabled": false,
+  "live_trading_enabled": false,
+  "public_billing_enabled": false,
+  "user_node_contribution_enabled": false,
+  "hidden_telemetry_enabled": false,
+  "camera_or_microphone_auto_access": false,
+  "daily_free_minutes_target": 88,
+  "monthly_price_target_usd": 8.88,
+  "targets_are_live_entitlements": false,
+  "canonical_public_repositories": [
+    "8x8org/.github",
+    "8x8org/8x8-user-edition",
+    "8x8org/8x8-protocol"
+  ],
+  "public_agent_archetypes": [
+    "FlashTM8",
+    "Hermes",
+    "Seraphim",
+    "SOMA",
+    "Atlas",
+    "Omnivore",
+    "OpenClaw"
+  ],
+  "agent_archetypes_prove_private_runtime": false,
+  "release_assertions": {
+    "public_safe_static_cockpit": true,
+    "local_only_interactions": true,
+    "responsive_interface": true,
+    "progressive_web_app_shell": true,
+    "source_available": true,
+    "signed_installer": false,
+    "account_system": false,
+    "subscription_billing": false,
+    "user_compute_nodes": false,
+    "production_remote_support": false,
+    "mainnet_rewards": false
+  }
+}
