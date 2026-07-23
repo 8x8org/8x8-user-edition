@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="8x8 OS">
+  <defs>
+    <radialGradient id="bg" cx="38%" cy="30%" r="76%">
+      <stop offset="0" stop-color="#163d73"/>
+      <stop offset="0.48" stop-color="#0b173d"/>
+      <stop offset="1" stop-color="#040712"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#76f7ff"/>
+      <stop offset="1" stop-color="#a76dff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="174" fill="none" stroke="#76f7ff" stroke-opacity=".18" stroke-width="3"/>
+  <circle cx="256" cy="256" r="132" fill="none" stroke="#a76dff" stroke-opacity=".2" stroke-width="3" stroke-dasharray="12 16"/>
+  <path d="M112 256h288M256 112v288M153 153l206 206M359 153L153 359" stroke="url(#line)" stroke-opacity=".2" stroke-width="3"/>
+  <circle cx="256" cy="256" r="94" fill="#081128" stroke="url(#line)" stroke-width="5"/>
+  <text x="256" y="286" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="96" font-weight="900" fill="#edf7ff">8×8</text>
+</svg>
