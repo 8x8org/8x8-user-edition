@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050816">
+  <meta name="description" content="8x8 OS Public Beta: a transparent, permission-first cockpit for supervised human–AI work.">
+  <title>8x8 OS | Public Beta Cockpit</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <canvas id="space" aria-hidden="true"></canvas>
+  <div class="aurora aurora-a" aria-hidden="true"></div>
+  <div class="aurora aurora-b" aria-hidden="true"></div>
+
+  <header class="topbar glass">
+    <a class="brand" href="#overview" aria-label="8x8 OS home">
+      <span class="brand-mark">8×8</span>
+      <span class="brand-copy"><strong>OS</strong><small>PUBLIC BETA</small></span>
+    </a>
+    <div class="truth-pill"><span class="pulse"></span> PUBLIC-SAFE DEMO</div>
+    <nav aria-label="Primary navigation">
+      <button data-view="overview" class="nav-button active">Cockpit</button>
+      <button data-view="agents" class="nav-button">Agents</button>
+      <button data-view="map" class="nav-button">World</button>
+      <button data-view="roadmap" class="nav-button">Roadmap</button>
+      <button data-view="security" class="nav-button">Trust</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="overview" class="view active" aria-labelledby="overview-title">
+      <div class="hero-grid">
+        <article class="hero-copy">
+          <p class="eyebrow">HUMAN-CONTROLLED • EVIDENCE-BACKED • PERMISSION-FIRST</p>
+          <h1 id="overview-title">A living cockpit for human–AI coordination.</h1>
+          <p class="lede">This first public release visualizes the 8x8 operating model without exposing the private control plane. It is intentionally small, fast and honest: simulated public data, explicit capability boundaries and no hidden execution.</p>
+          <div class="hero-actions">
+            <button class="primary" id="enterCockpit">Enter the cockpit</button>
+            <a class="secondary" href="https://github.com/8x8org/8x8-user-edition" rel="noreferrer">View public source</a>
+          </div>
+          <div class="status-strip" aria-label="Public beta status">
+            <span><b>Release</b> BETA 0.1</span>
+            <span><b>Runtime</b> DEMO-ONLY</span>
+            <span><b>Private access</b> NONE</span>
+          </div>
+        </article>
+
+        <article class="core-stage glass" aria-label="Interactive 8x8 agent orbit">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orbit orbit-three"></div>
+          <button class="core" id="coreButton" aria-label="Open system summary">
+            <span class="core-logo">8×8</span>
+            <span class="core-sub">OWNER GATE</span>
+          </button>
+          <button class="node node-a" data-agent="FlashTM8"><span>⚡</span><small>FlashTM8</small></button>
+          <button class="node node-b" data-agent="Hermes"><span>☿</span><small>Hermes</small></button>
+          <button class="node node-c" data-agent="Seraphim"><span>✦</span><small>Seraphim</small></button>
+          <button class="node node-d" data-agent="SOMA"><span>◉</span><small>SOMA</small></button>
+          <button class="node node-e" data-agent="Atlas"><span>◇</span><small>Atlas</small></button>
+          <button class="node node-f" data-agent="Omnivore"><span>∞</span><small>Omnivore</small></button>
+          <div class="core-caption">Select an archetype to inspect its public role.</div>
+        </article>
+      </div>
+
+      <div class="metrics-grid" id="metricsGrid">
+        <article class="metric glass"><span>Five</span><h2>Operational lanes</h2><p>Program, communications, multichain, trading research and Studio.</p></article>
+        <article class="metric glass"><span>0</span><h2>Private credentials</h2><p>No secrets, wallet keys, owner memory or private messages ship here.</p></article>
+        <article class="metric glass"><span>88</span><h2>Free-minute target</h2><p>A product target, not active billing or a live entitlement promise.</p></article>
+        <article class="metric glass"><span>100%</span><h2>Visible consent</h2><p>Optional compute, storage, telemetry and support remain independently revocable.</p></article>
+      </div>
+
+      <div class="console-grid">
+        <article class="panel glass">
+          <div class="panel-head"><span>MISSION FLOW</span><span class="badge cyan">PUBLIC MODEL</span></div>
+          <ol class="flow-list">
+            <li><b>Intent</b><span>The user defines an objective.</span></li>
+            <li><b>Plan</b><span>Agents propose bounded work and evidence.</span></li>
+            <li><b>Build</b><span>Safe work happens in isolated environments.</span></li>
+            <li><b>Gate</b><span>High-impact actions require exact approval.</span></li>
+            <li><b>Receipt</b><span>Results, failures and rollback evidence remain visible.</span></li>
+          </ol>
+        </article>
+        <article class="panel glass">
+          <div class="panel-head"><span>TRUTH LAYER</span><span class="badge green">FAIL-CLOSED</span></div>
+          <div class="truth-grid">
+            <button data-truth="CLAIMED">CLAIMED</button>
+            <button data-truth="DESIGNED">DESIGNED</button>
+            <button data-truth="IMPLEMENTED">IMPLEMENTED</button>
+            <button data-truth="TESTED">TESTED</button>
+            <button data-truth="RECEIPT_VERIFIED">RECEIPT</button>
+            <button data-truth="RUNNING">RUNNING</button>
+            <button data-truth="DEPLOYED">DEPLOYED</button>
+            <button data-truth="RELEASED">RELEASED</button>
+            <button data-truth="ADOPTED">ADOPTED</button>
+          </div>
+          <p id="truthDescription" class="panel-note">A public statement begins at CLAIMED and advances only when stronger evidence exists.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="agents" class="view" aria-labelledby="agents-title">
+      <div class="section-heading"><p class="eyebrow">PUBLIC ARCHETYPES</p><h1 id="agents-title">Agents with defined roles, not fictional uptime.</h1><p>These cards describe intended specialties. They do not claim that private services, provider sessions or productive receipts are publicly active.</p></div>
+      <div id="agentGrid" class="agent-grid"></div>
+    </section>
+
+    <section id="map" class="view" aria-labelledby="map-title">
+      <div class="section-heading"><p class="eyebrow">OPEN WORLD CONCEPT</p><h1 id="map-title">A spatial interface for people, agents and missions.</h1><p>The beta uses a stylized world layer. Precise location, private device telemetry and hidden tracking are deliberately absent.</p></div>
+      <div class="world glass" id="world">
+        <div class="world-grid"></div>
+        <div class="globe-ring ring-a"></div><div class="globe-ring ring-b"></div><div class="globe-ring ring-c"></div>
+        <button class="world-core" data-agent="FlashTM8">⚡<span>OWNER</span></button>
+        <button class="beacon b1" data-agent="Hermes">H</button><button class="beacon b2" data-agent="Seraphim">S</button>
+        <button class="beacon b3" data-agent="SOMA">O</button><button class="beacon b4" data-agent="Atlas">A</button>
+        <button class="beacon b5" data-agent="Omnivore">∞</button><button class="beacon b6" data-agent="OpenClaw">C</button>
+        <div class="world-readout"><span>MODE</span><b>CONCEPTUAL MAP</b><span>TRACKING</span><b>DISABLED</b><span>DATA</span><b>PUBLIC DEMO</b></div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="view" aria-labelledby="roadmap-title">
+      <div class="section-heading"><p class="eyebrow">EVIDENCE-GATED PROGRESSION</p><h1 id="roadmap-title">Start small. Expand only after proof.</h1><p>The public roadmap refuses to label future systems as live merely because they look excellent in a diagram.</p></div>
+      <div class="timeline">
+        <article class="step complete glass"><span>01</span><div><h2>Organization foundation</h2><p>Public profile, User Edition shell and protocol repository.</p><b>RECEIPT-VERIFIED</b></div></article>
+        <article class="step active glass"><span>02</span><div><h2>Public beta cockpit</h2><p>Fast visual shell, public truth model and permission boundary.</p><b>IN DEPLOYMENT</b></div></article>
+        <article class="step glass"><span>03</span><div><h2>Signed installer</h2><p>Isolated workspace, uninstall path, SBOM and provenance.</p><b>PLANNED</b></div></article>
+        <article class="step glass"><span>04</span><div><h2>Accounts and entitlements</h2><p>Email, passkey, optional Telegram link and auditable minutes.</p><b>DESIGNED</b></div></article>
+        <article class="step glass"><span>05</span><div><h2>Voluntary user nodes</h2><p>Visible CPU, storage, network, schedule and revocation controls.</p><b>DESIGNED</b></div></article>
+        <article class="step glass"><span>06</span><div><h2>Qualified public services</h2><p>Only after security, legal, billing, reliability and owner gates.</p><b>GATED</b></div></article>
+      </div>
+    </section>
+
+    <section id="security" class="view" aria-labelledby="security-title">
+      <div class="section-heading"><p class="eyebrow">PUBLIC / PRIVATE BOUNDARY</p><h1 id="security-title">The interface is public. Authority is not.</h1><p>This release has no path to the owner control plane, private repositories, private agents, wallets, credentials, terminals or device administration.</p></div>
+      <div class="security-grid">
+        <article class="panel glass allowed"><div class="panel-head"><span>PUBLIC BETA INCLUDES</span><span class="badge green">ALLOWED</span></div><ul><li>Public product narrative</li><li>Agent archetype descriptions</li><li>Permission and evidence model</li><li>Conceptual spatial cockpit</li><li>Public roadmap and repository links</li><li>Local-only demo interactions</li></ul></article>
+        <article class="panel glass denied"><div class="panel-head"><span>PUBLIC BETA EXCLUDES</span><span class="badge red">DENIED</span></div><ul><li>Arbitrary or remote shell access</li><li>Private memory, messages or logs</li><li>Credentials and authorization headers</li><li>Wallet addresses, keys or trade execution</li><li>Hidden telemetry, camera or microphone use</li><li>Automatic mining or background compute</li></ul></article>
+      </div>
+      <article class="disclosure glass"><h2>Security statement</h2><p>This is a visual public beta, not a production automation service. Buttons animate the local interface only. No action here changes a repository, account, device, wallet, service or external platform.</p><a href="https://github.com/8x8org/8x8-user-edition/security" rel="noreferrer">Report a public security issue</a></article>
+    </section>
+  </main>
+
+  <aside id="drawer" class="drawer glass" aria-live="polite" aria-hidden="true">
+    <button id="closeDrawer" class="drawer-close" aria-label="Close details">×</button>
+    <p class="eyebrow" id="drawerLabel">AGENT ARCHETYPE</p>
+    <h2 id="drawerTitle">8x8</h2>
+    <p id="drawerBody"></p>
+    <dl id="drawerFacts"></dl>
+    <div class="drawer-warning">Public role description only. Active private runtime is not implied.</div>
+  </aside>
+
+  <footer><span>8x8 OS Public Beta 0.1</span><span>PUBLIC-SAFE • NO PRIVATE CONTROL PLANE</span><a href="https://github.com/8x8org">8x8org on GitHub</a></footer>
+  <noscript>This public beta requires JavaScript for the interactive cockpit. No private service is affected.</noscript>
+  <script src="/app.js" defer></script>
+</body>
+</html>
