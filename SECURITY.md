@@ -33,7 +33,7 @@ The deployment configuration denies framing, restricts content sources and disab
 
 Do not publish secret values, wallet material, private messages, biometric data or private-system logs in a public issue.
 
-Use GitHub's private vulnerability reporting feature for this repository when available. Reports should include:
+GitHub's private vulnerability reporting is **not yet enabled** for this repository; enabling it is a pending owner action tracked in [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md). Until it is enabled, open a GitHub issue that states only that you have a security report and how you can be reached — **without any vulnerability details** — and a maintainer will arrange a private channel. Once enabled, use the repository's *Security → Report a vulnerability* form. Reports should include:
 
 - affected public path or revision;
 - vulnerability class;
