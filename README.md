@@ -14,7 +14,25 @@ cd 8x8-user-edition
 python3 -m http.server 8080
 ```
 
-Open `http://127.0.0.1:8080`.
+Open `http://localhost:8080`.
+
+### Validate locally
+
+To run the same checks as the CI pipeline:
+
+```bash
+python3 .github/workflows/validate-public-beta.yml
+# or copy the inline Python validation block from the workflow file
+```
+
+For a quick boundary scan:
+
+```bash
+# Check for private endpoint references (same check as CI)
+grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' --exclude-dir=.git .
+```
+
+All checks must pass before submitting a pull request.
 
 ## Beta contents
 
@@ -73,6 +91,20 @@ No guaranteed profit, rewards, APY, token value, zero gas or zero latency is pro
 - [Security policy](SECURITY.md)
 - [Machine-readable public state](state/public-state.json)
 
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines on how to report issues and submit changes.
+
+This project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+For support, see [`SUPPORT.md`](SUPPORT.md).
+
+## License
+
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
+
 ## Security
 
 Do not submit credentials, wallet keys, private messages, biometric templates or private-system logs to public issues.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
