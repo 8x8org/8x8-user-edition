@@ -98,9 +98,9 @@ No guaranteed profit, rewards, APY, token value, zero gas or zero latency is pro
 
 The permanent public website is **pending deployment**. No official social-media profile links are published here yet; treat any account claiming to be official as unverified until it is linked from this organization.
 
-## License status
+## License
 
-This repository currently has **no license**. Until the owner selects and publishes one, default copyright applies: you may view and fork on GitHub, but no other reuse rights are granted. A license decision is pending and tracked as an explicit release blocker.
+The public 8x8 User Edition repository is licensed under the [Apache License 2.0](LICENSE). The license applies to the material published in this repository; it does not publish, license or grant access to the separate private 8x8 owner control plane or its private operational material.
 
 ## Security
 
