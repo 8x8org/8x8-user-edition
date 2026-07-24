@@ -14,7 +14,7 @@
 | Static deployment security headers | IMPLEMENTED | `vercel.json` |
 | CI validation | IMPLEMENTED | `.github/workflows/validate-public-beta.yml`; earlier runs on `main` failed on scanner false-positives, corrected in the public-readiness branch |
 | Live public deployment | DEPLOYMENT_CANDIDATE | Requires a successful hosting deployment and URL verification |
-| Root license | BLOCKED_PENDING_OWNER_DECISION | No `LICENSE` file exists; owner legal decision required, explicit release blocker |
+| Root license | IMPLEMENTED | Apache License 2.0 published in `LICENSE` after explicit owner approval |
 | Private vulnerability reporting | PENDING_OWNER_ACTION | GitHub private vulnerability reporting is not yet enabled for this repository |
 | Signed installer | DESIGNED | Not released |
 | User accounts and passkeys | DESIGNED | Not implemented in this beta |
