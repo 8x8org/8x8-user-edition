@@ -20,6 +20,28 @@ Browser
 
 The first beta has no backend, database, API keys, wallet connection, analytics SDK, remote shell, trading route, device telemetry or hidden background compute.
 
+## Public/private boundary diagram
+
+The diagram below shows the entire public system (left) and the hard boundary to the private owner system (right). There is no arrow crossing the boundary: the public cockpit has no code path, credential or connector that reaches any private component.
+
+```mermaid
+flowchart LR
+  subgraph PUBLIC["Public demo — this repository"]
+    U[User's browser] --> H[index.html + styles.css + app.js]
+    H --> S["state/public-state.json (static facts)"]
+    H --> W["Service worker (offline cache of these files only)"]
+  end
+  subgraph PRIVATE["Private owner system — NOT in this repository"]
+    CP[Owner control plane]
+    AG[Private agents / memory / messages]
+    WA[Wallets / credentials / devices]
+  end
+  PUBLIC -.->|"NO connection exists"| PRIVATE
+  style PRIVATE fill:none,stroke-dasharray:5
+```
+
+**Text alternative:** a user's browser loads three static files (HTML, CSS, JavaScript) plus a static JSON facts file, and a service worker caches those same files for offline viewing. A separate private owner system — control plane, private agents, memory, messages, wallets, credentials and devices — sits entirely outside this repository, and no connection of any kind exists between the two.
+
 ## Public interaction model
 
 All interactions are local UI behavior:
