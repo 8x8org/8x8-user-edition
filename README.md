@@ -4,6 +4,26 @@
 
 8x8 User Edition is the minimal public client for user-owned, isolated 8x8 workspaces. The first beta is a fast visual cockpit that explains the operating model, agent roles, evidence ladder, roadmap and permission boundary without exposing the private owner system.
 
+## ❤️ Sponsor 8x8
+
+[**Sponsor 8x8 on GitHub → github.com/sponsors/8x8org**](https://github.com/sponsors/8x8org)
+
+Sponsorship supports the **public** project only — documentation, testing, security hardening, accessibility, developer tooling, community maintenance, and bounded infrastructure costs. It is **support, not an investment**: no financial returns, tokens, equity, guaranteed features, private/customer data, or private-repository access. See the organization [governance](https://github.com/8x8org/.github/blob/main/GOVERNANCE.md).
+
+## 🛠️ Contribute
+
+Contributions of code, tests, docs, accessibility, and security review are welcome — no special access required.
+
+- Read the [Contributing guide](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/8x8org/.github/blob/main/CODE_OF_CONDUCT.md).
+- Pick up an issue labeled [`good first issue`](https://github.com/8x8org/8x8-user-edition/labels/good%20first%20issue) or [`help wanted`](https://github.com/8x8org/8x8-user-edition/labels/help%20wanted).
+- For substantial changes, open an issue first so a maintainer can agree on the approach.
+
+**Contributor recognition:** every merged contributor appears in the repository's contributors graph and is credited in release notes. Optional public name/logo recognition is available to sponsors. Recognition is acknowledgment only — it grants no private-system access and no payment is offered.
+
+## Project maturity
+
+**Public beta `0.1.x` — early and evidence-gated.** This is a static cockpit with no backend, accounts, wallet, or live billing. Product targets below are **targets, not live entitlements**. Track staged status in [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md).
+
 ## Run locally
 
 No package installation is required.
@@ -80,10 +100,15 @@ All optional device contribution is disabled by default and must be visible, lim
 
 No guaranteed profit, rewards, APY, token value, zero gas or zero latency is promised.
 
+## Supported public scope
+
+This repository is an **isolated public client**. Supported, public-safe work includes the static cockpit UI, accessibility, documentation, tests, security headers, and the machine-readable public state. It contains **no** owner credentials, private control plane, private agents, private memory, wallets, or reusable privileged access — and contributions must keep it that way.
+
 ## Documentation
 
-- [Architecture](ARCHITECTURE.md)
-- [Implementation status](IMPLEMENTATION_STATUS.md)
+- [Architecture](ARCHITECTURE.md) — runtime, interaction model, deployment requirements
+- [Implementation status](IMPLEMENTATION_STATUS.md) — staged, evidence-gated capabilities
+- [Testing / validation](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md#testing-requirements) — how to validate a change
 - [Security policy](SECURITY.md)
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable public state](state/public-state.json)
