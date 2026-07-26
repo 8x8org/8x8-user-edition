@@ -36,14 +36,19 @@ A pull request must **never** add:
 
 1. Fork and create a topic branch; do not target `main` directly from a shared branch.
 2. Keep the app dependency-free: no build step, no package manager, no external CDN assets.
-3. Run the checks locally before opening a PR:
+3. Run the same validation the CI runs, locally — one command from the repo root:
 
    ```bash
-   python3 -m json.tool state/public-state.json
-   python3 -m json.tool manifest.webmanifest
-   python3 -m json.tool vercel.json
-   python3 -m http.server 8080   # then load the cockpit in a browser
+   python3 -m json.tool state/public-state.json >/dev/null && \
+   python3 -m json.tool manifest.webmanifest >/dev/null && \
+   python3 -m json.tool vercel.json >/dev/null && \
+   echo 'JSON validation passed'
    ```
+
+   For the private-endpoint boundary scan, run the grep step in
+   `.github/workflows/validate-public-beta.yml` ("Confirm no private endpoint references").
+
+   To preview the cockpit: `python3 -m http.server 8080` then open port 8080 in your browser.
 
 4. Open the pull request as a **draft** first. The `Validate Public Beta` workflow must pass.
 5. A maintainer reviews for the boundaries above before anything is merged.
