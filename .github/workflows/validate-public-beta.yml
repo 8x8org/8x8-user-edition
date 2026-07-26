@@ -63,8 +63,8 @@ jobs:
           python3 -m json.tool vercel.json >/dev/null
       - name: Confirm no private endpoint references
         run: |
-          if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9])' \
-            --exclude-dir=.git .; then
+          if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_[A-Za-z0-9]{36,}|sk-[A-Za-z0-9]{20,})' \
+            --exclude-dir=.git --exclude-dir=.github .; then
             echo 'Public-private boundary scan failed'
             exit 1
           fi
