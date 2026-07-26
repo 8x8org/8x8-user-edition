@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="8x8 OS">
+  <title>8x8 OS</title>
   <defs>
     <radialGradient id="bg" cx="38%" cy="30%" r="76%">
       <stop offset="0" stop-color="#163d73"/>

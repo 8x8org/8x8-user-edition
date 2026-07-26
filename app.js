@@ -46,9 +46,11 @@ document.addEventListener('keydown',event=>{
   if(['1','2','3','4','5'].includes(event.key) && !/input|textarea/i.test(document.activeElement.tagName)) setView(['overview','agents','map','roadmap','security'][Number(event.key)-1]);
 });
 
+let _drawerOpener=null;
 function openAgent(name,label='AGENT ARCHETYPE'){
   const agent=AGENTS[name];
   if(!agent) return;
+  _drawerOpener=document.activeElement;
   document.getElementById('drawerLabel').textContent=label;
   document.getElementById('drawerTitle').textContent=`${agent.symbol} ${name}`;
   document.getElementById('drawerTitle').style.color=agent.color;
@@ -56,8 +58,14 @@ function openAgent(name,label='AGENT ARCHETYPE'){
   document.getElementById('drawerFacts').innerHTML=Object.entries(agent.facts).map(([key,value])=>`<dt>${key.replaceAll('_',' ')}</dt><dd>${value}</dd>`).join('');
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
+  document.getElementById('closeDrawer').focus();
 }
-function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true')}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  if(_drawerOpener&&typeof _drawerOpener.focus==='function') _drawerOpener.focus();
+  _drawerOpener=null;
+}
 
 document.querySelectorAll('[data-agent]').forEach(button=>button.addEventListener('click',()=>openAgent(button.dataset.agent)));
 
