@@ -61,6 +61,77 @@ jobs:
           python3 -m json.tool state/public-state.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
+      - name: Assert security headers in vercel.json
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          config = json.loads(Path('vercel.json').read_text())
+
+          # Collect all headers defined for the catch-all route
+          header_map = {}
+          for route in config.get('headers', []):
+              if route.get('source') == '/(.*)':
+                  for h in route.get('headers', []):
+                      header_map[h['key'].lower()] = h['value']
+
+          errors = []
+
+          # 1. X-Content-Type-Options must be nosniff
+          val = header_map.get('x-content-type-options', '')
+          if val != 'nosniff':
+              errors.append(f'X-Content-Type-Options must be "nosniff", got: "{val}"')
+
+          # 2. X-Frame-Options must be DENY
+          val = header_map.get('x-frame-options', '')
+          if val != 'DENY':
+              errors.append(f'X-Frame-Options must be "DENY", got: "{val}"')
+
+          # 3. Referrer-Policy must be strict-origin-when-cross-origin
+          val = header_map.get('referrer-policy', '')
+          if val != 'strict-origin-when-cross-origin':
+              errors.append(f'Referrer-Policy must be "strict-origin-when-cross-origin", got: "{val}"')
+
+          # 4. Permissions-Policy must disable sensitive APIs
+          pp = header_map.get('permissions-policy', '')
+          required_disabled = ['camera=()', 'microphone=()', 'geolocation=()', 'payment=()']
+          for feature in required_disabled:
+              if feature not in pp:
+                  errors.append(f'Permissions-Policy missing: {feature}')
+
+          # 5. CSP key directives
+          csp = header_map.get('content-security-policy', '')
+          required_csp = [
+              "default-src 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "frame-ancestors 'none'",
+              "form-action 'none'",
+              "upgrade-insecure-requests",
+          ]
+          for directive in required_csp:
+              if directive not in csp:
+                  errors.append(f'CSP missing directive: {directive}')
+
+          # CSP must not allow unsafe-inline or unsafe-eval in script-src
+          if "'unsafe-inline'" in csp and 'script-src' in csp:
+              script_src = [d for d in csp.split(';') if 'script-src' in d]
+              if script_src and "'unsafe-inline'" in script_src[0]:
+                  errors.append("CSP script-src must not contain 'unsafe-inline'")
+          if "'unsafe-eval'" in csp:
+              errors.append("CSP must not contain 'unsafe-eval'")
+
+          # CSP img-src must not include bare 'data:' (no data URIs used in this project)
+          img_src_parts = [d.strip() for d in csp.split(';') if 'img-src' in d]
+          if img_src_parts and 'data:' in img_src_parts[0]:
+              errors.append("CSP img-src must not include 'data:' (no data URIs used; remove to tighten policy)")
+
+          if errors:
+              raise SystemExit('Security header assertion failed:\n  ' + '\n  '.join(errors))
+
+          print('SECURITY_HEADER_ASSERTION=PASS')
+          PY
       - name: Confirm no private endpoint references
         run: |
           if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9])' \
