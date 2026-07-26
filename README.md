@@ -61,7 +61,33 @@ This project was submitted to OpenAI Build Week on Devpost as **“8x8 OS: Human
 - installable progressive web app shell;
 - machine-readable public state;
 - static deployment security headers;
-- GitHub Actions validation.
+- GitHub Actions validation;
+- CycloneDX SBOM and SLSA build-provenance attestations.
+
+## Supply-chain verification
+
+Every push to `main` and every release produces a [CycloneDX 1.5](https://cyclonedx.org/) SBOM and SLSA build-provenance attestations via [GitHub Artifact Attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds).
+
+**No private key is committed to this repository.** Attestations are signed using a short-lived, repository-scoped OIDC token through Sigstore/Fulcio.
+
+### Generate and validate the SBOM locally
+
+```bash
+python3 scripts/generate-sbom.py   # writes sbom.cdx.json
+python3 scripts/validate-sbom.py   # verifies hashes against files on disk
+```
+
+### Verify build provenance (after a CI run)
+
+```bash
+# Download the SBOM artifact from a CI run, then:
+gh attestation verify sbom.cdx.json --repo 8x8org/8x8-user-edition
+
+# Verify the release bundle:
+gh attestation verify release-assets.tar.gz --repo 8x8org/8x8-user-edition
+```
+
+Attestations are stored in GitHub's registry and can also be viewed via the repository's **Actions → Attestations** tab.
 
 ## Explicit beta limits
 

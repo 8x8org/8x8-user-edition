@@ -1,0 +1,3 @@
+# Generated artifacts — not committed; produced by CI and uploaded as workflow artifacts.
+sbom.cdx.json
+release-assets.tar.gz

@@ -1,0 +1,79 @@
+name: SBOM and Provenance
+
+# Generates a CycloneDX SBOM and SLSA build-provenance attestations for the
+# static assets published in every release of 8x8-user-edition.
+#
+# Attestations are stored in GitHub's artifact-attestation registry and signed
+# via Sigstore/Fulcio using a short-lived, repository-scoped OIDC token.
+# No private key is required; no credential is committed to this repository.
+#
+# Verification (after a non-PR run):
+#   gh attestation verify sbom.cdx.json --repo 8x8org/8x8-user-edition
+#   gh attestation verify release-assets.tar.gz --repo 8x8org/8x8-user-edition
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Required to obtain a short-lived OIDC token for Sigstore signing.
+  id-token: write
+  # Required to write attestations to the repository's attestation store.
+  attestations: write
+
+jobs:
+  sbom-and-provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate CycloneDX SBOM
+        run: python3 scripts/generate-sbom.py
+
+      - name: Validate SBOM integrity
+        run: python3 scripts/validate-sbom.py
+
+      - name: Bundle static assets
+        run: |
+          tar -czf release-assets.tar.gz \
+            index.html styles.css app.js manifest.webmanifest \
+            icon.svg sw.js state/public-state.json vercel.json \
+            sbom.cdx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ github.sha }}
+          path: sbom.cdx.json
+          if-no-files-found: error
+
+      - name: Upload release bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets-${{ github.sha }}
+          path: release-assets.tar.gz
+          if-no-files-found: error
+
+      # Attestation steps use the repository's OIDC token — no stored keys.
+      # Skipped on pull_request events (OIDC tokens are unavailable for
+      # untrusted forks; push/release/workflow_dispatch have full access).
+      - name: Attest SBOM provenance
+        if: github.event_name != 'pull_request'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: sbom.cdx.json
+
+      - name: Attest release bundle provenance
+        if: github.event_name != 'pull_request'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: release-assets.tar.gz
