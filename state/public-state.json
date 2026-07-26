@@ -2,6 +2,7 @@
   "schema_version": "1.0.0",
   "product": "8x8 User Edition",
   "release": "0.1.0-beta",
+  "latest_receipt": "receipts/examples/receipt-0.1.0-beta.json",
   "truth_class": "DEPLOYMENT_CANDIDATE",
   "public_beta": true,
   "private_control_plane_connected": false,

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/8x8org/8x8-user-edition/receipts/schema/receipt-schema.json",
+  "title": "8x8 User Edition Public State Receipt",
+  "description": "A tamper-evident receipt binding a public-state.json snapshot to a specific git revision. The receipt is independently verifiable from public repository data alone.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "issued_at",
+    "repository",
+    "commit_sha",
+    "state_file",
+    "state_hash",
+    "hash_algorithm",
+    "state_assertions",
+    "receipt_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Semver version of the receipt schema.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "example": "1.0.0"
+    },
+    "receipt_id": {
+      "type": "string",
+      "description": "A unique, human-readable identifier for this receipt. Recommended format: <product>-<release>-<YYYYMMDD>.",
+      "minLength": 1
+    },
+    "issued_at": {
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp at which this receipt was issued.",
+      "format": "date-time"
+    },
+    "repository": {
+      "type": "string",
+      "description": "GitHub repository in 'owner/repo' format.",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "commit_sha": {
+      "type": "string",
+      "description": "Full 40-character git commit SHA that this receipt covers.",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "state_file": {
+      "type": "string",
+      "description": "Repository-relative path to the state file captured in this receipt.",
+      "const": "state/public-state.json"
+    },
+    "state_hash": {
+      "type": "string",
+      "description": "Hex-encoded hash of the raw bytes of the state file at the named commit, using the algorithm specified in hash_algorithm.",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "description": "Hash algorithm used for state_hash and receipt_hash.",
+      "const": "sha256"
+    },
+    "state_assertions": {
+      "type": "object",
+      "description": "A subset of key boolean assertions extracted from the state file. These are embedded to allow offline verification of critical boundary flags without reading the full state file.",
+      "required": [
+        "private_control_plane_connected",
+        "credentials_included",
+        "wallet_material_included",
+        "remote_shell_enabled",
+        "live_trading_enabled",
+        "targets_are_live_entitlements"
+      ],
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "properties": {
+        "private_control_plane_connected": { "type": "boolean", "const": false },
+        "credentials_included": { "type": "boolean", "const": false },
+        "wallet_material_included": { "type": "boolean", "const": false },
+        "remote_shell_enabled": { "type": "boolean", "const": false },
+        "live_trading_enabled": { "type": "boolean", "const": false },
+        "targets_are_live_entitlements": { "type": "boolean", "const": false }
+      }
+    },
+    "receipt_hash": {
+      "type": "string",
+      "description": "SHA-256 hex digest of the canonical JSON of this receipt document with the receipt_hash field omitted (keys sorted, no extra whitespace). Allows detection of any post-issuance tampering.",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

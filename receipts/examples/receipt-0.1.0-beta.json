@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "receipt_id": "8x8-user-edition-0.1.0-beta-20260726",
+  "issued_at": "2026-07-26T06:47:49Z",
+  "repository": "8x8org/8x8-user-edition",
+  "commit_sha": "6aec283cb3ee539b7bddad354ac885e87c7cc0f0",
+  "state_file": "state/public-state.json",
+  "state_hash": "1ef0c8813c2ccc7efdd4e4ab606b05a08e47064db37b268e91920fa84a72e777",
+  "hash_algorithm": "sha256",
+  "state_assertions": {
+    "private_control_plane_connected": false,
+    "credentials_included": false,
+    "wallet_material_included": false,
+    "remote_shell_enabled": false,
+    "live_trading_enabled": false,
+    "targets_are_live_entitlements": false
+  },
+  "receipt_hash": "efb218ff0ce45f8fc4d2adc4727b6219de76cc277e12e66da313d3f9aa1ed197"
+}
