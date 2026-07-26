@@ -115,15 +115,14 @@ jobs:
                   errors.append(f'CSP missing directive: {directive}')
 
           # CSP must not allow unsafe-inline or unsafe-eval in script-src
-          if "'unsafe-inline'" in csp and 'script-src' in csp:
-              script_src = [d for d in csp.split(';') if 'script-src' in d]
-              if script_src and "'unsafe-inline'" in script_src[0]:
-                  errors.append("CSP script-src must not contain 'unsafe-inline'")
           if "'unsafe-eval'" in csp:
               errors.append("CSP must not contain 'unsafe-eval'")
+          script_src_parts = [d for d in csp.split(';') if d.strip().startswith('script-src ')]
+          if script_src_parts and "'unsafe-inline'" in script_src_parts[0]:
+              errors.append("CSP script-src must not contain 'unsafe-inline'")
 
           # CSP img-src must not include bare 'data:' (no data URIs used in this project)
-          img_src_parts = [d.strip() for d in csp.split(';') if 'img-src' in d]
+          img_src_parts = [d.strip() for d in csp.split(';') if d.strip().startswith('img-src ')]
           if img_src_parts and 'data:' in img_src_parts[0]:
               errors.append("CSP img-src must not include 'data:' (no data URIs used; remove to tighten policy)")
 
