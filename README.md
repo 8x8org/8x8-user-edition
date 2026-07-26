@@ -1,5 +1,10 @@
 # 8x8 User Edition
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Contributing](https://img.shields.io/badge/Contributing-guide-brightgreen.svg)](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-purple.svg)](https://github.com/8x8org/.github/blob/main/CODE_OF_CONDUCT.md)
+[![Support](https://img.shields.io/badge/Support-get%20help-orange.svg)](https://github.com/8x8org/.github/blob/main/SUPPORT.md)
+
 > **Public beta 0.1 release candidate. Static cockpit only. No installer, private-control access or live subscription is available yet.**
 
 8x8 User Edition is the minimal public client for user-owned, isolated 8x8 workspaces. The first beta is a fast visual cockpit that explains the operating model, agent roles, evidence ladder, roadmap and permission boundary without exposing the private owner system.
