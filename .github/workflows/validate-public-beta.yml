@@ -18,6 +18,8 @@ jobs:
           python-version: '3.12'
       - name: Validate required files and public state
         run: python3 scripts/validate_public_state.py
+      - name: Install test dependencies
+        run: pip install pytest
       - name: Run unit tests
         run: python3 -m pytest tests/ -v
       - name: Parse JSON files
