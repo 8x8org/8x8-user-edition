@@ -24,15 +24,37 @@ const agentOrder=['FlashTM8','Hermes','Seraphim','SOMA','Atlas','Omnivore','Open
 const views=[...document.querySelectorAll('.view')];
 const navButtons=[...document.querySelectorAll('[data-view]')];
 const drawer=document.getElementById('drawer');
+const tabList=document.querySelector('nav[role="tablist"]');
+let drawerTrigger=null;
 
 function setView(id){
-  views.forEach(view=>view.classList.toggle('active',view.id===id));
-  navButtons.forEach(button=>button.classList.toggle('active',button.dataset.view===id));
+  views.forEach(view=>{
+    const active=view.id===id;
+    view.classList.toggle('active',active);
+    view.setAttribute('aria-hidden',String(!active));
+  });
+  navButtons.forEach(button=>{
+    const active=button.dataset.view===id;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-selected',String(active));
+    button.setAttribute('tabindex',active?'0':'-1');
+  });
   window.scrollTo({top:0,behavior:'smooth'});
   history.replaceState(null,'',`#${id}`);
 }
 
 navButtons.forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+
+tabList.addEventListener('keydown',event=>{
+  const idx=navButtons.findIndex(b=>b===document.activeElement);
+  if(idx<0) return;
+  let next=-1;
+  if(event.key==='ArrowRight') next=(idx+1)%navButtons.length;
+  else if(event.key==='ArrowLeft') next=(idx-1+navButtons.length)%navButtons.length;
+  else if(event.key==='Home') next=0;
+  else if(event.key==='End') next=navButtons.length-1;
+  if(next>=0){event.preventDefault();navButtons[next].focus();setView(navButtons[next].dataset.view);}
+});
 
 document.getElementById('enterCockpit').addEventListener('click',()=>{
   document.getElementById('metricsGrid').scrollIntoView({behavior:'smooth',block:'center'});
@@ -43,12 +65,17 @@ document.getElementById('coreButton').addEventListener('click',()=>openAgent('Fl
 document.getElementById('closeDrawer').addEventListener('click',closeDrawer);
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape') closeDrawer();
-  if(['1','2','3','4','5'].includes(event.key) && !/input|textarea/i.test(document.activeElement.tagName)) setView(['overview','agents','map','roadmap','security'][Number(event.key)-1]);
+  if(['1','2','3','4','5'].includes(event.key)&&!/input|textarea/i.test(document.activeElement.tagName)){
+    const id=['overview','agents','map','roadmap','security'][Number(event.key)-1];
+    setView(id);
+    navButtons.find(b=>b.dataset.view===id)?.focus();
+  }
 });
 
 function openAgent(name,label='AGENT ARCHETYPE'){
   const agent=AGENTS[name];
   if(!agent) return;
+  drawerTrigger=document.activeElement;
   document.getElementById('drawerLabel').textContent=label;
   document.getElementById('drawerTitle').textContent=`${agent.symbol} ${name}`;
   document.getElementById('drawerTitle').style.color=agent.color;
@@ -56,8 +83,22 @@ function openAgent(name,label='AGENT ARCHETYPE'){
   document.getElementById('drawerFacts').innerHTML=Object.entries(agent.facts).map(([key,value])=>`<dt>${key.replaceAll('_',' ')}</dt><dd>${value}</dd>`).join('');
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
+  document.getElementById('closeDrawer').focus();
 }
-function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true')}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  if(drawerTrigger&&typeof drawerTrigger.focus==='function'){drawerTrigger.focus();drawerTrigger=null;}
+}
+
+drawer.addEventListener('keydown',event=>{
+  if(event.key!=='Tab') return;
+  const focusable=[...drawer.querySelectorAll('button,input,select,textarea,[href],[tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled&&el.offsetParent!==null);
+  if(!focusable.length) return;
+  const first=focusable[0];const last=focusable[focusable.length-1];
+  if(event.shiftKey){if(document.activeElement===first){event.preventDefault();last.focus();}}
+  else{if(document.activeElement===last){event.preventDefault();first.focus();}}
+});
 
 document.querySelectorAll('[data-agent]').forEach(button=>button.addEventListener('click',()=>openAgent(button.dataset.agent)));
 

@@ -54,6 +54,14 @@ jobs:
           if matches:
               raise SystemExit(f'Forbidden public content: {matches}')
 
+          required_aria = [
+              'role="tablist"', 'role="tab"', 'aria-selected',
+              'role="tabpanel"', 'role="dialog"', 'aria-modal="true"',
+          ]
+          missing_aria = [attr for attr in required_aria if attr not in Path('index.html').read_text()]
+          if missing_aria:
+              raise SystemExit(f'Missing required ARIA attributes: {missing_aria}')
+
           print('PUBLIC_BETA_VALIDATION=PASS')
           PY
       - name: Parse JSON files
