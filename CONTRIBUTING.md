@@ -42,7 +42,7 @@ A pull request must **never** add:
    python3 -m json.tool state/public-state.json
    python3 -m json.tool manifest.webmanifest
    python3 -m json.tool vercel.json
-   python3 -m http.server 8080   # then load the cockpit in a browser
+   python3 -m http.server 8080   # then open http://localhost:8080 in your browser
    ```
 
 4. Open the pull request as a **draft** first. The `Validate Public Beta` workflow must pass.
