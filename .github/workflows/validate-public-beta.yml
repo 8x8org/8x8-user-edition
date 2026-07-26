@@ -17,45 +17,11 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate required files and public state
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          required = [
-              'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
-              'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md'
-          ]
-          missing = [path for path in required if not Path(path).is_file()]
-          if missing:
-              raise SystemExit(f'Missing required files: {missing}')
-
-          state = json.loads(Path('state/public-state.json').read_text())
-          must_be_false = [
-              'private_control_plane_connected', 'private_repositories_connected',
-              'private_memory_connected', 'private_messages_connected',
-              'credentials_included', 'wallet_material_included',
-              'remote_shell_enabled', 'live_trading_enabled',
-              'public_billing_enabled', 'user_node_contribution_enabled',
-              'hidden_telemetry_enabled', 'camera_or_microphone_auto_access',
-              'targets_are_live_entitlements'
-          ]
-          violations = [key for key in must_be_false if state.get(key) is not False]
-          if violations:
-              raise SystemExit(f'Public boundary violation: {violations}')
-
-          html = Path('index.html').read_text().lower()
-          forbidden = [
-              'seed phrase', 'private key', 'api_key=', 'authorization: bearer',
-              '/api/terminal', 'execute trade', 'wallet address'
-          ]
-          matches = [term for term in forbidden if term in html]
-          if matches:
-              raise SystemExit(f'Forbidden public content: {matches}')
-
-          print('PUBLIC_BETA_VALIDATION=PASS')
-          PY
+        run: python3 scripts/validate_public_state.py
+      - name: Install test dependencies
+        run: pip install pytest
+      - name: Run unit tests
+        run: python3 -m pytest tests/ -v
       - name: Parse JSON files
         run: |
           python3 -m json.tool state/public-state.json >/dev/null
