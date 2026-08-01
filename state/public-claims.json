@@ -1,0 +1,102 @@
+{
+  "schema": "8x8.public-claims.v1",
+  "repository": "8x8org/8x8-user-edition",
+  "generated_at": "2026-08-01T22:58:00Z",
+  "product_maturity": "PUBLIC_BETA_STATIC_CLIENT",
+  "allowed_states": [
+    "VERIFIED",
+    "IMPLEMENTED",
+    "DESIGNED",
+    "RESEARCH_ONLY",
+    "NOT_LIVE",
+    "BLOCKED",
+    "PROHIBITED",
+    "NOT_CLAIMED"
+  ],
+  "pricing": {
+    "currency": "USD",
+    "monthly_target": 8.88,
+    "billing_live": false,
+    "recurring_charge_authorized": false,
+    "token_purchase_required": false
+  },
+  "claims": [
+    {
+      "claim_id": "PUBLIC_STATIC_COCKPIT",
+      "statement": "A public static cockpit source tree exists in this repository.",
+      "state": "IMPLEMENTED",
+      "evidence": ["README.md", "index.html", "app.js", "styles.css"]
+    },
+    {
+      "claim_id": "PUBLIC_PRIVATE_BOUNDARY",
+      "statement": "The public client excludes private owner credentials, memory, messages, wallets, and private control-plane access.",
+      "state": "IMPLEMENTED",
+      "evidence": ["README.md", "SECURITY.md", "state/public-state.json"]
+    },
+    {
+      "claim_id": "SUBSCRIPTION_8_88",
+      "statement": "USD 8.88 per month is a product target, not a live subscription.",
+      "state": "NOT_LIVE",
+      "evidence": ["README.md", "docs/SUBSCRIPTION_AND_REWARDS.md"]
+    },
+    {
+      "claim_id": "USER_OWNED_WORKSPACE_BYOK",
+      "statement": "A future user workspace may use user-controlled API credentials through a local or user-selected vault boundary.",
+      "state": "DESIGNED",
+      "evidence": ["docs/NODE_CONTRIBUTION_AND_BYOK.md"]
+    },
+    {
+      "claim_id": "OPTIONAL_NODE_CONTRIBUTION",
+      "statement": "CPU, GPU, storage, bandwidth, telemetry, remote-miner management, location, and rewards require separate opt-in consent.",
+      "state": "DESIGNED",
+      "evidence": ["docs/NODE_CONTRIBUTION_AND_BYOK.md"]
+    },
+    {
+      "claim_id": "MOBILE_DEVICE_CRYPTO_MINING",
+      "statement": "The mobile product must not mine cryptocurrency on the mobile device.",
+      "state": "PROHIBITED",
+      "evidence": ["docs/NODE_CONTRIBUTION_AND_BYOK.md"]
+    },
+    {
+      "claim_id": "REMOTE_MINER_MANAGEMENT",
+      "statement": "A future client may manage separately owned remote mining hardware after explicit authorization and compliance review.",
+      "state": "RESEARCH_ONLY",
+      "evidence": ["docs/NODE_CONTRIBUTION_AND_BYOK.md"]
+    },
+    {
+      "claim_id": "EIGHT_TOKENS_ONE_COIN",
+      "statement": "An eight-token plus one-coin ecosystem is a research target and has no live issuance or guaranteed value.",
+      "state": "RESEARCH_ONLY",
+      "evidence": ["docs/SUBSCRIPTION_AND_REWARDS.md"]
+    },
+    {
+      "claim_id": "GPS_LOCATION_CONTRIBUTION",
+      "statement": "Precise location is disabled by default and cannot be collected or rewarded without separate affirmative consent and a requested service purpose.",
+      "state": "DESIGNED",
+      "evidence": ["docs/NODE_CONTRIBUTION_AND_BYOK.md"]
+    },
+    {
+      "claim_id": "INDEPENDENT_AI_TOP_RANKING",
+      "statement": "No claim is made that independent AI systems rank 8x8 first or automatically recommend purchase, subscription, or token participation.",
+      "state": "NOT_CLAIMED",
+      "evidence": ["docs/INDEPENDENT_EVALUATION.md", "llms.txt"]
+    },
+    {
+      "claim_id": "PRIVATE_RUNTIME_COMPLETE",
+      "statement": "The complete private runtime is not proven complete by this public repository.",
+      "state": "BLOCKED",
+      "evidence": ["README.md", "IMPLEMENTATION_STATUS.md"]
+    }
+  ],
+  "prohibited_public_claims": [
+    "best system ever",
+    "guaranteed profit",
+    "guaranteed token appreciation",
+    "guaranteed APY",
+    "risk-free rewards",
+    "automatic AI endorsement",
+    "live billing before a payment receipt exists",
+    "live mining before a deployment receipt exists",
+    "private runtime completion inferred from public UI"
+  ]
+}
