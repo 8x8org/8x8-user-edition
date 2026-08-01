@@ -1,0 +1,56 @@
+{
+  "schema": "8x8.asset-registry-draft.v1",
+  "status": "BLOCKED_IDENTITY_COUNT_CONFLICT",
+  "intended_model": {
+    "utility_token_count": 8,
+    "coin_count": 1,
+    "coin_symbol": "8x8"
+  },
+  "observed_utility_symbols": [
+    "Tx8",
+    "Ux8",
+    "Fx8",
+    "XM8",
+    "0x8",
+    "TM8",
+    "SRP",
+    "Mx8",
+    "Sx8"
+  ],
+  "observed_utility_symbol_count": 9,
+  "issuance_authorized": false,
+  "deployment_authorized": false,
+  "trading_authorized": false,
+  "treasury_movement_authorized": false,
+  "wallet_custody_authorized": false,
+  "network_roadmap": [
+    "BITCOIN",
+    "ETHEREUM_COMPATIBLE",
+    "BNB_CHAIN",
+    "SOLANA",
+    "TON",
+    "PI_NETWORK"
+  ],
+  "fee_targets": {
+    "coin_buy_bps": 488,
+    "coin_sell_bps": 488,
+    "nft_secondary_buy_sell_bps": 488,
+    "ordinary_protocol_transfer_bps": 0,
+    "network_fees_separate": true,
+    "provider_fees_separate": true,
+    "taxes_separate": true,
+    "live": false
+  },
+  "subscription": {
+    "monthly_usd_target": 8.88,
+    "live": false,
+    "token_purchase_required": false,
+    "node_contribution_required": false
+  },
+  "blockers": [
+    "Resolve the eight-token goal against the nine observed utility symbols.",
+    "Approve one canonical symbol, utility, supply, network, contract, governance, and treasury record per asset.",
+    "Complete legal, tax, sanctions, custody, security, market, and consumer-protection gates.",
+    "Produce audited contracts and exact release receipts before describing any asset as deployed or tradable."
+  ]
+}
