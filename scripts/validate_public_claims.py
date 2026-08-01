@@ -9,14 +9,8 @@ from pathlib import Path
 from typing import Any
 
 ALLOWED_STATES = {
-    "VERIFIED",
-    "IMPLEMENTED",
-    "DESIGNED",
-    "RESEARCH_ONLY",
-    "NOT_LIVE",
-    "BLOCKED",
-    "PROHIBITED",
-    "NOT_CLAIMED",
+    "VERIFIED", "IMPLEMENTED", "DESIGNED", "RESEARCH_ONLY",
+    "NOT_LIVE", "BLOCKED", "PROHIBITED", "NOT_CLAIMED",
 }
 
 REQUIRED_CLAIM_STATES = {
@@ -27,7 +21,9 @@ REQUIRED_CLAIM_STATES = {
     "OPTIONAL_NODE_CONTRIBUTION": {"DESIGNED", "RESEARCH_ONLY"},
     "MOBILE_DEVICE_CRYPTO_MINING": {"PROHIBITED"},
     "REMOTE_MINER_MANAGEMENT": {"RESEARCH_ONLY"},
-    "EIGHT_TOKENS_ONE_COIN": {"RESEARCH_ONLY"},
+    "EIGHT_TOKENS_ONE_COIN": {"DESIGNED", "RESEARCH_ONLY"},
+    "CANONICAL_ASSET_COUNT": {"DESIGNED"},
+    "SERAPHIM_REPUTATION_PROOF": {"DESIGNED"},
     "GPS_LOCATION_CONTRIBUTION": {"DESIGNED", "RESEARCH_ONLY", "PROHIBITED"},
     "INDEPENDENT_AI_TOP_RANKING": {"NOT_CLAIMED"},
     "PRIVATE_RUNTIME_COMPLETE": {"BLOCKED"},
@@ -38,22 +34,22 @@ REQUIRED_FILES = (
     "docs/INDEPENDENT_EVALUATION.md",
     "docs/NODE_CONTRIBUTION_AND_BYOK.md",
     "docs/SUBSCRIPTION_AND_REWARDS.md",
+    "docs/CANONICAL_ASSET_SYSTEM.md",
+    "state/asset-registry-draft.json",
+    "state/seraphim-reputation-proof.json",
     "state/public-claims.json",
 )
 
 
 def load_claims(root: Path) -> dict[str, Any]:
-    path = root / "state/public-claims.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads((root / "state/public-claims.json").read_text(encoding="utf-8"))
 
 
 def validate(root: Path) -> list[str]:
     failures: list[str] = []
-
     for relative in REQUIRED_FILES:
         if not (root / relative).is_file():
             failures.append(f"missing required file: {relative}")
-
     if failures:
         return failures
 
@@ -64,9 +60,7 @@ def validate(root: Path) -> list[str]:
 
     if document.get("schema") != "8x8.public-claims.v1":
         failures.append("unexpected public claims schema")
-
-    declared_states = set(document.get("allowed_states", []))
-    if declared_states != ALLOWED_STATES:
+    if set(document.get("allowed_states", [])) != ALLOWED_STATES:
         failures.append("allowed_states must exactly match the validator contract")
 
     pricing = document.get("pricing", {})
@@ -94,14 +88,12 @@ def validate(root: Path) -> list[str]:
         state = row.get("state")
         statement = row.get("statement")
         evidence = row.get("evidence")
-
         if not isinstance(claim_id, str) or not claim_id:
             failures.append(f"claim at index {index} has invalid claim_id")
             continue
         if claim_id in by_id:
             failures.append(f"duplicate claim_id: {claim_id}")
         by_id[claim_id] = row
-
         if state not in ALLOWED_STATES:
             failures.append(f"{claim_id}: unsupported state {state!r}")
         if not isinstance(statement, str) or not statement.strip():
@@ -119,8 +111,7 @@ def validate(root: Path) -> list[str]:
         row = by_id.get(claim_id)
         if row is None:
             failures.append(f"missing required claim: {claim_id}")
-            continue
-        if row.get("state") not in allowed:
+        elif row.get("state") not in allowed:
             failures.append(
                 f"{claim_id}: state {row.get('state')!r} not allowed; expected {sorted(allowed)}"
             )
@@ -135,15 +126,11 @@ def validate(root: Path) -> list[str]:
         if required_text not in llms:
             failures.append(f"llms.txt missing boundary text: {required_text}")
 
-    rewards = (root / "docs/SUBSCRIPTION_AND_REWARDS.md").read_text(
-        encoding="utf-8"
-    )
+    rewards = (root / "docs/SUBSCRIPTION_AND_REWARDS.md").read_text(encoding="utf-8")
     if "RESEARCH_ONLY" not in rewards:
-        failures.append("rewards document must label the asset model RESEARCH_ONLY")
+        failures.append("rewards document must label live asset issuance RESEARCH_ONLY")
 
-    node_doc = (root / "docs/NODE_CONTRIBUTION_AND_BYOK.md").read_text(
-        encoding="utf-8"
-    )
+    node_doc = (root / "docs/NODE_CONTRIBUTION_AND_BYOK.md").read_text(encoding="utf-8")
     for required_text in (
         "disabled by default",
         "must not mine cryptocurrency on the phone or tablet",
@@ -152,6 +139,15 @@ def validate(root: Path) -> list[str]:
     ):
         if required_text not in node_doc:
             failures.append(f"node contribution document missing: {required_text}")
+
+    asset_doc = (root / "docs/CANONICAL_ASSET_SYSTEM.md").read_text(encoding="utf-8")
+    for required_text in (
+        "eight transferable utility-token identities",
+        "Seraphim Reputation Proof",
+        "not counted as a market token",
+    ):
+        if required_text not in asset_doc:
+            failures.append(f"canonical asset document missing: {required_text}")
 
     return failures
 
