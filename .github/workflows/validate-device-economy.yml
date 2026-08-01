@@ -7,8 +7,10 @@ on:
     paths:
       - "docs/DEVICE_CONTRIBUTION_PROFILES.md"
       - "docs/MULTINETWORK_WALLET_AND_FEES.md"
+      - "docs/CANONICAL_ASSET_SYSTEM.md"
       - "state/device-contribution-profiles.json"
       - "state/asset-registry-draft.json"
+      - "state/seraphim-reputation-proof.json"
       - "state/public-claims.json"
       - "scripts/validate_device_economy.py"
       - "tests/test_device_economy.py"
@@ -17,8 +19,10 @@ on:
     paths:
       - "docs/DEVICE_CONTRIBUTION_PROFILES.md"
       - "docs/MULTINETWORK_WALLET_AND_FEES.md"
+      - "docs/CANONICAL_ASSET_SYSTEM.md"
       - "state/device-contribution-profiles.json"
       - "state/asset-registry-draft.json"
+      - "state/seraphim-reputation-proof.json"
       - "state/public-claims.json"
       - "scripts/validate_device_economy.py"
       - "tests/test_device_economy.py"
@@ -61,6 +65,7 @@ jobs:
         run: |
           python -m json.tool state/device-contribution-profiles.json >/dev/null
           python -m json.tool state/asset-registry-draft.json >/dev/null
+          python -m json.tool state/seraphim-reputation-proof.json >/dev/null
           python -m json.tool state/public-claims.json >/dev/null
 
       - name: Validate device and economy contracts
