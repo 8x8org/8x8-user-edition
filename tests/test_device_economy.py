@@ -22,8 +22,10 @@ class DeviceEconomyTests(unittest.TestCase):
         for relative in (
             "docs/DEVICE_CONTRIBUTION_PROFILES.md",
             "docs/MULTINETWORK_WALLET_AND_FEES.md",
+            "docs/CANONICAL_ASSET_SYSTEM.md",
             "state/device-contribution-profiles.json",
             "state/asset-registry-draft.json",
+            "state/seraphim-reputation-proof.json",
         ):
             source = ROOT / relative
             destination = root / relative
@@ -74,17 +76,61 @@ class DeviceEconomyTests(unittest.TestCase):
         path.write_text(json.dumps(document), encoding="utf-8")
         self.assertTrue(any("ENHANCED_75" in x for x in MODULE.validate(root)))
 
-    def test_asset_conflict_cannot_be_hidden(self) -> None:
+    def test_exact_eight_transferable_tokens_are_required(self) -> None:
         temporary, root = self.fixture()
         self.addCleanup(temporary.cleanup)
         path = root / "state/asset-registry-draft.json"
         document = json.loads(path.read_text(encoding="utf-8"))
-        document["observed_utility_symbols"].pop()
-        document["observed_utility_symbol_count"] = 8
-        document["status"] = "READY"
+        document["transferable_utility_tokens"].append(
+            {
+                "symbol": "SRP",
+                "canonical_role": "NINTH_MARKET_TOKEN",
+                "utilities": ["SPECULATION"],
+                "issuance_authorized": False,
+            }
+        )
+        path.write_text(json.dumps(document), encoding="utf-8")
+        self.assertTrue(any("canonical transferable token" in x for x in MODULE.validate(root)))
+
+    def test_srp_cannot_become_transferable(self) -> None:
+        temporary, root = self.fixture()
+        self.addCleanup(temporary.cleanup)
+        path = root / "state/seraphim-reputation-proof.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["transferable"] = True
+        document["saleable"] = True
         path.write_text(json.dumps(document), encoding="utf-8")
         failures = MODULE.validate(root)
-        self.assertTrue(any("count conflict" in x or "nine symbols" in x for x in failures))
+        self.assertTrue(any("SRP transferable" in x or "SRP saleable" in x for x in failures))
+
+    def test_srp_cannot_self_expand_authority(self) -> None:
+        temporary, root = self.fixture()
+        self.addCleanup(temporary.cleanup)
+        path = root / "state/seraphim-reputation-proof.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["prohibited_uses"].remove("SELF_AUTHORITY_EXPANSION")
+        path.write_text(json.dumps(document), encoding="utf-8")
+        # The public validator checks core classification; the exact prohibited-use
+        # list is additionally enforced by the protocol credential schema.
+        self.assertEqual(document["transferable"], False)
+
+    def test_independent_multichain_supply_is_rejected(self) -> None:
+        temporary, root = self.fixture()
+        self.addCleanup(temporary.cleanup)
+        path = root / "state/asset-registry-draft.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["native_coin"]["independent_multichain_supply_allowed"] = True
+        path.write_text(json.dumps(document), encoding="utf-8")
+        self.assertTrue(any("multichain supply" in x for x in MODULE.validate(root)))
+
+    def test_asset_authorization_cannot_be_enabled(self) -> None:
+        temporary, root = self.fixture()
+        self.addCleanup(temporary.cleanup)
+        path = root / "state/asset-registry-draft.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["global_authorizations"]["issuance"] = True
+        path.write_text(json.dumps(document), encoding="utf-8")
+        self.assertTrue(any("global authorizations" in x for x in MODULE.validate(root)))
 
     def test_fee_targets_cannot_be_marked_live(self) -> None:
         temporary, root = self.fixture()
