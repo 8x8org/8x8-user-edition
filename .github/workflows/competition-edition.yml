@@ -19,20 +19,33 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: competition-edition-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
+      - name: Check out exact revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          python-version: '3.12'
+          persist-credentials: false
 
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '20'
+      - name: Verify runner toolchain
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 --version
+          node --version
+          npm --version
+          python3 - <<'PY'
+          import sys
+          if sys.version_info < (3, 12):
+              raise SystemExit('Python 3.12 or newer is required')
+          PY
+          node -e "const major=Number(process.versions.node.split('.')[0]); if(major<20) process.exit(1)"
 
       - name: Validate eight-world and sixty-four-sector contracts
         run: python3 scripts/validate_competition_edition.py
