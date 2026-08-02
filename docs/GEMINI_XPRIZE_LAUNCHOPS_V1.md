@@ -1,115 +1,95 @@
-# 8x8 LaunchOps V1 — Build with Gemini XPRIZE Sprint
+# 8x8 OS Competition Edition — Build with Gemini XPRIZE Full-System Sprint
 
-Status: implementation branch opened; public deployment not yet authorized or verified.
+Status: active implementation branch. Public deployment, payment activation and final submission are not yet authorized or verified.
 
 ## Product
 
-8x8 LaunchOps is a focused AI-native service for solo founders and small businesses. A user provides one launch or business goal. The service produces a structured diagnosis, prioritized operating plan, public-page copy, content pack, execution queue, and evidence-backed progress report.
+The competition product is the complete **8x8 OS Competition Edition**, not a reduced side product. It is a human-controlled AI operating system connecting private agent operations, public user experiences, workspaces, tools, Studio, builders, evidence, release controls and supervised automation.
 
-The broader 8x8 platform is treated as pre-existing framework and infrastructure. The submitted LaunchOps business component is developed as the new competition project and must disclose all reused building blocks.
+LaunchOps remains one guided mission inside 8x8. It is not the product identity.
 
-## Competition category
+## Eligibility framing
 
-Primary category: Entrepreneurship & Job Creation.
+Earlier 8x8 research, templates, infrastructure and generic agent tooling are disclosed as pre-existing framework. The competition-period business is the newly built **8x8 OS Competition Edition**, including its business model, Gemini operations, Google Cloud deployment, public experience, customer workflows, production evidence and revenue.
 
-## Required end-to-end workflow
+## Architecture
 
-1. User creates an account and accepts privacy and service terms.
-2. User provides a launch or business goal.
-3. A deployed Gemini API call returns a structured business diagnosis and strategy.
-4. Bounded 8x8 agents create approved deliverables.
-5. User reviews, approves, revises, or rejects outputs.
-6. The system records execution receipts and outcome metrics.
-7. User may purchase a clearly defined LaunchOps pilot through a conventional payment or invoice path.
+The product is represented as eight worlds and sixty-four canonical sectors:
 
-## Public launch boundary
+1. Command & Identity
+2. Agent Council & Automation
+3. Workspaces, Memory & Knowledge
+4. Connectors, Data & Evidence
+5. Tools, Nodes & Resources
+6. Studio, Builder & Creation
+7. Public & Private Experiences
+8. Quality, Security & Release
 
-The public product must not advertise or enable live cryptocurrency payments, wallet custody, mining, staking, token rewards, NFT value claims, investment returns, multilevel referral commissions, treasury actions, or private owner controls.
+The complete architecture may be shown while every sector carries a truthful evidence state. Designed or blocked sectors must never be described as deployed production capabilities.
 
-Unimplemented features must be labeled unavailable, simulated, testnet, or coming soon.
+## Required judge workflow
 
-## Required deployed stack
+1. A user enters a real objective.
+2. A deployed Gemini call returns a structured diagnosis and plan.
+3. Specialized 8x8 agents receive bounded tasks.
+4. The user reviews, revises or approves proposals.
+5. Only separately authorized safe work may proceed.
+6. The system returns outputs, evidence and digest-bound receipts.
+7. The user can inspect the eight-world system and its current readiness.
 
+## Required production stack
+
+- stable public HTTPS web application;
 - Google Cloud service in production;
-- Gemini API call in the deployed workflow;
-- stable HTTPS URL;
-- mobile-responsive public interface;
-- production health endpoint and logs;
-- consented analytics and user-feedback capture;
-- judge test path or test account;
-- repository and setup/testing documentation.
+- deployed Gemini API call;
+- public Telegram Mini App;
+- separately secured private owner Mini App;
+- server-side Telegram authentication validation;
+- mobile onboarding and workspace;
+- health endpoint, logging and rollback plan;
+- evidence dashboard and judge test path;
+- privacy, consent and accessibility;
+- conventional payment or invoice route after owner authorization.
 
 ## Evidence targets
 
-Targets are operational goals, not competition minimums:
+Operational targets, not guaranteed competition minimums:
 
 - at least five arms-length external users;
 - at least three arms-length paid pilot customers;
-- consented testimonials or feedback;
-- revenue, related-party revenue, expenses, and acquisition-spend ledger;
+- consented feedback or testimonials;
+- revenue, related-party revenue, expenses and acquisition-spend ledger;
 - Gemini and Google Cloud execution evidence;
-- uptime and error evidence;
-- screenshots and under-three-minute demo video.
+- current uptime and error evidence;
+- screenshots and an under-three-minute demo video;
+- repository and testing instructions;
+- pre-existing framework disclosure.
 
-## Milestones
+## Active workstreams
 
-### August 1–2
-
-- freeze OpenAI Build Week submission assets;
-- confirm XPRIZE registration and entrant identity;
-- confirm category and pilot offer;
-- connect Google Cloud and Gemini through secrets storage;
-- implement the minimum LaunchOps workflow;
-- remove unsupported public claims.
-
-### August 3–4
-
-- deploy public alpha;
-- verify HTTPS, health, onboarding, Gemini call, receipts, privacy, and mobile behavior;
-- bind the public Telegram Mini App only after origin and initData validation pass;
-- begin real external user onboarding.
-
-### August 5–10
-
-- collect user feedback and paid-pilot evidence;
-- improve the highest-friction workflow;
-- maintain daily production receipts;
-- prepare business model, category-impact, and AI-native-operations evidence.
-
-### August 11–14
-
-- stabilize the product;
-- record demo footage;
-- prepare testing instructions, code disclosure, revenue/user evidence, and repository access;
-- verify every submission link.
-
-### August 15–16
-
-- final eligibility audit;
-- submit before the last day;
-- preserve the exact submitted deployment and revision through judging.
+- Genesis preservation and MSG205 local receipts;
+- HERMES and critical runtime recovery;
+- bounded continuous agent queues;
+- private owner approval interface;
+- complete public Competition Edition cockpit;
+- Gemini mission API and Google Cloud deployment;
+- public and private Telegram Mini Apps;
+- business onboarding, payments, users and revenue evidence;
+- submission narrative, architecture, demo and testing path.
 
 ## Owner-only decisions
 
 - Devpost registration and final submission;
-- entrant/team representative identity;
-- Google Cloud billing or free-credit activation;
-- public deployment authorization;
-- payment-provider authorization;
-- final price and offer;
+- entrant identity and team authority;
+- cloud billing or credits activation;
+- public deployment approval;
+- payment-provider approval;
 - real-user outreach and testimonial consent;
+- protected release actions;
 - final submission approval.
 
-## Agent responsibilities
+## Current truth
 
-- Product: build one complete workflow and mobile interface.
-- Gemini: implement and test the production Gemini call.
-- Infrastructure: Cloud deployment, uptime, logging, rollback, and canary.
-- Safety: privacy, secret handling, public/private boundary, and claims audit.
-- Growth: draft outreach, onboarding, feedback, and pilot materials.
-- Evidence: users, revenue, expenses, logs, screenshots, and receipts.
-- Submission: description, reused-code disclosure, demo script, test instructions, and final checklist.
+The branch implements the 8-world/64-sector registry, a public Competition Edition cockpit, a Cloud Run-compatible Gemini planning API, digest-bound planning receipts, fail-closed readiness state and CI contracts. It does not prove a live Gemini call, Google Cloud deployment, Telegram Mini App binding, current HERMES health, external users, revenue or final submission.
 
-## Success definition
-
-Success means an eligible, testable, truthful, live AI business optimized for business viability, AI-native operations, and category impact. No system can guarantee first place.
+Success means a complete, eligible, testable and truthful 8x8 business optimized for business viability, AI-native operations and category impact. First place cannot be guaranteed; unsupported claims are not a strategy.
