@@ -1,0 +1,61 @@
+name: 8x8 Competition Edition
+
+on:
+  pull_request:
+    paths:
+      - 'competition/**'
+      - 'services/competition-api/**'
+      - 'scripts/validate_competition_edition.py'
+      - '.github/workflows/competition-edition.yml'
+  push:
+    branches:
+      - feature/gemini-xprize-launchops-v1
+    paths:
+      - 'competition/**'
+      - 'services/competition-api/**'
+      - 'scripts/validate_competition_edition.py'
+      - '.github/workflows/competition-edition.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Validate eight-world and sixty-four-sector contracts
+        run: python3 scripts/validate_competition_edition.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check competition/app.js
+          node --check services/competition-api/server.mjs
+          node --check services/competition-api/test/server.test.mjs
+
+      - name: Run Competition API tests
+        working-directory: services/competition-api
+        run: npm test
+
+      - name: Validate public static references
+        run: |
+          test -f competition/index.html
+          test -f competition/styles.css
+          test -f competition/app.js
+          grep -q './styles.css' competition/index.html
+          grep -q './app.js' competition/index.html
+          grep -q './system-registry.v1.json' competition/app.js
+          grep -q './competition-state.v1.json' competition/app.js
+
+      - name: Verify checkout remained clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
