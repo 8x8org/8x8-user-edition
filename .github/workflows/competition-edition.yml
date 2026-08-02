@@ -6,6 +6,7 @@ on:
       - 'competition/**'
       - 'services/competition-api/**'
       - 'scripts/validate_competition_edition.py'
+      - 'scripts/local_rebuild_baseline.sh'
       - '.github/workflows/competition-edition.yml'
   push:
     branches:
@@ -14,6 +15,7 @@ on:
       - 'competition/**'
       - 'services/competition-api/**'
       - 'scripts/validate_competition_edition.py'
+      - 'scripts/local_rebuild_baseline.sh'
       - '.github/workflows/competition-edition.yml'
 
 permissions:
@@ -55,6 +57,16 @@ jobs:
           node --check competition/app.js
           node --check services/competition-api/server.mjs
           node --check services/competition-api/test/server.test.mjs
+
+      - name: Validate read-only local baseline
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          bash -n scripts/local_rebuild_baseline.sh
+          ! grep -En '(^|[;&|[:space:]])(rm|mv|kill|pkill|reboot|shutdown|mount|umount)([[:space:]]|$)' scripts/local_rebuild_baseline.sh
+          ! grep -En 'sv[[:space:]]+(up|down|restart|force-stop|force-restart)' scripts/local_rebuild_baseline.sh
+          grep -q 'mutations_performed.*False' scripts/local_rebuild_baseline.sh
+          grep -q 'services_restarted.*False' scripts/local_rebuild_baseline.sh
 
       - name: Run Competition API tests
         working-directory: services/competition-api
