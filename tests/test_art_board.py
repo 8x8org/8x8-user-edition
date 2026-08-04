@@ -74,8 +74,12 @@ class ArtBoardReleaseTests(unittest.TestCase):
         serialized = json.dumps(treasury).lower()
         self.assertNotRegex(serialized, r"\b(0x[a-f0-9]{40}|bc1[a-z0-9]{20,}|4[0-9ab][1-9a-hj-np-z]{90,})\b")
 
-    def test_html_has_strict_local_security_policy(self):
+    def test_html_has_strict_but_functional_security_policy(self):
         self.assertIn("default-src 'self'", self.html)
+        self.assertIn("script-src 'self'", self.html)
+        self.assertNotIn("script-src 'self' 'unsafe-inline'", self.html)
+        self.assertIn("style-src-elem 'self'", self.html)
+        self.assertIn("style-src-attr 'unsafe-inline'", self.html)
         self.assertIn("connect-src 'self'", self.html)
         self.assertIn("object-src 'none'", self.html)
         self.assertIn("form-action 'none'", self.html)
@@ -90,6 +94,20 @@ class ArtBoardReleaseTests(unittest.TestCase):
         self.assertIn("aria-pressed", self.html)
         self.assertIn("prefers-reduced-motion", self.css)
         self.assertIn("forced-colors", self.css)
+
+    def test_dynamic_content_and_coordinates_are_hardened(self):
+        for escaped in ("&amp;", "&lt;", "&gt;", "&quot;", "&#39;"):
+            self.assertIn(escaped, self.js)
+        self.assertIn("function boundedPercent", self.js)
+        self.assertIn("Number.isFinite", self.js)
+        self.assertIn("cluster.x", self.js)
+        self.assertIn("cluster.y", self.js)
+        self.assertIn("record ?? {}", self.js)
+
+    def test_pointer_interruptions_end_dragging(self):
+        self.assertIn("pointercancel", self.js)
+        self.assertIn("lostpointercapture", self.js)
+        self.assertIn("stopDragging", self.js)
 
     def test_javascript_is_local_read_only(self):
         forbidden = (
