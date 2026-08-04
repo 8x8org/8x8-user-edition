@@ -2,8 +2,8 @@
   "schema_version": "8x8.public-release-unit.v1",
   "release_unit_id": "public-global-art-board-v1",
   "scope_basis_points": 100,
-  "scope_statement": "Static public Global Art Board only; no backend, private runtime, live users, wallets or billing.",
-  "truth_state": "TESTED_PENDING_DEPLOYMENT",
+  "scope_statement": "Static public-safe Global Art Board only; no backend, private runtime, live users, wallets or billing.",
+  "truth_state": "PROTECTED_PREVIEW_DEPLOYED",
   "score": {
     "earned": 100,
     "possible": 100,
@@ -27,19 +27,46 @@
     "responsive_design": true,
     "rollback": true,
     "documentation": true,
-    "exact_deployment_target": false,
-    "deployment_receipt": false
+    "exact_deployment_target": true,
+    "deployment_receipt": true,
+    "public_production_release": false
+  },
+  "canonical_source": {
+    "repository": "8x8org/8x8-user-edition",
+    "branch": "feature/msg214-full-product-surfaces-v1",
+    "pull_request": 35
   },
   "deployment": {
-    "authorized_class": "PUBLIC_STATIC",
-    "target": "UNRESOLVED",
-    "url": null,
-    "commit": null,
-    "receipt_id": null
+    "authorized_class": "AUTHENTICATED_PREVIEW",
+    "visibility": "VERCEL_PROTECTED",
+    "provider": "Vercel",
+    "team_id": "team_EsRBTH8aknMkgT61F8iqynNm",
+    "project_id": "prj_Hde867t6mmxcECzlVPh2wivg2KdB",
+    "project_name": "8x8-os-ecosystem",
+    "mirror_repository": "horbolsi/8x8-OS-Ecosystem",
+    "mirror_branch": "feature/msg218-public-art-board-preview-v1",
+    "mirror_pull_request": 5,
+    "deployment_id": "dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z",
+    "url": "https://8x8-os-ecosystem-481378uy0-8x8-team-url.vercel.app/art-board/",
+    "branch_alias": "https://8x8-os-ecosystem-git-feature-msg218-public-dfdba3-8x8-team-url.vercel.app/art-board/",
+    "commit": "dba1ec6ce6ccb729e4c1d71b9d604f21aa767beb",
+    "ready_state": "READY",
+    "region": "iad1",
+    "receipt_id": "vercel:dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z+github-actions:30945374071",
+    "verified_at": "2026-08-04T19:56:00Z"
+  },
+  "validation": {
+    "github_actions_run": 30945374071,
+    "github_actions_conclusion": "SUCCESS",
+    "vercel_build": "READY",
+    "route_smoke_test": "PASS_IN_GITHUB_CI",
+    "direct_unauthenticated_fetch": "BLOCKED_BY_VERCEL_PROTECTION",
+    "production_alias_changed": false
   },
   "rollback": {
-    "strategy": "Revert the exact Art Board release commit or restore the previous static deployment.",
-    "tested_in_ci": true
+    "strategy": "Close or revert mirror PR #5 and restore the previous beta branch deployment. Canonical User Edition source remains unmerged until review.",
+    "tested_in_ci": true,
+    "production_rollback_required": false
   },
   "whole_system_completion_inferred": false
 }
