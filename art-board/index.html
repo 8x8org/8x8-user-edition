@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#050816">
   <meta name="description" content="8x8 Global Art Board: a public-safe spatial view of release units, evidence and world status.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>8x8 Global Art Board</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./positions.css">
 </head>
 <body>
   <header class="topbar glass">
@@ -49,7 +50,7 @@
 
       <section class="board-shell glass" aria-label="Zoomable 8x8 Art Board">
         <div class="board-viewport" id="boardViewport" tabindex="0">
-          <div class="board" id="board">
+          <div class="board" id="board" data-zoom="100">
             <div class="core-orbit orbit-a"></div>
             <div class="core-orbit orbit-b"></div>
             <button class="board-core" data-node="node-user-edition"><span>8×8</span><small>PUBLIC CORE</small></button>
