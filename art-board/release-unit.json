@@ -1,0 +1,79 @@
+{
+  "schema_version": "8x8.public-release-unit.v1",
+  "release_unit_id": "public-global-art-board-v1",
+  "scope_basis_points": 100,
+  "scope_statement": "Static public-safe Global Art Board only; no backend, private runtime, live users, wallets or billing.",
+  "truth_state": "PROTECTED_PREVIEW_DEPLOYED",
+  "score": {
+    "earned": 100,
+    "possible": 100,
+    "categories": {
+      "functional_contract": 20,
+      "public_private_boundary": 20,
+      "privacy": 15,
+      "accessibility": 15,
+      "security_headers": 10,
+      "responsive_design": 10,
+      "rollback": 5,
+      "documentation": 5
+    }
+  },
+  "gates": {
+    "functional_contract": true,
+    "public_private_boundary": true,
+    "privacy": true,
+    "accessibility": true,
+    "security_headers": true,
+    "responsive_design": true,
+    "rollback": true,
+    "documentation": true,
+    "exact_deployment_target": true,
+    "deployment_receipt": true,
+    "public_production_release": false
+  },
+  "canonical_source": {
+    "repository": "8x8org/8x8-user-edition",
+    "branch": "feature/msg214-full-product-surfaces-v1",
+    "pull_request": 35,
+    "source_commit": "fd6296e8ce29e95738e8c000280dbde6b6a5c7f5"
+  },
+  "deployment": {
+    "authorized_class": "AUTHENTICATED_PREVIEW",
+    "visibility": "VERCEL_PROTECTED",
+    "provider": "Vercel",
+    "team_id": "team_EsRBTH8aknMkgT61F8iqynNm",
+    "project_id": "prj_Hde867t6mmxcECzlVPh2wivg2KdB",
+    "project_name": "8x8-os-ecosystem",
+    "mirror_repository": "horbolsi/8x8-OS-Ecosystem",
+    "mirror_branch": "feature/msg218-public-art-board-preview-v1",
+    "mirror_pull_request": 5,
+    "deployment_id": "dpl_Dn9o2rGTNpxpktcfCEEJMQQGb8XE",
+    "url": "https://8x8-os-ecosystem-arcu1c51g-8x8-team-url.vercel.app/art-board/",
+    "branch_alias": "https://8x8-os-ecosystem-git-feature-msg218-public-dfdba3-8x8-team-url.vercel.app/art-board/",
+    "commit": "005000a311fbb84030c08e98e28b4a650ea9c01e",
+    "ready_state": "READY",
+    "region": "iad1",
+    "receipt_id": "vercel:dpl_Dn9o2rGTNpxpktcfCEEJMQQGb8XE+github-actions:30952127976+codeql:30951833421+sonar:QUALITY_GATE_PASS",
+    "verified_at": "2026-08-04T21:23:30Z"
+  },
+  "validation": {
+    "github_actions_run": 30952127976,
+    "github_actions_conclusion": "SUCCESS",
+    "codeql_run": 30951833421,
+    "codeql_conclusion": "SUCCESS",
+    "sonarqube_quality_gate": "PASS",
+    "sonarqube_new_issues": 0,
+    "vercel_build": "READY",
+    "route_smoke_test": "PASS_IN_GITHUB_CI",
+    "unsafe_inline_csp": false,
+    "dynamic_html_sinks": 0,
+    "direct_unauthenticated_fetch": "BLOCKED_BY_VERCEL_PROTECTION",
+    "production_alias_changed": false
+  },
+  "rollback": {
+    "strategy": "Revert the exact source or beta merge and restore the preceding Vercel deployment. No production alias rollback is required because production was not changed.",
+    "tested_in_ci": true,
+    "production_rollback_required": false
+  },
+  "whole_system_completion_inferred": false
+}

@@ -2,7 +2,7 @@ name: Validate Public Beta
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/msg214-full-product-surfaces-v1]
   pull_request:
 
 permissions:
@@ -11,6 +11,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +26,10 @@ jobs:
           required = [
               'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
               'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md'
+              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
+              'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
+              'art-board/state.json', 'art-board/release-unit.json', 'art-board/README.md',
+              'tests/test_art_board.py'
           ]
           missing = [path for path in required if not Path(path).is_file()]
           if missing:
@@ -45,7 +49,38 @@ jobs:
           if violations:
               raise SystemExit(f'Public boundary violation: {violations}')
 
-          html = Path('index.html').read_text().lower()
+          art = json.loads(Path('art-board/state.json').read_text())
+          release = json.loads(Path('art-board/release-unit.json').read_text())
+          if art.get('mode') != 'PUBLIC_SAFE_FIXTURE':
+              raise SystemExit('Art Board must remain PUBLIC_SAFE_FIXTURE')
+          if art.get('score', {}).get('earned') != 100 or art.get('score', {}).get('possible') != 100:
+              raise SystemExit('Art Board slice score must be 100/100')
+          if art.get('score', {}).get('whole_system_score') != 'NOT_INFERRED':
+              raise SystemExit('Art Board must not infer whole-system completion')
+          if release.get('truth_state') != 'PROTECTED_PREVIEW_DEPLOYED':
+              raise SystemExit('Art Board must remain a protected preview until a production gate')
+          if release.get('gates', {}).get('deployment_receipt') is not True:
+              raise SystemExit('Protected preview requires a deployment receipt')
+          if release.get('gates', {}).get('public_production_release') is not False:
+              raise SystemExit('Protected preview cannot claim production release')
+          deployment = release.get('deployment', {})
+          if deployment.get('authorized_class') != 'AUTHENTICATED_PREVIEW':
+              raise SystemExit('Unexpected deployment class')
+          if deployment.get('visibility') != 'VERCEL_PROTECTED':
+              raise SystemExit('Unexpected preview visibility')
+          if deployment.get('commit') != 'dba1ec6ce6ccb729e4c1d71b9d604f21aa767beb':
+              raise SystemExit('Preview commit drift')
+          if deployment.get('deployment_id') != 'dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z':
+              raise SystemExit('Preview deployment drift')
+          validation = release.get('validation', {})
+          if validation.get('github_actions_conclusion') != 'SUCCESS':
+              raise SystemExit('Preview GitHub Actions receipt is not successful')
+          if validation.get('vercel_build') != 'READY':
+              raise SystemExit('Vercel preview is not ready')
+          if validation.get('production_alias_changed') is not False:
+              raise SystemExit('Production alias must remain unchanged')
+
+          html = (Path('index.html').read_text() + Path('art-board/index.html').read_text()).lower()
           forbidden = [
               'seed phrase', 'private key', 'api_key=', 'authorization: bearer',
               '/api/terminal', 'execute trade', 'wallet address'
@@ -61,6 +96,10 @@ jobs:
           python3 -m json.tool state/public-state.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
+          python3 -m json.tool art-board/state.json >/dev/null
+          python3 -m json.tool art-board/release-unit.json >/dev/null
+      - name: Run Art Board contract tests
+        run: python3 -m unittest tests.test_art_board -v
       - name: Confirm no private endpoint references
         run: |
           if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9])' \

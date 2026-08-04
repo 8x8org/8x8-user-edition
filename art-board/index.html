@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050816">
+  <meta name="description" content="8x8 Global Art Board: a public-safe spatial view of release units, evidence and world status.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>8x8 Global Art Board</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./positions.css">
+</head>
+<body>
+  <header class="topbar glass">
+    <a class="brand" href="../index.html" aria-label="Return to 8x8 User Edition"><span>8×8</span><small>GLOBAL ART BOARD</small></a>
+    <div class="truth" id="truthBanner">PUBLIC-SAFE FIXTURE</div>
+    <div class="toolbar" aria-label="Art Board controls">
+      <button id="zoomOut" aria-label="Zoom out">−</button>
+      <button id="zoomReset" aria-label="Reset zoom">100%</button>
+      <button id="zoomIn" aria-label="Zoom in">+</button>
+      <button id="toggleMap" aria-pressed="false">Global map</button>
+      <button id="togglePanels" aria-pressed="false">Minimize panels</button>
+      <button id="openHelp">Help</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="welcome glass" aria-labelledby="welcomeTitle">
+      <div class="seraphim" aria-hidden="true">✦</div>
+      <div>
+        <p class="eyebrow">SERAPHIM PUBLIC GUIDE</p>
+        <h1 id="welcomeTitle">Welcome to the 8x8 public universe.</h1>
+        <p>This release unit visualizes public-safe evidence only. Green means complete inside the displayed slice, not that the private system is globally complete.</p>
+      </div>
+      <div class="slice-score" aria-label="Current release-unit score"><b id="sliceScore">100/100</b><span>STATIC SLICE</span></div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel glass legend-panel">
+        <h2>Status index</h2>
+        <div id="legend"></div>
+        <label class="filter"><span>Filter nodes</span><input id="nodeFilter" type="search" placeholder="world, agent, plugin…"></label>
+        <div class="quick-links">
+          <button data-focus="core">Core</button>
+          <button data-focus="public-product">Public product</button>
+          <button data-focus="worlds">Worlds</button>
+          <button data-focus="markets">Treasury</button>
+        </div>
+      </aside>
+
+      <section class="board-shell glass" aria-label="Zoomable 8x8 Art Board">
+        <div class="board-viewport" id="boardViewport" tabindex="0">
+          <div class="board" id="board" data-zoom="100">
+            <div class="core-orbit orbit-a"></div>
+            <div class="core-orbit orbit-b"></div>
+            <button class="board-core" data-node="node-user-edition"><span>8×8</span><small>PUBLIC CORE</small></button>
+            <div id="worldLayer" class="world-layer"></div>
+            <div id="nodeLayer" class="node-layer"></div>
+            <div id="mapLayer" class="map-layer" hidden>
+              <div class="globe-grid" aria-hidden="true"></div>
+              <div id="presenceLayer"></div>
+              <div class="map-notice">SIMULATED REGIONAL PRESENCE • COUNTS 0 • NO USER TRACKING</div>
+            </div>
+          </div>
+        </div>
+        <div class="board-hud">
+          <span>ZOOM <b id="zoomReadout">100%</b></span>
+          <span>MODE <b id="modeReadout">ART BOARD</b></span>
+          <span>EVENTS <b>LOCAL ONLY</b></span>
+          <span>PRIVATE CORE <b>DISCONNECTED</b></span>
+        </div>
+      </section>
+
+      <aside class="panel glass detail-panel" id="detailPanel" aria-live="polite">
+        <p class="eyebrow">INSPECTOR</p>
+        <h2 id="detailTitle">Select a world or node</h2>
+        <p id="detailSummary">Zoom, filter or select any bubble to inspect its evidence state and public-safe description.</p>
+        <dl id="detailFacts"></dl>
+        <div class="detail-actions">
+          <button id="showEvidence" disabled>Evidence</button>
+          <button id="showSuggestion">Suggestion</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="widgets" id="widgets">
+      <article class="widget glass">
+        <header><h2>Release units</h2><button class="widget-toggle" aria-label="Collapse release units">−</button></header>
+        <div class="widget-body"><p><b>1 public slice</b> is scored 100/100 within its declared scope.</p><p>Unfinished worlds remain visible and do not block this static release.</p></div>
+      </article>
+      <article class="widget glass">
+        <header><h2>Treasury view</h2><button class="widget-toggle" aria-label="Collapse treasury view">−</button></header>
+        <div class="widget-body" id="treasuryWidget"></div>
+      </article>
+      <article class="widget glass">
+        <header><h2>Developer portal</h2><button class="widget-toggle" aria-label="Collapse developer portal">−</button></header>
+        <div class="widget-body"><p>New tools must use the 8x8 plugin manifest, deny-by-default permissions, provenance, conformance tests and rollback.</p><a href="https://github.com/8x8org/8x8-protocol" rel="noreferrer">Open public protocol</a></div>
+      </article>
+      <article class="widget glass">
+        <header><h2>Suggestions</h2><button class="widget-toggle" aria-label="Collapse suggestions">−</button></header>
+        <div class="widget-body"><ul id="suggestions"></ul></div>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="modal">
+    <button id="closeModal" aria-label="Close">×</button>
+    <h2 id="modalTitle">8x8 Help</h2>
+    <div id="modalBody"></div>
+  </dialog>
+
+  <footer><span>8x8 Global Art Board V1</span><span>NO TRACKING • NO WALLET DATA • NO PRIVATE AUTHORITY</span><a href="../index.html">Public cockpit</a></footer>
+  <noscript>This Art Board requires JavaScript for local visualization. No private service is affected.</noscript>
+  <script src="./app.js" defer></script>
+</body>
+</html>
