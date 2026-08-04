@@ -34,7 +34,8 @@
   "canonical_source": {
     "repository": "8x8org/8x8-user-edition",
     "branch": "feature/msg214-full-product-surfaces-v1",
-    "pull_request": 35
+    "pull_request": 35,
+    "source_commit": "fd6296e8ce29e95738e8c000280dbde6b6a5c7f5"
   },
   "deployment": {
     "authorized_class": "AUTHENTICATED_PREVIEW",
@@ -46,25 +47,31 @@
     "mirror_repository": "horbolsi/8x8-OS-Ecosystem",
     "mirror_branch": "feature/msg218-public-art-board-preview-v1",
     "mirror_pull_request": 5,
-    "deployment_id": "dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z",
-    "url": "https://8x8-os-ecosystem-481378uy0-8x8-team-url.vercel.app/art-board/",
+    "deployment_id": "dpl_Dn9o2rGTNpxpktcfCEEJMQQGb8XE",
+    "url": "https://8x8-os-ecosystem-arcu1c51g-8x8-team-url.vercel.app/art-board/",
     "branch_alias": "https://8x8-os-ecosystem-git-feature-msg218-public-dfdba3-8x8-team-url.vercel.app/art-board/",
-    "commit": "dba1ec6ce6ccb729e4c1d71b9d604f21aa767beb",
+    "commit": "005000a311fbb84030c08e98e28b4a650ea9c01e",
     "ready_state": "READY",
     "region": "iad1",
-    "receipt_id": "vercel:dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z+github-actions:30945374071",
-    "verified_at": "2026-08-04T19:56:00Z"
+    "receipt_id": "vercel:dpl_Dn9o2rGTNpxpktcfCEEJMQQGb8XE+github-actions:30952127976+codeql:30951833421+sonar:QUALITY_GATE_PASS",
+    "verified_at": "2026-08-04T21:23:30Z"
   },
   "validation": {
-    "github_actions_run": 30945374071,
+    "github_actions_run": 30952127976,
     "github_actions_conclusion": "SUCCESS",
+    "codeql_run": 30951833421,
+    "codeql_conclusion": "SUCCESS",
+    "sonarqube_quality_gate": "PASS",
+    "sonarqube_new_issues": 0,
     "vercel_build": "READY",
     "route_smoke_test": "PASS_IN_GITHUB_CI",
+    "unsafe_inline_csp": false,
+    "dynamic_html_sinks": 0,
     "direct_unauthenticated_fetch": "BLOCKED_BY_VERCEL_PROTECTION",
     "production_alias_changed": false
   },
   "rollback": {
-    "strategy": "Close or revert mirror PR #5 and restore the previous beta branch deployment. Canonical User Edition source remains unmerged until review.",
+    "strategy": "Revert the exact source or beta merge and restore the preceding Vercel deployment. No production alias rollback is required because production was not changed.",
     "tested_in_ci": true,
     "production_rollback_required": false
   },
