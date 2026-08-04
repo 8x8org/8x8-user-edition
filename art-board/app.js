@@ -23,16 +23,6 @@
     [50, 31], [63, 40], [64, 60], [50, 68], [36, 60], [37, 40]
   ];
 
-  function safeText(value) {
-    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[character]));
-  }
-
   function safeToken(value) {
     return String(value ?? '').replace(/[^A-Za-z0-9_-]/g, '') || 'UNKNOWN';
   }
@@ -41,6 +31,39 @@
     const numeric = Number(value);
     if (!Number.isFinite(numeric)) return 0;
     return Math.min(100, Math.max(0, numeric));
+  }
+
+  function node(tag, options = {}) {
+    const element = document.createElement(tag);
+    if (options.className) element.className = options.className;
+    if (options.text !== undefined) element.textContent = String(options.text);
+    if (options.title !== undefined) element.title = String(options.title);
+    for (const [name, value] of Object.entries(options.attributes || {})) {
+      element.setAttribute(name, String(value));
+    }
+    for (const child of options.children || []) {
+      if (child) element.append(child);
+    }
+    return element;
+  }
+
+  function labelledParagraph(label, value) {
+    return node('p', {
+      children: [
+        node('b', { text: `${label}: ` }),
+        document.createTextNode(String(value ?? ''))
+      ]
+    });
+  }
+
+  function replaceChildren(target, children) {
+    target.replaceChildren(...children.filter(Boolean));
+  }
+
+  function position(element, x, y, centered = false) {
+    element.style.left = `${boundedPercent(x)}%`;
+    element.style.top = `${boundedPercent(y)}%`;
+    if (centered) element.style.transform = 'translate(-50%,-50%)';
   }
 
   function applyTransform() {
@@ -58,52 +81,92 @@
   }
 
   function renderLegend() {
-    $('#legend').innerHTML = Object.entries(state.data.palette)
-      .map(([token, description]) => `
-        <div class="legend-item">
-          <span class="swatch status-${safeToken(token)}" aria-hidden="true"></span>
-          <span><b>${safeText(token)}</b><br>${safeText(description)}</span>
-        </div>`)
-      .join('');
+    const entries = Object.entries(state.data.palette).map(([token, description]) => {
+      const swatch = node('span', {
+        className: `swatch status-${safeToken(token)}`,
+        attributes: { 'aria-hidden': 'true' }
+      });
+      const text = node('span', {
+        children: [node('b', { text: token }), node('br'), document.createTextNode(String(description))]
+      });
+      return node('div', { className: 'legend-item', children: [swatch, text] });
+    });
+    replaceChildren($('#legend'), entries);
   }
 
   function renderWorlds() {
-    $('#worldLayer').innerHTML = state.data.worlds.map((world, index) => {
-      const [rawX, rawY] = worldPositions[index] || [50, 50];
-      const x = boundedPercent(rawX);
-      const y = boundedPercent(rawY);
-      return `<button class="world status-${safeToken(world.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-world="${safeText(world.id)}" aria-label="${safeText(world.label)}, ${safeText(world.status)}">
-        <b>${safeText(world.label)}</b><small>${safeText(world.score)}/100 • ${safeText(world.evidence)}</small>
-      </button>`;
-    }).join('');
+    const elements = state.data.worlds.map((world, index) => {
+      const [x, y] = worldPositions[index] || [50, 50];
+      const button = node('button', {
+        className: `world status-${safeToken(world.status)}`,
+        attributes: {
+          'data-world': world.id,
+          'aria-label': `${world.label}, ${world.status}`
+        },
+        children: [
+          node('b', { text: world.label }),
+          node('small', { text: `${world.score}/100 • ${world.evidence}` })
+        ]
+      });
+      position(button, x, y, true);
+      return button;
+    });
+    replaceChildren($('#worldLayer'), elements);
   }
 
   function renderNodes() {
-    $('#nodeLayer').innerHTML = state.data.nodes.map((node, index) => {
-      const [rawX, rawY] = nodePositions[index % nodePositions.length] || [50, 50];
-      const x = boundedPercent(rawX);
-      const y = boundedPercent(rawY);
-      return `<button class="node status-${safeToken(node.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-node="${safeText(node.id)}" title="${safeText(node.label)}" aria-label="${safeText(node.label)}, ${safeText(node.status)}">${safeText(node.shortcut)}</button>`;
-    }).join('');
+    const elements = state.data.nodes.map((record, index) => {
+      const [x, y] = nodePositions[index % nodePositions.length] || [50, 50];
+      const button = node('button', {
+        className: `node status-${safeToken(record.status)}`,
+        text: record.shortcut,
+        title: record.label,
+        attributes: {
+          'data-node': record.id,
+          'aria-label': `${record.label}, ${record.status}`
+        }
+      });
+      position(button, x, y, true);
+      return button;
+    });
+    replaceChildren($('#nodeLayer'), elements);
   }
 
   function renderPresence() {
-    $('#presenceLayer').innerHTML = state.data.presence_clusters.map((cluster) => {
-      const x = boundedPercent(cluster.x);
-      const y = boundedPercent(cluster.y);
-      return `
-        <button class="presence status-${safeToken(cluster.status)}" style="left:${x}%;top:${y}%" data-presence="${safeText(cluster.id)}" data-label="${safeText(cluster.label)}" aria-label="${safeText(cluster.label)}; simulated; count zero"></button>
-      `;
-    }).join('');
+    const elements = state.data.presence_clusters.map((cluster) => {
+      const button = node('button', {
+        className: `presence status-${safeToken(cluster.status)}`,
+        attributes: {
+          'data-presence': cluster.id,
+          'data-label': cluster.label,
+          'aria-label': `${cluster.label}; simulated; count zero`
+        }
+      });
+      position(button, cluster.x, cluster.y);
+      return button;
+    });
+    replaceChildren($('#presenceLayer'), elements);
   }
 
   function renderWidgets() {
-    $('#treasuryWidget').innerHTML = `
-      <p><b>Status:</b> ${safeText(state.data.treasury.status)}</p>
-      <p>${safeText(state.data.treasury.notice)}</p>
-      <p><b>Networks:</b> ${state.data.treasury.networks.map(safeText).join(', ')}</p>
-      <p><b>Balances:</b> hidden / unavailable<br><b>Signing:</b> disabled</p>`;
-    $('#suggestions').innerHTML = state.data.suggestions.map((item) => `<li>${safeText(item)}</li>`).join('');
+    const treasury = state.data.treasury;
+    replaceChildren($('#treasuryWidget'), [
+      labelledParagraph('Status', treasury.status),
+      node('p', { text: treasury.notice }),
+      labelledParagraph('Networks', treasury.networks.join(', ')),
+      node('p', {
+        children: [
+          node('b', { text: 'Balances: ' }), document.createTextNode('hidden / unavailable'),
+          node('br'), node('b', { text: 'Signing: ' }), document.createTextNode('disabled')
+        ]
+      })
+    ]);
+    replaceChildren($('#suggestions'), state.data.suggestions.map((item) => node('li', { text: item })));
+  }
+
+  function addFact(fragment, label, value) {
+    if (value === undefined || value === null || value === '') return;
+    fragment.append(node('dt', { text: label }), node('dd', { text: value }));
   }
 
   function inspect(item, kind) {
@@ -111,35 +174,33 @@
     state.selected = { item, kind };
     $('#detailTitle').textContent = item.label || item.id || 'Unknown record';
     $('#detailSummary').textContent = item.summary || item.description || item.help || 'Public-safe record.';
-    const facts = [];
-    const add = (label, value) => {
-      if (value !== undefined && value !== null && value !== '') facts.push(`<dt>${safeText(label)}</dt><dd>${safeText(value)}</dd>`);
-    };
-    add('Type', item.type || String(kind).toUpperCase());
-    add('Status', item.status);
-    add('Evidence', item.evidence);
-    add('Score', item.score !== undefined ? `${item.score}/100` : null);
-    add('World', item.world);
-    add('Mode', item.mode);
-    add('Region', item.region);
-    add('Count', item.count);
-    $('#detailFacts').innerHTML = facts.join('');
+    const fragment = document.createDocumentFragment();
+    addFact(fragment, 'Type', item.type || String(kind).toUpperCase());
+    addFact(fragment, 'Status', item.status);
+    addFact(fragment, 'Evidence', item.evidence);
+    addFact(fragment, 'Score', item.score !== undefined ? `${item.score}/100` : null);
+    addFact(fragment, 'World', item.world);
+    addFact(fragment, 'Mode', item.mode);
+    addFact(fragment, 'Region', item.region);
+    addFact(fragment, 'Count', item.count);
+    $('#detailFacts').replaceChildren(fragment);
     $('#showEvidence').disabled = false;
   }
 
-  function showModal(title, html) {
+  function showModal(title, children) {
     $('#modalTitle').textContent = title;
-    $('#modalBody').innerHTML = html;
+    replaceChildren($('#modalBody'), children);
     $('#modal').showModal();
   }
 
   function showEvidence() {
     if (!state.selected) return;
     const { item, kind } = state.selected;
-    showModal('Public evidence record', `
-      <p><b>Record class:</b> ${safeText(kind)}</p>
-      <pre>${safeText(JSON.stringify(item, null, 2))}</pre>
-      <p>This is public fixture evidence only. It does not expose or prove private runtime state.</p>`);
+    showModal('Public evidence record', [
+      labelledParagraph('Record class', kind),
+      node('pre', { text: JSON.stringify(item, null, 2) }),
+      node('p', { text: 'This is public fixture evidence only. It does not expose or prove private runtime state.' })
+    ]);
   }
 
   function showSuggestion() {
@@ -147,18 +208,18 @@
     const suggestion = suggestions.length
       ? suggestions[Math.floor(Math.random() * suggestions.length)]
       : 'No public suggestion is available.';
-    showModal('8x8 suggestion', `<p>${safeText(suggestion)}</p>`);
+    showModal('8x8 suggestion', [node('p', { text: suggestion })]);
   }
 
   function filterNodes(query) {
     const term = String(query ?? '').trim().toLowerCase();
     $$('.node').forEach((element) => {
-      const record = state.data.nodes.find((node) => node.id === element.dataset.node);
+      const record = state.data.nodes.find((entry) => entry.id === element.dataset.node);
       const haystack = JSON.stringify(record ?? {}).toLowerCase();
       element.hidden = Boolean(term && !haystack.includes(term));
     });
     $$('.world').forEach((element) => {
-      const record = state.data.worlds.find((world) => world.id === element.dataset.world);
+      const record = state.data.worlds.find((entry) => entry.id === element.dataset.world);
       const haystack = JSON.stringify(record ?? {}).toLowerCase();
       element.hidden = Boolean(term && !haystack.includes(term));
     });
@@ -190,6 +251,16 @@
     setZoom(state.mapMode ? 0.88 : 1);
   }
 
+  function helpContent() {
+    const items = [
+      'Green means complete only inside the displayed release-unit scope.',
+      'Red is down or blocked; orange is degraded; yellow is incomplete; black is unknown or hidden.',
+      'Use zoom, drag, filters, shortcuts and bubbles to inspect public evidence.',
+      'The map contains simulated regional markers with zero users and no tracking.'
+    ];
+    return [node('ul', { children: items.map((item) => node('li', { text: item })) })];
+  }
+
   function bindEvents() {
     $('#zoomIn').addEventListener('click', () => setZoom(state.zoom + 0.1));
     $('#zoomOut').addEventListener('click', () => setZoom(state.zoom - 0.1));
@@ -200,13 +271,7 @@
       event.currentTarget.setAttribute('aria-pressed', String(minimized));
       event.currentTarget.textContent = minimized ? 'Expand panels' : 'Minimize panels';
     });
-    $('#openHelp').addEventListener('click', () => showModal('How to use the Art Board', `
-      <ul>
-        <li>Green means complete only inside the displayed release-unit scope.</li>
-        <li>Red is down or blocked; orange is degraded; yellow is incomplete; black is unknown or hidden.</li>
-        <li>Use zoom, drag, filters, shortcuts and bubbles to inspect public evidence.</li>
-        <li>The map contains simulated regional markers with zero users and no tracking.</li>
-      </ul>`));
+    $('#openHelp').addEventListener('click', () => showModal('How to use the Art Board', helpContent()));
     $('#closeModal').addEventListener('click', () => $('#modal').close());
     $('#showEvidence').addEventListener('click', showEvidence);
     $('#showSuggestion').addEventListener('click', showSuggestion);
@@ -223,7 +288,7 @@
       const nodeButton = event.target.closest('[data-node]');
       const presenceButton = event.target.closest('[data-presence]');
       if (worldButton) inspect(state.data.worlds.find((world) => world.id === worldButton.dataset.world), 'world');
-      if (nodeButton) inspect(state.data.nodes.find((node) => node.id === nodeButton.dataset.node), 'node');
+      if (nodeButton) inspect(state.data.nodes.find((entry) => entry.id === nodeButton.dataset.node), 'node');
       if (presenceButton) inspect(state.data.presence_clusters.find((cluster) => cluster.id === presenceButton.dataset.presence), 'presence');
     });
 
@@ -253,14 +318,27 @@
     window.addEventListener('keydown', (event) => {
       if (event.target instanceof HTMLInputElement) return;
       const shortcut = event.key.toUpperCase();
-      const node = state.data.nodes.find((item) => item.shortcut === shortcut);
-      if (node) inspect(node, 'node');
+      const record = state.data.nodes.find((item) => item.shortcut === shortcut);
+      if (record) inspect(record, 'node');
       if (event.key === '+' || event.key === '=') setZoom(state.zoom + 0.1);
       if (event.key === '-') setZoom(state.zoom - 0.1);
       if (event.key === '0') { state.panX = 0; state.panY = 0; setZoom(1); }
       if (event.key.toLowerCase() === 'm') toggleMap();
       if (event.key === 'Escape' && $('#modal').open) $('#modal').close();
     });
+  }
+
+  function renderFailure(error) {
+    const panel = node('main', {
+      className: 'panel glass',
+      children: [
+        node('h1', { text: 'Art Board blocked' }),
+        node('p', { text: 'The public state failed validation. Nothing was rendered.' }),
+        node('pre', { text: error instanceof Error ? error.message : 'Unknown error' })
+      ]
+    });
+    panel.style.margin = '2rem';
+    document.body.replaceChildren(panel);
   }
 
   async function start() {
@@ -283,7 +361,7 @@
       bindEvents();
       applyTransform();
     } catch (error) {
-      document.body.innerHTML = `<main class="panel glass" style="margin:2rem"><h1>Art Board blocked</h1><p>The public state failed validation. Nothing was rendered.</p><pre>${safeText(error.message)}</pre></main>`;
+      renderFailure(error);
     }
   }
 
