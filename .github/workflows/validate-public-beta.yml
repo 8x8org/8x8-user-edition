@@ -2,7 +2,7 @@ name: Validate Public Beta
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/msg214-full-product-surfaces-v1]
   pull_request:
 
 permissions:
@@ -25,7 +25,10 @@ jobs:
           required = [
               'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
               'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md'
+              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
+              'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
+              'art-board/state.json', 'art-board/release-unit.json',
+              'tests/test_art_board.py'
           ]
           missing = [path for path in required if not Path(path).is_file()]
           if missing:
@@ -45,7 +48,20 @@ jobs:
           if violations:
               raise SystemExit(f'Public boundary violation: {violations}')
 
-          html = Path('index.html').read_text().lower()
+          art = json.loads(Path('art-board/state.json').read_text())
+          release = json.loads(Path('art-board/release-unit.json').read_text())
+          if art.get('mode') != 'PUBLIC_SAFE_FIXTURE':
+              raise SystemExit('Art Board must remain PUBLIC_SAFE_FIXTURE')
+          if art.get('score', {}).get('earned') != 100 or art.get('score', {}).get('possible') != 100:
+              raise SystemExit('Art Board slice score must be 100/100')
+          if art.get('score', {}).get('whole_system_score') != 'NOT_INFERRED':
+              raise SystemExit('Art Board must not infer whole-system completion')
+          if release.get('truth_state') != 'TESTED_PENDING_DEPLOYMENT':
+              raise SystemExit('Art Board deployment state drifted')
+          if release.get('gates', {}).get('deployment_receipt') is not False:
+              raise SystemExit('Deployment receipt cannot be true before deployment')
+
+          html = (Path('index.html').read_text() + Path('art-board/index.html').read_text()).lower()
           forbidden = [
               'seed phrase', 'private key', 'api_key=', 'authorization: bearer',
               '/api/terminal', 'execute trade', 'wallet address'
@@ -61,6 +77,10 @@ jobs:
           python3 -m json.tool state/public-state.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
+          python3 -m json.tool art-board/state.json >/dev/null
+          python3 -m json.tool art-board/release-unit.json >/dev/null
+      - name: Run Art Board contract tests
+        run: python3 -m unittest tests.test_art_board -v
       - name: Confirm no private endpoint references
         run: |
           if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9])' \
