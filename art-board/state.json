@@ -1,0 +1,62 @@
+{
+  "schema_version": "8x8.public-art-board.v1",
+  "release_unit_id": "public-global-art-board-v1",
+  "mode": "PUBLIC_SAFE_FIXTURE",
+  "truth_banner": "PUBLIC-SAFE FIXTURE — NO PRIVATE CONTROL PLANE — NO LIVE USER TRACKING",
+  "observed_at": "2026-08-04T19:30:00Z",
+  "score": {
+    "earned": 100,
+    "possible": 100,
+    "scope": "Static public Global Art Board slice only",
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "palette": {
+    "GREEN": "Healthy or release-ready within the displayed slice",
+    "CYAN": "Informational or verified read-only",
+    "YELLOW": "Warning or incomplete dependency",
+    "ORANGE": "Degraded or requires review",
+    "RED": "Down or blocked",
+    "BLACK": "Unknown, stale or intentionally hidden",
+    "PURPLE": "Planned or experimental",
+    "GRAY": "Disabled or not applicable"
+  },
+  "worlds": [
+    {"id": "core", "label": "Core & Governance", "status": "GREEN", "evidence": "TESTED", "score": 100, "summary": "Public truth model, permission boundary and release-unit contract."},
+    {"id": "agents", "label": "Agents & Personas", "status": "YELLOW", "evidence": "DESIGNED", "score": 42, "summary": "Public archetypes exist; complete evidence-backed fleet census is not public."},
+    {"id": "models", "label": "Models & Intelligence", "status": "BLACK", "evidence": "UNKNOWN", "score": 0, "summary": "No public claim of the private model pool or current availability."},
+    {"id": "public-product", "label": "Public Product", "status": "GREEN", "evidence": "TESTED", "score": 100, "summary": "This static Art Board release unit is implemented and tested."},
+    {"id": "connectors", "label": "Connectors & Platforms", "status": "ORANGE", "evidence": "IMPLEMENTED", "score": 58, "summary": "Public contracts exist; live connector canaries remain separate."},
+    {"id": "creation", "label": "Studio & Creation", "status": "PURPLE", "evidence": "DESIGNED", "score": 30, "summary": "Public-safe creation surfaces are planned; publishing is not active here."},
+    {"id": "markets", "label": "Markets & Treasury", "status": "BLACK", "evidence": "OWNER_CONFIRMED", "score": 0, "summary": "No balances, addresses, signing authority or live payments are exposed."},
+    {"id": "worlds", "label": "Maps, Worlds & Simulation", "status": "CYAN", "evidence": "IMPLEMENTED", "score": 64, "summary": "Interactive public-safe globe and world topology are implemented as a fixture."}
+  ],
+  "nodes": [
+    {"id": "node-user-edition", "world": "public-product", "type": "REPOSITORY", "label": "8x8 User Edition", "status": "GREEN", "evidence": "TESTED", "description": "Static public client and Global Art Board.", "shortcut": "G", "help": "Open the public source and release evidence."},
+    {"id": "node-protocol", "world": "core", "type": "REPOSITORY", "label": "8x8 Protocol", "status": "CYAN", "evidence": "IMPLEMENTED", "description": "Public schemas for permissions, release units, plugins and privacy.", "shortcut": "P", "help": "Inspect public contracts and conformance fixtures."},
+    {"id": "node-seraphim", "world": "agents", "type": "AGENT_ARCHETYPE", "label": "Seraphim", "status": "PURPLE", "evidence": "DESIGNED", "description": "Public guide archetype for onboarding, trust explanations and navigation.", "shortcut": "S", "help": "Seraphim explains the public product without claiming private runtime activity."},
+    {"id": "node-connector-sdk", "world": "connectors", "type": "PLUGIN", "label": "8x8 Plugin Contract", "status": "CYAN", "evidence": "IMPLEMENTED", "description": "Capability-scoped extension contract with deny-by-default permissions.", "shortcut": "K", "help": "Developers can build compatible tools without receiving private authority."},
+    {"id": "node-global-map", "world": "worlds", "type": "MAP", "label": "Global Presence Map", "status": "CYAN", "evidence": "IMPLEMENTED", "description": "Opt-in, approximate and privacy-preserving public presence concept.", "shortcut": "M", "help": "No precise user location is collected or shown in this fixture."},
+    {"id": "node-treasury", "world": "markets", "type": "TREASURY_PUBLIC_VIEW", "label": "Treasury Public View", "status": "BLACK", "evidence": "NOT_CONNECTED", "description": "Network and policy overview only. No wallet addresses or balances.", "shortcut": "T", "help": "Live treasury data remains disabled until a public-safe receive-only adapter is reviewed."}
+  ],
+  "presence_clusters": [
+    {"id": "cluster-west-africa", "label": "West Africa demo region", "region": "West Africa", "x": 48, "y": 56, "status": "CYAN", "count": 0, "mode": "SIMULATED_REGION_ONLY"},
+    {"id": "cluster-france", "label": "France demo region", "region": "France", "x": 51, "y": 35, "status": "CYAN", "count": 0, "mode": "SIMULATED_COUNTRY_ONLY"},
+    {"id": "cluster-india", "label": "India demo region", "region": "India", "x": 68, "y": 52, "status": "CYAN", "count": 0, "mode": "SIMULATED_COUNTRY_ONLY"},
+    {"id": "cluster-north-america", "label": "North America demo region", "region": "North America", "x": 25, "y": 38, "status": "CYAN", "count": 0, "mode": "SIMULATED_REGION_ONLY"}
+  ],
+  "treasury": {
+    "status": "NOT_CONNECTED",
+    "public_balances": false,
+    "wallet_addresses": false,
+    "signing_authority": false,
+    "networks": ["Bitcoin", "Monero", "Ethereum", "BNB Smart Chain", "Solana", "TON", "Pi Network"],
+    "notice": "Owner-confirmed network planning only. No live balance, token, payment or wallet claim."
+  },
+  "suggestions": [
+    "Inspect red, orange and black nodes before adding features.",
+    "Ship independent public-safe release units only after their own 100/100 gates pass.",
+    "Use the 8x8 plugin contract for new tools instead of direct private-core access.",
+    "Keep precise location hidden by default and expire all presence records.",
+    "Treat a green slice as complete only within its declared scope."
+  ]
+}
