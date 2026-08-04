@@ -1,0 +1,60 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 8x8-user-edition
+  title: 8x8 User Edition
+  description: Public-safe 8x8 cockpit, Global Art Board, PWA and product-surface reference.
+  annotations:
+    github.com/project-slug: 8x8org/8x8-user-edition
+  tags:
+    - 8x8
+    - public
+    - pwa
+    - art-board
+    - spatial-ui
+    - privacy-safe
+  links:
+    - url: https://github.com/8x8org/8x8-user-edition
+      title: Source
+      icon: github
+    - url: https://github.com/8x8org/8x8-user-edition/tree/feature/msg214-full-product-surfaces-v1/art-board
+      title: Global Art Board
+      icon: dashboard
+spec:
+  type: website
+  lifecycle: experimental
+  owner: user:default/flashtm8
+  system: 8x8-public-product
+  dependsOn:
+    - component:default/8x8-protocol
+  providesApis:
+    - 8x8-public-art-board-state
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: 8x8-public-art-board-state
+  title: 8x8 Public Art Board State
+  description: Static public-safe state consumed by the Global Art Board release unit.
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: user:default/flashtm8
+  system: 8x8-public-product
+  definition: |
+    openapi: 3.0.3
+    info:
+      title: 8x8 Public Art Board State
+      version: 1.0.0
+    paths:
+      /art-board/state.json:
+        get:
+          summary: Read the public-safe Art Board fixture
+          responses:
+            '200':
+              description: Public-safe Art Board state
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    required: [schema_version, release_unit_id, mode, score, worlds]
