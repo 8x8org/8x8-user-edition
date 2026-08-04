@@ -24,7 +24,23 @@
   ];
 
   function safeText(value) {
-    return String(value ?? '').replace(/[<>]/g, '');
+    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[character]));
+  }
+
+  function safeToken(value) {
+    return String(value ?? '').replace(/[^A-Za-z0-9_-]/g, '') || 'UNKNOWN';
+  }
+
+  function boundedPercent(value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return 0;
+    return Math.min(100, Math.max(0, numeric));
   }
 
   function applyTransform() {
@@ -35,7 +51,9 @@
   }
 
   function setZoom(next) {
-    state.zoom = Math.min(1.8, Math.max(0.55, Number(next.toFixed(2))));
+    const numeric = Number(next);
+    if (!Number.isFinite(numeric)) return;
+    state.zoom = Math.min(1.8, Math.max(0.55, Number(numeric.toFixed(2))));
     applyTransform();
   }
 
@@ -43,7 +61,7 @@
     $('#legend').innerHTML = Object.entries(state.data.palette)
       .map(([token, description]) => `
         <div class="legend-item">
-          <span class="swatch status-${safeText(token)}" aria-hidden="true"></span>
+          <span class="swatch status-${safeToken(token)}" aria-hidden="true"></span>
           <span><b>${safeText(token)}</b><br>${safeText(description)}</span>
         </div>`)
       .join('');
@@ -51,8 +69,10 @@
 
   function renderWorlds() {
     $('#worldLayer').innerHTML = state.data.worlds.map((world, index) => {
-      const [x, y] = worldPositions[index];
-      return `<button class="world status-${safeText(world.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-world="${safeText(world.id)}" aria-label="${safeText(world.label)}, ${safeText(world.status)}">
+      const [rawX, rawY] = worldPositions[index] || [50, 50];
+      const x = boundedPercent(rawX);
+      const y = boundedPercent(rawY);
+      return `<button class="world status-${safeToken(world.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-world="${safeText(world.id)}" aria-label="${safeText(world.label)}, ${safeText(world.status)}">
         <b>${safeText(world.label)}</b><small>${safeText(world.score)}/100 • ${safeText(world.evidence)}</small>
       </button>`;
     }).join('');
@@ -60,15 +80,21 @@
 
   function renderNodes() {
     $('#nodeLayer').innerHTML = state.data.nodes.map((node, index) => {
-      const [x, y] = nodePositions[index % nodePositions.length];
-      return `<button class="node status-${safeText(node.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-node="${safeText(node.id)}" title="${safeText(node.label)}" aria-label="${safeText(node.label)}, ${safeText(node.status)}">${safeText(node.shortcut)}</button>`;
+      const [rawX, rawY] = nodePositions[index % nodePositions.length] || [50, 50];
+      const x = boundedPercent(rawX);
+      const y = boundedPercent(rawY);
+      return `<button class="node status-${safeToken(node.status)}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)" data-node="${safeText(node.id)}" title="${safeText(node.label)}" aria-label="${safeText(node.label)}, ${safeText(node.status)}">${safeText(node.shortcut)}</button>`;
     }).join('');
   }
 
   function renderPresence() {
-    $('#presenceLayer').innerHTML = state.data.presence_clusters.map((cluster) => `
-      <button class="presence status-${safeText(cluster.status)}" style="left:${cluster.x}%;top:${cluster.y}%" data-presence="${safeText(cluster.id)}" data-label="${safeText(cluster.label)}" aria-label="${safeText(cluster.label)}; simulated; count zero"></button>
-    `).join('');
+    $('#presenceLayer').innerHTML = state.data.presence_clusters.map((cluster) => {
+      const x = boundedPercent(cluster.x);
+      const y = boundedPercent(cluster.y);
+      return `
+        <button class="presence status-${safeToken(cluster.status)}" style="left:${x}%;top:${y}%" data-presence="${safeText(cluster.id)}" data-label="${safeText(cluster.label)}" aria-label="${safeText(cluster.label)}; simulated; count zero"></button>
+      `;
+    }).join('');
   }
 
   function renderWidgets() {
@@ -81,14 +107,15 @@
   }
 
   function inspect(item, kind) {
+    if (!item || typeof item !== 'object') return;
     state.selected = { item, kind };
-    $('#detailTitle').textContent = item.label || item.id;
+    $('#detailTitle').textContent = item.label || item.id || 'Unknown record';
     $('#detailSummary').textContent = item.summary || item.description || item.help || 'Public-safe record.';
     const facts = [];
     const add = (label, value) => {
       if (value !== undefined && value !== null && value !== '') facts.push(`<dt>${safeText(label)}</dt><dd>${safeText(value)}</dd>`);
     };
-    add('Type', item.type || kind.toUpperCase());
+    add('Type', item.type || String(kind).toUpperCase());
     add('Status', item.status);
     add('Evidence', item.evidence);
     add('Score', item.score !== undefined ? `${item.score}/100` : null);
@@ -116,26 +143,29 @@
   }
 
   function showSuggestion() {
-    const suggestion = state.data.suggestions[Math.floor(Math.random() * state.data.suggestions.length)];
+    const suggestions = Array.isArray(state.data.suggestions) ? state.data.suggestions : [];
+    const suggestion = suggestions.length
+      ? suggestions[Math.floor(Math.random() * suggestions.length)]
+      : 'No public suggestion is available.';
     showModal('8x8 suggestion', `<p>${safeText(suggestion)}</p>`);
   }
 
   function filterNodes(query) {
-    const term = query.trim().toLowerCase();
+    const term = String(query ?? '').trim().toLowerCase();
     $$('.node').forEach((element) => {
       const record = state.data.nodes.find((node) => node.id === element.dataset.node);
-      const haystack = JSON.stringify(record).toLowerCase();
-      element.hidden = term && !haystack.includes(term);
+      const haystack = JSON.stringify(record ?? {}).toLowerCase();
+      element.hidden = Boolean(term && !haystack.includes(term));
     });
     $$('.world').forEach((element) => {
       const record = state.data.worlds.find((world) => world.id === element.dataset.world);
-      const haystack = JSON.stringify(record).toLowerCase();
-      element.hidden = term && !haystack.includes(term);
+      const haystack = JSON.stringify(record ?? {}).toLowerCase();
+      element.hidden = Boolean(term && !haystack.includes(term));
     });
   }
 
   function focusWorld(id) {
-    const element = $(`[data-world="${CSS.escape(id)}"]`);
+    const element = $(`[data-world="${CSS.escape(String(id))}"]`);
     if (!element) return;
     state.mapMode = false;
     $('#mapLayer').hidden = true;
@@ -198,6 +228,7 @@
     });
 
     const viewport = $('#boardViewport');
+    const stopDragging = () => { state.dragging = false; };
     viewport.addEventListener('pointerdown', (event) => {
       state.dragging = true;
       state.pointerX = event.clientX;
@@ -212,7 +243,9 @@
       state.pointerY = event.clientY;
       applyTransform();
     });
-    viewport.addEventListener('pointerup', () => { state.dragging = false; });
+    viewport.addEventListener('pointerup', stopDragging);
+    viewport.addEventListener('pointercancel', stopDragging);
+    viewport.addEventListener('lostpointercapture', stopDragging);
     viewport.addEventListener('wheel', (event) => {
       event.preventDefault();
       setZoom(state.zoom + (event.deltaY < 0 ? 0.08 : -0.08));
