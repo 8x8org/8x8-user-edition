@@ -1,0 +1,45 @@
+{
+  "schema_version": "8x8.public-release-unit.v1",
+  "release_unit_id": "public-global-art-board-v1",
+  "scope_basis_points": 100,
+  "scope_statement": "Static public Global Art Board only; no backend, private runtime, live users, wallets or billing.",
+  "truth_state": "TESTED_PENDING_DEPLOYMENT",
+  "score": {
+    "earned": 100,
+    "possible": 100,
+    "categories": {
+      "functional_contract": 20,
+      "public_private_boundary": 20,
+      "privacy": 15,
+      "accessibility": 15,
+      "security_headers": 10,
+      "responsive_design": 10,
+      "rollback": 5,
+      "documentation": 5
+    }
+  },
+  "gates": {
+    "functional_contract": true,
+    "public_private_boundary": true,
+    "privacy": true,
+    "accessibility": true,
+    "security_headers": true,
+    "responsive_design": true,
+    "rollback": true,
+    "documentation": true,
+    "exact_deployment_target": false,
+    "deployment_receipt": false
+  },
+  "deployment": {
+    "authorized_class": "PUBLIC_STATIC",
+    "target": "UNRESOLVED",
+    "url": null,
+    "commit": null,
+    "receipt_id": null
+  },
+  "rollback": {
+    "strategy": "Revert the exact Art Board release commit or restore the previous static deployment.",
+    "tested_in_ci": true
+  },
+  "whole_system_completion_inferred": false
+}
