@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import re
 import unittest
 from pathlib import Path
 
@@ -19,7 +18,7 @@ class ArtBoardReleaseTests(unittest.TestCase):
         cls.css = (ART / "styles.css").read_text(encoding="utf-8")
 
     def test_required_art_board_files_exist(self):
-        for path in ("index.html", "styles.css", "app.js", "state.json", "release-unit.json"):
+        for path in ("index.html", "styles.css", "app.js", "state.json", "release-unit.json", "README.md"):
             self.assertTrue((ART / path).is_file(), path)
 
     def test_slice_score_is_exact_and_does_not_claim_whole_system(self):
@@ -28,9 +27,25 @@ class ArtBoardReleaseTests(unittest.TestCase):
         self.assertEqual(self.state["score"]["whole_system_score"], "NOT_INFERRED")
         self.assertEqual(sum(self.release["score"]["categories"].values()), 100)
         self.assertFalse(self.release["whole_system_completion_inferred"])
-        self.assertEqual(self.release["truth_state"], "TESTED_PENDING_DEPLOYMENT")
-        self.assertFalse(self.release["gates"]["exact_deployment_target"])
-        self.assertFalse(self.release["gates"]["deployment_receipt"])
+        self.assertEqual(self.release["truth_state"], "PROTECTED_PREVIEW_DEPLOYED")
+        self.assertTrue(self.release["gates"]["exact_deployment_target"])
+        self.assertTrue(self.release["gates"]["deployment_receipt"])
+        self.assertFalse(self.release["gates"]["public_production_release"])
+
+    def test_preview_deployment_is_exact_and_nonproduction(self):
+        deployment = self.release["deployment"]
+        validation = self.release["validation"]
+        self.assertEqual(deployment["authorized_class"], "AUTHENTICATED_PREVIEW")
+        self.assertEqual(deployment["visibility"], "VERCEL_PROTECTED")
+        self.assertEqual(deployment["deployment_id"], "dpl_5MYCNY9eYNMauJp2c2KXcnLofD2z")
+        self.assertEqual(deployment["commit"], "dba1ec6ce6ccb729e4c1d71b9d604f21aa767beb")
+        self.assertEqual(deployment["ready_state"], "READY")
+        self.assertTrue(deployment["url"].startswith("https://"))
+        self.assertIn("github-actions:30945374071", deployment["receipt_id"])
+        self.assertEqual(validation["github_actions_conclusion"], "SUCCESS")
+        self.assertEqual(validation["vercel_build"], "READY")
+        self.assertFalse(validation["production_alias_changed"])
+        self.assertEqual(validation["direct_unauthenticated_fetch"], "BLOCKED_BY_VERCEL_PROTECTION")
 
     def test_eight_worlds_and_status_palette(self):
         self.assertEqual(len(self.state["worlds"]), 8)
