@@ -1,0 +1,16 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "bfd191c63411e248b5eaaf98158d6c2c756dced8ea0867fa8b4a2b78d5f5f7c4",
+    "SANDBOX_CONTRACT.md": "5e44e4710e14ce4a01726acbe2dce7ef444d0a870ade215bb8e45a3aec1e012f",
+    "generate_msg197_pdf_001_fixtures.py": "cb51e61826fc0851a54572258fbaad6473da632a68179a1e18030243e0833c8c"
+  },
+  "candidate_execution_scope": "EPHEMERAL_CI_ONLY",
+  "ci_canary_status": "PENDING",
+  "installed_candidate_count_on_8x8": 0,
+  "mission_id": "MSG197-PDF-001",
+  "private_documents_used": false,
+  "production_deployment": false,
+  "schema_version": "1.0.0",
+  "source_pin": "12e9a655e36924564057464bf25494b8c027eb57",
+  "truth_state": "CANARY_CONFIGURED_CI_EVIDENCE_PENDING"
+}
