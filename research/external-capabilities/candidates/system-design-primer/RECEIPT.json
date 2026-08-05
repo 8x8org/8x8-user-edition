@@ -19,6 +19,6 @@
   "next_gate": "OWNER_REVIEW_THEN_OPTIONAL_INDEX_CONSUMER_WIRING",
   "rollback": "Delete the candidate adapter directory and any future registry pointer; no state migration is required.",
   "schema_version": "1.0.0",
-  "source_pin_sha256": "51ea43ef1bce44e10418ff41782d63c39c14977bcdb25544d02c98205d68488c",
+  "source_pin_sha256": "e577a8571d72ecafe327b34b69767087c1494f4c2723b3f715919a4d33958081",
   "status": "PASS_STATIC_ADAPTER_SCOPE"
 }
