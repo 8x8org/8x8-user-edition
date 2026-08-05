@@ -11,7 +11,7 @@
   "scope_score": {
     "earned": 100,
     "possible": 100,
-    "basis": "VERIFIED_PROTECTED_INTEGRATION_PREVIEW",
+    "basis": "VERIFIED_CANONICAL_SOURCE_AND_PROTECTED_INTEGRATION_PREVIEW",
     "whole_system_score": "NOT_INFERRED"
   },
   "source_ledger": {
@@ -32,11 +32,11 @@
   },
   "source_branch_gates": {
     "current_main_base": true,
-    "exact_head_ci": false,
-    "codeql": false,
-    "canonical_ledger_validation": false,
-    "private_boundary_scan": false,
-    "accessibility_contract": false
+    "exact_head_ci": true,
+    "codeql": true,
+    "canonical_ledger_validation": true,
+    "private_boundary_scan": true,
+    "accessibility_contract": true
   },
   "authority": {
     "read_only": true,
@@ -53,5 +53,5 @@
     "integration_release_commit": "6b7e5bf8fb13587a2e26f4949ae774a41571cc5f",
     "method": "revert the scoped integration commit or remove the static route; production alias remains unchanged"
   },
-  "truth_state": "PUBLIC_PROJECTION_VERIFIED_SOURCE_BRANCH_AWAITING_EXACT_HEAD_CI"
+  "truth_state": "PUBLIC_PROJECTION_AND_CANONICAL_SOURCE_VERIFIED"
 }
