@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "session_id": "MSG197-COUNCIL-001",
+  "participant": {
+    "agent_id": "chatgpt-agent",
+    "display_name": "ChatGPT Agent",
+    "identity_status": "UNVERIFIED"
+  },
+  "lease": {
+    "lease_id": null,
+    "status": "NOT_ISSUED",
+    "expires_at": null
+  },
+  "input_digest": "ab40f0f1c010d862f38c34ec4efea5e18ff7c405d68231b82815342521a749e7",
+  "recommendations": [
+    {
+      "candidate": "donnemartin/system-design-primer",
+      "decision": "CURATED_KNOWLEDGE_SOURCE",
+      "confidence": 0.98
+    },
+    {
+      "candidate": "TencentCloud/TencentDB-Agent-Memory",
+      "decision": "SCHEMA_AND_ACL_PATTERNS_ONLY",
+      "confidence": 0.94
+    },
+    {
+      "candidate": "addyosmani/agent-skills",
+      "decision": "WORKFLOW_SCHEMA_REFERENCE_ONLY",
+      "confidence": 0.96
+    },
+    {
+      "candidate": "obra/superpowers",
+      "decision": "BOUNDED_PATTERNS_NO_ORCHESTRATOR",
+      "confidence": 0.96
+    },
+    {
+      "candidate": "uber/ADR",
+      "decision": "TELEMETRY_SCHEMA_AND_ATTACK_TAXONOMY_ONLY",
+      "confidence": 0.95
+    },
+    {
+      "candidate": "firecrawl/pdf-inspector",
+      "decision": "EPHEMERAL_SYNTHETIC_SANDBOX_CANARY",
+      "confidence": 0.92
+    },
+    {
+      "candidate": "roboflow/supervision",
+      "decision": "NARROW_EXTERNAL_NODE_SUBSET",
+      "confidence": 0.93
+    },
+    {
+      "candidate": "cloudflare/computer",
+      "decision": "WORKSPACE_BOUNDARY_IDEAS_NO_EXECUTION",
+      "confidence": 0.96
+    },
+    {
+      "candidate": "lyogavin/airllm",
+      "decision": "EXTERNAL_CUDA_ONLY",
+      "confidence": 0.99
+    },
+    {
+      "candidate": "huangruiteng/loopx",
+      "decision": "EXTRACT_PROTOCOL_PATTERNS_DEFER_RUNTIME",
+      "confidence": 0.97
+    },
+    {
+      "candidate": "esengine/DeepSeek-Reasonix",
+      "decision": "EXTRACT_EXTENSION_PROTOCOL_IDEAS_DEFER_RUNTIME",
+      "confidence": 0.96
+    },
+    {
+      "candidate": "tailwindlabs/tailwindcss",
+      "decision": "DEFER_UNTIL_APPROVED_PRODUCT_REQUIREMENT",
+      "confidence": 0.97
+    },
+    {
+      "candidate": "vercel/next.js",
+      "decision": "KEEP_STATIC_CLIENT_DEFER_FRAMEWORK",
+      "confidence": 0.98
+    }
+  ],
+  "security_veto": [
+    "blind runtime merge",
+    "production credential use",
+    "phone installation of GPU-heavy candidates",
+    "second control plane",
+    "automatic tool authority"
+  ],
+  "output_digest": null,
+  "receipt_status": "ADVISORY_ONLY",
+  "truth_note": "This advisory is not a council vote because no 8x8 identity verification or authority lease was issued in this connector session."
+}

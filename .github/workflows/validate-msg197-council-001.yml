@@ -1,0 +1,33 @@
+name: Validate MSG197 Research Council Framework
+
+on:
+  pull_request:
+    paths:
+      - "research/external-capabilities/council/**"
+      - "scripts/validate_msg197_council_001.py"
+      - ".github/workflows/validate-msg197-council-001.yml"
+  push:
+    branches:
+      - feature/msg197-council-001-receipt-framework-v1
+    paths:
+      - "research/external-capabilities/council/**"
+      - "scripts/validate_msg197_council_001.py"
+      - ".github/workflows/validate-msg197-council-001.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: python3 -m json.tool research/external-capabilities/council/COUNCIL_VOTE.schema.json >/dev/null
+      - run: python3 -m json.tool research/external-capabilities/council/CHATGPT_ADVISORY.json >/dev/null
+      - run: python3 -m json.tool research/external-capabilities/council/COUNCIL_SESSION.json >/dev/null
+      - run: python3 -m json.tool research/external-capabilities/council/receipts/MSG197_COUNCIL_001_RECEIPT.json >/dev/null
+      - run: python3 scripts/validate_msg197_council_001.py

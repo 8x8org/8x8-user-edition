@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://8x8.org/schemas/msg197-council-vote-v1.json",
+  "title": "MSG197 Council Vote V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "session_id",
+    "participant",
+    "lease",
+    "input_digest",
+    "recommendations",
+    "security_veto",
+    "output_digest",
+    "receipt_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agent_id",
+        "display_name",
+        "identity_status"
+      ],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identity_status": {
+          "enum": [
+            "VERIFIED",
+            "UNVERIFIED"
+          ]
+        }
+      }
+    },
+    "lease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lease_id",
+        "status",
+        "expires_at"
+      ],
+      "properties": {
+        "lease_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ACTIVE",
+            "EXPIRED",
+            "NOT_ISSUED"
+          ]
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "input_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "candidate",
+          "decision",
+          "confidence"
+        ],
+        "properties": {
+          "candidate": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "security_veto": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_digest": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "receipt_status": {
+      "enum": [
+        "VALID_VOTE",
+        "ADVISORY_ONLY",
+        "REJECTED_INVALID_IDENTITY",
+        "REJECTED_INVALID_LEASE"
+      ]
+    }
+  }
+}
