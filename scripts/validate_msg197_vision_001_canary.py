@@ -18,10 +18,18 @@ assert manifest["phone_installation_authorized"] is False
 assert manifest["production_deployment_authorized"] is False
 assert manifest["network_execution_policy"] == "NONE"
 assert manifest["python_matrix"] == ["3.11", "3.12"]
+assert manifest["truth_state"] == "PASS_FUNCTIONAL_AND_SUPPLY_CHAIN_CANARY_NOT_INSTALLED"
+assert manifest["toolchain"]["wheel"] == "0.46.2"
+
 assert receipt["installed_candidate_count_on_8x8"] == 0
 assert receipt["phone_changes"] == 0
 assert receipt["production_changes"] == 0
-assert receipt["truth_state"] == "CANARY_CONFIGURED_EXACT_HEAD_EVIDENCE_PENDING"
+assert receipt["model_downloads"] == 0
+assert receipt["private_media_used"] is False
+assert receipt["runtime_installation_authorized"] is False
+assert receipt["ci_status"] == "SUCCESS"
+assert receipt["truth_state"] == "PASS_FUNCTIONAL_AND_SUPPLY_CHAIN_CANARY_NOT_INSTALLED"
+assert receipt["workflow_run_id"] == 31046645930
 
 paths = {
     "CANARY_EXECUTION_MANIFEST.json": BASE / "CANARY_EXECUTION_MANIFEST.json",
@@ -37,4 +45,5 @@ for line in (BASE / "receipts/MSG197_VISION_001_CANARY_SHA256SUMS.txt").read_tex
 
 for forbidden in ("vendor", "models", ".venv", "venv", "node_modules", "wheelhouse", "canary-results"):
     assert not (BASE / forbidden).exists()
-print("MSG197-VISION-001 execution contract validated")
+
+print("MSG197-VISION-001 completed canary contract validated; installed=0")
