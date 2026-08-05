@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "ef36dc2efbc734bf582a79bad273f9d34c15fa4bc817296550378dac055dd403",
+    "PROTOCOL_COMPARISON.md": "8525b6d5c66bcedeb8c3d180417dd122b5e5f0d382c9cad744444188c907febe"
+  },
+  "decision": "ADOPT_SELECTED_EXTENSION_PROTOCOL_IDEAS_DEFER_RUNTIME",
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-REASONIX-001",
+  "provider_credentials_used": false,
+  "remote_shell_enabled": false,
+  "schema_version": "1.0.0",
+  "source_pin": "77cf9aa7080fb48fec4b6f5ee5d3509748e68c50",
+  "truth_state": "PASS_STATIC_PROTOCOL_COMPARISON"
+}
