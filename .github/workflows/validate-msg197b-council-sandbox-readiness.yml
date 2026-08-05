@@ -1,0 +1,133 @@
+name: Validate MSG197B Council and Sandbox Readiness
+
+on:
+  pull_request:
+    paths:
+      - "research/external-capabilities/**"
+      - "scripts/msg197_static_probe.py"
+      - "scripts/validate_msg197b_council_sandbox_readiness.py"
+      - ".github/workflows/validate-msg197b-council-sandbox-readiness.yml"
+  push:
+    branches:
+      - feature/msg197b-council-sandbox-readiness-v1
+    paths:
+      - "research/external-capabilities/**"
+      - "scripts/msg197_static_probe.py"
+      - "scripts/validate_msg197b_council_sandbox_readiness.py"
+      - ".github/workflows/validate-msg197b-council-sandbox-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONHASHSEED: "0"
+  GIT_TERMINAL_PROMPT: "0"
+  GIT_LFS_SKIP_SMUDGE: "1"
+
+jobs:
+  contracts:
+    name: Validate council and capability contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Parse governed JSON
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -m json.tool research/external-capabilities/REPOSITORY_CENSUS.json >/dev/null
+          python3 -m json.tool research/external-capabilities/CANDIDATE_CAPABILITY_CONTRACTS.json >/dev/null
+          python3 -m json.tool research/external-capabilities/COUNCIL_DECISION_LEDGER.json >/dev/null
+          python3 -m json.tool research/external-capabilities/UPSTREAM_STATIC_SCAN_POLICY.json >/dev/null
+
+      - name: Compile validators and probe
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -m py_compile scripts/msg197_static_probe.py
+          python3 -m py_compile scripts/validate_msg197b_council_sandbox_readiness.py
+
+      - name: Validate static contracts
+        run: python3 scripts/validate_msg197b_council_sandbox_readiness.py
+
+      - name: Enforce no-install and no-deploy boundary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if grep -RInE '(pip install|npm install|pnpm install|yarn install|docker run|kubectl|terraform apply|vercel deploy|gh pr merge|psql |submodule update|shell=True)' \
+            research/external-capabilities/CANDIDATE_CAPABILITY_CONTRACTS.json \
+            research/external-capabilities/COUNCIL_DECISION_LEDGER.json \
+            research/external-capabilities/UPSTREAM_STATIC_SCAN_POLICY.json \
+            scripts/msg197_static_probe.py \
+            scripts/validate_msg197b_council_sandbox_readiness.py; then
+            echo "Executable install, deployment, or authority-expansion pattern found"
+            exit 1
+          fi
+
+  static-probe:
+    name: Probe 13 immutable upstream commits without execution
+    needs: contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Record runner boundary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          echo "candidate_code_executed=false"
+          echo "dependencies_installed=false"
+          echo "candidate_tests_executed=false"
+          echo "candidate_worktree_checkout=false"
+          echo "submodules_enabled=false"
+          git --version
+          python3 --version
+          df -h .
+
+      - name: Run bounded static probes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf research/external-capabilities/scans/current
+          mkdir -p research/external-capabilities/scans/current
+          python3 scripts/msg197_static_probe.py \
+            --all \
+            --workers 3 \
+            --output-dir research/external-capabilities/scans/current
+
+      - name: Validate generated receipts
+        run: >-
+          python3 scripts/validate_msg197b_council_sandbox_readiness.py
+          --scan-dir research/external-capabilities/scans/current
+
+      - name: Print public-safe scan summary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -m json.tool research/external-capabilities/scans/current/STATIC_PROBE_SUMMARY.json
+          cat research/external-capabilities/scans/current/SHA256SUMS.txt
+
+      - name: Upload bounded scan receipts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: msg197b-static-probe-receipts
+          path: research/external-capabilities/scans/current/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
