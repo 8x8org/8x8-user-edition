@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAP = ROOT / "capabilities"
-LEDGER_PATH = ROOT / "research" / "external-capabilities" / "CANDIDATE_STATUS_LEDGER_V3.json"
+LEDGER_PATH = ROOT / "research" / "external-capabilities" / "CANDIDATE_STATUS_LEDGER_V4.json"
 
 
 class CapabilitiesObservatoryContract(unittest.TestCase):
@@ -23,12 +23,14 @@ class CapabilitiesObservatoryContract(unittest.TestCase):
         self.assertEqual([], [str(path) for path in required if not path.is_file()])
 
     def test_canonical_ledger_truth(self):
-        self.assertEqual("3.0.0", self.ledger["schema_version"])
+        self.assertEqual("4.0.0", self.ledger["schema_version"])
+        self.assertEqual("CANDIDATE_STATUS_LEDGER_V3.json", self.ledger["supersedes"])
         self.assertEqual(13, len(self.ledger["candidates"]))
         self.assertEqual(13, self.ledger["summary"]["candidate_packets_merged"])
         self.assertEqual(0, self.ledger["summary"]["third_party_candidates_installed_into_8x8"])
         self.assertEqual(1, self.ledger["summary"]["external_measured_benchmarks_complete"])
         self.assertEqual(2, self.ledger["summary"]["external_measured_benchmarks_required"])
+        self.assertEqual(1, self.ledger["summary"]["disabled_adapter_contracts_merged"])
         self.assertEqual(0, self.ledger["council"]["valid_votes"])
         self.assertEqual(4, self.ledger["council"]["quorum_required"])
         self.assertFalse(self.ledger["council"]["quorum_reached"])
@@ -42,6 +44,18 @@ class CapabilitiesObservatoryContract(unittest.TestCase):
         self.assertEqual(13, len(set(pins)))
         for pin in pins:
             self.assertRegex(pin, r"^[0-9a-f]{40}$")
+
+    def test_supervision_adapter_contract_is_disabled(self):
+        vision = next(item for item in self.ledger["candidates"] if item["id"] == "MSG197-VISION-001")
+        self.assertEqual("MERGED_MEASURED_EXTERNAL_CANARY_AND_DISABLED_ADAPTER_CONTRACT", vision["packet"])
+        self.assertEqual("NOT_INSTALLED_DISABLED_ADAPTER_CONTRACT_MERGED", vision["runtime"])
+        contract = vision["evidence"]["adapter_contract"]
+        self.assertEqual("a7d3be2dabce36b6cc994bbaab0d27ed5de5ae99", contract["merge_commit"])
+        self.assertEqual("d219fc83bac02a39ff7c75757106a26968015c22", contract["source_head"])
+        self.assertFalse(contract["enabled"])
+        self.assertEqual("NOT_INSTALLED", contract["install_state"])
+        self.assertEqual("NONE", contract["runtime_authority"])
+        self.assertFalse(contract["production_ready"])
 
     def test_verified_projection_receipt(self):
         score = self.release["scope_score"]
@@ -82,9 +96,12 @@ class CapabilitiesObservatoryContract(unittest.TestCase):
         self.assertIn("textContent", self.js)
         self.assertIn("credentials: 'same-origin'", self.js)
         self.assertIn("FAIL_CLOSED_LEDGER_UNAVAILABLE", self.js)
+        self.assertIn("CANDIDATE_STATUS_LEDGER_V4.json", self.js)
+        self.assertIn("ADAPTER_CONTRACT_MERGED", self.js)
+        self.assertIn('id="adapterCount"', self.html)
 
     def test_no_secret_or_private_material(self):
-        corpus = "\n".join([self.html, self.css, self.js, json.dumps(self.release)])
+        corpus = "\n".join([self.html, self.css, self.js, json.dumps(self.release), json.dumps(self.ledger)])
         for pattern in [
             r"/root/", r"/data/data/com\.termux", r"BEGIN (?:RSA|OPENSSH|EC) PRIVATE KEY",
             r"\bgh[opsu]_[A-Za-z0-9]{20,}\b", r"\bsk-[A-Za-z0-9]{20,}\b",
