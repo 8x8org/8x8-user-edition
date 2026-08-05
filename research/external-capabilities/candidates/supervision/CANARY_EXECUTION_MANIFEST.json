@@ -1,0 +1,36 @@
+{
+  "api_credentials_authorized": false,
+  "camera_authorized": false,
+  "container_rootfs": "READ_ONLY",
+  "container_user": "65534:65534",
+  "execution_scope": "DISPOSABLE_GITHUB_RUNNER_SYNTHETIC_ONLY",
+  "expected_backend": "pure NumPy fallback without OpenCV",
+  "microphone_authorized": false,
+  "mission_id": "MSG197-VISION-001",
+  "model_downloads_authorized": false,
+  "network_execution_policy": "NONE",
+  "network_preparation_policy": "DEPENDENCY_FETCH_AND_AUDIT_ONLY",
+  "parent_issue": 41,
+  "phone_installation_authorized": false,
+  "private_media_authorized": false,
+  "production_deployment_authorized": false,
+  "promotion_gate": "ZERO_UNRESOLVED_VULNERABILITIES_AND_COMPLETE_CLEANUP",
+  "python_matrix": [
+    "3.11",
+    "3.12"
+  ],
+  "resource_limits": {
+    "command_timeout_seconds": 30,
+    "cpus": 1,
+    "job_timeout_minutes": 30,
+    "memory_mib": 768,
+    "pids": 128
+  },
+  "schema_version": "1.0.0",
+  "source_license": "MIT",
+  "source_pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+  "source_repository": "roboflow/supervision",
+  "source_version": "0.31.0.dev0",
+  "truth_state": "CANARY_CONFIGURED_EXACT_HEAD_EVIDENCE_PENDING",
+  "work_issue": 51
+}

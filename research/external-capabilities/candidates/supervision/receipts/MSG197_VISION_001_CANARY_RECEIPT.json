@@ -1,0 +1,18 @@
+{
+  "artifacts": {
+    "CANARY_EXECUTION_CONTRACT.md": "f6a3cac2506ad39b4e2b4bf1c90325b771f4eb5827c873a4c296c2d71d214c38",
+    "CANARY_EXECUTION_MANIFEST.json": "3c5a206cc7a4a55d53496c53a4056a7de3a440b7ab017d8e51c40beb17c01af1",
+    "run_msg197_vision_001.py": "b96b8040d40f2e85c5ee1e960ae25aab12999d18f431c484adf836e6d6641d8f"
+  },
+  "ci_status": "PENDING",
+  "execution_scope": "DISPOSABLE_GITHUB_RUNNER_SYNTHETIC_ONLY",
+  "installed_candidate_count_on_8x8": 0,
+  "mission_id": "MSG197-VISION-001",
+  "model_downloads": 0,
+  "phone_changes": 0,
+  "private_media_used": false,
+  "production_changes": 0,
+  "schema_version": "1.0.0",
+  "source_pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+  "truth_state": "CANARY_CONFIGURED_EXACT_HEAD_EVIDENCE_PENDING"
+}
