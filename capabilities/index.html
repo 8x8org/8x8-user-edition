@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Public-safe evidence view of the 8x8 external capability intake program.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <title>8x8 External Capabilities Observatory</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">8x8 OS · Public Present · MSG197</p>
+      <h1>External Capabilities Observatory</h1>
+      <p class="lede">A public-safe, evidence-bound view of thirteen external capability candidates. Research packets are not runtime installations.</p>
+    </div>
+    <div class="truth-badge" aria-label="Truth state">
+      <span class="pulse" aria-hidden="true"></span>
+      <span id="truthState">Loading canonical ledger…</span>
+    </div>
+  </header>
+  <main id="main">
+    <section class="summary-grid" aria-label="Program summary">
+      <article><span id="packetCount" class="metric">—</span><span>candidate packets merged</span></article>
+      <article><span id="benchmarkCount" class="metric">—</span><span>measured external benchmarks</span></article>
+      <article><span id="installedCount" class="metric">—</span><span>third-party candidates installed</span></article>
+      <article><span id="councilCount" class="metric">—</span><span>valid council votes</span></article>
+    </section>
+    <section class="boundary" aria-labelledby="boundary-title">
+      <div><p class="eyebrow">Authority boundary</p><h2 id="boundary-title">Research and adapter design only</h2></div>
+      <p>No phone install, production runtime mutation, credential use, private-data ingestion, service restart, wallet action, model download, or public executor is represented here.</p>
+    </section>
+    <section aria-labelledby="candidate-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Candidate registry</p><h2 id="candidate-title">Thirteen immutable decisions</h2></div>
+        <label class="filter-label" for="filter">Filter candidates
+          <select id="filter">
+            <option value="ALL">All</option>
+            <option value="READY_FOR_ADAPTER_DESIGN">Adapter-design eligible</option>
+            <option value="BLOCKED">Blocked</option>
+            <option value="PATTERNS_ONLY">Patterns only</option>
+            <option value="DEFERRED">Deferred</option>
+          </select>
+        </label>
+      </div>
+      <div id="candidateGrid" class="candidate-grid" aria-live="polite"></div>
+    </section>
+    <section class="remaining" aria-labelledby="remaining-title">
+      <p class="eyebrow">Open gates</p><h2 id="remaining-title">What still prevents mission closure</h2>
+      <div id="remainingGrid" class="remaining-grid"></div>
+    </section>
+    <section class="evidence" aria-labelledby="evidence-title">
+      <p class="eyebrow">Evidence chain</p><h2 id="evidence-title">Canonical source</h2>
+      <dl>
+        <div><dt>Ledger</dt><dd><code>research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json</code></dd></div>
+        <div><dt>Mission</dt><dd><code>MSG197_EXTERNAL_CAPABILITY_INTAKE_V1</code></dd></div>
+        <div><dt>Coordinator</dt><dd>Hermes preferred; owner remains final authority</dd></div>
+        <div><dt>Public behavior</dt><dd>Read-only rendering with no external scripts or write paths</dd></div>
+      </dl>
+    </section>
+  </main>
+  <footer><p>8x8 OS · Evidence first · Whole-system completion is never inferred from a single release unit.</p></footer>
+</body>
+</html>
