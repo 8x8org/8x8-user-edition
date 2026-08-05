@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const LEDGER_URL = '../research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json';
+  const LEDGER_URL = '../research/external-capabilities/CANDIDATE_STATUS_LEDGER_V4.json';
   const state = { ledger: null, filter: 'ALL' };
   const byId = (id) => document.getElementById(id);
 
@@ -15,11 +15,18 @@
     const decision = String(candidate.decision || '');
     const packet = String(candidate.packet || '');
     const runtime = String(candidate.runtime || '');
+    if (packet.includes('DISABLED_ADAPTER_CONTRACT') && runtime.includes('NOT_INSTALLED')) return { key: 'ADAPTER_CONTRACT_MERGED', label: 'Disabled adapter contract', className: 'ready' };
     if (decision.includes('NARROW_SUBSET_ELIGIBLE') && packet.includes('CANARY_PASS')) return { key: 'READY_FOR_ADAPTER_DESIGN', label: 'Adapter design eligible', className: 'ready' };
     if (decision.includes('REJECT') || packet.includes('BLOCKED') || runtime.includes('BLOCKED')) return { key: 'BLOCKED', label: 'Blocked', className: 'blocked' };
     if (decision.includes('DEFER')) return { key: 'DEFERRED', label: 'Deferred', className: 'deferred' };
     if (decision.includes('PATTERN') || decision.includes('SCHEMA') || decision.includes('IDEAS') || decision.includes('KNOWLEDGE') || decision.includes('TAXONOMY')) return { key: 'PATTERNS_ONLY', label: 'Patterns only', className: 'patterns' };
     return { key: 'PATTERNS_ONLY', label: 'Reviewed', className: 'unknown' };
+  }
+
+  function displayEvidence(value) {
+    if (Array.isArray(value)) return value.join(', ');
+    if (value && typeof value === 'object') return JSON.stringify(value);
+    return String(value);
   }
 
   function candidateCard(candidate) {
@@ -35,7 +42,7 @@
     if (candidate.evidence && typeof candidate.evidence === 'object') {
       const evidence = document.createElement('div');
       evidence.className = 'evidence-list';
-      for (const [key, value] of Object.entries(candidate.evidence)) evidence.append(textNode('span', `${key}: ${Array.isArray(value) ? value.join(', ') : value}`));
+      for (const [key, value] of Object.entries(candidate.evidence)) evidence.append(textNode('span', `${key}: ${displayEvidence(value)}`));
       article.append(evidence);
     }
     return article;
@@ -67,16 +74,23 @@
     const summary = state.ledger.summary;
     byId('packetCount').textContent = `${summary.candidate_packets_merged}/${summary.candidate_count}`;
     byId('benchmarkCount').textContent = `${summary.external_measured_benchmarks_complete}/${summary.external_measured_benchmarks_required}`;
+    byId('adapterCount').textContent = String(summary.disabled_adapter_contracts_merged);
     byId('installedCount').textContent = String(summary.third_party_candidates_installed_into_8x8);
     byId('councilCount').textContent = `${summary.real_council_votes}/${state.ledger.council.quorum_required}`;
     byId('truthState').textContent = state.ledger.truth_state;
   }
 
   function validateLedger(ledger) {
-    if (!ledger || ledger.schema_version !== '3.0.0') throw new Error('Unsupported or missing ledger schema.');
+    if (!ledger || ledger.schema_version !== '4.0.0') throw new Error('Unsupported or missing ledger schema.');
     if (!Array.isArray(ledger.candidates) || ledger.candidates.length !== 13) throw new Error('Expected exactly thirteen candidates.');
+    if (ledger.summary.disabled_adapter_contracts_merged !== 1) throw new Error('Expected exactly one merged disabled adapter contract.');
     if (ledger.summary.third_party_candidates_installed_into_8x8 !== 0) throw new Error('Public observatory refuses a ledger claiming runtime installation without a new release contract.');
     if (ledger.absolute_boundaries.production_deployment_performed !== false) throw new Error('Unexpected production deployment boundary.');
+    const vision = ledger.candidates.find((candidate) => candidate.id === 'MSG197-VISION-001');
+    const contract = vision && vision.evidence && vision.evidence.adapter_contract;
+    if (!contract || contract.enabled !== false || contract.install_state !== 'NOT_INSTALLED' || contract.runtime_authority !== 'NONE' || contract.production_ready !== false) {
+      throw new Error('Supervision adapter contract must remain disabled and uninstalled.');
+    }
   }
 
   async function load() {

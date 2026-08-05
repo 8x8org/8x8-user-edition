@@ -5,16 +5,23 @@ on:
     paths:
       - "capabilities/**"
       - "tests/test_capabilities_observatory.py"
-      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json"
+      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V4.json"
+      - "research/external-capabilities/MSG197_CURRENT_STATUS_V4.md"
+      - "scripts/validate_msg197_candidate_ledger_v4.py"
+      - "adapters/supervision/manifest.json"
       - ".github/workflows/validate-msg197-capabilities-observatory.yml"
   push:
     branches:
       - main
       - feature/msg197-capabilities-observatory-v2
+      - feature/msg197-ledger-v4-supervision-adapter
     paths:
       - "capabilities/**"
       - "tests/test_capabilities_observatory.py"
-      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json"
+      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V4.json"
+      - "research/external-capabilities/MSG197_CURRENT_STATUS_V4.md"
+      - "scripts/validate_msg197_candidate_ledger_v4.py"
+      - "adapters/supervision/manifest.json"
       - ".github/workflows/validate-msg197-capabilities-observatory.yml"
 
 permissions:
@@ -41,10 +48,11 @@ jobs:
       - name: Parse governed JSON
         run: |
           python3 -m json.tool capabilities/release-unit.json >/dev/null
-          python3 -m json.tool research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json >/dev/null
+          python3 -m json.tool research/external-capabilities/CANDIDATE_STATUS_LEDGER_V4.json >/dev/null
+          python3 -m json.tool adapters/supervision/manifest.json >/dev/null
 
       - name: Validate canonical MSG197 ledger
-        run: python3 scripts/validate_msg197_candidate_ledger_v3.py
+        run: python3 scripts/validate_msg197_candidate_ledger_v4.py
 
       - name: Run observatory contracts
         run: python3 -m unittest tests.test_capabilities_observatory -v
@@ -61,4 +69,7 @@ jobs:
             capabilities/release-unit.json \
             capabilities/README.md \
             tests/test_capabilities_observatory.py \
-            research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json
+            scripts/validate_msg197_candidate_ledger_v4.py \
+            adapters/supervision/manifest.json \
+            research/external-capabilities/CANDIDATE_STATUS_LEDGER_V4.json \
+            research/external-capabilities/MSG197_CURRENT_STATUS_V4.md
