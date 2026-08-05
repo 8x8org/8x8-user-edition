@@ -11,14 +11,31 @@ receipt = json.loads((BASE / "receipts/MSG197_PDF_001_RECEIPT.json").read_text()
 
 assert manifest["mission_id"] == "MSG197-PDF-001"
 assert manifest["source"]["commit"] == "12e9a655e36924564057464bf25494b8c027eb57"
-assert manifest["decision"] == "APPROVE_EPHEMERAL_SYNTHETIC_CI_CANARY_ONLY"
+assert manifest["decision"] == "RETAIN_EPHEMERAL_SYNTHETIC_CANARY_REJECT_PROMOTION"
+assert manifest["truth_state"] == "PASS_PARSER_CANARY_SUPPLY_CHAIN_BLOCKED"
 assert manifest["installation_performed_on_8x8"] is False
+assert manifest["promotion_authorized"] is False
 assert manifest["resource_limits"]["container_memory_mib"] <= 512
 assert manifest["resource_limits"]["container_cpus"] == 1
 assert manifest["resource_limits"]["input_max_bytes"] == 1048576
+
+evidence = manifest["sandbox_evidence"]
+assert evidence["parser_canary"] == "PASS"
+assert evidence["supply_chain_gate"] == "BLOCKED"
+assert evidence["cargo_audit_exit_code"] == 1
+assert {item["advisory_id"] for item in evidence["vulnerabilities"]} == {
+    "RUSTSEC-2026-0176", "RUSTSEC-2026-0177"
+}
+assert {item["advisory_id"] for item in evidence["unmaintained_warnings"]} == {
+    "RUSTSEC-2026-0192"
+}
+
 assert receipt["installed_candidate_count_on_8x8"] == 0
 assert receipt["private_documents_used"] is False
 assert receipt["production_deployment"] is False
+assert receipt["promotion_authorized"] is False
+assert receipt["truth_state"] == "PASS_PARSER_CANARY_SUPPLY_CHAIN_BLOCKED"
+assert receipt["ci_canary_status"] == "PARSER_PASS_PROMOTION_BLOCKED"
 
 paths = {
     "CANDIDATE_MANIFEST.json": BASE / "CANDIDATE_MANIFEST.json",
@@ -32,6 +49,6 @@ for line in (BASE / "receipts/MSG197_PDF_001_SHA256SUMS.txt").read_text().splitl
     assert actual == digest, (name, actual, digest)
     assert receipt["artifacts"][name] == digest
 
-for forbidden in ("vendor", "node_modules", ".venv", "target"):
+for forbidden in ("vendor", "node_modules", ".venv", "target", "fixtures", "canary-results"):
     assert not (BASE / forbidden).exists()
-print("MSG197-PDF-001 sandbox contract validated")
+print("MSG197-PDF-001 blocked-evidence packet validated")

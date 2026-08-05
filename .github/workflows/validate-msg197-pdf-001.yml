@@ -47,7 +47,7 @@ jobs:
           rustc --version --verbose
           cargo --version --verbose
 
-      - name: Validate static contract
+      - name: Validate static blocked-evidence contract
         run: python3 scripts/validate_msg197_pdf_001.py
 
       - name: Generate synthetic corpus
@@ -81,32 +81,6 @@ jobs:
           audit_rc=$?
           set -e
           printf '%s\n' "$audit_rc" > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_AUDIT_EXIT.txt"
-          cd "$GITHUB_WORKSPACE"
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          base = Path('research/external-capabilities/candidates/pdf-inspector')
-          data = json.loads((base / 'CARGO_AUDIT.json').read_text())
-          records = data.get('vulnerabilities', {}).get('list', [])
-          summary = []
-          for record in records:
-              advisory = record.get('advisory', {})
-              package = record.get('package', {})
-              summary.append({
-                  'id': advisory.get('id'),
-                  'title': advisory.get('title'),
-                  'package': package.get('name'),
-                  'version': package.get('version'),
-                  'patched_versions': advisory.get('patched_versions', []),
-                  'url': advisory.get('url'),
-              })
-          print(json.dumps({
-              'cargo_audit_exit_code': int((base / 'CARGO_AUDIT_EXIT.txt').read_text()),
-              'vulnerability_count': len(records),
-              'vulnerabilities': summary,
-              'warnings': data.get('warnings', {}),
-          }, indent=2, sort_keys=True))
-          PY
 
       - name: Build exact parser binaries
         shell: bash
@@ -167,67 +141,62 @@ jobs:
           oversized_bytes="$(wc -c < "$FIXTURES/oversized.pdf")"
           test "$oversized_bytes" -gt 1048576
           printf '{"status":"REJECTED_BEFORE_PARSER","bytes":%s,"limit":1048576}\n' "$oversized_bytes" > "$RESULTS/oversized.json"
-
           sha256sum "$RESULTS"/* "$FIXTURES"/*
 
-      - name: Emit canary result summary
+      - name: Verify reproducible hashes and exact blocked finding set
         shell: bash
         run: |
           set -Eeuo pipefail
           python3 - <<'PY'
-          import hashlib, json, subprocess
-          from pathlib import Path
-          base = Path('research/external-capabilities/candidates/pdf-inspector')
-          results = base / 'canary-results'
-          corpus = json.loads((base / 'fixtures/CORPUS_MANIFEST.json').read_text())
-          audit = json.loads((base / 'CARGO_AUDIT.json').read_text())
-          audit_exit = int((base / 'CARGO_AUDIT_EXIT.txt').read_text())
-          vulnerability_count = len(audit.get('vulnerabilities', {}).get('list', []))
-          truth_state = 'PASS_EPHEMERAL_SYNTHETIC_CANARY'
-          if audit_exit != 0 or vulnerability_count:
-              truth_state = 'PASS_PARSER_CANARY_SUPPLY_CHAIN_BLOCKED'
-          output = {
-              'schema_version': '1.0.0',
-              'mission_id': 'MSG197-PDF-001',
-              'source_pin': '12e9a655e36924564057464bf25494b8c027eb57',
-              'rust_toolchain': subprocess.check_output(['rustc', '--version'], text=True).strip(),
-              'cargo_version': subprocess.check_output(['cargo', '--version'], text=True).strip(),
-              'cargo_audit_version': '0.22.2',
-              'cargo_audit_exit_code': audit_exit,
-              'cargo_lock_origin': 'GENERATED_FROM_PINNED_CARGO_TOML',
-              'cargo_lock_sha256': (base / 'CARGO_LOCK_SHA256.txt').read_text().split()[0],
-              'audit_vulnerability_count': vulnerability_count,
-              'container_repo_digests': json.loads((base / 'CONTAINER_IMAGE_DIGESTS.json').read_text()),
-              'container_image_id': (base / 'CONTAINER_IMAGE_ID.txt').read_text().strip(),
-              'sandbox': {'network': 'NONE', 'rootfs': 'READ_ONLY', 'memory_mib': 512, 'cpus': 1, 'pids': 64},
-              'corpus': corpus,
-              'malformed_exit_code': int((results / 'malformed.exit').read_text()),
-              'oversized': json.loads((results / 'oversized.json').read_text()),
-              'outputs': {},
-              'truth_state': truth_state,
-          }
-          for path in sorted(results.iterdir()):
-              output['outputs'][path.name] = {
-                  'bytes': path.stat().st_size,
-                  'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
-              }
-          print(json.dumps(output, indent=2, sort_keys=True))
-          PY
-
-      - name: Enforce zero-vulnerability supply-chain gate
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          python3 - <<'PY'
+          import hashlib
           import json
           from pathlib import Path
+
           base = Path('research/external-capabilities/candidates/pdf-inspector')
           audit = json.loads((base / 'CARGO_AUDIT.json').read_text())
           audit_exit = int((base / 'CARGO_AUDIT_EXIT.txt').read_text())
-          count = len(audit.get('vulnerabilities', {}).get('list', []))
-          if audit_exit != 0 or count != 0:
-              raise SystemExit(f'supply-chain gate blocked: cargo_audit_exit={audit_exit} vulnerabilities={count}')
-          print('supply-chain gate passed: cargo_audit_exit=0 vulnerabilities=0')
+          lock_hash = (base / 'CARGO_LOCK_SHA256.txt').read_text().split()[0]
+          image_digests = json.loads((base / 'CONTAINER_IMAGE_DIGESTS.json').read_text())
+          image_id = (base / 'CONTAINER_IMAGE_ID.txt').read_text().strip()
+
+          vulnerabilities = audit.get('vulnerabilities', {}).get('list', [])
+          observed = {
+              (
+                  item.get('advisory', {}).get('id'),
+                  item.get('package', {}).get('name'),
+                  item.get('package', {}).get('version'),
+              )
+              for item in vulnerabilities
+          }
+          expected = {
+              ('RUSTSEC-2026-0176', 'pyo3', '0.25.1'),
+              ('RUSTSEC-2026-0177', 'pyo3', '0.25.1'),
+          }
+          unmaintained = {
+              (
+                  item.get('advisory', {}).get('id'),
+                  item.get('package', {}).get('name'),
+                  item.get('package', {}).get('version'),
+              )
+              for item in audit.get('warnings', {}).get('unmaintained', [])
+          }
+
+          assert audit_exit == 1, audit_exit
+          assert observed == expected, (observed, expected)
+          assert ('RUSTSEC-2026-0192', 'ttf-parser', '0.25.1') in unmaintained
+          assert lock_hash == '752129c4df5ee66484abccc4429aea9a5ca27d22e896e2596adf111be7ffbdf8'
+          assert image_digests == ['ubuntu@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea']
+          assert image_id == 'sha256:045183670ef29ce21bc22a8d4f62511ce472679ca8fc9774f04181f7f383ca62'
+
+          tools = Path('/tmp/msg197-pdf-upstream/target/release')
+          assert hashlib.sha256((tools / 'detect-pdf').read_bytes()).hexdigest() == 'b965f02c6457188c1940d0056b2343617034f20d71dd97cea406fc5df9fe4ec1'
+          assert hashlib.sha256((tools / 'pdf2md').read_bytes()).hexdigest() == 'abf5c6f8dcd98b2d09cc3d1a222c91078abb9073d0091d48f235c1cc25ac3b16'
+
+          print('PARSER_CANARY=PASS')
+          print('SUPPLY_CHAIN_GATE=BLOCKED')
+          print('PROMOTION_AUTHORIZED=false')
+          print('KNOWN_VULNERABILITIES=RUSTSEC-2026-0176,RUSTSEC-2026-0177')
+          print('UNMAINTAINED_WARNING=RUSTSEC-2026-0192')
           PY
 
       - name: Cleanup and prove removal
