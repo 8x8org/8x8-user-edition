@@ -1,0 +1,34 @@
+{
+  "request": {
+    "request_id": "msg197-vision-002-fixture",
+    "operation": "DETECTION_FILTER",
+    "media_class": "SYNTHETIC",
+    "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "detections": [
+      {"xyxy": [10, 10, 50, 50], "confidence": 0.95, "class_id": 1},
+      {"xyxy": [12, 12, 48, 48], "confidence": 0.40, "class_id": 1}
+    ],
+    "parameters": {"confidence_threshold": 0.5}
+  },
+  "response": {
+    "request_id": "msg197-vision-002-fixture",
+    "status": "PASS",
+    "operation": "DETECTION_FILTER",
+    "result": {
+      "input_count": 2,
+      "output_count": 1,
+      "selected_indices": [0]
+    },
+    "evidence": {
+      "adapter_id": "8x8.supervision.adapter.v1",
+      "upstream_commit": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+      "input_sha256": "fd5ed5b54447158a1484d1b98e31f36e479a6f98dff97060cf93e19a87b15d32",
+      "output_sha256": "790169b2f0baeb7e8b88a7acf07e6c206b9332db7e0e43f681f70a19f76a8f3d",
+      "network_used": false,
+      "private_data_used": false,
+      "model_used": false,
+      "cleanup_complete": true
+    },
+    "errors": []
+  }
+}
