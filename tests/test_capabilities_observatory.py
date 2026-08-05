@@ -56,12 +56,11 @@ class CapabilitiesObservatoryContract(unittest.TestCase):
         self.assertTrue(projection["truth_markers_verified"])
         self.assertFalse(projection["production_alias_changed"])
 
-    def test_source_branch_is_honestly_pending(self):
+    def test_source_branch_is_verified(self):
         gates = self.release["source_branch_gates"]
-        self.assertTrue(gates["current_main_base"])
-        self.assertFalse(gates["exact_head_ci"])
-        self.assertFalse(gates["codeql"])
-        self.assertEqual("PUBLIC_PROJECTION_VERIFIED_SOURCE_BRANCH_AWAITING_EXACT_HEAD_CI", self.release["truth_state"])
+        self.assertTrue(all(gates.values()))
+        self.assertEqual("PUBLIC_PROJECTION_AND_CANONICAL_SOURCE_VERIFIED", self.release["truth_state"])
+        self.assertEqual("VERIFIED_CANONICAL_SOURCE_AND_PROTECTED_INTEGRATION_PREVIEW", self.release["scope_score"]["basis"])
 
     def test_authority_boundary(self):
         authority = self.release["authority"]
