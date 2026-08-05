@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,27 +38,36 @@ FORBIDDEN_PATH_PREFIXES = (
 )
 
 
+def tracked_paths() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    )
+    names = [name for name in result.stdout.decode("utf-8").split("\0") if name]
+    return [ROOT / name for name in names]
+
+
 def iter_public_text_files() -> list[Path]:
     files: list[Path] = []
-    for path in ROOT.rglob("*"):
+    for path in tracked_paths():
         if not path.is_file() or path in EXCLUDED:
             continue
-        rel = path.relative_to(ROOT).as_posix()
-        if rel.startswith(".git/"):
-            continue
-        if path.suffix.lower() in TEXT_SUFFIXES or path.name in {"LICENSE"}:
+        if path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE":
             files.append(path)
     return sorted(files)
 
 
 def main() -> int:
     violations: list[str] = []
+    files = iter_public_text_files()
 
     for prefix in FORBIDDEN_PATH_PREFIXES:
-        if (ROOT / prefix).exists():
+        if any(path.relative_to(ROOT).as_posix().startswith(prefix) for path in tracked_paths()):
             violations.append(f"forbidden public path exists: {prefix}")
 
-    for path in iter_public_text_files():
+    for path in files:
         rel = path.relative_to(ROOT).as_posix()
         try:
             text = path.read_text(encoding="utf-8")
@@ -74,7 +84,7 @@ def main() -> int:
             print(f"- {item}")
         return 1
 
-    print(f"PUBLIC_INFORMATION_BOUNDARY=PASS files={len(iter_public_text_files())}")
+    print(f"PUBLIC_INFORMATION_BOUNDARY=PASS files={len(files)}")
     return 0
 
 
