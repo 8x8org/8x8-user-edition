@@ -1,0 +1,43 @@
+{
+  "benchmark_id": "MSG197-VISION-001-CANARY",
+  "status": "NOT_EXECUTED_EXTERNAL_NODE_REQUIRED",
+  "source_pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+  "environment": {
+    "os": "isolated Linux",
+    "python": [
+      "3.11",
+      "3.12"
+    ],
+    "network": "dependency preparation only",
+    "data": "synthetic arrays and generated images only"
+  },
+  "steps": [
+    "sparse exact-pin source checkout",
+    "create isolated virtual environment",
+    "download and hash base dependency wheels",
+    "generate SBOM and vulnerability report",
+    "install without optional model integrations",
+    "import supervision",
+    "run synthetic detection and annotation utility checks",
+    "record resource metrics",
+    "remove environment caches and source checkout",
+    "compare pre and post filesystem census"
+  ],
+  "metrics": [
+    "wheel_bytes",
+    "install_seconds",
+    "import_ms",
+    "peak_ram_bytes",
+    "disk_growth_bytes",
+    "synthetic_operation_ms",
+    "cleanup_residual_bytes"
+  ],
+  "stop_conditions": [
+    "model download attempted",
+    "credential requested",
+    "private media access",
+    "wheel or license unresolved",
+    "resource ceiling exceeded",
+    "cleanup residual unclassified"
+  ]
+}
