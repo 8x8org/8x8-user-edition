@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "mission_id": "MSG197-VISION-002",
+  "issue": 82,
+  "truth_state": "DESIGN_PASS_DISABLED_BY_DEFAULT_RUNTIME_NOT_INSTALLED",
+  "upstream": {
+    "repository": "roboflow/supervision",
+    "commit": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+    "measured_canary_merge": "16b51f18603156b1d485c75b7c5ab9dd77067ff8"
+  },
+  "artifacts": [
+    "adapters/supervision/manifest.json",
+    "adapters/supervision/request.schema.json",
+    "adapters/supervision/response.schema.json",
+    "adapters/supervision/synthetic-fixture.json",
+    "adapters/supervision/README.md",
+    "tests/test_msg197_supervision_adapter.py",
+    ".github/workflows/validate-msg197-supervision-adapter.yml"
+  ],
+  "runtime_changes": [],
+  "package_installations": [],
+  "service_changes": [],
+  "database_changes": [],
+  "deployment_changes": [],
+  "private_data_used": false,
+  "credentials_used": false,
+  "model_used": false,
+  "camera_used": false,
+  "network_execution_used": false,
+  "owner_gate_remaining": "SEPARATE_RUNTIME_IMPLEMENTATION_AND_ACTIVATION_APPROVAL"
+}
