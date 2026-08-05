@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.0.1",
   "mission_id": "MSG197_EXTERNAL_CAPABILITY_INTAKE_V1",
   "truth_state": "PLANNED_CANDIDATE_WORK_NO_INSTALLATION",
   "global_rules": {
@@ -47,16 +47,16 @@
       "state": "READY_FOR_DESIGN",
       "deliverable": "Reviewed workflow-pattern catalog",
       "environment": "documentation-only",
-      "advance_gate": ["no autonomous authority", "source attribution", "conflict review"]
+      "advance_gate": ["no automatic hooks", "no autonomous authority", "source attribution", "conflict review"]
     },
     {
-      "id": "MSG197-ADR-001",
+      "id": "MSG197-SECURITY-ADR-001",
       "candidate": "uber/ADR",
       "priority": 5,
-      "state": "CANARY_DESIGN_REQUIRED",
-      "deliverable": "Disposable ADR create, export and uninstall canary",
-      "environment": "isolated Codespace branch",
-      "advance_gate": ["no default-branch write", "Markdown portability", "uninstall proof", "rollback proof"]
+      "state": "STATIC_SCHEMA_MAPPING_REQUIRED",
+      "deliverable": "Agent-security sensor schema, synthetic attack taxonomy and Guardian compatibility report",
+      "environment": "documentation review followed by synthetic-only isolated sandbox",
+      "advance_gate": ["no private session telemetry", "no production agent instrumentation", "redaction policy", "synthetic benchmark only", "provider keys absent from first pass", "deletion and cleanup proof"]
     },
     {
       "id": "MSG197-PDF-001",
@@ -64,8 +64,8 @@
       "priority": 6,
       "state": "CANARY_DESIGN_REQUIRED",
       "deliverable": "Untrusted PDF extraction plugin proof",
-      "environment": "isolated container",
-      "advance_gate": ["hostile corpus", "size and time limits", "read-only filesystem", "deterministic schema", "cleanup census"]
+      "environment": "browser WASM or isolated container",
+      "advance_gate": ["hostile corpus", "size and time limits", "page-count cap", "read-only filesystem", "deterministic schema", "cleanup census"]
     },
     {
       "id": "MSG197-VISION-001",
@@ -81,9 +81,9 @@
       "candidate": "cloudflare/computer",
       "priority": 8,
       "state": "OWNER_GATE_REQUIRED",
-      "deliverable": "Fake-site-only computer-use safety proof",
+      "deliverable": "Synthetic-workspace execution safety proof",
       "environment": "ephemeral cloud sandbox",
-      "advance_gate": ["domain allowlist", "zero credentials", "no purchases or messages", "screen recording receipt", "kill switch"]
+      "advance_gate": ["deny-by-default egress", "zero credentials", "no host mounts", "no purchases or messages", "execution receipt", "kill switch"]
     },
     {
       "id": "MSG197-AIRLLM-001",
@@ -92,7 +92,7 @@
       "state": "RESOURCE_FEASIBILITY_REQUIRED",
       "deliverable": "Hardware and dependency feasibility report",
       "environment": "external CUDA Linux node",
-      "advance_gate": ["no phone install", "model license", "storage budget", "GPU compatibility", "cache uninstall"]
+      "advance_gate": ["no phone install", "model license", "remote-code policy", "storage budget", "GPU compatibility", "cache uninstall"]
     },
     {
       "id": "MSG197-LOOPX-001",
