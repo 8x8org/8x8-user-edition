@@ -60,9 +60,9 @@ detections = sv.Detections(xyxy=xyxy, confidence=confidence, class_id=class_id)
 
 op_started = time.perf_counter()
 iou = sv.box_iou_batch(xyxy, xyxy)
+nms_predictions = np.column_stack((xyxy, confidence, class_id)).astype(np.float32)
 nms = sv.box_non_max_suppression(
-    predictions=xyxy,
-    scores=confidence,
+    predictions=nms_predictions,
     iou_threshold=0.5,
 )
 xywh = sv.xyxy_to_xywh(xyxy)
