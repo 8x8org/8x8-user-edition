@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "dda311afd47cc70beef1349c0cd5987e558516172e2a1032c1288979f0793b12",
+    "CAPABILITY_MAPPING.md": "422dca80dbe373020cd1ee43a001145a8fd2fc12bae14b536bc07d4748e18e03"
+  },
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-SKILLS-001",
+  "next_gate": "NO_EXECUTION_PARSER_CANARY",
+  "permissions_expanded": false,
+  "schema_version": "1.0.0",
+  "source_pin": "bdf76c7c6b7b3b3e01bb15c9fdc42ac5351855c1",
+  "tools_registered": 0,
+  "truth_state": "PASS_STATIC_CAPABILITY_MAPPING_ONLY"
+}
