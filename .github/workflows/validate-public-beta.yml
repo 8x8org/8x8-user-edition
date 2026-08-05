@@ -102,8 +102,17 @@ jobs:
         run: python3 -m unittest tests.test_art_board -v
       - name: Confirm no private endpoint references
         run: |
-          if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9])' \
-            --exclude-dir=.git .; then
+          # .github/ is excluded because this workflow file itself contains the
+          # scan tokens as literal regex text, which would cause a self-match.
+          # *.md documentation files are excluded so the "Run locally" section
+          # can reference http://localhost:8080 without triggering a false positive.
+          # sk- pattern requires 20+ trailing chars to avoid matching CSS properties
+          # such as mask-image (which contains the substring sk-i).
+          if grep -RInE '(/root/|127\.0\.0\.1|localhost:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|gho_|sk-[A-Za-z0-9]{20,})' \
+            --exclude-dir=.git \
+            --exclude-dir=.github \
+            --exclude='*.md' \
+            .; then
             echo 'Public-private boundary scan failed'
             exit 1
           fi

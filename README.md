@@ -34,7 +34,7 @@ cd 8x8-user-edition
 python3 -m http.server 8080
 ```
 
-Then open the local address the server prints (port 8080) in your browser.
+Then open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## Public demo vs. private owner system
 
