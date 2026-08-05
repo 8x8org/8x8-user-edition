@@ -1,0 +1,34 @@
+name: Public feature proposal
+description: Propose a privacy-safe User Edition feature
+title: "[Public feature] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include private infrastructure, internal agents, paths, logs, connectors, credentials, account data, protected deployments or unpublished security details.
+  - type: textarea
+    id: public_problem
+    attributes:
+      label: Public problem
+      description: Describe the user-facing problem without private operational context.
+    validations:
+      required: true
+  - type: textarea
+    id: public_scope
+    attributes:
+      label: Public-safe scope
+      description: State what the public release unit will and will not contain.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Information boundary
+      options:
+        - label: This proposal contains no private operational information.
+          required: true
+        - label: Any displayed metrics will be public-receipted or clearly synthetic.
+          required: true
+        - label: Private research and implementation details will remain in private governance.
+          required: true
