@@ -28,16 +28,19 @@ class ArtBoardReleaseTests(unittest.TestCase):
         self.assertEqual(self.state["score"]["whole_system_score"], "NOT_INFERRED")
         self.assertEqual(sum(self.release["score"]["categories"].values()), 100)
         self.assertFalse(self.release["whole_system_completion_inferred"])
-        self.assertEqual(self.release["truth_state"], "PROTECTED_PREVIEW_DEPLOYED")
+        self.assertEqual(self.release["truth_state"], "PUBLIC_SOURCE_VALIDATED")
         self.assertFalse(self.release["gates"]["public_production_release"])
 
-    def test_preview_remains_nonproduction(self):
+    def test_protected_deployment_metadata_is_not_public(self):
         deployment = self.release["deployment"]
         validation = self.release["validation"]
-        self.assertEqual(deployment["authorized_class"], "AUTHENTICATED_PREVIEW")
-        self.assertEqual(deployment["visibility"], "VERCEL_PROTECTED")
-        self.assertEqual(deployment["ready_state"], "READY")
+        self.assertFalse(deployment["public_production_release"])
+        self.assertFalse(deployment["protected_preview_metadata_published"])
+        self.assertFalse(deployment["production_alias_changed"])
         self.assertFalse(validation["production_alias_changed"])
+        serialized = json.dumps(self.release)
+        for token in ("dpl_", "team_", "prj_", "VERCEL_PROTECTED"):
+            self.assertNotIn(token, serialized)
 
     def test_worlds_presence_and_treasury_are_public_safe(self):
         self.assertEqual(len(self.state["worlds"]), 8)
