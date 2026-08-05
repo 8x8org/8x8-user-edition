@@ -20,11 +20,9 @@ FORBIDDEN = re.compile(
     re.IGNORECASE,
 )
 
-
 def load_json(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
-
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -32,7 +30,6 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: handle.read(65536), b""):
             digest.update(block)
     return digest.hexdigest()
-
 
 def main() -> None:
     manifest = load_json(BASE / "SOURCE_MANIFEST.json")
@@ -80,7 +77,6 @@ def main() -> None:
     assert receipt["installed_candidate_count"] == 0
     assert receipt["runtime_changes"] is False
     print("MSG197-KNOWLEDGE-001 validation: PASS_STATIC_KNOWLEDGE_INDEX_ONLY")
-
 
 if __name__ == "__main__":
     main()
