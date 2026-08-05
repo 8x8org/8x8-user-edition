@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "e96370a44e6fbd78ec228c1414b67bcd239416f1f08c6a0a3188f182442339b6",
+    "COMPATIBILITY_REPORT.md": "c015875156fd5ff7a54f4bfa41698b5bffc736edaed15f79ebb42f7e649a56db"
+  },
+  "database_migrations": 0,
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-MEMORY-001",
+  "next_gate": "OWNER_APPROVAL_BEFORE_EXECUTABLE_CANARY",
+  "private_data_used": false,
+  "runtime_changes": 0,
+  "schema_version": "1.0.0",
+  "source_pin": "b44c6db5f5b1a011eed645efb1949840f99f961a",
+  "truth_state": "PASS_STATIC_ADAPTER_DESIGN_ONLY"
+}
