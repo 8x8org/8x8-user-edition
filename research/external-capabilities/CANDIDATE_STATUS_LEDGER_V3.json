@@ -1,0 +1,174 @@
+{
+  "absolute_boundaries": {
+    "credential_access_performed": false,
+    "phone_installation_performed": false,
+    "private_data_ingestion_performed": false,
+    "production_deployment_performed": false,
+    "production_installation_authorized": false,
+    "service_restart_performed": false,
+    "wallet_or_financial_action_performed": false
+  },
+  "candidates": [
+    {
+      "decision": "CURATED_KNOWLEDGE_SOURCE",
+      "id": "MSG197-KNOWLEDGE-001",
+      "packet": "MERGED",
+      "pin": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "repository": "donnemartin/system-design-primer",
+      "runtime": "NOT_INSTALLED"
+    },
+    {
+      "decision": "ADOPT_SCHEMA_AND_ACL_PATTERNS_ONLY",
+      "id": "MSG197-MEMORY-001",
+      "packet": "MERGED",
+      "pin": "b44c6db5f5b1a011eed645efb1949840f99f961a",
+      "repository": "TencentCloud/TencentDB-Agent-Memory",
+      "runtime": "NOT_INSTALLED_OWNER_GATED_SYNTHETIC_CANARY"
+    },
+    {
+      "decision": "ADOPT_SELECTED_WORKFLOW_SCHEMAS_NOT_SKILL_EXECUTION",
+      "id": "MSG197-SKILLS-001",
+      "packet": "MERGED",
+      "pin": "bdf76c7c6b7b3b3e01bb15c9fdc42ac5351855c1",
+      "repository": "addyosmani/agent-skills",
+      "runtime": "NOT_INSTALLED"
+    },
+    {
+      "decision": "ADOPT_BOUNDED_PATTERNS_REJECT_ORCHESTRATOR",
+      "id": "MSG197-WORKFLOW-001",
+      "packet": "MERGED",
+      "pin": "44c9b2d6e889982ac18c27d05a19fefe335194e1",
+      "repository": "obra/superpowers",
+      "runtime": "NOT_INSTALLED_NO_SECOND_ORCHESTRATOR"
+    },
+    {
+      "decision": "ADOPT_TELEMETRY_SCHEMA_AND_ATTACK_TAXONOMY_ONLY",
+      "id": "MSG197-ADR-001",
+      "packet": "MERGED",
+      "pin": "73873e18948be7a8637955eeef2f813a541692b8",
+      "repository": "uber/ADR",
+      "runtime": "NOT_INSTALLED_NO_PRODUCTION_TELEMETRY"
+    },
+    {
+      "decision": "REJECT_PROMOTION_AT_CURRENT_PIN",
+      "id": "MSG197-PDF-001",
+      "packet": "MERGED_PARSER_PASS_SUPPLY_CHAIN_BLOCKED",
+      "pin": "12e9a655e36924564057464bf25494b8c027eb57",
+      "repository": "firecrawl/pdf-inspector",
+      "runtime": "NOT_INSTALLED_SUPPLY_CHAIN_BLOCKED"
+    },
+    {
+      "decision": "NARROW_SUBSET_ELIGIBLE_FOR_ADAPTER_DESIGN",
+      "evidence": {
+        "cleanup": "PASS",
+        "deterministic_outputs": "PASS",
+        "known_vulnerabilities": 0,
+        "merge_commit": "16b51f18603156b1d485c75b7c5ab9dd77067ff8",
+        "python_lanes": [
+          "3.11",
+          "3.12"
+        ],
+        "workflow_run_id": 31046645930
+      },
+      "id": "MSG197-VISION-001",
+      "packet": "MERGED_MEASURED_EXTERNAL_CANARY_PASS",
+      "pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+      "repository": "roboflow/supervision",
+      "runtime": "NOT_INSTALLED_ADAPTER_DESIGN_OWNER_GATED"
+    },
+    {
+      "decision": "ADOPT_WORKSPACE_BOUNDARY_IDEAS_DEFER_ALL_EXECUTION",
+      "id": "MSG197-COMPUTER-001",
+      "packet": "MERGED",
+      "pin": "76d9e75c5688713b656bce85540d9e0071cece8b",
+      "repository": "cloudflare/computer",
+      "runtime": "NOT_INSTALLED_ALL_BACKENDS_DENIED"
+    },
+    {
+      "decision": "EXTERNAL_CUDA_ONLY_PHONE_AND_ACTIVE_NODE_REJECTED",
+      "id": "MSG197-AIRLLM-001",
+      "packet": "MERGED_PLAN_EXTERNAL_EVIDENCE_PENDING",
+      "pin": "64a4e4fc3749aa7dc9bba4788f560ed0d7e74bd2",
+      "repository": "lyogavin/airllm",
+      "runtime": "NOT_INSTALLED_GPU_AND_MODEL_APPROVAL_REQUIRED"
+    },
+    {
+      "decision": "EXTRACT_SELECTED_PROTOCOL_PATTERNS_ONLY",
+      "id": "MSG197-LOOPX-001",
+      "packet": "MERGED",
+      "pin": "22b57a76e18736c31fe749867292f3feeb62f27b",
+      "repository": "huangruiteng/loopx",
+      "runtime": "NOT_INSTALLED_NO_SECOND_CONTROL_PLANE"
+    },
+    {
+      "decision": "ADOPT_SELECTED_EXTENSION_PROTOCOL_IDEAS",
+      "id": "MSG197-REASONIX-001",
+      "packet": "MERGED",
+      "pin": "77cf9aa7080fb48fec4b6f5ee5d3509748e68c50",
+      "repository": "esengine/DeepSeek-Reasonix",
+      "runtime": "NOT_INSTALLED_NO_SECOND_AGENT_RUNTIME"
+    },
+    {
+      "decision": "DEFER_NO_APPROVED_REQUIREMENT",
+      "id": "MSG197-TAILWIND-001",
+      "packet": "MERGED_DECISION",
+      "pin": "3524b4531097fff15962735cdacf56d2af425ead",
+      "repository": "tailwindlabs/tailwindcss",
+      "runtime": "NOT_INSTALLED_STATIC_CSS_REMAINS_CANONICAL"
+    },
+    {
+      "decision": "DEFER_STATIC_CLIENT_REMAINS_CANONICAL",
+      "id": "MSG197-NEXT-001",
+      "packet": "MERGED_DECISION",
+      "pin": "ab7fc5fb581c396f0116f1a406da17ede2e15440",
+      "repository": "vercel/next.js",
+      "runtime": "NOT_INSTALLED_NO_SERVER_RUNTIME"
+    }
+  ],
+  "council": {
+    "chatgpt_submission": "ADVISORY_ONLY_NOT_COUNTED",
+    "issue": 58,
+    "preferred_coordinator": "Hermes",
+    "quorum_reached": false,
+    "quorum_required": 4,
+    "valid_votes": 0
+  },
+  "mission_id": "MSG197_EXTERNAL_CAPABILITY_INTAKE_V1",
+  "observed_at": "2026-08-05T21:10:06Z",
+  "owner": "FlashTM8 / Meher Trabelsi",
+  "remaining_dependencies": [
+    {
+      "cannot_run_on": [
+        "Samsung Termux",
+        "active Ubuntu PRoot",
+        "standard GitHub CPU runner"
+      ],
+      "id": "AIRLLM_CUDA_BENCHMARK",
+      "issue": 53,
+      "state": "BLOCKED_EXTERNAL_GPU_AND_MODEL_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "REAL_RESEARCH_COUNCIL",
+      "issue": 58,
+      "quorum_required": 4,
+      "state": "BLOCKED_REAL_IDENTITY_LEASE_AND_RECEIPTS_REQUIRED",
+      "valid_votes": 0
+    }
+  ],
+  "schema_version": "3.0.0",
+  "summary": {
+    "candidate_count": 13,
+    "candidate_packet_open": 0,
+    "candidate_packets_blocked_from_promotion": 1,
+    "candidate_packets_merged": 13,
+    "council_quorum": false,
+    "external_measured_benchmarks_complete": 1,
+    "external_measured_benchmarks_required": 2,
+    "phone_changes": 0,
+    "production_runtime_changes": 0,
+    "real_council_votes": 0,
+    "third_party_candidates_installed_into_8x8": 0
+  },
+  "supersedes": "CANDIDATE_STATUS_LEDGER_V2.json",
+  "truth_state": "ALL_PACKETS_MERGED_ONE_OF_TWO_EXTERNAL_BENCHMARKS_COMPLETE_NO_RUNTIME_INSTALLATION_COUNCIL_PENDING"
+}
