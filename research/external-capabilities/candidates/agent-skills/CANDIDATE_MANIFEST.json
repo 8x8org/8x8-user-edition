@@ -1,0 +1,74 @@
+{
+  "8x8_mapping": {
+    "build": "bounded_executor_with_lease",
+    "code-simplify": "maintainability_review",
+    "plan": "task_packet_and_impact_plan",
+    "review": "guardian_and_council_review",
+    "ship": "progressive_release_controller",
+    "spec": "mission_intent_and_acceptance_contract",
+    "test": "evidence_and_canary_gate",
+    "webperf": "public_client_benchmark"
+  },
+  "automatic_tool_registration": false,
+  "classification": "ADAPTER_REFERENCE",
+  "decision": "ADOPT_SELECTED_WORKFLOW_SCHEMAS_NOT_SKILL_EXECUTION",
+  "execution_performed": false,
+  "installation_performed": false,
+  "mission_id": "MSG197-SKILLS-001",
+  "next_gate": "NO_EXECUTION_PARSER_CANARY",
+  "observed_at": "2026-08-05T18:42:00Z",
+  "observed_commands": [
+    "spec",
+    "plan",
+    "build",
+    "test",
+    "review",
+    "webperf",
+    "code-simplify",
+    "ship"
+  ],
+  "observed_lifecycle": [
+    "spec",
+    "plan",
+    "build",
+    "test",
+    "review",
+    "ship"
+  ],
+  "parent_issue": 41,
+  "permission_policy": {
+    "browser": "SANDBOX_ONLY",
+    "credential_access": "DENY",
+    "default": "DENY",
+    "filesystem": "ALLOWLIST_ONLY",
+    "network": "DENY_UNLESS_EXPLICIT",
+    "shell": "OWNER_GATED",
+    "undeclared_tools": "DENY",
+    "wallet": "DENY"
+  },
+  "required_tests": [
+    "hidden_instruction_inert",
+    "undeclared_tool_denied",
+    "network_escalation_denied",
+    "filesystem_escape_denied",
+    "owner_gate_preserved",
+    "source_pin_preserved"
+  ],
+  "risks": [
+    "automatic activation based on context",
+    "one-pass autonomous build mode",
+    "cross-agent installation surfaces",
+    "shared reference portability gaps",
+    "prompt instructions mistaken for policy"
+  ],
+  "schema_version": "1.0.0",
+  "source": {
+    "commit": "bdf76c7c6b7b3b3e01bb15c9fdc42ac5351855c1",
+    "default_branch": "main",
+    "license_spdx": "MIT",
+    "readme_blob_sha": "05777eec8808713178bdf020a4d8f730fe3e22bc",
+    "repository": "addyosmani/agent-skills"
+  },
+  "truth_state": "PASS_STATIC_CAPABILITY_MAPPING_ONLY",
+  "work_issue": 47
+}
