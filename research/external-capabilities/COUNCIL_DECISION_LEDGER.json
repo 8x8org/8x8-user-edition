@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0.0",
+  "mission_id": "MSG197B_COUNCIL_SANDBOX_READINESS_V1",
+  "preferred_coordinator": "HERMES",
+  "fallback_rule": "If Hermes is unavailable or rate-limited, emit a complete HANDOFF_PACKET, release the lease, and stop.",
+  "truth_state": "CHATGPT_ASSESSMENT_RECORDED_INDEPENDENT_COUNCIL_PENDING",
+  "recorded_assessment": {
+    "agent_id": "CHATGPT_GPT_5_6_THINKING",
+    "role": "research synthesis and governance implementation",
+    "authority": "GitHub research branch only",
+    "lease": "conversation-scoped; no local runtime lease",
+    "independent_agent_claim": false
+  },
+  "mandatory_council_roles": [
+    "HERMES_COORDINATOR",
+    "ARCHITECTURE_REVIEWER",
+    "SECURITY_REVIEWER",
+    "MEMORY_AND_DATA_REVIEWER",
+    "RESOURCE_AND_DEVICE_REVIEWER",
+    "LICENSE_AND_PROVENANCE_REVIEWER",
+    "ROLLBACK_AND_OPERATIONS_REVIEWER",
+    "OWNER_FLASH_TM8"
+  ],
+  "receipt_requirements": [
+    "task_id",
+    "agent_id",
+    "body_id_if_applicable",
+    "specialization",
+    "lease_issuer",
+    "lease_issued_at",
+    "lease_expires_at",
+    "input_manifest_sha256",
+    "upstream_pin_set_sha256",
+    "output_sha256",
+    "recommendation",
+    "confidence",
+    "dissent",
+    "security_veto",
+    "cleanup_status",
+    "final_status"
+  ],
+  "decision_rule": {
+    "majority_vote_sufficient": false,
+    "security_veto_with_evidence_blocks": true,
+    "license_block_blocks": true,
+    "rollback_failure_blocks": true,
+    "owner_gate_required_for_executable_canary": true,
+    "owner_gate_required_for_merge_or_deploy": true
+  },
+  "candidates": [
+    {
+      "candidate": "donnemartin/system-design-primer",
+      "current_recommendation": "APPROVE_KNOWLEDGE_ADAPTER_DESIGN",
+      "confidence": "HIGH",
+      "security_risk": "LOW",
+      "duplication_risk": "LOW",
+      "expected_value": "HIGH",
+      "open_questions": ["excerpt policy", "staleness refresh cadence", "retrieval prompt-injection handling"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "huangruiteng/loopx",
+      "current_recommendation": "DEFER_RUNTIME_ADOPTION",
+      "confidence": "HIGH",
+      "security_risk": "HIGH",
+      "duplication_risk": "VERY_HIGH",
+      "expected_value": "MEDIUM",
+      "open_questions": ["unique protocols not already present", "zero-action mode", "scheduler and memory authority overlap"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "TencentCloud/TencentDB-Agent-Memory",
+      "current_recommendation": "APPROVE_SCHEMA_POC_AFTER_STATIC_SCAN",
+      "confidence": "HIGH",
+      "security_risk": "HIGH",
+      "duplication_risk": "HIGH",
+      "expected_value": "HIGH",
+      "open_questions": ["tenant isolation", "deletion semantics", "export portability", "retention and expiry", "database dependency"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "cloudflare/computer",
+      "current_recommendation": "HOLD_FOR_OWNER_GATED_SANDBOX",
+      "confidence": "HIGH",
+      "security_risk": "CRITICAL",
+      "duplication_risk": "HIGH",
+      "expected_value": "MEDIUM",
+      "open_questions": ["synthetic domain confinement", "kill switch", "action transcript integrity", "prompt injection resistance"],
+      "council_state": "SECURITY_VETO_ACTIVE_UNTIL_SANDBOX_APPROVED"
+    },
+    {
+      "candidate": "lyogavin/airllm",
+      "current_recommendation": "DEFER_TO_EXTERNAL_GPU_FEASIBILITY",
+      "confidence": "HIGH",
+      "security_risk": "MEDIUM",
+      "duplication_risk": "MEDIUM",
+      "expected_value": "MEDIUM",
+      "open_questions": ["supported GPUs", "model license", "disk budget", "cold-start latency", "cache removal"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "obra/superpowers",
+      "current_recommendation": "APPROVE_PATTERN_EXTRACTION",
+      "confidence": "HIGH",
+      "security_risk": "MEDIUM",
+      "duplication_risk": "MEDIUM",
+      "expected_value": "HIGH",
+      "open_questions": ["hidden instruction boundaries", "workflow conflict map", "mapping to registered 8x8 operations"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "addyosmani/agent-skills",
+      "current_recommendation": "APPROVE_SKILL_ADAPTER_DESIGN",
+      "confidence": "HIGH",
+      "security_risk": "MEDIUM",
+      "duplication_risk": "MEDIUM",
+      "expected_value": "HIGH",
+      "open_questions": ["skill schema stability", "permission-diff semantics", "prompt injection fixtures"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "uber/ADR",
+      "current_recommendation": "APPROVE_DISPOSABLE_CANARY_AFTER_STATIC_SCAN",
+      "confidence": "HIGH",
+      "security_risk": "LOW",
+      "duplication_risk": "LOW",
+      "expected_value": "MEDIUM",
+      "open_questions": ["Markdown portability", "index format", "complete uninstall", "existing ADR compatibility"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "roboflow/supervision",
+      "current_recommendation": "APPROVE_EXTERNAL_NODE_CANARY_DESIGN",
+      "confidence": "MEDIUM",
+      "security_risk": "HIGH",
+      "duplication_risk": "MEDIUM",
+      "expected_value": "HIGH",
+      "open_questions": ["dependency footprint", "CPU-only utility", "media rights", "malformed input behavior", "model-free first pass"],
+      "council_state": "PENDING_RESOURCE_AND_SECURITY_RECEIPTS"
+    },
+    {
+      "candidate": "firecrawl/pdf-inspector",
+      "current_recommendation": "APPROVE_ISOLATED_CANARY_AFTER_STATIC_SCAN",
+      "confidence": "HIGH",
+      "security_risk": "HIGH",
+      "duplication_risk": "LOW",
+      "expected_value": "HIGH",
+      "open_questions": ["hostile PDF behavior", "network denial", "decompression limits", "deterministic output schema"],
+      "council_state": "PENDING_SECURITY_RECEIPT"
+    },
+    {
+      "candidate": "esengine/DeepSeek-Reasonix",
+      "current_recommendation": "DEFER_RUNTIME_ADOPTION",
+      "confidence": "HIGH",
+      "security_risk": "HIGH",
+      "duplication_risk": "VERY_HIGH",
+      "expected_value": "MEDIUM",
+      "open_questions": ["bounded extension protocol", "receipt ideas", "provider and remote-shell boundaries"],
+      "council_state": "PENDING_INDEPENDENT_RECEIPTS"
+    },
+    {
+      "candidate": "tailwindlabs/tailwindcss",
+      "current_recommendation": "DEFER_UNTIL_MATCHING_UI_REQUIREMENT",
+      "confidence": "HIGH",
+      "security_risk": "MEDIUM",
+      "duplication_risk": "HIGH",
+      "expected_value": "LOW_WITHOUT_MIGRATION",
+      "open_questions": ["approved product requirement", "bundle budget", "CSP", "visual regression scope"],
+      "council_state": "DEFERRED_BY_REQUIREMENT_GATE"
+    },
+    {
+      "candidate": "vercel/next.js",
+      "current_recommendation": "DEFER_UNTIL_PRODUCT_REQUIREMENT",
+      "confidence": "HIGH",
+      "security_risk": "HIGH",
+      "duplication_risk": "VERY_HIGH",
+      "expected_value": "LOW_WITHOUT_TENANT_SERVER_REQUIREMENT",
+      "open_questions": ["server requirement", "tenant isolation", "server actions", "operational ownership", "production rollback"],
+      "council_state": "DEFERRED_BY_REQUIREMENT_GATE"
+    }
+  ],
+  "completion_boundary": "No candidate is COUNCIL_REVIEWED until all mandatory roles have digest-bound receipts or an owner-approved documented deferral."
+}
