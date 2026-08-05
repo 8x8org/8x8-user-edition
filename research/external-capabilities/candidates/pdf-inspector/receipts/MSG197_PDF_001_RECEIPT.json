@@ -1,0 +1,35 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "76a316f55d483e768b36b91195225c5332fd7bbeef9cc05e26230076cfa631ad",
+    "SANDBOX_CONTRACT.md": "1a08607fab8728c089b112f041834d1a3152bdcc765d959f4388c7fe7a42452e",
+    "generate_msg197_pdf_001_fixtures.py": "cb51e61826fc0851a54572258fbaad6473da632a68179a1e18030243e0833c8c"
+  },
+  "candidate_execution_scope": "EPHEMERAL_SYNTHETIC_CI_ONLY",
+  "ci_canary_status": "PARSER_PASS_PROMOTION_BLOCKED",
+  "installed_candidate_count_on_8x8": 0,
+  "mission_id": "MSG197-PDF-001",
+  "observed_evidence": {
+    "cargo_audit_exit_code": 1,
+    "cargo_lock_sha256": "752129c4df5ee66484abccc4429aea9a5ca27d22e896e2596adf111be7ffbdf8",
+    "container_repo_digest": "ubuntu@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea",
+    "detect_pdf_binary_sha256": "b965f02c6457188c1940d0056b2343617034f20d71dd97cea406fc5df9fe4ec1",
+    "pdf2md_binary_sha256": "abf5c6f8dcd98b2d09cc3d1a222c91078abb9073d0091d48f235c1cc25ac3b16",
+    "parser_canary": "PASS",
+    "promotion_gate": "BLOCKED",
+    "source_workflow_job_id": 92430804097,
+    "source_workflow_run_id": 31042742548,
+    "unmaintained_advisories": [
+      "RUSTSEC-2026-0192"
+    ],
+    "vulnerability_advisories": [
+      "RUSTSEC-2026-0176",
+      "RUSTSEC-2026-0177"
+    ]
+  },
+  "private_documents_used": false,
+  "production_deployment": false,
+  "promotion_authorized": false,
+  "schema_version": "1.1.0",
+  "source_pin": "12e9a655e36924564057464bf25494b8c027eb57",
+  "truth_state": "PASS_PARSER_CANARY_SUPPLY_CHAIN_BLOCKED"
+}

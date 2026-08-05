@@ -1,0 +1,75 @@
+{
+  "classification": "OPTIONAL_PLUGIN",
+  "decision": "RETAIN_EPHEMERAL_SYNTHETIC_CANARY_REJECT_PROMOTION",
+  "execution_environment": "GitHub-hosted Ubuntu runner plus network-none read-only Docker runtime",
+  "installation_performed_on_8x8": false,
+  "mission_id": "MSG197-PDF-001",
+  "observed_at": "2026-08-05T20:14:41Z",
+  "parent_issue": 41,
+  "promotion_authorized": false,
+  "resource_limits": {
+    "container_cpus": 1,
+    "container_memory_mib": 512,
+    "container_pids": 64,
+    "input_max_bytes": 1048576,
+    "per_command_timeout_seconds": 10,
+    "runner_timeout_minutes": 25
+  },
+  "sandbox_evidence": {
+    "cargo_audit_exit_code": 1,
+    "cargo_lock_sha256": "752129c4df5ee66484abccc4429aea9a5ca27d22e896e2596adf111be7ffbdf8",
+    "container_image_id": "sha256:045183670ef29ce21bc22a8d4f62511ce472679ca8fc9774f04181f7f383ca62",
+    "container_repo_digest": "ubuntu@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea",
+    "detect_pdf_binary_sha256": "b965f02c6457188c1940d0056b2343617034f20d71dd97cea406fc5df9fe4ec1",
+    "pdf2md_binary_sha256": "abf5c6f8dcd98b2d09cc3d1a222c91078abb9073d0091d48f235c1cc25ac3b16",
+    "parser_canary": "PASS",
+    "source_workflow_run_id": 31042742548,
+    "supply_chain_gate": "BLOCKED",
+    "unmaintained_warnings": [
+      {
+        "advisory_id": "RUSTSEC-2026-0192",
+        "package": "ttf-parser",
+        "version": "0.25.1"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "advisory_id": "RUSTSEC-2026-0176",
+        "package": "pyo3",
+        "patched_versions": [],
+        "version": "0.25.1"
+      },
+      {
+        "advisory_id": "RUSTSEC-2026-0177",
+        "package": "pyo3",
+        "patched_versions": [],
+        "version": "0.25.1"
+      }
+    ]
+  },
+  "schema_version": "1.1.0",
+  "source": {
+    "commit": "12e9a655e36924564057464bf25494b8c027eb57",
+    "default_branch": "main",
+    "license_spdx": "MIT",
+    "readme_blob_sha": "a30034a8f467b5ce29d8125d74c5abcfef44c846",
+    "cargo_manifest_blob_sha": "aa5cf04b7bee1275103cdec2df0f71be8fd62180",
+    "repository": "firecrawl/pdf-inspector"
+  },
+  "synthetic_corpus": [
+    {
+      "id": "native-text-injection-string",
+      "expected": "text extraction only; instruction remains inert"
+    },
+    {
+      "id": "malformed-bytes",
+      "expected": "non-success or structured failure"
+    },
+    {
+      "id": "oversized-input",
+      "expected": "wrapper rejection before parser invocation"
+    }
+  ],
+  "truth_state": "PASS_PARSER_CANARY_SUPPLY_CHAIN_BLOCKED",
+  "work_issue": 50
+}
