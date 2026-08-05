@@ -1,0 +1,16 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "10bc4399d4a7665aa00a2ecb9bc3afa7d5e2663df28b3c1939788545fe3d2e3a",
+    "EXTERNAL_GPU_FEASIBILITY.md": "2e129f633b0dcc1948382b963bcc37b20fb9fa2e57532487395a28a5c10d0277",
+    "EXTERNAL_CANARY_PLAN.json": "d18cdc589d3560b0346f1c775109192178f9b9784cd50a6991463b9fa16c90c1"
+  },
+  "external_benchmark_executed": false,
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-AIRLLM-001",
+  "model_downloads": 0,
+  "next_gate": "PROVISION_APPROVED_EXTERNAL_CUDA_NODE",
+  "phone_changes": 0,
+  "schema_version": "1.0.0",
+  "source_pin": "64a4e4fc3749aa7dc9bba4788f560ed0d7e74bd2",
+  "truth_state": "STATIC_FEASIBILITY_PLAN_EXTERNAL_EVIDENCE_PENDING"
+}
