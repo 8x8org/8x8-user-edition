@@ -1,0 +1,32 @@
+name: Validate MSG197 AirLLM External Feasibility
+
+on:
+  pull_request:
+    paths:
+      - "research/external-capabilities/candidates/airllm/**"
+      - "scripts/validate_msg197_airllm_001.py"
+      - ".github/workflows/validate-msg197-airllm-001.yml"
+  push:
+    branches:
+      - feature/msg197-airllm-001-external-feasibility-v1
+    paths:
+      - "research/external-capabilities/candidates/airllm/**"
+      - "scripts/validate_msg197_airllm_001.py"
+      - ".github/workflows/validate-msg197-airllm-001.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: python3 -m json.tool research/external-capabilities/candidates/airllm/CANDIDATE_MANIFEST.json >/dev/null
+      - run: python3 -m json.tool research/external-capabilities/candidates/airllm/EXTERNAL_CANARY_PLAN.json >/dev/null
+      - run: python3 -m json.tool research/external-capabilities/candidates/airllm/receipts/MSG197_AIRLLM_001_RECEIPT.json >/dev/null
+      - run: python3 scripts/validate_msg197_airllm_001.py
