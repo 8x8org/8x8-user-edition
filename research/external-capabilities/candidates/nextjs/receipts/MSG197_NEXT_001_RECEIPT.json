@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "3afdb98f21281483cb10d35133f8131007f70a85706083f322606ec2c62e35b4",
+    "DECISION_RECORD.md": "345eeed97bedb223119dfcbe08a955fc0864e085c23c91cbc8438a95e7bfee2e"
+  },
+  "decision": "DEFER_STATIC_CLIENT_REMAINS_CANONICAL",
+  "hosting_changes": 0,
+  "mission_id": "MSG197-NEXT-001",
+  "packages_installed": 0,
+  "schema_version": "1.0.0",
+  "server_runtimes_added": 0,
+  "source_pin": "ab7fc5fb581c396f0116f1a406da17ede2e15440",
+  "truth_state": "PASS_CLIENT_ARCHITECTURE_DECISION"
+}
