@@ -24,7 +24,7 @@ env:
   PIP_AUDIT_VERSION: "2.7.3"
   PIP_VERSION: "26.1.2"
   SETUPTOOLS_VERSION: "83.0.0"
-  WHEEL_VERSION: "0.45.1"
+  WHEEL_VERSION: "0.46.2"
   PYTHONDONTWRITEBYTECODE: "1"
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
 
@@ -173,7 +173,7 @@ jobs:
           ENV MPLCONFIGDIR=/tmp/matplotlib
           COPY wheels /opt/wheels
           RUN python -m pip install --no-index --find-links=/opt/wheels \
-                pip==26.1.2 setuptools==83.0.0 wheel==0.45.1 \
+                pip==26.1.2 setuptools==83.0.0 wheel==0.46.2 \
               && python -m pip install --no-index --find-links=/opt/wheels supervision==0.31.0.dev0 \
               && rm -rf /opt/wheels /root/.cache
           COPY benchmark.py /opt/benchmark.py
