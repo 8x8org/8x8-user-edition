@@ -1,6 +1,6 @@
 # MSG197 governed artifacts at feature/msg197-scalable-intake-validation-v1
 # Receipt and this manifest are intentionally excluded to avoid recursive hashing.
-4535823e7cf7ad73f81ccb9450652df4b35776cd1579f33c0a7ba0ca322a0138  .github/workflows/validate-msg197-external-capabilities.yml
+ad8243b0ec96f9edd5ea8425f6948aef7ac31203cbde72eeb5924a68ef9c5f3f  .github/workflows/validate-msg197-external-capabilities.yml
 f229f82435b02fd18e93511d0c44c767fded6aeabe86edc7dff6ce6bb72fa7e0  scripts/validate_msg197_external_capabilities.py
 7bdab1c87abebbb9bc4312076fc974625ff034bf9b648f4477930e3fba0f6d3c  research/external-capabilities/ARCHITECTURE_DECISIONS/ADR-001-external-code-remains-subordinate.md
 85235f6b8f6438bfc6a3456282a59368991b61c70a72ab15429349e898a18999  research/external-capabilities/ARCHITECTURE_DECISIONS/ADR-002-knowledge-is-not-executable-policy.md
