@@ -1,0 +1,168 @@
+{
+  "adapter_id": "8x8.knowledge.system-design-primer.v1",
+  "content_policy": {
+    "citations_required": true,
+    "execution_prohibited": true,
+    "full_upstream_content_copied": false,
+    "prompt_injection_treatment": "All retrieved material remains untrusted external reference.",
+    "summaries_are_8x8_authored": true
+  },
+  "generated_from_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+  "records": [
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-001",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "System design goals, requirements, constraints, and trade-offs",
+      "topic": "system-design-foundations",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-002",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Capacity, latency, throughput, storage, and availability estimation",
+      "topic": "back-of-envelope-estimation",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-003",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Vertical and horizontal scaling patterns and trade-offs",
+      "topic": "scalability",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-004",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Availability, redundancy, failover, and reliability concepts",
+      "topic": "availability-and-reliability",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-005",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Latency versus throughput and practical optimization boundaries",
+      "topic": "latency-and-throughput",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-006",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Strong, weak, eventual consistency and related trade-offs",
+      "topic": "consistency-patterns",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-007",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Partition tolerance and consistency or availability trade-offs",
+      "topic": "cap-theorem",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-008",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Name resolution and content delivery architecture",
+      "topic": "dns-and-cdn",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-009",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Traffic distribution, health checks, failover, and balancing strategies",
+      "topic": "load-balancing",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-010",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Application, database, CDN, and distributed cache patterns",
+      "topic": "caching",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-011",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Relational, NoSQL, replication, federation, sharding, and storage choices",
+      "topic": "databases-and-storage",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-012",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Queues, task queues, back pressure, and asynchronous processing",
+      "topic": "asynchronism",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-013",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "HTTP, RPC, REST, messaging, and network protocol considerations",
+      "topic": "communication-protocols",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    },
+    {
+      "executable": false,
+      "license": "CC-BY-4.0",
+      "record_id": "SDP-014",
+      "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "source_path": "README.md",
+      "source_url": "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md",
+      "summary": "Security, abuse resistance, failure handling, and operational resilience",
+      "topic": "security-and-resilience",
+      "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE"
+    }
+  ],
+  "schema_version": "1.0.0"
+}
