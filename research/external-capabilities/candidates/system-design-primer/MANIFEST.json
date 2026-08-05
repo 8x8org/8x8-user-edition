@@ -1,0 +1,43 @@
+{
+  "adapter_id": "8x8.knowledge.system-design-primer.v1",
+  "classification": "KNOWLEDGE_SOURCE",
+  "execution": {
+    "filesystem_write": false,
+    "installed": false,
+    "network_access": false,
+    "policy_authority": false,
+    "runtime_dependency": false,
+    "shell_access": false,
+    "vendored": false
+  },
+  "integration": {
+    "consumer": "8x8 retrieval and research agents",
+    "mode": "CITATION_PRESERVING_INDEX",
+    "required_behavior": [
+      "preserve immutable upstream commit in every citation",
+      "label imported text as external reference",
+      "never convert examples into executable policy",
+      "require separate review before any code example is run",
+      "retain attribution and license metadata"
+    ]
+  },
+  "mission_id": "MSG197-KNOWLEDGE-001",
+  "owner": "FlashTM8 / Meher Trabelsi",
+  "rollback": {
+    "method": "remove adapter directory and index references",
+    "state_migration_required": false,
+    "uninstall_proof": "static files only; no package, service, database, scheduler or secret"
+  },
+  "schema_version": "1.0.0",
+  "trust_class": "UNTRUSTED_EXTERNAL_REFERENCE",
+  "truth_state": "IMPLEMENTED_STATIC_KNOWLEDGE_ADAPTER_NOT_RUNTIME_INSTALLED",
+  "upstream": {
+    "canonical_url": "https://github.com/donnemartin/system-design-primer",
+    "commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+    "default_branch": "master",
+    "license": "CC-BY-4.0",
+    "license_blob_sha": "5a04d642d61db37868f7485fa0fbcc96d8916919",
+    "license_file": "LICENSE.txt",
+    "repository": "donnemartin/system-design-primer"
+  }
+}
