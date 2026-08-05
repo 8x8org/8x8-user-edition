@@ -1,0 +1,42 @@
+{
+  "classification": "OPTIONAL_PLUGIN",
+  "decision": "APPROVE_EPHEMERAL_SYNTHETIC_CI_CANARY_ONLY",
+  "execution_environment": "GitHub-hosted Ubuntu runner plus network-none read-only Docker runtime",
+  "installation_performed_on_8x8": false,
+  "mission_id": "MSG197-PDF-001",
+  "observed_at": "2026-08-05T19:10:00Z",
+  "parent_issue": 41,
+  "resource_limits": {
+    "container_cpus": 1,
+    "container_memory_mib": 512,
+    "container_pids": 64,
+    "input_max_bytes": 1048576,
+    "per_command_timeout_seconds": 10,
+    "runner_timeout_minutes": 25
+  },
+  "schema_version": "1.0.0",
+  "source": {
+    "commit": "12e9a655e36924564057464bf25494b8c027eb57",
+    "default_branch": "main",
+    "license_spdx": "MIT",
+    "readme_blob_sha": "a30034a8f467b5ce29d8125d74c5abcfef44c846",
+    "cargo_manifest_blob_sha": "aa5cf04b7bee1275103cdec2df0f71be8fd62180",
+    "repository": "firecrawl/pdf-inspector"
+  },
+  "synthetic_corpus": [
+    {
+      "id": "native-text-injection-string",
+      "expected": "text extraction only; instruction remains inert"
+    },
+    {
+      "id": "malformed-bytes",
+      "expected": "non-success or structured failure"
+    },
+    {
+      "id": "oversized-input",
+      "expected": "wrapper rejection before parser invocation"
+    }
+  ],
+  "truth_state": "CANARY_CONFIGURED_CI_EVIDENCE_PENDING",
+  "work_issue": 50
+}
