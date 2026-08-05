@@ -1,0 +1,64 @@
+{
+  "8x8_mapping": {
+    "checkpoint": "receipt-bound rollback point",
+    "extension_sidecar": "bounded adapter process",
+    "plugin_manifest": "8x8 capability manifest",
+    "provider_entry": "model registry route",
+    "subagent_progress": "Three-Reality event stream",
+    "tool_approval": "owner and Guardian gate"
+  },
+  "accepted_patterns": [
+    "versioned plugin manifests",
+    "redacted sidecar errors",
+    "bounded startup budget",
+    "structured approval receipts",
+    "reserved event namespaces",
+    "cross-platform checksum releases"
+  ],
+  "classification": "SANDBOX_EXPERIMENT",
+  "decision": "ADOPT_SELECTED_EXTENSION_PROTOCOL_IDEAS_DEFER_RUNTIME",
+  "execution_performed": false,
+  "installation_performed": false,
+  "mission_id": "MSG197-REASONIX-001",
+  "next_gate": "ZERO_ACTION_EXTENSION_PROTOCOL_FIXTURE",
+  "observed_at": "2026-08-05T18:49:00Z",
+  "observed_surfaces": [
+    "config-driven providers",
+    "MCP tools prompts and resources",
+    "Extension Protocol v1 sidecars",
+    "plugin packages and manifests",
+    "cache-aware context maintenance",
+    "subagent profiles and progress",
+    "checkpoints and rewind",
+    "single static Go binary"
+  ],
+  "parent_issue": 41,
+  "rejected_surfaces": [
+    "global npm installation",
+    "provider credential setup",
+    "remote shell workflows",
+    "second agent runtime",
+    "second extension authority",
+    "unreviewed MCP tool admission",
+    "Git history merge"
+  ],
+  "schema_version": "1.0.0",
+  "security_requirements": [
+    "sidecar process isolation",
+    "capability allowlist",
+    "event schema validation",
+    "timeout and memory limits",
+    "error redaction",
+    "signature and checksum verification",
+    "zero provider credentials in canary"
+  ],
+  "source": {
+    "commit": "77cf9aa7080fb48fec4b6f5ee5d3509748e68c50",
+    "default_branch": "main-v2",
+    "license_spdx": "MIT",
+    "readme_blob_sha": "6943d32c4718cae3056e4fd9d5b93ed40f43c68e",
+    "repository": "esengine/DeepSeek-Reasonix"
+  },
+  "truth_state": "PASS_STATIC_PROTOCOL_COMPARISON",
+  "work_issue": 55
+}
