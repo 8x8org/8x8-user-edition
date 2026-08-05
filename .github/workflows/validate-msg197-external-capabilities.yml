@@ -35,6 +35,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Print governed artifact SHA-256 inventory
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          find research/external-capabilities -type f \
+            ! -path '*/receipts/*' -print0 | sort -z | xargs -0 sha256sum
+          sha256sum scripts/validate_msg197_external_capabilities.py
+          sha256sum .github/workflows/validate-msg197-external-capabilities.yml
+
       - name: Parse governed JSON
         shell: bash
         run: |
