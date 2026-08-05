@@ -1,6 +1,6 @@
 const AGENTS = {
   FlashTM8: {symbol:'⚡', role:'Owner intent and final authority', color:'#ffd166', body:'The human owner remains at the center of the operating model. High-impact actions require exact, current and target-specific approval.', facts:{Class:'OWNER', Public_status:'ROLE DESCRIPTION', Private_runtime:'NOT EXPOSED'}},
-  Hermes: {symbol:'☿', role:'Orchestration and bounded tool planning', color:'#76f7ff', body:'Hermes represents mission decomposition, tool routing and receipt-oriented orchestration. This public card does not claim a live provider session.', facts:{Class:'ORCHESTRATOR', Public_status:'ARCHETYPE', Credentials:'NOT INCLUDED'}},
+  Coordinator: {symbol:'☿', role:'Orchestration and bounded tool planning', color:'#76f7ff', body:'The Coordinator archetype represents mission decomposition, tool routing and receipt-oriented orchestration. This public card does not identify or expose a private coordinator.', facts:{Class:'ORCHESTRATOR', Public_status:'ARCHETYPE', Credentials:'NOT INCLUDED'}},
   Seraphim: {symbol:'✦', role:'Security, policy and adversarial review', color:'#ff6685', body:'Seraphim challenges unsafe claims and protects the public/private boundary. It never receives wallet keys or hidden owner authority from this interface.', facts:{Class:'SECURITY', Public_status:'ARCHETYPE', Shell_access:'NONE'}},
   SOMA: {symbol:'◉', role:'Health, continuity and operational sensing', color:'#53f6a7', body:'SOMA describes the health and continuity role: evidence freshness, storage pressure, service stability and recovery signals.', facts:{Class:'OPERATIONS', Public_status:'ARCHETYPE', Telemetry:'DEMO ONLY'}},
   Atlas: {symbol:'◇', role:'Architecture, maps and dependency intelligence', color:'#5c82ff', body:'Atlas maps systems, dependencies and plans. The public beta shows conceptual relationships without revealing private topology.', facts:{Class:'ARCHITECTURE', Public_status:'ARCHETYPE', Private_topology:'REDACTED'}},
@@ -20,7 +20,7 @@ const TRUTH = {
   ADOPTED:'Independent users or systems have verified use of the release.'
 };
 
-const agentOrder=['FlashTM8','Hermes','Seraphim','SOMA','Atlas','Omnivore','OpenClaw'];
+const agentOrder=['FlashTM8','Coordinator','Seraphim','SOMA','Atlas','Omnivore','OpenClaw'];
 const views=[...document.querySelectorAll('.view')];
 const navButtons=[...document.querySelectorAll('[data-view]')];
 const drawer=document.getElementById('drawer');
