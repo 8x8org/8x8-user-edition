@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "session_id": "MSG197-COUNCIL-001",
+  "parent_issue": 41,
+  "work_issue": 58,
+  "coordinator": {
+    "preferred": "Hermes",
+    "status": "PENDING_LOCAL_EXECUTION"
+  },
+  "input_pin_set_sha256": "ab40f0f1c010d862f38c34ec4efea5e18ff7c405d68231b82815342521a749e7",
+  "quorum": {
+    "eligible_participants": 6,
+    "minimum_valid_votes": 4,
+    "valid_votes": 0,
+    "reached": false
+  },
+  "participants": [
+    {
+      "agent_id": "hermes",
+      "status": "PENDING_IDENTITY_LEASE_AND_RECEIPT"
+    },
+    {
+      "agent_id": "flashtm8-agent",
+      "status": "PENDING_IDENTITY_LEASE_AND_RECEIPT"
+    },
+    {
+      "agent_id": "chatgpt-agent",
+      "status": "ADVISORY_ONLY_NOT_COUNTED"
+    },
+    {
+      "agent_id": "seraphim",
+      "status": "PENDING_IDENTITY_LEASE_AND_RECEIPT"
+    },
+    {
+      "agent_id": "claude",
+      "status": "PENDING_IDENTITY_LEASE_AND_RECEIPT"
+    },
+    {
+      "agent_id": "opencloud-council",
+      "status": "PENDING_IDENTITY_LEASE_AND_RECEIPT"
+    }
+  ],
+  "rules": {
+    "security_veto_overrides_majority": true,
+    "owner_final_approval_required": true,
+    "missing_identity_cannot_vote": true,
+    "missing_or_expired_lease_cannot_vote": true,
+    "same_input_digest_required": true,
+    "disagreements_must_be_preserved": true
+  },
+  "truth_state": "COUNCIL_FRAMEWORK_READY_REAL_VOTES_PENDING"
+}
