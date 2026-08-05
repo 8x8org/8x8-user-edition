@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "mission_id": "MSG197_EXTERNAL_CAPABILITY_INTAKE_V1",
+  "truth_state": "PLANNED_CANDIDATE_WORK_NO_INSTALLATION",
+  "global_rules": {
+    "one_candidate_per_branch": true,
+    "production_credentials_in_canary": false,
+    "private_user_data_in_canary": false,
+    "immutable_upstream_pin_required": true,
+    "sbom_required_before_execution": true,
+    "uninstall_test_required": true,
+    "owner_gate_required_before_deployment": true,
+    "control_fabric_remains_authoritative": true
+  },
+  "items": [
+    {
+      "id": "MSG197-KNOWLEDGE-001",
+      "candidate": "donnemartin/system-design-primer",
+      "priority": 1,
+      "state": "READY_FOR_DESIGN",
+      "deliverable": "Citation-preserving non-executable architecture knowledge index",
+      "environment": "documentation-only",
+      "advance_gate": ["attribution test", "source pin", "excerpt policy", "staleness metadata"]
+    },
+    {
+      "id": "MSG197-MEMORY-001",
+      "candidate": "TencentCloud/TencentDB-Agent-Memory",
+      "priority": 2,
+      "state": "STATIC_REVIEW_REQUIRED",
+      "deliverable": "Synthetic memory-schema compatibility report and adapter interface",
+      "environment": "disposable database branch",
+      "advance_gate": ["tenant isolation", "delete and expiry", "export portability", "latency budget", "no private data"]
+    },
+    {
+      "id": "MSG197-SKILLS-001",
+      "candidate": "addyosmani/agent-skills",
+      "priority": 3,
+      "state": "READY_FOR_DESIGN",
+      "deliverable": "Skill-to-capability mapping with permission-diff validator",
+      "environment": "no-execution parser sandbox",
+      "advance_gate": ["schema validation", "prompt-injection review", "deny undeclared permissions"]
+    },
+    {
+      "id": "MSG197-WORKFLOW-001",
+      "candidate": "obra/superpowers",
+      "priority": 4,
+      "state": "READY_FOR_DESIGN",
+      "deliverable": "Reviewed workflow-pattern catalog",
+      "environment": "documentation-only",
+      "advance_gate": ["no autonomous authority", "source attribution", "conflict review"]
+    },
+    {
+      "id": "MSG197-ADR-001",
+      "candidate": "uber/ADR",
+      "priority": 5,
+      "state": "CANARY_DESIGN_REQUIRED",
+      "deliverable": "Disposable ADR create, export and uninstall canary",
+      "environment": "isolated Codespace branch",
+      "advance_gate": ["no default-branch write", "Markdown portability", "uninstall proof", "rollback proof"]
+    },
+    {
+      "id": "MSG197-PDF-001",
+      "candidate": "firecrawl/pdf-inspector",
+      "priority": 6,
+      "state": "CANARY_DESIGN_REQUIRED",
+      "deliverable": "Untrusted PDF extraction plugin proof",
+      "environment": "isolated container",
+      "advance_gate": ["hostile corpus", "size and time limits", "read-only filesystem", "deterministic schema", "cleanup census"]
+    },
+    {
+      "id": "MSG197-VISION-001",
+      "candidate": "roboflow/supervision",
+      "priority": 7,
+      "state": "RESOURCE_FEASIBILITY_REQUIRED",
+      "deliverable": "External-node vision utility benchmark",
+      "environment": "isolated Ubuntu or GPU node",
+      "advance_gate": ["no model download first pass", "CPU and RAM measurements", "media rights", "malformed input tests"]
+    },
+    {
+      "id": "MSG197-COMPUTER-001",
+      "candidate": "cloudflare/computer",
+      "priority": 8,
+      "state": "OWNER_GATE_REQUIRED",
+      "deliverable": "Fake-site-only computer-use safety proof",
+      "environment": "ephemeral cloud sandbox",
+      "advance_gate": ["domain allowlist", "zero credentials", "no purchases or messages", "screen recording receipt", "kill switch"]
+    },
+    {
+      "id": "MSG197-AIRLLM-001",
+      "candidate": "lyogavin/airllm",
+      "priority": 9,
+      "state": "RESOURCE_FEASIBILITY_REQUIRED",
+      "deliverable": "Hardware and dependency feasibility report",
+      "environment": "external CUDA Linux node",
+      "advance_gate": ["no phone install", "model license", "storage budget", "GPU compatibility", "cache uninstall"]
+    },
+    {
+      "id": "MSG197-LOOPX-001",
+      "candidate": "huangruiteng/loopx",
+      "priority": 10,
+      "state": "DEFERRED_OVERLAP_REVIEW",
+      "deliverable": "Architecture overlap and unique-value report",
+      "environment": "static research and isolated Codespace",
+      "advance_gate": ["no competing scheduler", "no duplicate memory authority", "zero-action mode", "clear unique capability"]
+    },
+    {
+      "id": "MSG197-REASONIX-001",
+      "candidate": "esengine/DeepSeek-Reasonix",
+      "priority": 11,
+      "state": "DEFERRED_OVERLAP_REVIEW",
+      "deliverable": "Extension protocol and receipt-pattern comparison",
+      "environment": "static research and isolated Codespace",
+      "advance_gate": ["no history merge", "no remote shell", "no provider credentials", "pattern-level reuse only"]
+    },
+    {
+      "id": "MSG197-TAILWIND-001",
+      "candidate": "tailwindlabs/tailwindcss",
+      "priority": 12,
+      "state": "DEFERRED_PRODUCT_REQUIREMENT",
+      "deliverable": "Frontend stack decision record",
+      "environment": "future web-client branch",
+      "advance_gate": ["approved migration requirement", "bundle budget", "CSP", "visual regression", "dependency pin"]
+    },
+    {
+      "id": "MSG197-NEXT-001",
+      "candidate": "vercel/next.js",
+      "priority": 13,
+      "state": "DEFERRED_PRODUCT_REQUIREMENT",
+      "deliverable": "Static-client versus Next.js migration decision",
+      "environment": "future isolated product branch",
+      "advance_gate": ["tenant product requirement", "stable release pin", "server threat model", "deployment rollback", "operational ownership"]
+    }
+  ]
+}
