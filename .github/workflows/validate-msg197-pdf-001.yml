@@ -63,12 +63,14 @@ jobs:
           git -C /tmp/msg197-pdf-upstream fetch --depth=1 origin "$PIN"
           git -C /tmp/msg197-pdf-upstream checkout --detach FETCH_HEAD
           test "$(git -C /tmp/msg197-pdf-upstream rev-parse HEAD)" = "$PIN"
+          test ! -e /tmp/msg197-pdf-upstream/Cargo.lock
 
       - name: Generate dependency inventory and audit
         shell: bash
         run: |
           set -Eeuo pipefail
           cd /tmp/msg197-pdf-upstream
+          cargo generate-lockfile
           test -f Cargo.lock
           sha256sum Cargo.lock > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_LOCK_SHA256.txt"
           cargo metadata --locked --format-version 1 > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_METADATA.json"
@@ -148,6 +150,7 @@ jobs:
           base = Path('research/external-capabilities/candidates/pdf-inspector')
           results = base / 'canary-results'
           corpus = json.loads((base / 'fixtures/CORPUS_MANIFEST.json').read_text())
+          audit = json.loads((base / 'CARGO_AUDIT.json').read_text())
           output = {
               'schema_version': '1.0.0',
               'mission_id': 'MSG197-PDF-001',
@@ -155,7 +158,9 @@ jobs:
               'rust_toolchain': subprocess.check_output(['rustc', '--version'], text=True).strip(),
               'cargo_version': subprocess.check_output(['cargo', '--version'], text=True).strip(),
               'cargo_audit_version': '0.22.2',
+              'cargo_lock_origin': 'GENERATED_FROM_PINNED_CARGO_TOML',
               'cargo_lock_sha256': (base / 'CARGO_LOCK_SHA256.txt').read_text().split()[0],
+              'audit_vulnerability_count': len(audit.get('vulnerabilities', {}).get('list', [])),
               'container_repo_digests': json.loads((base / 'CONTAINER_IMAGE_DIGESTS.json').read_text()),
               'container_image_id': (base / 'CONTAINER_IMAGE_ID.txt').read_text().strip(),
               'sandbox': {'network': 'NONE', 'rootfs': 'READ_ONLY', 'memory_mib': 512, 'cpus': 1, 'pids': 64},
