@@ -22,8 +22,8 @@ permissions:
 env:
   PIN: bc20dd19fbc7b6cceaec447f1182346ca9158523
   PIP_AUDIT_VERSION: "2.7.3"
-  PIP_VERSION: "25.2"
-  SETUPTOOLS_VERSION: "80.9.0"
+  PIP_VERSION: "26.1.2"
+  SETUPTOOLS_VERSION: "83.0.0"
   WHEEL_VERSION: "0.45.1"
   PYTHONDONTWRITEBYTECODE: "1"
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
@@ -101,6 +101,11 @@ jobs:
             "setuptools==$SETUPTOOLS_VERSION" \
             "wheel==$WHEEL_VERSION" \
             "pip-audit==$PIP_AUDIT_VERSION"
+          "$TOOLING/bin/python" -m pip download \
+            --dest "$WHEELS" \
+            "pip==$PIP_VERSION" \
+            "setuptools==$SETUPTOOLS_VERSION" \
+            "wheel==$WHEEL_VERSION"
 
           start_ns="$(date +%s%N)"
           "$TOOLING/bin/python" -m pip wheel --wheel-dir "$WHEELS" "$SOURCE"
@@ -114,6 +119,12 @@ jobs:
           du -sb "$WHEELS" > "$EVIDENCE/wheelhouse-bytes.txt"
 
           python3 -m venv "$EXEC"
+          "$EXEC/bin/python" -m pip install \
+            --no-index \
+            --find-links "$WHEELS" \
+            "pip==$PIP_VERSION" \
+            "setuptools==$SETUPTOOLS_VERSION" \
+            "wheel==$WHEEL_VERSION"
           start_ns="$(date +%s%N)"
           "$EXEC/bin/python" -m pip install \
             --no-index \
@@ -161,7 +172,9 @@ jobs:
           ENV HOME=/tmp/home
           ENV MPLCONFIGDIR=/tmp/matplotlib
           COPY wheels /opt/wheels
-          RUN python -m pip install --no-index --find-links=/opt/wheels supervision==0.31.0.dev0 \
+          RUN python -m pip install --no-index --find-links=/opt/wheels \
+                pip==26.1.2 setuptools==83.0.0 wheel==0.45.1 \
+              && python -m pip install --no-index --find-links=/opt/wheels supervision==0.31.0.dev0 \
               && rm -rf /opt/wheels /root/.cache
           COPY benchmark.py /opt/benchmark.py
           USER 65534:65534
@@ -281,35 +294,6 @@ jobs:
         env:
           MATRIX_PYTHON: ${{ matrix.python }}
 
-      - name: Upload exact lane evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: msg197-vision-001-py${{ matrix.python }}
-          path: research/external-capabilities/candidates/supervision/canary-evidence/py${{ matrix.python }}
-          if-no-files-found: warn
-          retention-days: 14
-
-      - name: Enforce zero-vulnerability promotion gate
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          evidence = Path(Path(os.environ["RUNNER_TEMP"], "msg197_vision_evidence").read_text().strip())
-          summary = json.loads((evidence / "CANARY_EVIDENCE_SUMMARY.json").read_text())
-          if summary["audit_exit_code"] != 0 or summary["vulnerable_distribution_count"] != 0:
-              raise SystemExit(
-                  "promotion blocked: "
-                  f"audit_exit={summary['audit_exit_code']} "
-                  f"vulnerable_distributions={summary['vulnerable_distribution_count']}"
-              )
-          print("promotion gate passed: zero vulnerabilities")
-          PY
-
       - name: Cleanup and prove removal
         if: always()
         shell: bash
@@ -329,3 +313,33 @@ jobs:
           if [ -n "$EVIDENCE" ] && [ -d "$EVIDENCE" ]; then
             printf 'cleanup_status=PASS\n' > "$EVIDENCE/cleanup-status.txt"
           fi
+
+      - name: Upload exact lane evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: msg197-vision-001-py${{ matrix.python }}
+          path: research/external-capabilities/candidates/supervision/canary-evidence/py${{ matrix.python }}
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Enforce zero-vulnerability promotion gate
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          EVIDENCE="$(cat "$RUNNER_TEMP/msg197_vision_evidence")"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          evidence = Path(Path(os.environ["RUNNER_TEMP"], "msg197_vision_evidence").read_text().strip())
+          summary = json.loads((evidence / "CANARY_EVIDENCE_SUMMARY.json").read_text())
+          if summary["audit_exit_code"] != 0 or summary["vulnerable_distribution_count"] != 0:
+              raise SystemExit(
+                  "promotion blocked: "
+                  f"audit_exit={summary['audit_exit_code']} "
+                  f"vulnerable_distributions={summary['vulnerable_distribution_count']}"
+              )
+          print("promotion gate passed: zero vulnerabilities")
+          PY
