@@ -1,0 +1,92 @@
+{
+  "adapter_contract": {
+    "authoritative_state": "8x8 remains canonical; workspace state is disposable canary state only",
+    "backend_allowlist": [],
+    "default_backend": "NONE",
+    "filesystem": "SYNTHETIC_EPHEMERAL_ONLY",
+    "network": "DENY",
+    "owner_gate_required": true,
+    "runtime_exec": "DENY",
+    "secrets": "DENY"
+  },
+  "classification": "SANDBOX_EXPERIMENT",
+  "decision": "ADOPT_WORKSPACE_BOUNDARY_IDEAS_DEFER_ALL_EXECUTION",
+  "execution_performed": false,
+  "installation_performed": false,
+  "mission_id": "MSG197-COMPUTER-001",
+  "next_gate": "OWNER_APPROVAL_BEFORE_EPHEMERAL_CLOUDFLARE_CANARY",
+  "observed_at": "2026-08-05T19:03:00Z",
+  "parent_issue": 41,
+  "preview_status": "UPSTREAM_PREVIEW_ONLY_NOT_PRODUCTION",
+  "runtime_backends": [
+    {
+      "id": "container",
+      "capabilities": [
+        "FUSE mount",
+        "full Linux userland",
+        "real binaries",
+        "real network"
+      ],
+      "risk": "CRITICAL",
+      "allowed": false
+    },
+    {
+      "id": "isolate-shell",
+      "capabilities": [
+        "just-bash",
+        "Workspace RPC"
+      ],
+      "risk": "HIGH",
+      "allowed": false
+    },
+    {
+      "id": "isolate-javascript",
+      "capabilities": [
+        "ECMAScript module",
+        "Dynamic Worker",
+        "Workspace filesystem",
+        "trusted modules"
+      ],
+      "risk": "HIGH",
+      "allowed": false
+    },
+    {
+      "id": "filesystem-only",
+      "capabilities": [
+        "Durable Object SQLite virtual filesystem"
+      ],
+      "risk": "MEDIUM",
+      "allowed": false
+    }
+  ],
+  "schema_version": "1.0.0",
+  "source": {
+    "commit": "76d9e75c5688713b656bce85540d9e0071cece8b",
+    "default_branch": "main",
+    "license_spdx": "MIT",
+    "readme_blob_sha": "e576330394d3ca6672260a6474935ee55a07a091",
+    "repository": "cloudflare/computer"
+  },
+  "threats": [
+    "workspace state treated as canonical 8x8 truth",
+    "shell or JavaScript execution without capability gate",
+    "container network egress",
+    "FUSE and RPC synchronization confusion",
+    "artifact publication",
+    "Durable Object persistence and deletion failure",
+    "preview API drift",
+    "credential or account mutation"
+  ],
+  "truth_state": "PASS_STATIC_WORKSPACE_SAFETY_REVIEW",
+  "work_issue": 52,
+  "zero_execution_fixture": {
+    "backend": "NONE",
+    "operations": [
+      "validate manifest",
+      "validate path normalization",
+      "validate backend denial",
+      "validate deletion plan"
+    ],
+    "synthetic_files": 3
+  }
+}
