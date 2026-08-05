@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "mission_id": "MSG197-KNOWLEDGE-001",
+  "parent_issue": 41,
+  "work_issue": 45,
+  "observed_at": "2026-08-05T18:15:00Z",
+  "truth_state": "PASS_STATIC_KNOWLEDGE_INDEX_ONLY",
+  "source_repository": "donnemartin/system-design-primer",
+  "source_commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+  "source_pin_sha256": "e577a8571d72ecafe327b34b69767087c1494f4c2723b3f715919a4d33958081",
+  "installed_candidate_count": 0,
+  "runtime_changes": false,
+  "services_restarted": false,
+  "credentials_accessed": false,
+  "private_data_accessed": false,
+  "governed_artifacts": [
+    {
+      "path": ".github/workflows/validate-msg197-knowledge-001.yml",
+      "sha256": "83a0a14a9802be155da194ccfe848d51dbcdf0025668d4c83c38223fadf23bcf"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/ATTRIBUTION_AND_EXCERPT_POLICY.md",
+      "sha256": "6ddd39de0c18c607a27279c6b3146325f9da06777ced5b91ec11aad38f89df5c"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/README.md",
+      "sha256": "40863aa53958ac9daee14dc2b7bba86744d82252e718d4bbeca1a4c58c43f66a"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/SOURCE_MANIFEST.json",
+      "sha256": "ee7eef081e4b77053bf9f56947db8f1f6578dd55537016cf178eabf16e21e9cf"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/THREAT_AND_TRUST_BOUNDARY.md",
+      "sha256": "4a6f9891862d02702966eb8f0f07b003d782d9a6a3e10ef2ea5eae6c12afc0c6"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/TOPIC_INDEX.json",
+      "sha256": "c514fa5c6cf84fe2d07195b6c6f57cd562db98535e4ffaf619555e4799846f77"
+    },
+    {
+      "path": "scripts/validate_msg197_knowledge_001.py",
+      "sha256": "79873e02d46823add939bd600eb9e5d839c01c0399f7390acc101ca3905a95a7"
+    },
+    {
+      "path": "research/external-capabilities/candidates/system-design-primer/receipts/MSG197_KNOWLEDGE_001_SHA256SUMS.txt",
+      "sha256": "eaedca48d8c8bcd8103779e1d2974045ea05be2d69b5d7a9a8215ae397609648"
+    }
+  ],
+  "advancement_state": "STATIC_INDEX_VALIDATED_PENDING_PR_CI",
+  "cleanup": {
+    "runtime_cleanup_required": false,
+    "residual_candidate_code": false,
+    "rollback": "Revert or delete generated index artifacts."
+  }
+}

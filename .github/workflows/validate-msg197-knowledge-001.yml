@@ -1,0 +1,55 @@
+name: Validate MSG197 Knowledge Index
+
+on:
+  pull_request:
+    paths:
+      - "research/external-capabilities/candidates/system-design-primer/**"
+      - "scripts/validate_msg197_knowledge_001.py"
+      - ".github/workflows/validate-msg197-knowledge-001.yml"
+  push:
+    branches:
+      - feature/msg197-knowledge-001-system-design-index-v1
+    paths:
+      - "research/external-capabilities/candidates/system-design-primer/**"
+      - "scripts/validate_msg197_knowledge_001.py"
+      - ".github/workflows/validate-msg197-knowledge-001.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  validate:
+    name: Validate static attributed index
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Parse JSON
+        run: |
+          python3 -m json.tool research/external-capabilities/candidates/system-design-primer/SOURCE_MANIFEST.json >/dev/null
+          python3 -m json.tool research/external-capabilities/candidates/system-design-primer/TOPIC_INDEX.json >/dev/null
+          python3 -m json.tool research/external-capabilities/candidates/system-design-primer/receipts/MSG197_KNOWLEDGE_001_RECEIPT.json >/dev/null
+
+      - name: Validate index
+        run: python3 scripts/validate_msg197_knowledge_001.py
+
+      - name: Confirm no vendored or executable candidate content
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          BASE="research/external-capabilities/candidates/system-design-primer"
+          test ! -d "$BASE/vendor"
+          test ! -d "$BASE/node_modules"
+          test ! -d "$BASE/.venv"
+          test "$(find "$BASE" -type f | wc -l)" -le 10
