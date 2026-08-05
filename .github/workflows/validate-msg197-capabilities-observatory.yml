@@ -1,0 +1,64 @@
+name: Validate MSG197 Capabilities Observatory
+
+on:
+  pull_request:
+    paths:
+      - "capabilities/**"
+      - "tests/test_capabilities_observatory.py"
+      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json"
+      - ".github/workflows/validate-msg197-capabilities-observatory.yml"
+  push:
+    branches:
+      - main
+      - feature/msg197-capabilities-observatory-v2
+    paths:
+      - "capabilities/**"
+      - "tests/test_capabilities_observatory.py"
+      - "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json"
+      - ".github/workflows/validate-msg197-capabilities-observatory.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  validate:
+    name: Validate canonical observatory source
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Parse governed JSON
+        run: |
+          python3 -m json.tool capabilities/release-unit.json >/dev/null
+          python3 -m json.tool research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json >/dev/null
+
+      - name: Validate canonical MSG197 ledger
+        run: python3 scripts/validate_msg197_candidate_ledger_v3.py
+
+      - name: Run observatory contracts
+        run: python3 -m unittest tests.test_capabilities_observatory -v
+
+      - name: Compile JavaScript syntax
+        run: node --check capabilities/app.js
+
+      - name: Record source hashes
+        run: |
+          sha256sum \
+            capabilities/index.html \
+            capabilities/styles.css \
+            capabilities/app.js \
+            capabilities/release-unit.json \
+            capabilities/README.md \
+            tests/test_capabilities_observatory.py \
+            research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json
