@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "a774d00eeac6f7d006b1a1cf96a0f4227b489c7b7281a2619d4e69ec1b0248af",
+    "COMPATIBILITY_REPORT.md": "d77b4c4bb180f9fb23aa58a4e12c2bd3d2d27e88fe81f29321444bcc8e708507"
+  },
+  "decision": "ADOPT_TELEMETRY_SCHEMA_AND_ATTACK_TAXONOMY_ONLY",
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-ADR-001",
+  "prevention_component_claimed": false,
+  "production_telemetry_used": false,
+  "provider_credentials_used": false,
+  "schema_version": "1.0.0",
+  "source_pin": "73873e18948be7a8637955eeef2f813a541692b8",
+  "truth_state": "PASS_STATIC_SECURITY_COMPATIBILITY_REVIEW"
+}
