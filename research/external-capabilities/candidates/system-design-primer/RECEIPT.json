@@ -1,0 +1,24 @@
+{
+  "adapter_id": "8x8.knowledge.system-design-primer.v1",
+  "artifact_sha256": {
+    "INDEX.json": "f984e6d10d200d40172c1fa7bc9e9b5d76819fea1f72513f1c7b6294c3639778",
+    "MANIFEST.json": "509110eefaa45673171d248763d11d6d58e3b3adbec9ec4a0bdd11e94f61aea1"
+  },
+  "assertions": {
+    "database_changed": false,
+    "network_called_by_adapter": false,
+    "package_installed": false,
+    "production_deployed": false,
+    "secret_accessed": false,
+    "service_changed": false,
+    "upstream_content_vendored": false,
+    "whole_system_completion_inferred": false
+  },
+  "created_at": "2026-08-05T18:10:00Z",
+  "mission_id": "MSG197-KNOWLEDGE-001",
+  "next_gate": "OWNER_REVIEW_THEN_OPTIONAL_INDEX_CONSUMER_WIRING",
+  "rollback": "Delete the candidate adapter directory and any future registry pointer; no state migration is required.",
+  "schema_version": "1.0.0",
+  "source_pin_sha256": "51ea43ef1bce44e10418ff41782d63c39c14977bcdb25544d02c98205d68488c",
+  "status": "PASS_STATIC_ADAPTER_SCOPE"
+}
