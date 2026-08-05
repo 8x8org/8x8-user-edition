@@ -5,15 +5,18 @@ on:
     paths:
       - "research/external-capabilities/**"
       - "scripts/validate_msg197_external_capabilities.py"
+      - "scripts/validate_msg197_council_001.py"
       - ".github/workflows/validate-msg197-external-capabilities.yml"
   push:
     branches:
       - main
       - feature/msg197-external-capability-intake-v1
       - feature/msg197-scalable-intake-validation-v1
+      - feature/msg197-council-hardening-v2
     paths:
       - "research/external-capabilities/**"
       - "scripts/validate_msg197_external_capabilities.py"
+      - "scripts/validate_msg197_council_001.py"
       - ".github/workflows/validate-msg197-external-capabilities.yml"
 
 permissions:
@@ -37,48 +40,35 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify bounded governed artifact inventory
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          manifest="research/external-capabilities/receipts/MSG197_ARTIFACT_SHA256SUMS.txt"
-          governed_count=0
-          while IFS= read -r line; do
-            [ -z "$line" ] && continue
-            case "$line" in \#*) continue ;; esac
-            digest="${line%%  *}"
-            path="${line#*  }"
-            test -f "$path"
-            actual="$(sha256sum "$path" | cut -d' ' -f1)"
-            test "$actual" = "$digest"
-            printf '%s  %s\n' "$actual" "$path"
-            governed_count=$((governed_count + 1))
-          done < "$manifest"
-          test "$governed_count" -ge 11
-          test "$governed_count" -le 64
-          echo "governed_artifact_count=$governed_count"
-
-      - name: Parse governed parent JSON
+      - name: Parse governed JSON
         shell: bash
         run: |
           set -Eeuo pipefail
           python3 -m json.tool research/external-capabilities/REPOSITORY_CENSUS.json >/dev/null
           python3 -m json.tool research/external-capabilities/INTEGRATION_BACKLOG.json >/dev/null
           python3 -m json.tool research/external-capabilities/receipts/MSG197_INTAKE_RECEIPT.json >/dev/null
+          python3 -m json.tool research/external-capabilities/council/COUNCIL_SESSION.json >/dev/null
+          python3 -m json.tool research/external-capabilities/council/receipts/MSG197_COUNCIL_001_RECEIPT.json >/dev/null
 
-      - name: Compile parent validator
-        run: python3 -m py_compile scripts/validate_msg197_external_capabilities.py
+      - name: Compile deterministic validators
+        run: |
+          python3 -m py_compile scripts/validate_msg197_external_capabilities.py
+          python3 -m py_compile scripts/validate_msg197_council_001.py
 
       - name: Validate MSG197 parent intake
         run: python3 scripts/validate_msg197_external_capabilities.py
 
-      - name: Enforce parent validator zero-action boundary
+      - name: Validate MSG197 council framework
+        run: python3 scripts/validate_msg197_council_001.py
+
+      - name: Enforce validator zero-action boundary
         shell: bash
         run: |
           set -Eeuo pipefail
           if grep -InE '(subprocess\.|os\.system|shell=True|curl|wget|ssh|scp|rsync|npm.*install|pip.*install|docker.*run|kubectl|terraform.*apply|psql|gh.*pr.*merge|vercel.*deploy)' \
-            scripts/validate_msg197_external_capabilities.py; then
-            echo "Executable or mutating pattern found in the parent MSG197 validator"
+            scripts/validate_msg197_external_capabilities.py \
+            scripts/validate_msg197_council_001.py; then
+            echo "Executable or mutating pattern found in MSG197 validators"
             exit 1
           fi
 

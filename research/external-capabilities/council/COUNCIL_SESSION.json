@@ -48,5 +48,5 @@
     "same_input_digest_required": true,
     "disagreements_must_be_preserved": true
   },
-  "truth_state": "COUNCIL_FRAMEWORK_READY_REAL_VOTES_PENDING"
+  "truth_state": "FRAMEWORK_PASS_REAL_COUNCIL_PENDING"
 }

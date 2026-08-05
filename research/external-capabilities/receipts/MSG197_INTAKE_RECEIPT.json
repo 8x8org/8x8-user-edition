@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.0.1",
   "mission_id": "MSG197_EXTERNAL_CAPABILITY_INTAKE_V1",
   "owner": "FlashTM8 / Meher Trabelsi",
   "status": "PASS_STATIC_INTAKE_ONLY",
@@ -11,11 +11,12 @@
   "pull_request": 42,
   "candidate_count": 13,
   "installed_candidate_count": 0,
-  "artifact_hash_count": 13,
+  "artifact_hash_count": 11,
   "hash_manifest": "research/external-capabilities/receipts/MSG197_ARTIFACT_SHA256SUMS.txt",
+  "hash_scope": "governed research artifacts only; receipt, manifest, validators and workflows excluded to prevent recursive self-hashing",
   "upstream_pin_set_canonicalization": "UTF-8 newline-joined lexicographically sorted canonical_repository@commit records with trailing newline",
   "upstream_pin_set_sha256": "5a10b4f8de51fa9c50cbfbc9f10553a033c30fd687c215124222c2568f5dec41",
-  "council_status": "DESIGNED_NOT_INDEPENDENTLY_RECEIPTED",
+  "council_status": "FRAMEWORK_PASS_REAL_COUNCIL_PENDING",
   "research_status": {
     "repository_identity_census": "PASS",
     "default_branch_census": "PASS",
@@ -26,10 +27,10 @@
     "threat_model": "PASS",
     "integration_backlog": "PASS",
     "rollback_and_uninstall_plan": "PASS",
-    "dependency_sboms": "PENDING_CANDIDATE_CANARIES",
-    "vulnerability_scans": "PENDING_CANDIDATE_CANARIES",
+    "dependency_sboms": "PARTIAL_CANDIDATE_CANARIES",
+    "vulnerability_scans": "PARTIAL_CANDIDATE_CANARIES",
     "independent_agent_council_receipts": "PENDING",
-    "sandbox_proofs": "PENDING_CANDIDATE_APPROVAL"
+    "sandbox_proofs": "PARTIAL"
   },
   "truth_boundaries": {
     "candidate_code_vendored": false,
@@ -47,5 +48,5 @@
     "public_deployment": false,
     "production_ready_claim": false
   },
-  "next_gate": "INDEPENDENT_COUNCIL_REVIEW_AND_CANDIDATE_LEVEL_CANARIES"
+  "next_gate": "REAL_COUNCIL_RECEIPTS_AND_REMAINING_CANDIDATE_EVIDENCE"
 }

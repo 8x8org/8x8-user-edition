@@ -11,6 +11,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "research" / "external-capabilities"
+ROOT_RESOLVED = ROOT.resolve()
+ALLOWED_MANIFEST_PREFIXES = (
+    ".github/workflows",
+    "scripts",
+    "research/external-capabilities",
+)
 ALLOWED_CLASSES = {
     "KNOWLEDGE_SOURCE",
     "OPTIONAL_PLUGIN",
@@ -42,21 +48,44 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def resolve_governed_path(relative: str) -> Path:
+    if not relative or relative.startswith("-"):
+        raise SystemExit(f"unsafe hash path: {relative!r}")
+    path = Path(relative)
+    if path.is_absolute() or ".." in path.parts:
+        raise SystemExit(f"unsafe hash path: {relative}")
+    normalized = path.as_posix()
+    if not any(
+        normalized == prefix or normalized.startswith(f"{prefix}/")
+        for prefix in ALLOWED_MANIFEST_PREFIXES
+    ):
+        raise SystemExit(f"hash path outside governed prefixes: {relative}")
+    target = (ROOT / path).resolve()
+    try:
+        target.relative_to(ROOT_RESOLVED)
+    except ValueError as exc:
+        raise SystemExit(f"hash path escapes repository: {relative}") from exc
+    if not target.is_file():
+        raise SystemExit(f"hash target missing: {relative}")
+    return target
+
+
 def verify_hash_manifest(path: Path) -> int:
     count = 0
     seen: set[str] = set()
     for raw in path.read_text(encoding="utf-8").splitlines():
         if not raw.strip() or raw.startswith("#"):
             continue
-        digest, relative = raw.split("  ", 1)
+        fields = raw.split("  ", 1)
+        if len(fields) != 2:
+            raise SystemExit(f"malformed hash manifest line: {raw!r}")
+        digest, relative = fields
         if not SHA64.fullmatch(digest):
             raise SystemExit(f"invalid SHA-256 digest for {relative}")
         if relative in seen:
             raise SystemExit(f"duplicate hash path: {relative}")
         seen.add(relative)
-        target = ROOT / relative
-        if not target.is_file():
-            raise SystemExit(f"hash target missing: {relative}")
+        target = resolve_governed_path(relative)
         actual = hashlib.sha256(target.read_bytes()).hexdigest()
         if actual != digest:
             raise SystemExit(f"hash mismatch: {relative}")
