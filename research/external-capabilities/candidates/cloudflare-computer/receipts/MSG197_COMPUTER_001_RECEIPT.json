@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "0a5c43e5a26ea0dc1f11225f805b2f6b649c6ad64ff3c13b8c7c1e52184dc6e3",
+    "SAFETY_REVIEW.md": "36f9c3364cf6266f2fd89a79f6a9c34a048826d72c4e4d2c94946ac21885a9af"
+  },
+  "cloudflare_resources_created": 0,
+  "decision": "ADOPT_WORKSPACE_BOUNDARY_IDEAS_DEFER_ALL_EXECUTION",
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-COMPUTER-001",
+  "network_execution_performed": false,
+  "runtime_backends_enabled": 0,
+  "schema_version": "1.0.0",
+  "source_pin": "76d9e75c5688713b656bce85540d9e0071cece8b",
+  "truth_state": "PASS_STATIC_WORKSPACE_SAFETY_REVIEW"
+}
