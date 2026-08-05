@@ -1,12 +1,4 @@
 {
-  "classification": "OPTIONAL_PLUGIN",
-  "decision": "NARROW_SUBSET_EXTERNAL_NODE_ONLY",
-  "execution_performed": false,
-  "installation_performed": false,
-  "mission_id": "MSG197-VISION-001",
-  "next_gate": "APPROVED_EXTERNAL_NODE_NO_MODEL_IMPORT_BENCHMARK",
-  "observed_at": "2026-08-05T19:15:00Z",
-  "parent_issue": 41,
   "base_dependencies_observed": [
     "av>=14.2",
     "defusedxml>=0.7.1",
@@ -19,6 +11,8 @@
     "scipy>=1.10",
     "tqdm>=4.62.3"
   ],
+  "classification": "OPTIONAL_PLUGIN",
+  "decision": "NARROW_SUBSET_ELIGIBLE_FOR_ADAPTER_DESIGN_NOT_RUNTIME_INSTALLATION",
   "excluded_first_pass": [
     "model downloads",
     "Roboflow API key",
@@ -29,17 +23,32 @@
     "private media",
     "camera or microphone access"
   ],
+  "execution_performed": true,
+  "external_benchmark": {
+    "cleanup": "PASS",
+    "deterministic_outputs": "PASS_ACROSS_PYTHON_3_11_AND_3_12",
+    "functional": "PASS",
+    "known_vulnerabilities": 0,
+    "run_id": 31046645930,
+    "supply_chain": "PASS"
+  },
+  "installation_performed": false,
+  "mission_id": "MSG197-VISION-001",
+  "next_gate": "SEPARATE_DISABLED_BY_DEFAULT_8X8_ADAPTER_DESIGN_AND_OWNER_REVIEW",
+  "observed_at": "2026-08-05T21:00:27Z",
+  "parent_issue": 41,
   "rejected_platforms": [
     {
       "platform": "Samsung Termux / active Ubuntu PRoot",
-      "reason": "dependency size, native wheels, storage and thermal risk"
+      "reason": "no long-lived installation authorized; dependency size and active-node risk remain"
     },
     {
       "platform": "public production client",
-      "reason": "no need for full CV toolkit in static public surface"
+      "reason": "no approved requirement for a full computer-vision toolkit in the static public surface"
     }
   ],
-  "schema_version": "1.0.0",
+  "runtime_installation_authorized": false,
+  "schema_version": "1.1.0",
   "source": {
     "commit": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
     "default_branch": "develop",
@@ -56,6 +65,6 @@
     "zone and tracking utilities without bundled model",
     "synthetic geometry tests"
   ],
-  "truth_state": "STATIC_EXTERNAL_NODE_PLAN_EVIDENCE_PENDING",
+  "truth_state": "PASS_MEASURED_EXTERNAL_CANARY_NOT_INSTALLED",
   "work_issue": 51
 }

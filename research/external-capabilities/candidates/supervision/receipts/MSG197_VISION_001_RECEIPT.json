@@ -1,15 +1,28 @@
 {
   "artifacts": {
-    "CANDIDATE_MANIFEST.json": "421534edff520132bf2726138116c52e69a78982118d63ea61c1fb0a77161afa",
-    "EXTERNAL_NODE_PLAN.md": "57fdcca1a5760acb95d9ada72c3da76e79cbebd42c6aeadb34cb05497e97888f",
-    "NO_MODEL_CANARY_PLAN.json": "2d43d2cd81bfe55b1f63d1aa3f5be35e51cc052367e8d6ffcc194c54ad44fcbb"
+    "CANARY_EXECUTION_MANIFEST.json": "ff1441851e31c46116f2c06357cf94031ffd2f8d8158bbf3e2a87be818c39902",
+    "CANDIDATE_MANIFEST.json": "a16fa3088629cecf1fcffff1116b8af292cf1ad3c61208fb1927651fa130bd62",
+    "MEASURED_CANARY_REPORT.md": "8aaef084a52084f545a9025ec03d132b62032e3450f70d38ee9d320d7a2712a2",
+    "MEASURED_CANARY_SUMMARY.json": "df0a69eef70c0d26722cf44f4e0c6d146a0d1cd5ea9a594d6b4d4c978083a81e"
   },
-  "external_benchmark_executed": false,
+  "external_benchmark_executed": true,
+  "external_benchmark_result": "PASS_FUNCTIONAL_AND_SUPPLY_CHAIN_CANARY",
   "installed_candidate_count": 0,
   "mission_id": "MSG197-VISION-001",
   "model_downloads": 0,
   "phone_changes": 0,
-  "schema_version": "1.0.0",
+  "private_media_used": false,
+  "production_changes": 0,
+  "runtime_installation_authorized": false,
+  "schema_version": "1.1.0",
   "source_pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
-  "truth_state": "STATIC_EXTERNAL_NODE_PLAN_EVIDENCE_PENDING"
+  "truth_state": "PASS_MEASURED_EXTERNAL_CANARY_NOT_RUNTIME_INTEGRATION",
+  "workflow": {
+    "head_commit": "255fd32813f7d3ca70c8851b373f03a2c7838c7c",
+    "python_311_artifact_id": 8946729080,
+    "python_311_artifact_sha256": "e016464eefc37576ccbb78c35e3eb54d68c55f28a000a5542ed6c464940d16a1",
+    "python_312_artifact_id": 8946731865,
+    "python_312_artifact_sha256": "ddb2bfa9131b437474b1c72a0bc96d0495be8eb19feafb31cde7acbd75e723b4",
+    "run_id": 31046645930
+  }
 }
