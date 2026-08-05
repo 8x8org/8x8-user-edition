@@ -21,7 +21,7 @@ permissions:
 
 env:
   PIN: 12e9a655e36924564057464bf25494b8c027eb57
-  CARGO_AUDIT_VERSION: 0.21.2
+  CARGO_AUDIT_VERSION: 0.22.2
   PYTHONDONTWRITEBYTECODE: "1"
 
 jobs:
@@ -59,7 +59,8 @@ jobs:
         run: |
           set -Eeuo pipefail
           cd /tmp/msg197-pdf-upstream
-          cargo generate-lockfile
+          test -f Cargo.lock
+          sha256sum Cargo.lock > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_LOCK_SHA256.txt"
           cargo metadata --locked --format-version 1 > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_METADATA.json"
           cargo tree --locked > "$GITHUB_WORKSPACE/research/external-capabilities/candidates/pdf-inspector/CARGO_TREE.txt"
           cargo install cargo-audit --version "$CARGO_AUDIT_VERSION" --locked
@@ -70,11 +71,16 @@ jobs:
         run: |
           set -Eeuo pipefail
           cd /tmp/msg197-pdf-upstream
-          cargo build --release --bin detect-pdf --bin pdf2md
+          cargo build --locked --release --bin detect-pdf --bin pdf2md
           sha256sum target/release/detect-pdf target/release/pdf2md
 
-      - name: Pull fixed sandbox image
-        run: docker pull ubuntu:24.04
+      - name: Pull sandbox image and record identity
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          docker pull ubuntu:24.04
+          docker image inspect ubuntu:24.04 --format '{{json .RepoDigests}}' > research/external-capabilities/candidates/pdf-inspector/CONTAINER_IMAGE_DIGESTS.json
+          docker image inspect ubuntu:24.04 --format '{{.Id}}' > research/external-capabilities/candidates/pdf-inspector/CONTAINER_IMAGE_ID.txt
 
       - name: Run network-denied read-only parser canary
         shell: bash
@@ -136,6 +142,10 @@ jobs:
               'schema_version': '1.0.0',
               'mission_id': 'MSG197-PDF-001',
               'source_pin': '12e9a655e36924564057464bf25494b8c027eb57',
+              'cargo_audit_version': '0.22.2',
+              'cargo_lock_sha256': (base / 'CARGO_LOCK_SHA256.txt').read_text().split()[0],
+              'container_repo_digests': json.loads((base / 'CONTAINER_IMAGE_DIGESTS.json').read_text()),
+              'container_image_id': (base / 'CONTAINER_IMAGE_ID.txt').read_text().strip(),
               'sandbox': {'network': 'NONE', 'rootfs': 'READ_ONLY', 'memory_mib': 512, 'cpus': 1, 'pids': 64},
               'corpus': corpus,
               'malformed_exit_code': int((results / 'malformed.exit').read_text()),
@@ -160,9 +170,12 @@ jobs:
           rm -rf /tmp/msg197-pdf-upstream
           rm -rf research/external-capabilities/candidates/pdf-inspector/fixtures
           rm -rf research/external-capabilities/candidates/pdf-inspector/canary-results
+          rm -f research/external-capabilities/candidates/pdf-inspector/CARGO_LOCK_SHA256.txt
           rm -f research/external-capabilities/candidates/pdf-inspector/CARGO_METADATA.json
           rm -f research/external-capabilities/candidates/pdf-inspector/CARGO_TREE.txt
           rm -f research/external-capabilities/candidates/pdf-inspector/CARGO_AUDIT.json
+          rm -f research/external-capabilities/candidates/pdf-inspector/CONTAINER_IMAGE_DIGESTS.json
+          rm -f research/external-capabilities/candidates/pdf-inspector/CONTAINER_IMAGE_ID.txt
           test ! -e /tmp/msg197-pdf-upstream
           test ! -d research/external-capabilities/candidates/pdf-inspector/fixtures
           test ! -d research/external-capabilities/candidates/pdf-inspector/canary-results
