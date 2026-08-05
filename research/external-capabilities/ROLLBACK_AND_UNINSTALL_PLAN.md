@@ -1,4 +1,4 @@
-# MSG197 Rollback and Uninstall Plan
+# MSG197 Rollback and Uninstall Plan V1.1
 
 ## Rule
 
@@ -20,6 +20,7 @@ Every canary and implementation branch must record:
 - network domains and external accounts;
 - capability and plugin registrations;
 - UI routes and public assets;
+- telemetry schemas, retention rules and deletion paths;
 - generated evidence and logs.
 
 ## Universal rollback sequence
@@ -39,23 +40,23 @@ Every canary and implementation branch must record:
 
 ### Knowledge and workflow sources
 
-Remove curated records and index entries, restore the previous knowledge manifest and retain required attribution history. No executable service should exist.
+Remove curated records and index entries, restore the previous knowledge manifest and retain required attribution history. No executable service or automatic session hook should exist.
 
 ### TencentDB Agent Memory
 
 Use a disposable database branch. Export synthetic test data, test deletion, drop only the disposable branch or candidate schema and verify production data is unchanged. Remove adapter registration and connection secret references.
 
-### Computer-use tooling
+### Cloudflare Computer
 
-Revoke tokens, destroy the ephemeral sandbox, delete browser profiles and cookies, verify no external actions occurred and retain only redacted screenshots and receipts.
+Revoke test bindings, destroy the Durable Object and ephemeral execution backends, remove synthetic workspaces and verify no container, FUSE mount, worker, process, artifact or network route remains. Retain only redacted receipts.
 
 ### AirLLM
 
 Delete the isolated environment, model layers and caches listed in the manifest. Verify GPU processes and download jobs are absent. Never remove shared models without a separate ownership check.
 
-### ADR tooling
+### Uber ADR agent-security research
 
-Remove the executable and workflow integration while preserving portable Markdown ADR documents. Restore repository workflows and hooks to their pre-canary hashes.
+Remove the sensor or schema adapter, detector environment and all synthetic benchmark outputs. Revoke any disposable provider keys, prove that no production agent was instrumented, delete collected traces according to the canary retention policy and retain only redacted aggregate receipts. There are no Markdown architecture-decision records to preserve because this repository is Agentic AI Detection and Response.
 
 ### PDF and vision plugins
 
@@ -75,9 +76,9 @@ An uninstall passes only when:
 
 - all named candidate processes and ports are absent;
 - modified canonical files match their pre-install hashes;
-- no candidate service or scheduler remains;
+- no candidate service, hook or scheduler remains;
 - secret references are removed or revoked;
-- disposable databases and caches are accounted for;
+- disposable databases, telemetry and caches are accounted for;
 - public and private boundary tests pass;
 - storage usage is measured before and after;
 - residual files are zero or explicitly accepted;
