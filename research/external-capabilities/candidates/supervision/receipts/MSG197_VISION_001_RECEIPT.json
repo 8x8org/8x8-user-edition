@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "CANDIDATE_MANIFEST.json": "421534edff520132bf2726138116c52e69a78982118d63ea61c1fb0a77161afa",
+    "EXTERNAL_NODE_PLAN.md": "57fdcca1a5760acb95d9ada72c3da76e79cbebd42c6aeadb34cb05497e97888f",
+    "NO_MODEL_CANARY_PLAN.json": "2d43d2cd81bfe55b1f63d1aa3f5be35e51cc052367e8d6ffcc194c54ad44fcbb"
+  },
+  "external_benchmark_executed": false,
+  "installed_candidate_count": 0,
+  "mission_id": "MSG197-VISION-001",
+  "model_downloads": 0,
+  "phone_changes": 0,
+  "schema_version": "1.0.0",
+  "source_pin": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+  "truth_state": "STATIC_EXTERNAL_NODE_PLAN_EVIDENCE_PENDING"
+}

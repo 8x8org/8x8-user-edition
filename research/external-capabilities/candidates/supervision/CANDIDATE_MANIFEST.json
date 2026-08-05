@@ -1,0 +1,61 @@
+{
+  "classification": "OPTIONAL_PLUGIN",
+  "decision": "NARROW_SUBSET_EXTERNAL_NODE_ONLY",
+  "execution_performed": false,
+  "installation_performed": false,
+  "mission_id": "MSG197-VISION-001",
+  "next_gate": "APPROVED_EXTERNAL_NODE_NO_MODEL_IMPORT_BENCHMARK",
+  "observed_at": "2026-08-05T19:15:00Z",
+  "parent_issue": 41,
+  "base_dependencies_observed": [
+    "av>=14.2",
+    "defusedxml>=0.7.1",
+    "matplotlib>=3.6",
+    "numpy>=1.21.2",
+    "pillow>=9.4",
+    "pydeprecate>=0.9,<0.12",
+    "pyyaml>=5.3",
+    "requests>=2.26",
+    "scipy>=1.10",
+    "tqdm>=4.62.3"
+  ],
+  "excluded_first_pass": [
+    "model downloads",
+    "Roboflow API key",
+    "Ultralytics",
+    "Transformers",
+    "MMDetection",
+    "Inference",
+    "private media",
+    "camera or microphone access"
+  ],
+  "rejected_platforms": [
+    {
+      "platform": "Samsung Termux / active Ubuntu PRoot",
+      "reason": "dependency size, native wheels, storage and thermal risk"
+    },
+    {
+      "platform": "public production client",
+      "reason": "no need for full CV toolkit in static public surface"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "source": {
+    "commit": "bc20dd19fbc7b6cceaec447f1182346ca9158523",
+    "default_branch": "develop",
+    "license_spdx": "MIT",
+    "pyproject_blob_sha": "a0387b75d3059e66641d117aa0dd143f7ad5b6f0",
+    "readme_blob_sha": "ca0652a55c97961ea41d954eb6c690e44ed6d4b1",
+    "repository": "roboflow/supervision",
+    "version": "0.31.0.dev0"
+  },
+  "target_subsets": [
+    "data structures for detections",
+    "annotation rendering",
+    "dataset format conversion",
+    "zone and tracking utilities without bundled model",
+    "synthetic geometry tests"
+  ],
+  "truth_state": "STATIC_EXTERNAL_NODE_PLAN_EVIDENCE_PENDING",
+  "work_issue": 51
+}
