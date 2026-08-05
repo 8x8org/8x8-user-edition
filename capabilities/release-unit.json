@@ -1,0 +1,53 @@
+{
+  "release_id": "MSG197-OBSERVATORY-001",
+  "schema_version": "1.0.0",
+  "title": "8x8 External Capabilities Observatory",
+  "source_ledger": "research/external-capabilities/CANDIDATE_STATUS_LEDGER_V3.json",
+  "declared_scope": [
+    "render thirteen source-pinned candidate decisions",
+    "show merged packet, benchmark, installation and council counts",
+    "show blocked and deferred states without hiding them",
+    "render only same-origin public-safe evidence",
+    "provide accessible filtering and fail-closed ledger validation"
+  ],
+  "score": {
+    "earned": 0,
+    "possible": 100,
+    "state": "AWAITING_EXACT_HEAD_CI",
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "truth_state": "IMPLEMENTED_BRANCH_AWAITING_EXACT_HEAD_CI",
+  "visibility": "NOT_DEPLOYED",
+  "authority": {
+    "read_only": true,
+    "runtime_installation": false,
+    "production_deployment": false,
+    "credential_access": false,
+    "private_data_access": false,
+    "service_control": false,
+    "database_write": false,
+    "wallet_or_financial_action": false
+  },
+  "security": {
+    "external_scripts": false,
+    "inline_scripts": false,
+    "inner_html_rendering": false,
+    "same_origin_fetch_only": true,
+    "strict_csp": true,
+    "fail_closed_on_ledger_error": true
+  },
+  "promotion_gates": {
+    "exact_head_ci": false,
+    "canonical_ledger_validation": false,
+    "private_boundary_scan": false,
+    "accessibility_contract": false,
+    "route_http_200": false,
+    "exact_deployment_head_binding": false,
+    "rollback_receipt": false,
+    "owner_public_production_authorization": false
+  },
+  "rollback": {
+    "method": "revert release commit or remove capabilities directory and workflow",
+    "production_alias_change_required": false
+  }
+}
