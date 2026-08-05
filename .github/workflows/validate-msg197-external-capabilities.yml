@@ -8,7 +8,9 @@ on:
       - ".github/workflows/validate-msg197-external-capabilities.yml"
   push:
     branches:
+      - main
       - feature/msg197-external-capability-intake-v1
+      - feature/msg197-scalable-intake-validation-v1
     paths:
       - "research/external-capabilities/**"
       - "scripts/validate_msg197_external_capabilities.py"
@@ -23,7 +25,7 @@ env:
 
 jobs:
   validate:
-    name: Validate static intake contracts
+    name: Validate intake and candidate boundaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -35,16 +37,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Print governed artifact SHA-256 inventory
+      - name: Verify bounded governed artifact inventory
         shell: bash
         run: |
           set -Eeuo pipefail
-          find research/external-capabilities -type f \
-            ! -path '*/receipts/*' -print0 | sort -z | xargs -0 sha256sum
-          sha256sum scripts/validate_msg197_external_capabilities.py
-          sha256sum .github/workflows/validate-msg197-external-capabilities.yml
+          manifest="research/external-capabilities/receipts/MSG197_ARTIFACT_SHA256SUMS.txt"
+          governed_count=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in \#*) continue ;; esac
+            digest="${line%%  *}"
+            path="${line#*  }"
+            test -f "$path"
+            actual="$(sha256sum "$path" | cut -d' ' -f1)"
+            test "$actual" = "$digest"
+            printf '%s  %s\n' "$actual" "$path"
+            governed_count=$((governed_count + 1))
+          done < "$manifest"
+          test "$governed_count" -ge 11
+          test "$governed_count" -le 64
+          echo "governed_artifact_count=$governed_count"
 
-      - name: Parse governed JSON
+      - name: Parse governed parent JSON
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -52,28 +66,42 @@ jobs:
           python3 -m json.tool research/external-capabilities/INTEGRATION_BACKLOG.json >/dev/null
           python3 -m json.tool research/external-capabilities/receipts/MSG197_INTAKE_RECEIPT.json >/dev/null
 
-      - name: Compile validator
+      - name: Compile parent validator
         run: python3 -m py_compile scripts/validate_msg197_external_capabilities.py
 
-      - name: Validate MSG197 intake
+      - name: Validate MSG197 parent intake
         run: python3 scripts/validate_msg197_external_capabilities.py
 
-      - name: Enforce static zero-action boundary
+      - name: Enforce parent validator zero-action boundary
         shell: bash
         run: |
           set -Eeuo pipefail
-          if grep -RInE '(subprocess\.|os\.system|shell=True|curl |wget |ssh |scp |rsync |npm install|pip install|docker run|kubectl|terraform apply|psql |gh pr merge|vercel deploy)' \
-            scripts/validate_msg197_external_capabilities.py \
-            research/external-capabilities; then
-            echo "Executable or mutating pattern found in the MSG197 static intake package"
+          if grep -InE '(subprocess\.|os\.system|shell=True|curl|wget|ssh|scp|rsync|npm.*install|pip.*install|docker.*run|kubectl|terraform.*apply|psql|gh.*pr.*merge|vercel.*deploy)' \
+            scripts/validate_msg197_external_capabilities.py; then
+            echo "Executable or mutating pattern found in the parent MSG197 validator"
             exit 1
           fi
 
-      - name: Confirm no candidate code was vendored
+      - name: Confirm no runtime environments were committed
         shell: bash
         run: |
           set -Eeuo pipefail
-          test "$(find research/external-capabilities -type f | wc -l)" -le 20
-          test ! -d research/external-capabilities/vendor
-          test ! -d research/external-capabilities/node_modules
-          test ! -d research/external-capabilities/.venv
+          forbidden="$({ find research/external-capabilities -type d \
+            \( -name vendor -o -name node_modules -o -name .venv -o -name venv -o -name env \
+               -o -name .tox -o -name __pycache__ -o -name site-packages \
+               -o -name target -o -name dist -o -name build \) \
+            -print; } | sort)"
+          if [ -n "$forbidden" ]; then
+            printf 'Forbidden generated or runtime directories:\n%s\n' "$forbidden"
+            exit 1
+          fi
+
+      - name: Report scalable evidence census
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          candidate_dirs="$(find research/external-capabilities/candidates -mindepth 1 -maxdepth 1 -type d | wc -l)"
+          evidence_files="$(find research/external-capabilities -type f | wc -l)"
+          evidence_bytes="$(find research/external-capabilities -type f -printf '%s\n' | awk '{total += $1} END {print total + 0}')"
+          echo "candidate_directories=$candidate_dirs evidence_files=$evidence_files evidence_bytes=$evidence_bytes"
+          test "$candidate_dirs" -ge 1
