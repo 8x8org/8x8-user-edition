@@ -1,7 +1,5 @@
-# MSG197 governed artifacts at feature/msg197-council-hardening-v2
-# Receipt and this manifest are intentionally excluded to avoid recursive hashing.
-045628d552afa50eff21a7d7690893f0d6fd771b0ac4fad13bdd2b90f328f92e  .github/workflows/validate-msg197-external-capabilities.yml
-47bf9d79cf928b9a3c5d8bd267e12ae76473552f7c4c1468443807daf07d4e4d  scripts/validate_msg197_external_capabilities.py
+# MSG197 governed research artifacts.
+# The receipt, this manifest, validators and workflows are intentionally excluded to avoid recursive self-hashing.
 7bdab1c87abebbb9bc4312076fc974625ff034bf9b648f4477930e3fba0f6d3c  research/external-capabilities/ARCHITECTURE_DECISIONS/ADR-001-external-code-remains-subordinate.md
 85235f6b8f6438bfc6a3456282a59368991b61c70a72ab15429349e898a18999  research/external-capabilities/ARCHITECTURE_DECISIONS/ADR-002-knowledge-is-not-executable-policy.md
 5d8e0b09058575bcb248c2a62ccc7d31a7e4e4bccbe05b5dd0cd1216f453d427  research/external-capabilities/ARCHITECTURE_DECISIONS/ADR-003-computer-use-sandbox.md
