@@ -37,14 +37,26 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Print governed artifact SHA-256 inventory
+      - name: Verify bounded governed artifact inventory
         shell: bash
         run: |
           set -Eeuo pipefail
-          find research/external-capabilities -type f \
-            ! -path '*/receipts/*' -print0 | sort -z | xargs -0 sha256sum
-          sha256sum scripts/validate_msg197_external_capabilities.py
-          sha256sum .github/workflows/validate-msg197-external-capabilities.yml
+          manifest="research/external-capabilities/receipts/MSG197_ARTIFACT_SHA256SUMS.txt"
+          governed_count=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in \#*) continue ;; esac
+            digest="${line%%  *}"
+            path="${line#*  }"
+            test -f "$path"
+            actual="$(sha256sum "$path" | cut -d' ' -f1)"
+            test "$actual" = "$digest"
+            printf '%s  %s\n' "$actual" "$path"
+            governed_count=$((governed_count + 1))
+          done < "$manifest"
+          test "$governed_count" -ge 11
+          test "$governed_count" -le 64
+          echo "governed_artifact_count=$governed_count"
 
       - name: Parse governed parent JSON
         shell: bash
@@ -64,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          if grep -InE '(subprocess\.|os\.system|shell=True|curl |wget |ssh |scp |rsync |npm install|pip install|docker run|kubectl|terraform apply|psql |gh pr merge|vercel deploy)' \
+          if grep -InE '(subprocess\.|os\.system|shell=True|curl|wget|ssh|scp|rsync|npm.*install|pip.*install|docker.*run|kubectl|terraform.*apply|psql|gh.*pr.*merge|vercel.*deploy)' \
             scripts/validate_msg197_external_capabilities.py; then
             echo "Executable or mutating pattern found in the parent MSG197 validator"
             exit 1
@@ -75,7 +87,9 @@ jobs:
         run: |
           set -Eeuo pipefail
           forbidden="$({ find research/external-capabilities -type d \
-            \( -name vendor -o -name node_modules -o -name .venv -o -name __pycache__ -o -name target -o -name dist -o -name build \) \
+            \( -name vendor -o -name node_modules -o -name .venv -o -name venv -o -name env \
+               -o -name .tox -o -name __pycache__ -o -name site-packages \
+               -o -name target -o -name dist -o -name build \) \
             -print; } | sort)"
           if [ -n "$forbidden" ]; then
             printf 'Forbidden generated or runtime directories:\n%s\n' "$forbidden"
@@ -88,5 +102,6 @@ jobs:
           set -Eeuo pipefail
           candidate_dirs="$(find research/external-capabilities/candidates -mindepth 1 -maxdepth 1 -type d | wc -l)"
           evidence_files="$(find research/external-capabilities -type f | wc -l)"
-          echo "candidate_directories=$candidate_dirs evidence_files=$evidence_files"
+          evidence_bytes="$(find research/external-capabilities -type f -printf '%s\n' | awk '{total += $1} END {print total + 0}')"
+          echo "candidate_directories=$candidate_dirs evidence_files=$evidence_files evidence_bytes=$evidence_bytes"
           test "$candidate_dirs" -ge 1
