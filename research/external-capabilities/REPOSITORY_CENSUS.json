@@ -1,12 +1,12 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.0.1",
   "mission_id": "MSG197_EXTERNAL_CAPABILITY_INTAKE_V1",
   "owner": "FlashTM8 / Meher Trabelsi",
-  "observed_at": "2026-08-05T16:57:00Z",
+  "observed_at": "2026-08-05T17:35:00Z",
   "target_repository": {
     "repository": "8x8org/8x8-user-edition",
-    "base_commit": "48844c6c0cec19cca28dc84e5960979ab5567440",
-    "branch": "feature/msg197-external-capability-intake-v1"
+    "base_commit": "c7ad9b247d067b074fcb59d329c6126937a749bf",
+    "branch": "fix/msg197-uber-adr-semantic-correction-v1"
   },
   "truth_state": "UPSTREAM_CENSUS_COMPLETE_STATIC_RESEARCH_ONLY",
   "installation_performed": false,
@@ -105,15 +105,16 @@
     {
       "requested": "uber/adr",
       "canonical": "uber/ADR",
-      "correction": "Canonical repository name is uppercase ADR",
+      "correction": "Canonical repository name is uppercase ADR. ADR means Agentic AI Detection and Response, not architecture decision records.",
+      "identity_note": "The pinned repository contains an agent-activity sensor, synthetic security benchmark and detector. The prevention component is not included in the open-source release.",
       "default_branch": "main",
       "pinned_commit": "73873e18948be7a8637955eeef2f813a541692b8",
       "commit_time": "2026-08-03T18:10:41Z",
       "size_kib": 12647,
       "archived": false,
       "license": {"spdx": "Apache-2.0", "path": "LICENSE", "blob_sha": "6d772a80340d3ed09a2e272d02727302076d8c2e"},
-      "primary_classification": "OPTIONAL_PLUGIN",
-      "recommendation": "SANDBOX_ADR_EXPORT_AND_ROLLBACK_TEST"
+      "primary_classification": "ADAPTER_REFERENCE",
+      "recommendation": "MAP_AGENT_SECURITY_TELEMETRY_AND_BENCHMARK_NO_PRIVATE_SESSIONS"
     },
     {
       "requested": "roboflow/supervision",
