@@ -1,0 +1,52 @@
+{
+  "classification": "UI_DEPENDENCY",
+  "current_8x8_client": {
+    "delivery": "static public-safe assets on Vercel",
+    "private_runtime_exposed": false,
+    "rollback": "previous static deployment and Git revert",
+    "server_required": false
+  },
+  "decision": "DEFER_STATIC_CLIENT_REMAINS_CANONICAL",
+  "hosting_changed": false,
+  "installation_performed": false,
+  "mission_id": "MSG197-NEXT-001",
+  "next_gate": "REOPEN_ONLY_AFTER_STABLE_RELEASE_AND_PRODUCT_REQUIREMENT",
+  "observed_at": "2026-08-05T18:53:00Z",
+  "parent_issue": 41,
+  "reopen_conditions": [
+    "approved requirement static delivery cannot satisfy",
+    "stable release pin",
+    "named server owner",
+    "threat model",
+    "bundle and hosting budget",
+    "logged-out privacy test",
+    "rollback to static rehearsal"
+  ],
+  "requirements_not_present": [
+    "server-side rendering requirement",
+    "authenticated server session requirement",
+    "dynamic middleware requirement",
+    "server actions requirement",
+    "framework-specific routing requirement"
+  ],
+  "risk_model": [
+    "server and middleware attack surface",
+    "cache and revalidation complexity",
+    "framework supply chain",
+    "runtime ownership",
+    "edge and origin observability",
+    "client/server data boundary drift",
+    "canary branch instability"
+  ],
+  "schema_version": "1.0.0",
+  "server_runtime_added": false,
+  "source": {
+    "commit": "ab7fc5fb581c396f0116f1a406da17ede2e15440",
+    "default_branch": "canary",
+    "license_spdx": "MIT",
+    "pin_class": "MOVING_CANARY_NOT_PRODUCTION_SELECTION",
+    "repository": "vercel/next.js"
+  },
+  "truth_state": "PASS_CLIENT_ARCHITECTURE_DECISION",
+  "work_issue": 57
+}
