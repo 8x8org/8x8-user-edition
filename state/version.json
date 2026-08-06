@@ -1,0 +1,13 @@
+{
+  "product": "8x8 OS",
+  "component": "8x8 User Edition",
+  "product_version": "0.0.1",
+  "maturity": "BETA",
+  "reality": "PUBLIC_PRESENT",
+  "promotion_state": "PROTECTED_BETA",
+  "whole_system_complete": false,
+  "stable_release": false,
+  "private_control_plane_included": false,
+  "future_lab_claims_live": false,
+  "policy": "https://github.com/8x8org/.github/blob/main/docs/8X8_VERSION_AND_THREE_REALITY_POLICY_0.0.1.md"
+}
