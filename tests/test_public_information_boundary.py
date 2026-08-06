@@ -39,10 +39,10 @@ class PublicInformationBoundaryTests(unittest.TestCase):
         self.assertIn("private branch names", text)
 
     def test_validator_blocks_msg197_program_markers(self) -> None:
-        program_marker = "".join(("MSG", "197"))
-        stale_branch = "".join(
-            ("feature/", "msg", "197", "-external-capability-intake-v1")
-        )
+        # Build markers without embedding them verbatim so this test file
+        # does not trigger the boundary validator itself.
+        program_marker = f"MSG{197}"
+        stale_branch = "feature/msg" + "197-external-capability-intake-v1"
         self.assertIsNotNone(
             PATTERNS["private_research_program_identifier"].search(program_marker)
         )
