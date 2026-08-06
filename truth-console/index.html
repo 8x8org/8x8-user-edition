@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>8x8 Truth Console 0.0.1</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color-scheme:dark;background:#080b12;color:#eef2ff}body{margin:0;padding:24px;max-width:1200px;margin-inline:auto}header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.badge{border:1px solid #586174;border-radius:999px;padding:6px 10px;font-size:.8rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}.card{border:1px solid #2d3442;border-radius:16px;padding:16px;background:#101522}.muted{color:#aab3c5}.state{font-weight:700}.warning{border-color:#8a6d1d;background:#1d190c}ul{padding-left:20px}code{font-family:ui-monospace,monospace}.error{color:#ffb4ab}@media(prefers-reduced-motion:no-preference){.card{transition:transform .15s ease}.card:hover{transform:translateY(-2px)}}
+  </style>
+</head>
+<body>
+<header>
+  <div><p class="muted">8x8 OS 0.0.1 Beta</p><h1>Read-Only Truth Console</h1><p class="muted">Public-safe fixture. No private runtime connection and no remote actions.</p></div>
+  <div id="version" class="badge">Loading state…</div>
+</header>
+<section id="summary" class="grid" aria-live="polite"></section>
+<section class="card warning"><h2>Evidence boundary</h2><p id="boundary">This console must display UNKNOWN rather than infer private state.</p></section>
+<script>
+(async()=>{const root=document.querySelector('#summary');try{const r=await fetch('./state.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const s=await r.json();document.querySelector('#version').textContent=`${s.product_version} · ${s.reality} · ${s.promotion_state}`;const groups=[['Agents',s.agents],['Leases',s.leases],['Missions',s.missions],['Services',s.services],['Repositories',s.repositories],['Deployments',s.deployments],['Contradictions',s.contradictions],['Evidence',s.evidence]];root.replaceChildren(...groups.map(([name,items])=>{const card=document.createElement('article');card.className='card';const h=document.createElement('h2');h.textContent=`${name} (${items.length})`;card.append(h);if(!items.length){const p=document.createElement('p');p.className='muted';p.textContent='None reported in this public fixture.';card.append(p);return card}const ul=document.createElement('ul');for(const item of items){const li=document.createElement('li');const id=item.agent_id||item.lease_id||item.mission_id||item.service_id||item.full_name||item.deployment_id||item.contradiction_id||item.evidence_id||'record';const state=item.state||item.status||item.truth_state||item.evidence_state||item.cleanliness||'UNKNOWN';li.textContent=`${id}: ${state}`;ul.append(li)}card.append(ul);return card}));document.querySelector('#boundary').textContent=`Generated ${s.generated_at}. This page consumes ${s.mode}; private services, agents, memory, credentials and deployments remain unavailable.`}catch(e){root.innerHTML=`<article class="card"><h2>State unavailable</h2><p class="error"></p></article>`;root.querySelector('.error').textContent=String(e)}})();
+</script>
+</body>
+</html>
