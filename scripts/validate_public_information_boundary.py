@@ -24,6 +24,11 @@ PATTERNS = {
     "private_root_path": re.compile(r"/root/", re.IGNORECASE),
     "private_runtime_directory": re.compile(r"(?:^|[\\/])\.hermes(?:[\\/]|$)", re.IGNORECASE),
     "private_state_database": re.compile(r"\bstate\.db\b", re.IGNORECASE),
+    "private_research_program_identifier": re.compile(r"\bMSG197\b", re.IGNORECASE),
+    "stale_private_research_branch": re.compile(
+        r"\bfeature/msg197-external-capability-intake-v1\b",
+        re.IGNORECASE,
+    ),
     "private_repository_name": re.compile(r"\bhorbolsi/8x8-os-june2026\b", re.IGNORECASE),
     "private_mobile_runtime": re.compile(r"\b(?:Termux|Ubuntu\s+PRoot|Samsung\s+Galaxy)\b", re.IGNORECASE),
     "internal_coordinator_identity": re.compile(r"\bHermes(?:-led)?\b", re.IGNORECASE),
