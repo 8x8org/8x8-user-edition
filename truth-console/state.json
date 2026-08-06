@@ -1,0 +1,25 @@
+{
+  "product_version":"0.0.1",
+  "generated_at":"2026-08-06T12:45:00Z",
+  "reality":"PUBLIC_PRESENT",
+  "promotion_state":"PROTECTED_BETA",
+  "mode":"PUBLIC_SAFE_FIXTURE",
+  "agents":[
+    {"agent_id":"SERAPHIM_PUBLIC_GUIDE","state":"IDLE","last_seen_at":"2026-08-06T12:45:00Z","task_id":null}
+  ],
+  "leases":[],
+  "missions":[
+    {"mission_id":"MSG234","status":"EXECUTING","reality":"PUBLIC_PRESENT","evidence_state":"IMPLEMENTED"}
+  ],
+  "services":[],
+  "repositories":[
+    {"full_name":"8x8org/8x8-user-edition","head":"feature/msg234-0-0-1-beta-alignment","branch":"feature/msg234-0-0-1-beta-alignment","cleanliness":"UNKNOWN","reality":"PUBLIC_PRESENT"}
+  ],
+  "deployments":[],
+  "contradictions":[
+    {"contradiction_id":"LOCAL_RUNTIME_NOT_CONNECTED","claims":["Private runtime may be active","This public fixture cannot verify private runtime"],"state":"OPEN","safe_assumption":"Treat private runtime state as UNKNOWN on this public surface"}
+  ],
+  "evidence":[
+    {"evidence_id":"PUBLIC_FIXTURE","digest":"0000000000000000000000000000000000000000000000000000000000000000","observed_at":"2026-08-06T12:45:00Z","fresh_until":"2026-08-07T12:45:00Z","truth_state":"REPORTED"}
+  ]
+}
