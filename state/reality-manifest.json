@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.0.1",
+  "product": "8x8 User Edition",
+  "product_version": "0.0.1",
+  "maturity": "BETA",
+  "reality": "PUBLIC_PRESENT",
+  "promotion_state": "PROTECTED_BETA",
+  "evidence_state": "IMPLEMENTED",
+  "whole_system_complete": false,
+  "whole_system_stable": false,
+  "private_control_plane_included": false,
+  "live_billing": false,
+  "live_wallet_authority": false,
+  "live_trading_authority": false,
+  "notes": "Public-safe static client. Product maturity remains 0.0.1 Beta until explicit owner-approved system-wide promotion."
+}
