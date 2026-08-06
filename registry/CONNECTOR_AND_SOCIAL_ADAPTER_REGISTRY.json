@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "document_class": "PUBLIC_REGISTRY",
+  "truth_state": "PUBLIC_SOURCE_VALIDATED",
+  "note": "This registry documents the public connector and social adapter architecture. Adapter instances, OAuth tokens, credentials, and live account configuration are not included.",
+  "adapters": [
+    {"id": "telegram",   "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "discord",    "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "youtube",    "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "x",          "status": "DISABLED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true, "disabled_reason": "awaiting_owner_created_developer_app"},
+    {"id": "facebook",   "status": "DISABLED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true, "disabled_reason": "awaiting_owner_created_developer_app"},
+    {"id": "tiktok",     "status": "DISABLED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true, "disabled_reason": "awaiting_owner_created_developer_app"},
+    {"id": "twitch",     "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "roblox",     "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": false, "disable_switch": true, "owner_canary_required": true},
+    {"id": "reddit",     "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "linkedin",   "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "instagram",  "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "slack",      "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "teams",      "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "whatsapp",   "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": true,  "disable_switch": true, "owner_canary_required": true},
+    {"id": "email",      "status": "DESIGNED",  "credential_storage": "encrypted_vault_ref", "oauth": false, "disable_switch": true, "owner_canary_required": true}
+  ],
+  "capability_contract_requirements": [
+    "user_owned_credentials",
+    "encrypted_vault_reference_only",
+    "oauth_state_pkce_replay_protection",
+    "explicit_scopes",
+    "per_platform_disable_switch",
+    "owner_canary_before_first_post",
+    "receipts",
+    "visible_delivery_verification",
+    "rate_limit_enforcement",
+    "moderation",
+    "revocation",
+    "rollback"
+  ],
+  "generated_at": "2026-08-06T11:29:00Z",
+  "msg_ref": "MSG233"
+}

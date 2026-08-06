@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "document_class": "PUBLIC_REGISTRY",
+  "truth_state": "PUBLIC_SOURCE_VALIDATED",
+  "note": "This registry documents the public architecture of the Provider Router. No API keys, private endpoints, cost records, or live routing state are included.",
+  "provider_router_version": "V2-DESIGN",
+  "free_lane_first_policy": true,
+  "paid_escalation_requires_owner_approval": true,
+  "budget_ceiling_usd_per_canary": 0.01,
+  "provider_classes": [
+    {
+      "class_id": "free_local",
+      "description": "Locally-hosted or free-tier models with no per-call cost",
+      "priority": 1,
+      "canary_eligible": true
+    },
+    {
+      "class_id": "free_tier_api",
+      "description": "API providers offering a free tier within rate limits",
+      "priority": 2,
+      "canary_eligible": true
+    },
+    {
+      "class_id": "paid_standard",
+      "description": "Standard paid API providers — requires active budget policy",
+      "priority": 3,
+      "canary_eligible": false,
+      "owner_approval_required": true
+    }
+  ],
+  "resilience_features": [
+    "retry_budgets",
+    "jitter",
+    "circuit_breakers",
+    "concurrency_caps",
+    "provider_health_checks",
+    "fallback_limits",
+    "rollback"
+  ],
+  "private_routing_note": "Live routing tables, API keys, provider URLs, and cost records are not published in this file.",
+  "generated_at": "2026-08-06T11:29:00Z",
+  "msg_ref": "MSG233"
+}
