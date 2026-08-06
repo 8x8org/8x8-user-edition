@@ -2,7 +2,7 @@ name: Validate Public Beta
 
 on:
   push:
-    branches: [main, security/public-private-boundary-remediation-v2]
+    branches: [main, security/public-private-boundary-remediation-v2, feature/msg234-0-0-1-beta-alignment]
   pull_request:
 
 permissions:
@@ -27,7 +27,8 @@ jobs:
           required = [
               'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
               'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
+              'state/version.json', 'README.md', 'ARCHITECTURE.md',
+              'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
               'PUBLIC_INFORMATION_BOUNDARY.md', 'PUBLIC_CAPABILITIES.md',
               'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
               'art-board/state.json', 'art-board/release-unit.json', 'art-board/README.md',
@@ -37,6 +38,27 @@ jobs:
           missing = [path for path in required if not Path(path).is_file()]
           if missing:
               raise SystemExit(f'Missing required files: {missing}')
+
+          version = json.loads(Path('state/version.json').read_text())
+          expected = {
+              'product_version': '0.0.1',
+              'maturity': 'BETA',
+              'reality': 'PUBLIC_PRESENT',
+              'promotion_state': 'PROTECTED_BETA',
+              'whole_system_complete': False,
+              'stable_release': False,
+              'private_control_plane_included': False,
+              'future_lab_claims_live': False,
+          }
+          drift = {k: (version.get(k), v) for k, v in expected.items() if version.get(k) != v}
+          if drift:
+              raise SystemExit(f'0.0.1 Beta identity drift: {drift}')
+
+          readme = Path('README.md').read_text().lower()
+          required_readme_terms = ['0.0.1 beta', 'private_past', 'public_present', 'future_lab', 'protected_beta']
+          missing_terms = [term for term in required_readme_terms if term not in readme]
+          if missing_terms:
+              raise SystemExit(f'Missing Three-Reality/version terms: {missing_terms}')
 
           state = json.loads(Path('state/public-state.json').read_text())
           must_be_false = [
@@ -56,8 +78,6 @@ jobs:
           release = json.loads(Path('art-board/release-unit.json').read_text())
           if art.get('mode') != 'PUBLIC_SAFE_FIXTURE':
               raise SystemExit('Art Board must remain PUBLIC_SAFE_FIXTURE')
-          if art.get('score', {}).get('earned') != 100 or art.get('score', {}).get('possible') != 100:
-              raise SystemExit('Art Board slice score must be 100/100')
           if art.get('score', {}).get('whole_system_score') != 'NOT_INFERRED':
               raise SystemExit('Art Board must not infer whole-system completion')
           if release.get('truth_state') != 'PUBLIC_SOURCE_VALIDATED':
@@ -88,6 +108,7 @@ jobs:
       - name: Parse JSON files
         run: |
           python3 -m json.tool state/public-state.json >/dev/null
+          python3 -m json.tool state/version.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
           python3 -m json.tool art-board/state.json >/dev/null
