@@ -61,6 +61,9 @@ jobs:
               raise SystemExit(f'Missing Three-Reality/version terms: {missing_terms}')
 
           state = json.loads(Path('state/public-state.json').read_text())
+          if state.get('release') != '0.0.1-beta':
+              raise SystemExit(f"Public state version drift: {state.get('release')!r}")
+
           must_be_false = [
               'private_control_plane_connected', 'private_repositories_connected',
               'private_memory_connected', 'private_messages_connected',
@@ -73,6 +76,27 @@ jobs:
           violations = [key for key in must_be_false if state.get(key) is not False]
           if violations:
               raise SystemExit(f'Public boundary violation: {violations}')
+
+          public_version_surfaces = {
+              'index.html': Path('index.html').read_text().lower(),
+              'IMPLEMENTATION_STATUS.md': Path('IMPLEMENTATION_STATUS.md').read_text().lower(),
+              'SECURITY.md': Path('SECURITY.md').read_text().lower(),
+          }
+          missing_identity = [
+              path for path, text in public_version_surfaces.items()
+              if '0.0.1 beta' not in text
+          ]
+          if missing_identity:
+              raise SystemExit(f'Public version identity missing from: {missing_identity}')
+
+          forbidden_current_versions = ['0.1.0-beta', '0.1.x beta', 'beta 0.1']
+          stale = {
+              path: [term for term in forbidden_current_versions if term in text]
+              for path, text in public_version_surfaces.items()
+          }
+          stale = {path: terms for path, terms in stale.items() if terms}
+          if stale:
+              raise SystemExit(f'Stale public version declarations: {stale}')
 
           art = json.loads(Path('art-board/state.json').read_text())
           release = json.loads(Path('art-board/release-unit.json').read_text())
