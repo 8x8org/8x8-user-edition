@@ -1,0 +1,53 @@
+{
+  "schema": "8x8.public-reality-snapshot.v1",
+  "release": "0.1.0-beta",
+  "projection": "PUBLIC_SAFE",
+  "three_realities": ["PRIVATE_PAST", "PUBLIC_PRESENT", "FUTURE_LAB"],
+  "repository_estate": {
+    "connected_total": 16,
+    "public": 5,
+    "protected": 11,
+    "public_repositories": [
+      "8x8org/8x8-user-edition",
+      "8x8org/8x8-protocol",
+      "8x8org/.github",
+      "horbolsi/8x8-OS-Ecosystem",
+      "horbolsi/8x8-os-a-z"
+    ]
+  },
+  "visual_registry": {
+    "records": 14,
+    "unique_binaries": 13,
+    "render_set_unique": 13,
+    "duplicate_alias_excluded_from_render": "8X8-VIS-0005",
+    "duplicate_of": "8X8-VIS-0004"
+  },
+  "canonical_worlds": [
+    "Command Deck",
+    "Council Wall",
+    "Art Board 360",
+    "Studio Womb",
+    "Memory Graph",
+    "Operator HUD",
+    "Universal Model Fabric",
+    "Mission Fabric",
+    "Hardware + Devices",
+    "Trading Intelligence",
+    "Blockchain + Economy",
+    "Channels + Community",
+    "Security + Authority",
+    "Deployment + Connectors"
+  ],
+  "devices": ["Samsung primary edge node", "iPhone/iSH companion node"],
+  "channels": ["Telegram", "Discord", "YouTube", "X", "Facebook", "TikTok"],
+  "truth": {
+    "model_fabric": "VERIFIED_OWNER_RUNTIME",
+    "first_blink": "PUBLIC_CONTRACT_IMPLEMENTED_UNIVERSAL_CERTIFICATION_PENDING",
+    "voice_roundtrip": "UNVERIFIED",
+    "agent_fleet": "REGISTERED_PARTIAL_CERTIFICATION",
+    "trading": "SIGNAL_RESEARCH_ONLY",
+    "blockchain": "TESTNET_RESEARCH_MAINNET_OWNER_GATED",
+    "spatial_world": "PROGRESSIVE_CONVERGENCE",
+    "adaptive_8k": "TARGET_NOT_FULLY_PROVEN"
+  }
+}
