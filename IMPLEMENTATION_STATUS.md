@@ -1,6 +1,6 @@
 # Implementation Status
 
-**Release candidate:** `0.1.0-beta`
+**Release candidate:** `0.0.1 Beta`
 
 | Capability | State | Evidence |
 |---|---|---|
