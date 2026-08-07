@@ -17,7 +17,7 @@ This release draws from the accumulated public-safe architecture rather than cre
 - First Blink / context-bootstrap contract;
 - Universal Model Fabric and mission-fabric evidence;
 - 16 currently connected GitHub repositories, while keeping protected repository contents private;
-- Samsung primary edge node and iPhone/iSH companion node;
+- primary mobile edge node and iPhone/iSH companion node;
 - Studio/content, Telegram, Discord, YouTube, X, Facebook, TikTok, trading-research and blockchain/testnet domains.
 
 ## Visual registry rule
@@ -33,7 +33,7 @@ The public interface is a projection of the Fabric itself:
 Primary worlds:
 
 - Agent Fleet and Council;
-- Hardware / Samsung / Termux / Ubuntu / iPhone-iSH;
+- Hardware / mobile edge runtime / local Linux runtime / iPhone-iSH;
 - Projects, repositories, branches and release DNA;
 - Universal Model Fabric;
 - Mission Fabric, tasks, leases, receipts and rollback;
@@ -56,15 +56,7 @@ The browser demo is deliberately public-safe and does not fetch private runtime 
 
 ## Public/private boundary
 
-Never publish:
-
-- owner credentials or private keys;
-- wallet signing/recovery material;
-- private repository contents;
-- unrestricted raw messages/memory/logs;
-- sensitive device topology or exact private locations;
-- privileged control channels;
-- live financial execution authority.
+Never publish owner credentials or private keys, wallet signing/recovery material, private repository contents, unrestricted raw messages/memory/logs, sensitive device topology or exact private locations, privileged control channels, or live financial execution authority.
 
 The public interface may show sanitized aggregate states and explicit VERIFIED / PARTIAL / PLANNED / BLOCKED labels.
 
