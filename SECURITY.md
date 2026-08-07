@@ -15,7 +15,7 @@ This repository is the public 8x8 User Edition shell. It must never contain or e
 
 ## Current beta security posture
 
-The `0.1.0-beta` cockpit is static and local-only. It has:
+The `0.0.1 Beta` cockpit is static and local-only. It has:
 
 - no backend;
 - no database;
@@ -48,7 +48,7 @@ Never include a real credential value. Report only the path, pattern class and r
 
 | Version | Supported |
 |---|---|
-| 0.1.x beta | Yes |
+| 0.0.1 Beta | Yes |
 | Pre-beta README-only shell | No |
 
 ## Security boundary
