@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from statistics import mean, pstdev
 from typing import Iterable, Sequence
 
-ENGINE_VERSION = "1.0.0"
+ENGINE_VERSION = "1.0.1"
 DEFAULT_SEED = 8888888
 
 
@@ -136,6 +136,17 @@ def risk_of_ruin_bootstrap(
 ) -> dict:
     if not returns:
         raise ValueError("returns required")
+    if not math.isfinite(initial_equity) or initial_equity <= 0:
+        raise ValueError("initial_equity must be positive and finite")
+    if not isinstance(paths, int) or paths <= 0:
+        raise ValueError("paths must be a positive integer")
+    if not isinstance(horizon, int) or horizon <= 0:
+        raise ValueError("horizon must be a positive integer")
+    if not math.isfinite(ruin_fraction) or not (0.0 <= ruin_fraction <= 1.0):
+        raise ValueError("ruin_fraction must be within [0, 1]")
+    if any(not math.isfinite(float(r)) or float(r) <= -1.0 for r in returns):
+        raise ValueError("returns must be finite and greater than -1")
+
     rng = random.Random(seed)
     ruined = 0
     finals: list[float] = []
@@ -203,6 +214,10 @@ def manipulation_stress(returns: Sequence[float], shock_fraction: float = -0.20,
     if not vals:
         raise ValueError("returns required")
     i = len(vals) // 2 if index is None else index
+    if not isinstance(i, int) or not (0 <= i < len(vals)):
+        raise ValueError("index out of range")
+    if not math.isfinite(shock_fraction):
+        raise ValueError("shock_fraction must be finite")
     vals[i] += shock_fraction
     return {
         "shock_index": i,
@@ -215,9 +230,15 @@ def manipulation_stress(returns: Sequence[float], shock_fraction: float = -0.20,
 
 def concentration_hhi(weights: Iterable[float]) -> float:
     vals = [float(w) for w in weights]
+    if not vals:
+        raise ValueError("weights required")
+    if any(not math.isfinite(w) for w in vals):
+        raise ValueError("finite weights required")
+    if any(w < 0 for w in vals):
+        raise ValueError("non-negative weights required")
     total = sum(vals)
     if total <= 0:
-        raise ValueError("positive weights required")
+        raise ValueError("positive total weight required")
     normalized = [w / total for w in vals]
     return sum(w * w for w in normalized)
 
@@ -225,18 +246,27 @@ def concentration_hhi(weights: Iterable[float]) -> float:
 def model_drift(reference: Sequence[float], recent: Sequence[float]) -> dict:
     if not reference or not recent:
         raise ValueError("reference and recent required")
+    if any(not math.isfinite(float(v)) for v in [*reference, *recent]):
+        raise ValueError("reference and recent values must be finite")
     ref_mu, new_mu = mean(reference), mean(recent)
     ref_vol = pstdev(reference) if len(reference) > 1 else 0.0
     new_vol = pstdev(recent) if len(recent) > 1 else 0.0
     pooled = math.sqrt((ref_vol * ref_vol + new_vol * new_vol) / 2.0)
-    standardized_mean_shift = (new_mu - ref_mu) / pooled if pooled > 0 else 0.0
+    mean_delta = new_mu - ref_mu
+    if pooled > 0:
+        standardized_mean_shift = mean_delta / pooled
+        mean_shift_flag = abs(standardized_mean_shift) >= 1.0
+    else:
+        standardized_mean_shift = 0.0 if mean_delta == 0 else math.copysign(math.inf, mean_delta)
+        mean_shift_flag = mean_delta != 0
+    volatility_shift_flag = ref_vol > 0 and new_vol / ref_vol >= 1.5
     return {
         "reference_mean": ref_mu,
         "recent_mean": new_mu,
         "reference_volatility": ref_vol,
         "recent_volatility": new_vol,
         "standardized_mean_shift": standardized_mean_shift,
-        "drift_flag": abs(standardized_mean_shift) >= 1.0 or (ref_vol > 0 and new_vol / ref_vol >= 1.5),
+        "drift_flag": mean_shift_flag or volatility_shift_flag,
     }
 
 
