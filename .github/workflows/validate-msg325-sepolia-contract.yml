@@ -30,13 +30,16 @@ jobs:
         with:
           node-version: "22"
           package-manager-cache: false
-      - name: Install pinned compiler and contract library
-        run: npm install --no-save --ignore-scripts solc@0.8.35 @openzeppelin/contracts@5.6.1
+      - name: Install pinned compiler and contract library outside repository
+        run: |
+          rm -rf /tmp/msg325-deps
+          mkdir -p /tmp/msg325-deps
+          npm install --prefix /tmp/msg325-deps --no-save --ignore-scripts solc@0.8.35 @openzeppelin/contracts@5.6.1
       - name: Compile capped asset
         run: |
           rm -rf /tmp/msg325-compile
           mkdir -p /tmp/msg325-compile
-          npx solcjs --base-path . --include-path node_modules --bin --abi contracts/evm/EightX8CappedAsset.sol -o /tmp/msg325-compile
+          /tmp/msg325-deps/node_modules/.bin/solcjs --base-path . --include-path /tmp/msg325-deps/node_modules --bin --abi contracts/evm/EightX8CappedAsset.sol -o /tmp/msg325-compile
           test -s /tmp/msg325-compile/contracts_evm_EightX8CappedAsset_sol_EightX8CappedAsset.bin
           test -s /tmp/msg325-compile/contracts_evm_EightX8CappedAsset_sol_EightX8CappedAsset.abi
       - name: Verify deployment contract truth
@@ -62,7 +65,5 @@ jobs:
           assert p['pricing_truth']['secondary_market_price_direct_admin_control'] is False
           print('MSG325_SEPOLIA_CONTRACT_VALIDATION=PASS')
           PY
-      - name: Verify working tree stayed clean except npm temporary files
-        run: |
-          rm -rf node_modules package-lock.json package.json
-          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+      - name: Verify exact repository cleanliness
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
