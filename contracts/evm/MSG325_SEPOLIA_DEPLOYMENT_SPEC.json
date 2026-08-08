@@ -1,10 +1,14 @@
 {
-  "schema": "8x8.msg325.sepolia-deployment-spec.v1",
-  "status": "DEPLOYMENT_READY_SOURCE_NOT_BROADCAST",
+  "schema": "8x8.msg325.sepolia-deployment-spec.v1.1",
+  "status": "SOURCE_PINNED_NOT_BROADCAST",
   "network": "Ethereum Sepolia",
   "chain_id": 11155111,
   "contract": "contracts/evm/EightX8CappedAsset.sol:EightX8CappedAsset",
-  "dependency": "@openzeppelin/contracts@5.x",
+  "toolchain": {
+    "solidity": "0.8.35",
+    "openzeppelin_contracts": "5.6.1",
+    "source_pragma": "^0.8.24"
+  },
   "supply_model": {
     "whole_token_cap_each": 8888888,
     "initial_mint_each": 8888888,
@@ -12,7 +16,10 @@
     "mintable": true,
     "burnable": true,
     "burn_reopens_headroom": true,
-    "cap_immutable": true
+    "cap_immutable": true,
+    "allowed_decimals_min": 0,
+    "allowed_decimals_max": 18,
+    "deployment_decimals": 18
   },
   "assets": [
     {"name":"8x8 Coin","symbol":"8x8","role":"SETTLEMENT_AND_NETWORK_SECURITY"},
