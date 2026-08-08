@@ -1,0 +1,26 @@
+{
+  "product_version": "0.0.1",
+  "maturity": "Beta",
+  "reality": "PUBLIC_PRESENT_DESIGN_REFERENCE",
+  "batch_id": "VISUAL_BATCH_2026_08_08",
+  "source_reality": "PRIVATE_PAST",
+  "public_binary_embedding": false,
+  "references": [
+    {"file":"1000512604.jpg","sha256":"3e6575b7bd51d9d891ff5779fa05f2ec80377cc4834e69a7946e39c1ebf052d3","signal":"red luminous 8x8 core identity mark"},
+    {"file":"1000200505.png","sha256":"cb1b268e0d39d1e6948093981ced3112749ff2fdb49ae408d5b358e4a2409a5f","signal":"all-in-one public hub and ecosystem poster"},
+    {"file":"1000788687.jpg","sha256":"d809baec708a04bfd957b0ed1d86d2775b474c29243d2fa9ec570e84ecc1132a","signal":"multi-agent interoperability and shared workspace"},
+    {"file":"1000788696.jpg","sha256":"193340c9abae7e7bb6c87ead5555ead310f4d17f7053b4fd95b25e99e93ac473","signal":"autonomous-agent engineering room"},
+    {"file":"1000788690.jpg","sha256":"b2e19da81c826d0df6cf0fa8546e2e383844f99950082e729f91f5c4945f9dbf","signal":"agent council and round-table governance"},
+    {"file":"1000788689.jpg","sha256":"fbe6b50ae4654e91f0c1d48ed973779e7a52dea2c2c5ce6f4433bb7efde83aa2","signal":"autonomous-agent factory and compute hall"},
+    {"file":"1000788684.png","sha256":"9c8a97de183c08fe4d1dfdb76de470fb5e3b1191a181823235a16aab6e662a71","signal":"omniversal system atlas and dense operational dashboard"},
+    {"file":"1000700729.png","sha256":"cae2e937f6d92e90293168cd513f760fc97082a99eb3cd80c946ea6930ad9e93","signal":"command-center overview and mission control"},
+    {"file":"1000678579.png","sha256":"ede628d8b3a5559b004e95cff6b25ffe4201b056c8c86dbdafc61c48887a5279","signal":"sovereign AI x Web3 ecosystem identity"},
+    {"file":"1000675059.jpg","sha256":"b5688a8559c9bf7248c0cbdbab684d54503f5d27f01f9db27c954e0e1ef95926","signal":"cyan HUD and instrumentation grammar"}
+  ],
+  "rules": {
+    "telemetry_from_concept_art_is_not_live_evidence": true,
+    "deduplicate_by_sha256": true,
+    "future_agents_must_assimilate_registry": true,
+    "public_private_boundary_required": true
+  }
+}
