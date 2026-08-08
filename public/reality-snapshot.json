@@ -1,8 +1,10 @@
 {
-  "schema": "8x8.public-reality-snapshot.v1",
-  "release": "0.1.1-beta",
+  "schema": "8x8.public-reality-snapshot.0.0.1",
+  "product_version": "0.0.1",
+  "release": "0.0.1-beta",
   "projection": "PUBLIC_SAFE",
   "three_realities": ["PRIVATE_PAST", "PUBLIC_PRESENT", "FUTURE_LAB"],
+  "promotion_state": "PROTECTED_BETA",
   "repository_estate": {
     "public_repositories": [
       "8x8org/8x8-user-edition",
