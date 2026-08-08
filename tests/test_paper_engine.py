@@ -1,4 +1,5 @@
 import json
+import math
 import unittest
 from dataclasses import asdict
 
@@ -56,6 +57,17 @@ class PaperEngineTests(unittest.TestCase):
         self.assertEqual(a["paths"], 200)
         self.assertTrue(0 <= a["risk_of_ruin"] <= 1)
 
+    def test_monte_carlo_rejects_invalid_parameters(self):
+        returns = [0.01, -0.005]
+        for kwargs in ({"paths": 0}, {"paths": -1}, {"horizon": 0}, {"ruin_fraction": 1.1}, {"ruin_fraction": -0.1}):
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    risk_of_ruin_bootstrap(returns, 1000, **kwargs)
+        with self.assertRaises(ValueError):
+            risk_of_ruin_bootstrap([-1.0], 1000)
+        with self.assertRaises(ValueError):
+            risk_of_ruin_bootstrap(returns, 0)
+
     def test_walk_forward_keeps_out_of_sample_separate(self):
         folds = walk_forward([0.01, -0.01] * 20, train=10, test=5)
         self.assertGreater(len(folds), 0)
@@ -69,13 +81,33 @@ class PaperEngineTests(unittest.TestCase):
         stress = manipulation_stress(returns, shock_fraction=-0.20)
         self.assertLess(stress["stressed"]["final_equity"], stress["baseline"]["final_equity"])
 
+    def test_manipulation_stress_rejects_invalid_index(self):
+        with self.assertRaises(ValueError):
+            manipulation_stress([0.001] * 5, index=5)
+        with self.assertRaises(ValueError):
+            manipulation_stress([0.001] * 5, index=-1)
+
     def test_concentration_hhi(self):
         self.assertAlmostEqual(concentration_hhi([25, 25, 25, 25]), 0.25)
         self.assertGreater(concentration_hhi([90, 10]), 0.8)
+        with self.assertRaises(ValueError):
+            concentration_hhi([1, -0.5])
+        with self.assertRaises(ValueError):
+            concentration_hhi([1, math.inf])
 
     def test_model_drift_flags_large_shift(self):
         drift = model_drift([0.001, 0.002, 0.0, 0.001] * 10, [-0.04, -0.05, -0.03, -0.04] * 10)
         self.assertTrue(drift["drift_flag"])
+
+    def test_model_drift_flags_zero_volatility_mean_shift(self):
+        drift = model_drift([0.01] * 20, [-0.01] * 20)
+        self.assertTrue(drift["drift_flag"])
+        self.assertTrue(math.isinf(drift["standardized_mean_shift"]))
+
+    def test_model_drift_flat_equal_series_is_stable(self):
+        drift = model_drift([0.01] * 20, [0.01] * 20)
+        self.assertFalse(drift["drift_flag"])
+        self.assertEqual(drift["standardized_mean_shift"], 0.0)
 
     def test_receipt_is_digest_bound_and_paper_only(self):
         receipt = deterministic_fixture()
