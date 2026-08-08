@@ -1,10 +1,10 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.1.1",
   "release_scope": "PROTECTED_BETA_ACCOUNT_ECONOMY",
   "inherits_fabric": "8x8 OS 0.1.0 Stable / Living Omniversal Gate R4",
   "truth": {
     "protected_beta_admin_shell_implemented": true,
-    "protected_beta_user_shell_implemented": false,
+    "protected_beta_user_shell_implemented": true,
     "wallet_binding_migration_staged": true,
     "production_admin_login": false,
     "production_account_database": false,
@@ -19,7 +19,8 @@
   "planned_routes": {
     "owner_admin": "/admin",
     "user_account": "/account",
-    "source_admin_shell": "/protected-beta/admin/"
+    "source_admin_shell": "/protected-beta/admin/",
+    "source_user_shell": "/protected-beta/account/"
   },
   "identity": {
     "stable_8x8_id": true,
