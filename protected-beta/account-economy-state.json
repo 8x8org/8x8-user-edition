@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0.0",
+  "release_scope": "PROTECTED_BETA_ACCOUNT_ECONOMY",
+  "inherits_fabric": "8x8 OS 0.1.0 Stable / Living Omniversal Gate R4",
+  "truth": {
+    "production_admin_login": false,
+    "production_account_database": false,
+    "owner_wallet_verified": false,
+    "mainnet_assets_deployed": false,
+    "verified_user_count": null,
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "planned_routes": {
+    "owner_admin": "/admin",
+    "user_account": "/account"
+  },
+  "identity": {
+    "stable_8x8_id": true,
+    "replaceable_login_bindings": true,
+    "passkey_ready_target": true,
+    "owner_role_separate": true
+  },
+  "wallet_model": {
+    "store_private_keys_in_app": false,
+    "store_public_address_bindings": true,
+    "roles": [
+      "OWNER_TREASURY",
+      "OPERATING_TREASURY",
+      "LIQUIDITY",
+      "FEE_COLLECTION",
+      "TOKEN_ADMIN",
+      "ASSET_RESERVE",
+      "AGENT_OPERATIONAL_TESTNET_ONLY",
+      "USER_SELF_CUSTODY"
+    ]
+  },
+  "asset_family": ["8x8", "TM8", "0x8", "Ux8", "SRP", "XM8", "Fx8", "Tx8", "Sx8"],
+  "core_8x8": {
+    "requested_max_supply": 8888888,
+    "mintable": true,
+    "burnable": true,
+    "rule": "totalSupply must never exceed immutable maximum cap"
+  },
+  "pricing": {
+    "primary_sale_price_configurable": true,
+    "secondary_market_price_admin_control": false,
+    "market_reference_requires_source_and_timestamp": true
+  },
+  "first_chain_target": "TESTNET_FIRST",
+  "candidate_first_networks": ["Solana Devnet Token-2022", "Ethereum Sepolia"],
+  "mainnet_requires_exact_transaction_gate": true,
+  "acceptance": {
+    "bounded_100_100_only": true,
+    "gates": [
+      "identity_integrity",
+      "auth_session_security",
+      "public_private_boundary",
+      "wallet_key_isolation",
+      "wallet_binding_verification",
+      "mint_burn_cap_invariants",
+      "tokenomics_policy_bounds",
+      "sale_market_price_truth_separation",
+      "treasury_role_separation",
+      "testnet_verification",
+      "rollback_recovery",
+      "sbom_provenance_security",
+      "browser_mobile_accessibility",
+      "exact_head_ci",
+      "context_bootstrap_receipts"
+    ]
+  }
+}
