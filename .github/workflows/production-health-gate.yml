@@ -23,6 +23,7 @@ jobs:
           set -Eeuo pipefail
           base='https://8x8-os-ecosystem.vercel.app'
           routes=( '/' '/first-blink' '/world' '/art-board' )
+          canonical_marker='Living Omniversal Gate R3'
 
           for route in "${routes[@]}"; do
             headers="$(mktemp)"
@@ -51,12 +52,12 @@ jobs:
               exit 1
             }
 
-            grep -Fq 'FABRIC MIRROR' "$body" || {
-              echo "FAIL $route: Fabric Mirror marker missing"
+            grep -Fq "$canonical_marker" "$body" || {
+              echo "FAIL $route: canonical interface marker missing: $canonical_marker"
               exit 1
             }
 
-            echo "PASS $route HTTP=200 content-type=text/html canonical-version=0.0.1"
+            echo "PASS $route HTTP=200 content-type=text/html canonical-version=0.0.1 interface='$canonical_marker'"
           done
 
       - name: Record provenance limitation
