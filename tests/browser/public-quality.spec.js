@@ -4,7 +4,7 @@ const AxeBuilder = require('@axe-core/playwright').default;
 const routes = ['/', '/first-blink', '/world', '/art-board'];
 
 for (const route of routes) {
-  test(`${route} renders current 0.0.1 Living Fabric without console errors`, async ({ page }) => {
+  test(`${route} renders current 0.1.0 stable Living Fabric without console errors`, async ({ page }) => {
     const consoleErrors = [];
     const pageErrors = [];
     page.on('console', msg => {
@@ -15,19 +15,35 @@ for (const route of routes) {
     const response = await page.goto(route, { waitUntil: 'networkidle' });
     expect(response).not.toBeNull();
     expect(response.status()).toBe(200);
-    await expect(page).toHaveTitle(/8x8 OS .* Living Omniversal Gate R3 .* 0\.0\.1 Beta/);
-    await expect(page.locator('body')).toContainText('PUBLIC PRESENT');
+    await expect(page).toHaveTitle(/8x8 OS .* Living Omniversal Gate R4 .* 0\.1\.0 Stable/);
+    await expect(page.locator('body')).toContainText('0.1.0 STABLE');
     await expect(page.locator('#enter')).toBeVisible();
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
   });
 }
 
-test('opening Gate enters the Living Fabric', async ({ page }) => {
+test('opening Gate enters the stable Living Fabric', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.locator('#enter').click();
   await expect(page.locator('#gate')).toHaveClass(/open/);
   await expect(page.locator('#home')).toHaveClass(/active/);
+});
+
+test('1D through 8D projection controls are interactive', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#enter').click();
+  for (let dim = 1; dim <= 8; dim += 1) {
+    await page.locator(`[data-dim="${dim}"]`).click();
+    await expect(page.locator('#dimTitle')).toContainText(`${dim}D`);
+  }
+});
+
+test('R3 rollback projection remains available', async ({ page }) => {
+  const response = await page.goto('/r3', { waitUntil: 'networkidle' });
+  expect(response).not.toBeNull();
+  expect(response.status()).toBe(200);
+  await expect(page).toHaveTitle(/8x8 OS .* Living Omniversal Gate R3 .* 0\.0\.1 Beta/);
 });
 
 test('public UI does not make unexpected cross-origin requests', async ({ page, baseURL }) => {
@@ -41,7 +57,7 @@ test('public UI does not make unexpected cross-origin requests', async ({ page, 
   expect(unexpected).toEqual([]);
 });
 
-test('critical and serious axe findings are zero on the main Living Fabric', async ({ page }) => {
+test('critical and serious axe findings are zero on the stable Living Fabric', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
   const results = await new AxeBuilder({ page }).analyze();
   const blocking = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
