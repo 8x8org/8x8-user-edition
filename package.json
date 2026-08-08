@@ -1,0 +1,13 @@
+{
+  "name": "8x8-user-edition-quality-gates",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.54.2",
+    "serve": "^14.2.4"
+  }
+}
