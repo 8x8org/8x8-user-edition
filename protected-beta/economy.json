@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "release_scope": "PROTECTED_BETA_ACCOUNT_AND_ECONOMY",
+  "truth": {
+    "production_admin_login": false,
+    "production_account_database": false,
+    "owner_wallet_created_and_verified": false,
+    "mainnet_token_deployed": false,
+    "mainnet_mint_executed": false,
+    "market_price_admin_control": false,
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "routes": {
+    "owner_admin": "/admin/",
+    "user_account": "/account/"
+  },
+  "identity": {
+    "stable_identifier": "8x8_id",
+    "replaceable_login_bindings": true,
+    "passkey_webauthn_target": true,
+    "owner_role_separate_from_user": true
+  },
+  "wallet_roles": [
+    "OWNER_TREASURY",
+    "OPERATING_TREASURY",
+    "LIQUIDITY",
+    "FEE_COLLECTION",
+    "TOKEN_ADMIN",
+    "ASSET_RESERVE",
+    "AGENT_OPERATIONAL_TESTNET_ONLY",
+    "USER_SELF_CUSTODY"
+  ],
+  "asset_family": ["8X8", "TM8", "0x8", "Ux8", "SRP", "XM8", "Fx8", "Tx8", "Sx8"],
+  "core_asset": {
+    "name": "8x8 Coin",
+    "symbol": "8X8",
+    "maximum_supply": "8888888",
+    "cap_mutability": "IMMUTABLE",
+    "mintable": true,
+    "burnable": true,
+    "mint_rule": "totalSupply_after <= maximum_supply"
+  },
+  "settings_policy": {
+    "mint_schedule": "CONFIGURABLE_WITHIN_CAP_AND_AUTHORITY",
+    "primary_sale_price": "CONFIGURABLE_IN_SEPARATE_SALE_MODULE",
+    "secondary_market_price": "MARKET_DISCOVERED_NOT_ADMIN_CONTROLLED",
+    "treasury_allocation": "POLICY_CONFIG_WITH_RECEIPT",
+    "liquidity_allocation": "POLICY_CONFIG_WITH_RECEIPT",
+    "fee_distribution": "POLICY_CONFIG_WITH_RECEIPT",
+    "transfer_fee": "CHAIN_OR_CONTRACT_SPECIFIC_BOUNDED_MODULE"
+  },
+  "deployment_state_machine": [
+    "NOT_DESIGNED",
+    "SOURCE_READY",
+    "TESTS_PASS",
+    "TESTNET_READY",
+    "TESTNET_DEPLOYED",
+    "TESTNET_VERIFIED",
+    "MAINNET_OWNER_GATE_REQUIRED",
+    "MAINNET_DEPLOYED",
+    "MAINNET_VERIFIED"
+  ]
+}
