@@ -35,6 +35,10 @@ A public release unit must provide:
 
 Private details may be summarized only as neutral public claims such as `not connected`, `not available`, `planned`, or `not included`. Public diagrams and dashboards must never imitate live telemetry unless the displayed data is bound to a public receipt.
 
+## Public tracker rule for external capability research
+
+Public tracking may state only high-level, public-safe status. It must not include private program identifiers, candidate identities, immutable source pins, private branch names, runtime/device details, governance receipts, or internal deployment/connector evidence.
+
 ## Historical remediation note
 
 Detailed internal research material was mistakenly projected into this public repository on 2026-08-05. The current branch removes that projection and adds a fail-closed boundary check. Earlier Git history or third-party caches may retain prior public revisions; those revisions are not current, approved public documentation.
