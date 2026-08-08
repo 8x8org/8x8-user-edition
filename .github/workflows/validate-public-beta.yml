@@ -2,7 +2,7 @@ name: Validate Public Beta
 
 on:
   push:
-    branches: [main, security/public-private-boundary-remediation-v2]
+    branches: [main]
   pull_request:
 
 permissions:
@@ -27,7 +27,8 @@ jobs:
           required = [
               'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
               'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'README.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
+              'public/reality-snapshot.json', 'README.md', 'ARCHITECTURE.md',
+              'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
               'PUBLIC_INFORMATION_BOUNDARY.md', 'PUBLIC_CAPABILITIES.md',
               'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
               'art-board/state.json', 'art-board/release-unit.json', 'art-board/README.md',
@@ -39,6 +40,17 @@ jobs:
               raise SystemExit(f'Missing required files: {missing}')
 
           state = json.loads(Path('state/public-state.json').read_text())
+          reality = json.loads(Path('public/reality-snapshot.json').read_text())
+
+          if state.get('product_version') != '0.0.1' or state.get('release') != '0.0.1-beta':
+              raise SystemExit('Canonical public state must remain product_version=0.0.1 release=0.0.1-beta')
+          if reality.get('product_version') != '0.0.1' or reality.get('release') != '0.0.1-beta':
+              raise SystemExit('Reality snapshot must remain at 0.0.1-beta')
+          if reality.get('three_realities') != ['PRIVATE_PAST', 'PUBLIC_PRESENT', 'FUTURE_LAB']:
+              raise SystemExit('Three-Reality model drift detected')
+          if reality.get('promotion_state') != 'PROTECTED_BETA':
+              raise SystemExit('Protected Beta promotion state missing')
+
           must_be_false = [
               'private_control_plane_connected', 'private_repositories_connected',
               'private_memory_connected', 'private_messages_connected',
@@ -82,12 +94,27 @@ jobs:
           if matches:
               raise SystemExit(f'Forbidden public content: {matches}')
 
+          current_files = [
+              'index.html', 'README.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
+              'state/public-state.json', 'public/reality-snapshot.json'
+          ]
+          banned_maturity = ['v0.1.1', '0.1.1-beta', '0.1.0-beta', '0.1.x beta', 'public beta 0.1 release candidate']
+          hits = []
+          for name in current_files:
+              text = Path(name).read_text().lower()
+              for token in banned_maturity:
+                  if token in text:
+                      hits.append((name, token))
+          if hits:
+              raise SystemExit(f'Product-version drift detected: {hits}')
+
           print('PUBLIC_BETA_VALIDATION=PASS')
           PY
 
       - name: Parse JSON files
         run: |
           python3 -m json.tool state/public-state.json >/dev/null
+          python3 -m json.tool public/reality-snapshot.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
           python3 -m json.tool art-board/state.json >/dev/null
