@@ -87,6 +87,16 @@ class CryptoLaneTests(unittest.TestCase):
         root = self._tampered_root(chain_mutator=mutate)
         self.assertTrue(validate(root))
 
+    def test_rejects_non_string_signer_policy_without_exception(self) -> None:
+        for malformed in (["OWNER_REQUIRED_FOR_ANY_BROADCAST"], {"policy": "OWNER_REQUIRED_FOR_ANY_BROADCAST"}):
+            with self.subTest(malformed=malformed):
+                def mutate(c, value=malformed):
+                    c["networks"][0]["signer_requirements"] = value
+                root = self._tampered_root(chain_mutator=mutate)
+                failures = validate(root)
+                self.assertTrue(failures)
+                self.assertTrue(any("signer gate" in failure for failure in failures))
+
 
 if __name__ == "__main__":
     unittest.main()
