@@ -46,7 +46,7 @@ It does **not** prove:
 
 - whole-system 100/100 completion;
 - dedicated Vercel project creation under the canonical repository name;
-- private Termux/Ubuntu runtime state;
+- private local-runtime state;
 - private agent, memory, message, wallet or credential exposure;
 - physical-device visual rendering on every supported client;
 - mainnet financial authority;
