@@ -1,0 +1,55 @@
+name: Validate Crypto Lane
+
+on:
+  push:
+    branches:
+      - crypto/msg317-canonical-asset-readiness-v1
+    paths:
+      - "state/crypto-asset-registry-0.0.1.json"
+      - "state/crypto-chain-readiness-0.0.1.json"
+      - "scripts/validate_crypto_lane.py"
+      - "tests/test_crypto_lane.py"
+      - ".github/workflows/validate-crypto-lane.yml"
+  pull_request:
+    paths:
+      - "state/crypto-asset-registry-0.0.1.json"
+      - "state/crypto-chain-readiness-0.0.1.json"
+      - "scripts/validate_crypto_lane.py"
+      - "tests/test_crypto_lane.py"
+      - ".github/workflows/validate-crypto-lane.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crypto-lane-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate JSON syntax
+        run: |
+          python -m json.tool state/crypto-asset-registry-0.0.1.json >/dev/null
+          python -m json.tool state/crypto-chain-readiness-0.0.1.json >/dev/null
+
+      - name: Validate crypto fail-closed contracts
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B scripts/validate_crypto_lane.py
+
+      - name: Run adversarial invariant tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -m unittest tests/test_crypto_lane.py -v
+
+      - name: Verify checkout stayed clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
