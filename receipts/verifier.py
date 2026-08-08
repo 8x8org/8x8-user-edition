@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Issue and verify tamper-evident public-state receipts for 8x8 OS 0.0.1 Beta."""
+"""Issue and verify tamper-evident public-state receipts for 8x8 OS 0.1.0 Stable."""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 STATE_PATH = ROOT / "state/public-state.json"
+EXPECTED_VERSION = "0.1.0"
+EXPECTED_RELEASE = "0.1.0-stable"
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -33,7 +35,10 @@ def receipt_digest(receipt: dict) -> str:
 
 def critical_assertions(state: dict) -> dict:
     keys = [
-        "public_beta",
+        "promotion_state",
+        "stable_scope",
+        "whole_system_complete",
+        "whole_system_score",
         "private_control_plane_connected",
         "credentials_included",
         "wallet_material_included",
@@ -50,11 +55,14 @@ def issue_receipt(source_commit: str, receipt_id: str) -> dict:
     if len(source_commit) != 40 or any(c not in "0123456789abcdef" for c in source_commit.lower()):
         raise ValueError("source_commit must be a 40-character hexadecimal Git commit")
     state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
-    if state.get("product_version") != "0.0.1":
-        raise ValueError("public state product_version drifted from 0.0.1")
+    if state.get("product_version") != EXPECTED_VERSION or state.get("release") != EXPECTED_RELEASE:
+        raise ValueError(f"public state version drifted from {EXPECTED_RELEASE}")
+    if state.get("stable_scope") != "PUBLIC_WEB_CLIENT":
+        raise ValueError("public state stable scope drifted from PUBLIC_WEB_CLIENT")
     receipt = {
-        "schema_version": "0.0.1",
-        "product_version": "0.0.1",
+        "schema_version": EXPECTED_VERSION,
+        "product_version": EXPECTED_VERSION,
+        "release": EXPECTED_RELEASE,
         "receipt_id": receipt_id,
         "source_commit": source_commit.lower(),
         "state_path": "state/public-state.json",
@@ -72,6 +80,7 @@ def verify_receipt(receipt: dict) -> None:
     required = {
         "schema_version",
         "product_version",
+        "release",
         "receipt_id",
         "source_commit",
         "state_path",
@@ -85,8 +94,8 @@ def verify_receipt(receipt: dict) -> None:
     missing = required - set(receipt)
     if missing:
         raise ValueError(f"missing receipt fields: {sorted(missing)}")
-    if receipt["schema_version"] != "0.0.1" or receipt["product_version"] != "0.0.1":
-        raise ValueError("receipt version must be 0.0.1")
+    if receipt["schema_version"] != EXPECTED_VERSION or receipt["product_version"] != EXPECTED_VERSION or receipt["release"] != EXPECTED_RELEASE:
+        raise ValueError(f"receipt version must be {EXPECTED_RELEASE}")
     if receipt["reality"] != "PUBLIC_PRESENT":
         raise ValueError("public receipt reality must be PUBLIC_PRESENT")
     if receipt["state_path"] != "state/public-state.json":
@@ -96,6 +105,8 @@ def verify_receipt(receipt: dict) -> None:
     if file_sha256(STATE_PATH) != receipt["state_sha256"]:
         raise ValueError("public-state SHA-256 mismatch")
     state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    if state.get("product_version") != EXPECTED_VERSION or state.get("release") != EXPECTED_RELEASE:
+        raise ValueError("current public state version does not match stable receipt contract")
     if critical_assertions(state) != receipt["assertions"]:
         raise ValueError("receipt assertions do not match current public state")
 

@@ -1,53 +1,58 @@
 # Implementation Status
 
-**Canonical product version:** `0.0.1 Beta`
+**Canonical public web-client version:** `0.1.0 Stable`
 
-Historical MSG labels, branch names, commit SHAs and internal implementation generations are preserved as provenance. They are not product-maturity versions.
+The `0.1.0 Stable` maturity label is bounded to the `PUBLIC_WEB_CLIENT` release scope. It does not declare the entire private/public/future 8x8 estate complete. Historical MSG labels, branch names, commit SHAs and runtime generations remain provenance rather than maturity versions.
 
-| Capability | State | Evidence |
+| Capability | State | Evidence / boundary |
 |---|---|---|
-| Public repository foundation | RECEIPT_VERIFIED | Organization bootstrap receipt held in the private governance repository |
-| Fabric Mirror / responsive public cockpit | IMPLEMENTED | `index.html`, `styles.css`, `app.js` |
-| Three-Reality public projection | IMPLEMENTED | `public/reality-snapshot.json`, public UI |
-| Agent archetype explorer | IMPLEMENTED | Local-only cards and detail drawer |
-| Conceptual spatial world view | IMPLEMENTED | Local CSS/DOM visualization, no location tracking |
-| Public truth ladder | IMPLEMENTED | Evidence-gated UI and docs |
-| Public/private security statement | IMPLEMENTED | UI, `SECURITY.md`, `state/public-state.json` |
-| Progressive web app shell | IMPLEMENTED | Manifest, icon and service worker |
+| Existing 8x8 Fabric public projection | IMPLEMENTED | Stable client is a new projection of the existing Fabric, not a competing Fabric |
+| Living Omniversal Gate R4 | IMPLEMENTED | `stable/index.html` |
+| 1D → 8D projection controls | IMPLEMENTED | Interactive dimension selector in stable client |
+| 360° spatial public projection | IMPLEMENTED | Responsive spatial world/orbit navigation grammar; no headset capability is falsely implied |
+| Adaptive 8K media/export | TARGET_SOURCE_DEPENDENT | High-resolution export depends on actual source media and device budgets |
+| Three-Reality public projection | IMPLEMENTED | `public/reality-snapshot.json` |
+| Public truth / proof boundary | IMPLEMENTED | Stable release contract, state, UI and CI |
+| Progressive web shell | IMPLEMENTED | Existing manifest/service-worker shell retained |
 | Static deployment routing/security headers | IMPLEMENTED | `vercel.json` |
-| Product-version drift validation | IMPLEMENTED | `.github/workflows/validate-public-beta.yml` rejects public 0.1.x/v0.1.1 maturity strings |
-| CI validation | PASS | PR #104 exact-head Public Information Boundary and CodeQL checks passed before merge |
-| Canonical public source | RELEASED_TO_MAIN | Merge commit `7f67c72c33ea940d80ca1e41ebea879be25eac0e` |
-| Production hosting | READY_SERVER_VERIFIED | Canonical 0.0.1 Beta files are served by the current Vercel production carrier; public receipt records the safe alias and route checks |
-| `/` route | PASS | HTTP 200, `text/html; charset=utf-8`, inline disposition |
-| `/first-blink` route | PASS | HTTP 200, `text/html; charset=utf-8`, inline disposition |
-| `/world` route | PASS | HTTP 200, `text/html; charset=utf-8`, inline disposition |
-| `/art-board` route | PASS | HTTP 200, `text/html; charset=utf-8`, inline disposition |
-| Security response headers | PASS | nosniff, frame denial, permissions policy, CSP, COOP/CORP and HSTS observed on production carrier |
-| Physical Android logged-out visual smoke | PENDING_CLIENT_CONFIRMATION | Previous broken URL produced 404; the replacement production alias now passes server-side browser-render prerequisites but still needs a physical Android visual confirmation |
-| Physical iPhone/mobile Safari visual smoke | PENDING_CLIENT_CONFIRMATION | Server-side browser-render prerequisites pass; physical visual confirmation remains separate evidence |
-| Dedicated `8x8-user-edition` Vercel project | BLOCKED_PROVIDER_STATE | Direct creation attempts returned deployment IDs that subsequently could not be resolved; current release therefore uses the existing public Vercel carrier while source authority remains this repository |
-| Root license | IMPLEMENTED | Apache License 2.0 in `LICENSE` |
-| Private vulnerability reporting | PENDING_OWNER_ACTION | Enable GitHub private vulnerability reporting when available |
-| Signed installer | DESIGNED | Not released |
-| User accounts and passkeys | DESIGNED | Not implemented in this beta |
-| USD 8.88 subscription | CLAIMED TARGET | Billing is not live |
-| 88 service minutes | CLAIMED TARGET | Entitlement service is not live |
-| Voluntary compute/storage node | DESIGNED | Disabled and not released |
-| Remote support | DESIGNED | Disabled and not released |
-| Live trading, staking or rewards | NOT AUTHORIZED | Excluded from this public beta unless separately owner-gated |
-| Private control-plane access | DENIED | No connector or code path exists in this repository |
+| R3 rollback projection | IMPLEMENTED | `/r3` routes to prior `index.html` |
+| Stable bounded release contract | IMPLEMENTED | `stable/release-unit.json` and `tests/test_stable_release.py` |
+| Public information boundary | REQUIRED_GATE | Fail-closed scan remains mandatory |
+| Browser behavior + accessibility | REQUIRED_GATE | Playwright + axe workflow |
+| SBOM/provenance | REQUIRED_GATE | Existing SBOM and provenance workflow |
+| Code security analysis | REQUIRED_GATE | CodeQL workflow |
+| Production route health | REQUIRED_GATE | Production Health Gate validates canonical routes and R3 rollback after deployment |
+| Whole-system score | NOT_INFERRED | Stable web-client 100/100 never implies private estate completion |
+| Zero-latency claim | REJECTED | Latency must be measured; no 0 ms marketing claim |
+| Model Fabric | VERIFIED_OWNER_RUNTIME | Public client exposes only safe conceptual/proof state |
+| Agent fleet | PARTIAL_CERTIFICATION | Registered fleet is not equivalent to universally certified productive agents |
+| Universal Suit lineage | RECOVERED_AS_EVIDENCE | Historical architecture/canaries exist in protected legacy repositories; no blind reactivation |
+| Context/Future Brain lineage | RECOVERED_AS_EVIDENCE | Historical context lattice, Future Brain and mission handoff artifacts exist; current certification remains evidence-gated |
+| Google Drive / local convergence | ACTIVE | MSG319 safe snapshot/reconciliation work remains separate from public stable-client scope |
+| Identity schema | IMPLEMENTED | Public schema exists |
+| User account/passkey backend | NOT_YET_DEPLOYED | Stable client does not fabricate an account database |
+| Social publication packages | PREPARATION_ONLY | Requires rights/provenance and an authenticated publishing adapter |
+| Wallet signing / live wallet actions | NOT_ENABLED | No wallet material in public client |
+| Blockchain | TESTNET_RESEARCH | Mainnet/funded actions remain exact-target gated |
+| Trading | RESEARCH_ONLY | No live funds or exchange execution |
+| Billing/subscriptions | NOT_LIVE | Pricing remains a target, not a live entitlement |
+| User compute/storage contribution | NOT_RELEASED | Disabled pending dedicated safety certification |
+| Signed installer | NOT_RELEASED | Separate release unit required |
 
-## Current public production carrier
+## Stable public release acceptance contract
 
-The current public-safe 0.0.1 Beta is served at:
+The named `PUBLIC_WEB_CLIENT` release earns a bounded **100/100** only when all eight gates pass for the exact release revision: version integrity, public/private boundary, browser behavior, accessibility, SBOM/provenance, production route health, rollback presence and truth-label integrity.
+
+Before production deployment, the score remains a target. After exact-head CI passes, source qualification can be `100/100 SOURCE_QUALIFIED`. After the verified production carrier serves the exact stable projection and route/rollback health passes, it can be `100/100 PUBLIC_WEB_STABLE`. Neither state changes `whole_system_score=NOT_INFERRED`.
+
+## Current production carrier
+
+The existing public carrier remains:
 
 `https://8x8-os-ecosystem.vercel.app`
 
-The Vercel project name is historical. **Source authority is `8x8org/8x8-user-edition` at the reviewed 0.0.1 Beta source.** The carrier name must not be interpreted as canonical repository ownership or product maturity.
+The carrier repository/project name is historical. Canonical source authority remains `8x8org/8x8-user-edition`. Deployment provenance must bind the reviewed canonical source to the carrier revision rather than assuming equivalence from matching appearance.
 
-## Deployment acceptance criteria
+## Remaining whole-estate work outside stable web-client scope
 
-Server-side route and header requirements now pass. Full client certification still requires physical logged-out Android Chromium and mobile Safari visual smoke against the current alias.
-
-A release can be labeled `PUBLICLY_RELEASED` only after exact-head validation, public changelog/provenance documentation, production route evidence, and the remaining required client smoke checks. Whole-system maturity remains `0.0.1 Beta` until an explicit owner-approved promotion.
+Native owner-device convergence, full fleet teaching receipts, production identity backend, signed installer, authenticated social publication, every connector refresh, wallet/mainnet actions, live trading, billing, user contribution nodes, local voice closed loop, universal XR/headset certification and source-backed 8K media exports remain separately gated capabilities. They must not be smuggled into a web-client maturity claim simply because humanity invented bold typography.

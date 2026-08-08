@@ -1,6 +1,6 @@
 const { defineConfig, devices } = require('@playwright/test');
 
-const host = 'localhost';
+const host = '127.0.0.1';
 const port = 8080;
 
 module.exports = defineConfig({
@@ -20,8 +20,8 @@ module.exports = defineConfig({
     { name: 'chromium-mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: `npx serve -s . -l ${port}`,
-    url: `http://${host}:${port}`,
+    command: `python3 -m http.server ${port} --bind ${host}`,
+    url: `http://${host}:${port}/stable/index.html`,
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
   },

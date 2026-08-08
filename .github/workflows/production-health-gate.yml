@@ -17,13 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Verify public routes and browser-safe headers
+      - name: Verify stable public routes and browser-safe headers
         shell: bash
         run: |
           set -Eeuo pipefail
           base='https://8x8-os-ecosystem.vercel.app'
           routes=( '/' '/first-blink' '/world' '/art-board' )
-          canonical_marker='Living Omniversal Gate R3'
+          canonical_marker='Living Omniversal Gate R4'
 
           for route in "${routes[@]}"; do
             headers="$(mktemp)"
@@ -47,8 +47,8 @@ jobs:
               exit 1
             fi
 
-            grep -Fq '0.0.1 Beta' "$body" || {
-              echo "FAIL $route: canonical 0.0.1 Beta marker missing"
+            grep -Fq '0.1.0 Stable' "$body" || {
+              echo "FAIL $route: canonical 0.1.0 Stable marker missing"
               exit 1
             }
 
@@ -57,10 +57,18 @@ jobs:
               exit 1
             }
 
-            echo "PASS $route HTTP=200 content-type=text/html canonical-version=0.0.1 interface='$canonical_marker'"
+            echo "PASS $route HTTP=200 content-type=text/html canonical-version=0.1.0 interface='$canonical_marker'"
           done
+
+          rollback_body="$(mktemp)"
+          rollback_status="$(curl -sS -L -o "$rollback_body" -w '%{http_code}' "$base/r3")"
+          test "$rollback_status" = '200'
+          grep -Fq 'Living Omniversal Gate R3' "$rollback_body"
+          grep -Fq '0.0.1 Beta' "$rollback_body"
+          echo 'PASS /r3 rollback projection'
 
       - name: Record provenance limitation
         run: |
           echo 'Route health is not deployment provenance.'
+          echo 'Stable scope is PUBLIC_WEB_CLIENT; whole-system score remains NOT_INFERRED.'
           echo 'Issue #106 remains the canonical source→artifact→deployment provenance gate.'

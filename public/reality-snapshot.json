@@ -1,10 +1,13 @@
 {
-  "schema": "8x8.public-reality-snapshot.0.0.1",
-  "product_version": "0.0.1",
-  "release": "0.0.1-beta",
+  "schema": "8x8.public-reality-snapshot.0.1.0",
+  "product_version": "0.1.0",
+  "release": "0.1.0-stable",
   "projection": "PUBLIC_SAFE",
+  "stable_scope": "PUBLIC_WEB_CLIENT",
   "three_realities": ["PRIVATE_PAST", "PUBLIC_PRESENT", "FUTURE_LAB"],
-  "promotion_state": "PROTECTED_BETA",
+  "promotion_state": "PUBLIC_STABLE",
+  "whole_system_complete": false,
+  "whole_system_score": "NOT_INFERRED",
   "repository_estate": {
     "public_repositories": [
       "8x8org/8x8-user-edition",
@@ -35,16 +38,32 @@
     "Security + Authority",
     "Deployment + Connectors"
   ],
+  "dimensions": {
+    "1d": "EVENT_TIME_SEQUENCE",
+    "2d": "DASHBOARD_MAP_ARTBOARD",
+    "3d": "SPATIAL_WORLD_BODY_TOPOLOGY",
+    "4d": "REPLAY_TEMPORAL_STATE",
+    "5d": "SCENARIO_COUNTERFACTUAL_SPACE",
+    "6d": "AUTHORITY_PRIVACY_REALITY_OVERLAY",
+    "7d": "AGENT_MODEL_PROVIDER_PERSPECTIVES",
+    "8d": "EVIDENCE_PROVENANCE_ROLLBACK_CONTINUUM",
+    "360": "RESPONSIVE_SPATIAL_PROJECTION",
+    "8k": "SOURCE_DEPENDENT_ADAPTIVE_EXPORT_TARGET"
+  },
   "devices": ["primary mobile edge node", "companion mobile node"],
   "channels": ["Telegram", "Discord", "YouTube", "X", "Facebook", "TikTok"],
   "truth": {
+    "public_web_client": "STABLE_CANDIDATE_EXACT_HEAD_GATES_REQUIRED",
     "model_fabric": "VERIFIED_OWNER_RUNTIME",
     "first_blink": "PUBLIC_CONTRACT_IMPLEMENTED_UNIVERSAL_CERTIFICATION_PENDING",
     "voice_roundtrip": "UNVERIFIED",
     "agent_fleet": "REGISTERED_PARTIAL_CERTIFICATION",
+    "identity_backend": "NOT_YET_DEPLOYED",
+    "social_publication": "PACKAGE_PREPARATION_ONLY_UNTIL_AUTHENTICATED_ADAPTER_AND_RIGHTS_GATE",
     "trading": "SIGNAL_RESEARCH_ONLY",
-    "blockchain": "TESTNET_RESEARCH_MAINNET_OWNER_GATED",
-    "spatial_world": "PROGRESSIVE_CONVERGENCE",
-    "adaptive_8k": "TARGET_NOT_FULLY_PROVEN"
+    "blockchain": "TESTNET_RESEARCH_MAINNET_EXACT_OWNER_GATE",
+    "spatial_world": "PUBLIC_STABLE_PROJECTION_WITH_FUTURE_XR_RESEARCH",
+    "adaptive_8k": "TARGET_SOURCE_DEPENDENT_NOT_UNIVERSALLY_PROVEN",
+    "zero_latency": "REJECTED_UNPHYSICAL_TARGET_MEASURE_INSTEAD"
   }
 }

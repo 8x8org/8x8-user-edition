@@ -23,8 +23,10 @@ jobs:
           python-version: '3.12'
       - name: Install test dependency
         run: python3 -m pip install pytest
-      - name: Run public receipt tests
-        run: python3 -m pytest receipts/tests -q
+      - name: Run receipt and stable release tests
+        run: |
+          python3 -m pytest receipts/tests -q
+          python3 -m unittest tests.test_stable_release -v
       - name: Generate CycloneDX SBOM
         run: python3 scripts/generate-sbom.py
       - name: Validate SBOM integrity
@@ -32,9 +34,11 @@ jobs:
       - name: Build release bundle
         run: |
           tar -czf release-assets.tar.gz \
+            stable/index.html stable/release-unit.json \
             index.html styles.css app.js manifest.webmanifest \
-            icon.svg sw.js state/public-state.json vercel.json \
-            sbom.cdx.json receipts/schema/public-receipt-0.0.1.schema.json \
+            icon.svg sw.js state/public-state.json public/reality-snapshot.json vercel.json \
+            VERSION.md IMPLEMENTATION_STATUS.md \
+            sbom.cdx.json receipts/schema/public-receipt-0.1.0.schema.json \
             receipts/verifier.py
       - name: Upload SBOM
         uses: actions/upload-artifact@v4

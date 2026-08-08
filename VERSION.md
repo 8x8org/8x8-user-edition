@@ -1,18 +1,22 @@
 # 8x8 OS Version
 
-**Canonical product version:** `0.0.1 Beta`
+**Canonical public web-client version:** `0.1.0 Stable`
 
-This repository is a public-safe projection of the wider 8x8 Fabric. The whole system remains `0.0.1 Beta` until an explicit owner-approved system-wide promotion occurs.
+This repository is the public-safe web projection of the wider existing 8x8 Fabric. The `0.1.0 Stable` label applies only to the named `PUBLIC_WEB_CLIENT` release scope after its exact-head acceptance gates pass. It does not imply that every private runtime, connector, agent, wallet, chain, social channel, backend, local device or FUTURE_LAB capability is complete.
 
-Historical MSG identifiers, branch names, commit SHAs, protocol revisions, runtime generations and document revisions are implementation/provenance metadata only. They must not be interpreted as product maturity.
+Historical MSG identifiers, branch names, commit SHAs, protocol revisions, runtime generations and document revisions remain implementation/provenance metadata rather than product-maturity claims.
 
 ## Reality classification
 
 - Reality: `PUBLIC_PRESENT`
-- Promotion state: `PROTECTED_BETA`
-- Private Past: not published here
-- Future Lab: shown only as explicitly labeled research/target state
+- Promotion state: `PUBLIC_STABLE`
+- Stable scope: `PUBLIC_WEB_CLIENT`
+- Private Past: protected and not published here
+- Future Lab: shown only as explicitly labeled research or target state
+- Whole-system score: `NOT_INFERRED`
 
-## Promotion rule
+## Release truth
 
-No public source, metadata, README, UI, release note or deployment receipt may claim `0.1.x`, `1.0`, `stable`, whole-system `100/100`, or equivalent maturity without explicit owner-approved promotion and updated validation policy.
+A bounded `100/100` score is valid only when all eight named stable web-client gates pass against the exact release head: version integrity, public/private boundary, browser behavior, accessibility, SBOM/provenance, production route health, rollback presence, and truth-label integrity.
+
+No `0 ms` claim is permitted. Latency must be measured. `1D` through `8D` are interface/projection semantics, `360°` is the responsive spatial navigation projection, and `8K` is a source-dependent adaptive media/export target rather than a fabricated source-resolution claim.

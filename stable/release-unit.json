@@ -1,0 +1,55 @@
+{
+  "schema": "8x8.public-stable-release.1",
+  "product": "8x8 OS",
+  "version": "0.1.0",
+  "release": "0.1.0-stable",
+  "scope": "PUBLIC_WEB_CLIENT",
+  "reality": "PUBLIC_PRESENT",
+  "promotion_state": "PUBLIC_STABLE",
+  "existing_fabric": true,
+  "new_competing_fabric_created": false,
+  "bounded_acceptance_score": {
+    "earned": 100,
+    "possible": 100,
+    "status": "TARGET_UNTIL_EXACT_HEAD_GATES_PASS",
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "dimensions": {
+    "1d": "event_time_sequence",
+    "2d": "dashboards_maps_artboards",
+    "3d": "spatial_worlds_bodies_topology",
+    "4d": "replay_and_temporal_state",
+    "5d": "scenario_and_counterfactual_space",
+    "6d": "authority_privacy_reality_overlays",
+    "7d": "agent_model_provider_perspectives",
+    "8d": "evidence_provenance_rollback_continuum",
+    "360": "responsive_spatial_projection",
+    "8k": "source_dependent_adaptive_export_target"
+  },
+  "acceptance_gates": [
+    "version_integrity",
+    "public_private_boundary",
+    "browser_behavior",
+    "accessibility",
+    "sbom_and_provenance",
+    "production_route_health",
+    "rollback_presence",
+    "truth_label_integrity"
+  ],
+  "claims": {
+    "whole_system_complete": false,
+    "zero_latency": false,
+    "identity_backend_deployed": false,
+    "social_publication_complete": false,
+    "live_wallet_execution": false,
+    "live_trading": false,
+    "mainnet_asset_actions": false,
+    "billing_live": false,
+    "all_connectors_verified": false
+  },
+  "rollback": {
+    "available": true,
+    "projection": "/r3",
+    "description": "Previous Living Omniversal Gate R3 remains routable as the public web rollback projection."
+  }
+}
