@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import copy
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,6 +17,7 @@ class CryptoLaneTests(unittest.TestCase):
 
     def _tampered_root(self, asset_mutator=None, chain_mutator=None) -> Path:
         tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, True)
         (tmp / "state").mkdir()
         assets = json.loads((ROOT / "state/crypto-asset-registry-0.0.1.json").read_text())
         chains = json.loads((ROOT / "state/crypto-chain-readiness-0.0.1.json").read_text())
@@ -60,6 +61,30 @@ class CryptoLaneTests(unittest.TestCase):
 
     def test_rejects_resolved_supply_without_owner_gate(self) -> None:
         root = self._tampered_root(lambda a: a["transferable_utility_tokens"][0].update({"final_supply": 1000000, "decimals": 18}))
+        self.assertTrue(validate(root))
+
+    def test_rejects_native_coin_supply_or_decimals_resolution(self) -> None:
+        root = self._tampered_root(lambda a: a["native_coin"].update({"final_supply": 888000000, "decimals": 8}))
+        self.assertTrue(validate(root))
+
+    def test_rejects_duplicate_network_masking_chain_id_drift(self) -> None:
+        def mutate(c):
+            duplicate = dict(c["networks"][0])
+            duplicate["chain_id"] = 1
+            c["networks"].append(duplicate)
+        root = self._tampered_root(chain_mutator=mutate)
+        self.assertTrue(validate(root))
+
+    def test_rejects_signer_gate_substring_bypass(self) -> None:
+        def mutate(c):
+            c["networks"][0]["signer_requirements"] = "NOT_OWNER_REQUIRED"
+        root = self._tampered_root(chain_mutator=mutate)
+        self.assertTrue(validate(root))
+
+    def test_rejects_unknown_signer_policy_even_with_owner_required_substring(self) -> None:
+        def mutate(c):
+            c["networks"][0]["signer_requirements"] = "OWNER_REQUIRED_BUT_AUTOMATION_MAY_BROADCAST"
+        root = self._tampered_root(chain_mutator=mutate)
         self.assertTrue(validate(root))
 
 
