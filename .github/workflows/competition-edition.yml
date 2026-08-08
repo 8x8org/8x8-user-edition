@@ -1,0 +1,86 @@
+name: 8x8 Competition Edition
+
+on:
+  pull_request:
+    paths:
+      - 'competition/**'
+      - 'services/competition-api/**'
+      - 'scripts/validate_competition_edition.py'
+      - 'scripts/local_rebuild_baseline.sh'
+      - '.github/workflows/competition-edition.yml'
+  push:
+    branches:
+      - feature/gemini-xprize-launchops-v1
+    paths:
+      - 'competition/**'
+      - 'services/competition-api/**'
+      - 'scripts/validate_competition_edition.py'
+      - 'scripts/local_rebuild_baseline.sh'
+      - '.github/workflows/competition-edition.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: competition-edition-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Verify runner toolchain
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 --version
+          node --version
+          npm --version
+          python3 - <<'PY'
+          import sys
+          if sys.version_info < (3, 12):
+              raise SystemExit('Python 3.12 or newer is required')
+          PY
+          node -e "const major=Number(process.versions.node.split('.')[0]); if(major<20) process.exit(1)"
+
+      - name: Validate eight-world and sixty-four-sector contracts
+        run: python3 scripts/validate_competition_edition.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check competition/app.js
+          node --check services/competition-api/server.mjs
+          node --check services/competition-api/test/server.test.mjs
+
+      - name: Validate read-only local baseline
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          bash -n scripts/local_rebuild_baseline.sh
+          ! grep -En '(^|[;&|[:space:]])(rm|mv|kill|pkill|reboot|shutdown|mount|umount)([[:space:]]|$)' scripts/local_rebuild_baseline.sh
+          ! grep -En 'sv[[:space:]]+(up|down|restart|force-stop|force-restart)' scripts/local_rebuild_baseline.sh
+          grep -q 'mutations_performed.*False' scripts/local_rebuild_baseline.sh
+          grep -q 'services_restarted.*False' scripts/local_rebuild_baseline.sh
+
+      - name: Run Competition API tests
+        working-directory: services/competition-api
+        run: npm test
+
+      - name: Validate public static references
+        run: |
+          test -f competition/index.html
+          test -f competition/styles.css
+          test -f competition/app.js
+          grep -q './styles.css' competition/index.html
+          grep -q './app.js' competition/index.html
+          grep -q './system-registry.v1.json' competition/app.js
+          grep -q './competition-state.v1.json' competition/app.js
+
+      - name: Verify checkout remained clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
