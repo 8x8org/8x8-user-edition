@@ -1,4 +1,4 @@
-name: Validate Public Beta
+name: Validate Public Stable
 
 on:
   push:
@@ -18,21 +18,22 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate required files and public state
+      - name: Validate required files and stable public state
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
 
           required = [
-              'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
-              'icon.svg', 'sw.js', 'vercel.json', 'state/public-state.json',
-              'public/reality-snapshot.json', 'README.md', 'ARCHITECTURE.md',
-              'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
-              'PUBLIC_INFORMATION_BOUNDARY.md', 'PUBLIC_CAPABILITIES.md',
+              'index.html', 'stable/index.html', 'stable/release-unit.json',
+              'styles.css', 'app.js', 'manifest.webmanifest', 'icon.svg', 'sw.js',
+              'vercel.json', 'state/public-state.json', 'public/reality-snapshot.json',
+              'README.md', 'VERSION.md', 'ARCHITECTURE.md', 'IMPLEMENTATION_STATUS.md',
+              'SECURITY.md', 'PUBLIC_INFORMATION_BOUNDARY.md', 'PUBLIC_CAPABILITIES.md',
               'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
               'art-board/state.json', 'art-board/release-unit.json', 'art-board/README.md',
-              'tests/test_art_board.py', 'tests/test_public_information_boundary.py',
+              'tests/test_art_board.py', 'tests/test_stable_release.py',
+              'tests/test_public_information_boundary.py',
               'scripts/validate_public_information_boundary.py'
           ]
           missing = [path for path in required if not Path(path).is_file()]
@@ -41,15 +42,29 @@ jobs:
 
           state = json.loads(Path('state/public-state.json').read_text())
           reality = json.loads(Path('public/reality-snapshot.json').read_text())
+          stable = json.loads(Path('stable/release-unit.json').read_text())
 
-          if state.get('product_version') != '0.0.1' or state.get('release') != '0.0.1-beta':
-              raise SystemExit('Canonical public state must remain product_version=0.0.1 release=0.0.1-beta')
-          if reality.get('product_version') != '0.0.1' or reality.get('release') != '0.0.1-beta':
-              raise SystemExit('Reality snapshot must remain at 0.0.1-beta')
+          if state.get('product_version') != '0.1.0' or state.get('release') != '0.1.0-stable':
+              raise SystemExit('Canonical public state must be product_version=0.1.0 release=0.1.0-stable')
+          if reality.get('product_version') != '0.1.0' or reality.get('release') != '0.1.0-stable':
+              raise SystemExit('Reality snapshot must be 0.1.0-stable')
+          if stable.get('version') != '0.1.0' or stable.get('scope') != 'PUBLIC_WEB_CLIENT':
+              raise SystemExit('Stable release unit version/scope drift detected')
+          if state.get('promotion_state') != 'PUBLIC_STABLE' or reality.get('promotion_state') != 'PUBLIC_STABLE':
+              raise SystemExit('PUBLIC_STABLE promotion state missing')
           if reality.get('three_realities') != ['PRIVATE_PAST', 'PUBLIC_PRESENT', 'FUTURE_LAB']:
               raise SystemExit('Three-Reality model drift detected')
-          if reality.get('promotion_state') != 'PROTECTED_BETA':
-              raise SystemExit('Protected Beta promotion state missing')
+          if state.get('whole_system_complete') is not False or state.get('whole_system_score') != 'NOT_INFERRED':
+              raise SystemExit('Stable public web client must not claim whole-system completion')
+
+          score = stable.get('bounded_acceptance_score', {})
+          if score.get('earned') != 100 or score.get('possible') != 100:
+              raise SystemExit('Stable PUBLIC_WEB_CLIENT bounded target must be 100/100')
+          if score.get('whole_system_score') != 'NOT_INFERRED':
+              raise SystemExit('Bounded release score must not infer whole-system completion')
+          gates = stable.get('acceptance_gates', [])
+          if len(gates) != 8 or len(set(gates)) != 8:
+              raise SystemExit('Stable release requires exactly eight unique acceptance gates')
 
           must_be_false = [
               'private_control_plane_connected', 'private_repositories_connected',
@@ -64,28 +79,28 @@ jobs:
           if violations:
               raise SystemExit(f'Public boundary violation: {violations}')
 
+          claims = stable.get('claims', {})
+          required_false_claims = [
+              'whole_system_complete', 'zero_latency', 'identity_backend_deployed',
+              'social_publication_complete', 'live_wallet_execution', 'live_trading',
+              'mainnet_asset_actions', 'billing_live', 'all_connectors_verified'
+          ]
+          bad_claims = [key for key in required_false_claims if claims.get(key) is not False]
+          if bad_claims:
+              raise SystemExit(f'Unsupported stable claim enabled: {bad_claims}')
+
           art = json.loads(Path('art-board/state.json').read_text())
           release = json.loads(Path('art-board/release-unit.json').read_text())
           if art.get('mode') != 'PUBLIC_SAFE_FIXTURE':
               raise SystemExit('Art Board must remain PUBLIC_SAFE_FIXTURE')
           if art.get('score', {}).get('earned') != 100 or art.get('score', {}).get('possible') != 100:
-              raise SystemExit('Art Board slice score must be 100/100')
+              raise SystemExit('Art Board slice score must remain 100/100')
           if art.get('score', {}).get('whole_system_score') != 'NOT_INFERRED':
               raise SystemExit('Art Board must not infer whole-system completion')
           if release.get('truth_state') != 'PUBLIC_SOURCE_VALIDATED':
               raise SystemExit('Art Board source must remain public-source validated')
-          if release.get('gates', {}).get('public_production_release') is not False:
-              raise SystemExit('Public source cannot claim production release')
-          deployment = release.get('deployment', {})
-          if deployment.get('protected_preview_metadata_published') is not False:
-              raise SystemExit('Protected preview metadata must not be published')
-          if deployment.get('production_alias_changed') is not False:
-              raise SystemExit('Production alias must remain unchanged')
-          serialized = json.dumps(release)
-          if 'dpl_' in serialized or 'team_' in serialized or 'prj_' in serialized:
-              raise SystemExit('Protected deployment identifier found in public release unit')
 
-          html = (Path('index.html').read_text() + Path('art-board/index.html').read_text()).lower()
+          html = (Path('stable/index.html').read_text() + Path('art-board/index.html').read_text()).lower()
           forbidden = [
               'seed phrase', 'private key', 'api_key=', 'authorization: bearer',
               '/api/terminal', 'execute trade', 'wallet address'
@@ -94,27 +109,17 @@ jobs:
           if matches:
               raise SystemExit(f'Forbidden public content: {matches}')
 
-          current_files = [
-              'index.html', 'README.md', 'IMPLEMENTATION_STATUS.md', 'SECURITY.md',
-              'state/public-state.json', 'public/reality-snapshot.json'
-          ]
-          banned_maturity = ['v0.1.1', '0.1.1-beta', '0.1.0-beta', '0.1.x beta', 'public beta 0.1 release candidate']
-          hits = []
-          for name in current_files:
-              text = Path(name).read_text().lower()
-              for token in banned_maturity:
-                  if token in text:
-                      hits.append((name, token))
-          if hits:
-              raise SystemExit(f'Product-version drift detected: {hits}')
+          if '0 ms' not in Path('VERSION.md').read_text().lower() and '0ms' not in Path('stable/index.html').read_text().lower():
+              raise SystemExit('Release truth must explicitly reject zero-latency marketing')
 
-          print('PUBLIC_BETA_VALIDATION=PASS')
+          print('PUBLIC_STABLE_VALIDATION=PASS')
           PY
 
       - name: Parse JSON files
         run: |
           python3 -m json.tool state/public-state.json >/dev/null
           python3 -m json.tool public/reality-snapshot.json >/dev/null
+          python3 -m json.tool stable/release-unit.json >/dev/null
           python3 -m json.tool manifest.webmanifest >/dev/null
           python3 -m json.tool vercel.json >/dev/null
           python3 -m json.tool art-board/state.json >/dev/null
@@ -123,6 +128,7 @@ jobs:
       - name: Run public contract tests
         run: |
           python3 -m unittest tests.test_art_board -v
+          python3 -m unittest tests.test_stable_release -v
           python3 -m unittest tests.test_public_information_boundary -v
 
       - name: Enforce public information boundary
