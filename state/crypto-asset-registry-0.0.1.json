@@ -1,0 +1,71 @@
+{
+  "schema": "8x8.crypto-asset-registry.v1",
+  "product_version": "0.0.1 Beta",
+  "status": "DESIGN_RESOLVED_NOT_ISSUED",
+  "market_asset_count": 9,
+  "transferable_utility_token_count": 8,
+  "native_coin_count": 1,
+  "credential_count_excluded_from_market_assets": 1,
+  "transferable_utility_tokens": [
+    {"symbol":"Tx8","role":"TRANSACTION_AND_MARKETPLACE","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"Ux8","role":"USER_UTILITY_AND_ACCESS","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"Fx8","role":"FABRIC_OPERATIONS","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"XM8","role":"EXECUTION_AND_COMPUTE","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"0x8","role":"PROTOCOL_AND_INNOVATION","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"TM8","role":"COMMUNITY_AND_IDENTITY","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"Mx8","role":"MINING_AND_RESOURCE_CONTRIBUTION","final_supply":null,"decimals":null,"issuance_authorized":false},
+    {"symbol":"Sx8","role":"STORAGE_AND_SERVICES","final_supply":null,"decimals":null,"issuance_authorized":false}
+  ],
+  "native_coin": {
+    "symbol": "8x8",
+    "role": "SETTLEMENT_AND_NETWORK_SECURITY",
+    "native_chain": "FUTURE_8X8_CHAIN",
+    "final_supply": null,
+    "decimals": null,
+    "issuance_authorized": false,
+    "independent_multichain_supply_allowed": false
+  },
+  "credential": {
+    "symbol": "SRP",
+    "name": "Seraphim Reputation Proof",
+    "classification": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL",
+    "fungible": false,
+    "transferable": false,
+    "saleable": false,
+    "swappable": false,
+    "revocable": true,
+    "issuance_authorized": false
+  },
+  "global_authorizations": {
+    "mainnet_deployment": false,
+    "testnet_broadcast_requiring_signer_or_funds": false,
+    "token_issuance": false,
+    "minting_for_value": false,
+    "bridge_activation": false,
+    "liquidity_creation": false,
+    "token_sale": false,
+    "listing": false,
+    "treasury_movement": false,
+    "wallet_custody": false,
+    "production_rpc_control": false
+  },
+  "supply_invariants": {
+    "single_canonical_supply_policy_required": true,
+    "independent_chain_supply_prohibited": true,
+    "bridge_supply_conservation_required": true,
+    "wrapped_supply_must_be_backed_or_burn_mint_accounted": true,
+    "chain_representation_registry_required": true
+  },
+  "owner_required": [
+    "final supply and decimals",
+    "allocation and vesting",
+    "origin-chain selection",
+    "deployment signer provisioning",
+    "mainnet deployment",
+    "funded testnet broadcast",
+    "bridge activation",
+    "liquidity creation",
+    "token sale or listing",
+    "public financial promotion"
+  ]
+}
