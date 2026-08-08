@@ -1,6 +1,6 @@
 {
   "schema": "8x8.public-reality-snapshot.v1",
-  "release": "0.1.0-beta",
+  "release": "0.1.1-beta",
   "projection": "PUBLIC_SAFE",
   "three_realities": ["PRIVATE_PAST", "PUBLIC_PRESENT", "FUTURE_LAB"],
   "repository_estate": {
@@ -14,11 +14,8 @@
     "protected_lineage": "EXISTS_NOT_ENUMERATED"
   },
   "visual_registry": {
-    "records": 14,
-    "unique_binaries": 13,
-    "render_set_unique": 13,
-    "duplicate_alias_excluded_from_render": "8X8-VIS-0005",
-    "duplicate_of": "8X8-VIS-0004"
+    "provenance_records": "REGISTERED",
+    "duplicate_binary_policy": "DEDUPLICATE_RENDER_PRESERVE_PROVENANCE"
   },
   "canonical_worlds": [
     "Command Deck",
