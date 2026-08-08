@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "document_class": "CONVERGENCE_SCORECARD",
+  "truth_state": "PUBLIC_SOURCE_VALIDATED",
+  "note": "Scores reflect the public User Edition scope only. Private infrastructure, beta, and convergence lanes have separate evidence gates not published here.",
+  "whole_system_score": "NOT_INFERRED",
+  "public_user_edition_lanes": [
+    {"lane": "A_runtime_stability",        "score": 0, "possible": 100, "state": "DESIGNED",   "evidence": "not_yet_collected"},
+    {"lane": "B_global_context",           "score": 0, "possible": 100, "state": "DESIGNED",   "evidence": "not_yet_collected"},
+    {"lane": "C_github_workstreams",       "score": 5, "possible": 100, "state": "IN_PROGRESS","evidence": "registry_files_created"},
+    {"lane": "D_public_release_train",     "score": 20,"possible": 100, "state": "IN_PROGRESS","evidence": "public_beta_ci_passing"},
+    {"lane": "E_social_connectors",        "score": 5, "possible": 100, "state": "DESIGNED",   "evidence": "registry_schema_published"},
+    {"lane": "F_studio_media",             "score": 5, "possible": 100, "state": "DESIGNED",   "evidence": "registry_schema_published"},
+    {"lane": "G_five_powers_worlds",       "score": 0, "possible": 100, "state": "DESIGNED",   "evidence": "not_yet_collected"},
+    {"lane": "H_visual_council_provenance", "score": 0, "possible": 100, "state": "DESIGNED",   "evidence": "not_yet_collected"},
+    {"lane": "I_testnet_economy",          "score": 5, "possible": 100, "state": "DESIGNED",   "evidence": "registry_schema_published"},
+    {"lane": "J_continuous_operations",    "score": 0, "possible": 100, "state": "DESIGNED",   "evidence": "not_yet_collected"}
+  ],
+  "generated_at": "2026-08-06T11:29:00Z",
+  "msg_ref": "MSG233"
+}

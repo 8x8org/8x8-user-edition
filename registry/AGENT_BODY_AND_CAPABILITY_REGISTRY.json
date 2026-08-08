@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "document_class": "PUBLIC_REGISTRY",
+  "truth_state": "PUBLIC_SOURCE_VALIDATED",
+  "note": "This registry lists publicly disclosed agent archetypes and their declared capability classes. It contains no private runtime data, credentials, memory addresses, or internal operational records.",
+  "agent_archetypes": [
+    {
+      "id": "archetype:FlashTM8",
+      "display_name": "FlashTM8",
+      "role": "Owner / Principal Coordinator",
+      "capability_classes": ["governance", "coordination", "release_authority"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:Coordinator",
+      "display_name": "Coordinator",
+      "role": "Multi-agent orchestration",
+      "capability_classes": ["orchestration", "task_routing", "dependency_tracking"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:Seraphim",
+      "display_name": "Seraphim",
+      "role": "Research and evidence synthesis",
+      "capability_classes": ["research", "evidence_synthesis", "citation"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:SOMA",
+      "display_name": "SOMA",
+      "role": "Memory and state management",
+      "capability_classes": ["memory_management", "context_loading", "state_reconciliation"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:Atlas",
+      "display_name": "Atlas",
+      "role": "Spatial and world intelligence",
+      "capability_classes": ["spatial_reasoning", "world_modeling", "map_generation"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:Omnivore",
+      "display_name": "Omnivore",
+      "role": "Content ingestion and transformation",
+      "capability_classes": ["content_ingestion", "media_transformation", "multilingual_processing"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    },
+    {
+      "id": "archetype:OpenClaw",
+      "display_name": "OpenClaw",
+      "role": "Tool execution and connector management",
+      "capability_classes": ["tool_execution", "connector_management", "api_integration"],
+      "public_body_record": true,
+      "private_runtime_connected": false
+    }
+  ],
+  "authority_classes": [
+    "owner_gate",
+    "canary_approval",
+    "public_release_approval",
+    "testnet_approval",
+    "production_deployment"
+  ],
+  "private_runtime_note": "Private agent IDs, runtime leases, memory pointers, and operational receipts are not published here.",
+  "generated_at": "2026-08-06T11:29:00Z",
+  "msg_ref": "MSG233"
+}

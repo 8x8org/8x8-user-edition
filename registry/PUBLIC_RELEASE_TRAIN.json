@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "document_class": "PUBLIC_REGISTRY",
+  "truth_state": "PUBLIC_SOURCE_VALIDATED",
+  "note": "This file documents the public release train lanes. It contains no protected deployment identifiers, production alias references, or private environment configuration.",
+  "release_lanes": [
+    {
+      "id": "public_user_edition",
+      "description": "Public static PWA cockpit — this repository",
+      "repo": "8x8org/8x8-user-edition",
+      "current_version": "0.1.0-beta",
+      "state": "DEPLOYMENT_CANDIDATE",
+      "production_alias_authorized": false
+    },
+    {
+      "id": "protected_beta",
+      "description": "Protected beta with additional features pending security review",
+      "repo": "not_published",
+      "current_version": "not_published",
+      "state": "NOT_PUBLISHED_HERE"
+    },
+    {
+      "id": "private_convergence",
+      "description": "Private convergence branch with internal infrastructure",
+      "repo": "not_published",
+      "current_version": "not_published",
+      "state": "NOT_PUBLISHED_HERE"
+    },
+    {
+      "id": "future_lab",
+      "description": "Research and canary builds not yet through public release gates",
+      "repo": "not_published",
+      "current_version": "not_published",
+      "state": "NOT_PUBLISHED_HERE"
+    }
+  ],
+  "promotion_rules": [
+    "exact_owner_authorization_required",
+    "no_synthetic_telemetry_in_production",
+    "exact_head_check_required",
+    "public_safe_scope_required"
+  ],
+  "generated_at": "2026-08-06T11:29:00Z",
+  "msg_ref": "MSG233"
+}
