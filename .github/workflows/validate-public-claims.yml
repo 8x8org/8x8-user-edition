@@ -1,0 +1,71 @@
+name: Validate Public Claims
+
+on:
+  push:
+    branches:
+      - feature/public-evidence-node-economy-v1
+    paths:
+      - "llms.txt"
+      - "docs/INDEPENDENT_EVALUATION.md"
+      - "docs/NODE_CONTRIBUTION_AND_BYOK.md"
+      - "docs/SUBSCRIPTION_AND_REWARDS.md"
+      - "state/public-claims.json"
+      - "scripts/validate_public_claims.py"
+      - "tests/test_public_claims.py"
+      - ".github/workflows/validate-public-claims.yml"
+  pull_request:
+    paths:
+      - "llms.txt"
+      - "docs/INDEPENDENT_EVALUATION.md"
+      - "docs/NODE_CONTRIBUTION_AND_BYOK.md"
+      - "docs/SUBSCRIPTION_AND_REWARDS.md"
+      - "state/public-claims.json"
+      - "scripts/validate_public_claims.py"
+      - "tests/test_public_claims.py"
+      - ".github/workflows/validate-public-claims.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-claims-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate syntax without bytecode
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B - <<'PY'
+          from pathlib import Path
+          for name in (
+              "scripts/validate_public_claims.py",
+              "tests/test_public_claims.py",
+          ):
+              path = Path(name)
+              compile(path.read_text(encoding="utf-8"), str(path), "exec")
+              print(f"VALID_PYTHON={path}")
+          PY
+
+      - name: Validate machine-readable claims
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B scripts/validate_public_claims.py
+
+      - name: Run regression tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -m unittest tests/test_public_claims.py -v
+
+      - name: Verify checkout remained clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
