@@ -44,7 +44,7 @@
       ]
     },
     {
-      "source": "/index.html",
+      "source": "/r3",
       "headers": [
         {"key": "Content-Type", "value": "text/html; charset=utf-8"},
         {"key": "Content-Disposition", "value": "inline"}
@@ -52,11 +52,13 @@
     }
   ],
   "rewrites": [
-    {"source": "/", "destination": "/index.html"},
-    {"source": "/first-blink", "destination": "/index.html"},
-    {"source": "/first-blink/", "destination": "/index.html"},
-    {"source": "/world", "destination": "/index.html"},
-    {"source": "/art-board", "destination": "/index.html"},
-    {"source": "/((?!.*\\.).*)", "destination": "/index.html"}
+    {"source": "/", "destination": "/stable/index.html"},
+    {"source": "/first-blink", "destination": "/stable/index.html"},
+    {"source": "/first-blink/", "destination": "/stable/index.html"},
+    {"source": "/world", "destination": "/stable/index.html"},
+    {"source": "/art-board", "destination": "/stable/index.html"},
+    {"source": "/stable", "destination": "/stable/index.html"},
+    {"source": "/r3", "destination": "/index.html"},
+    {"source": "/((?!.*\\.).*)", "destination": "/stable/index.html"}
   ]
 }
