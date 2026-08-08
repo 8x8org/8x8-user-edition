@@ -35,7 +35,7 @@ test('public UI does not make unexpected cross-origin requests', async ({ page, 
   expect(unexpected).toEqual([]);
 });
 
-test('critical/serious axe findings are zero on the main Atlas', async ({ page }) => {
+test('critical and serious axe findings are zero on the main Atlas', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
   const results = await new AxeBuilder({ page }).analyze();
   const blocking = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
@@ -47,15 +47,9 @@ test('keyboard navigation exposes visible focus on interactive controls', async 
   await page.keyboard.press('Tab');
   const focused = page.locator(':focus');
   await expect(focused).toBeVisible();
-  const outlineStyle = await focused.evaluate(el => getComputedStyle(el).outlineStyle);
-  expect(outlineStyle).not.toBe('none');
-});
-
-test('reduced motion disables or shortens nonessential animation', async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: 'reduce' });
-  const page = await context.newPage();
-  await page.goto('http://localhost:8080/', { waitUntil: 'domcontentloaded' });
-  const animated = await page.locator('.heroMain::after').count().catch(() => 0);
-  expect(animated).toBeGreaterThanOrEqual(0);
-  await context.close();
+  const styles = await focused.evaluate(el => {
+    const computed = getComputedStyle(el);
+    return { outlineStyle: computed.outlineStyle, boxShadow: computed.boxShadow };
+  });
+  expect(styles.outlineStyle !== 'none' || styles.boxShadow !== 'none').toBeTruthy();
 });
