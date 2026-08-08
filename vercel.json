@@ -16,14 +16,35 @@
       ]
     },
     {
-      "source": "/index.html",
+      "source": "/",
       "headers": [
         {"key": "Content-Type", "value": "text/html; charset=utf-8"},
         {"key": "Content-Disposition", "value": "inline"}
       ]
     },
     {
-      "source": "/first-blink/index.html",
+      "source": "/first-blink",
+      "headers": [
+        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
+        {"key": "Content-Disposition", "value": "inline"}
+      ]
+    },
+    {
+      "source": "/world",
+      "headers": [
+        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
+        {"key": "Content-Disposition", "value": "inline"}
+      ]
+    },
+    {
+      "source": "/art-board",
+      "headers": [
+        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
+        {"key": "Content-Disposition", "value": "inline"}
+      ]
+    },
+    {
+      "source": "/index.html",
       "headers": [
         {"key": "Content-Type", "value": "text/html; charset=utf-8"},
         {"key": "Content-Disposition", "value": "inline"}
