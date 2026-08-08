@@ -6,6 +6,19 @@ import sys
 from pathlib import Path
 
 TOKENS = ["Tx8", "Ux8", "Fx8", "XM8", "0x8", "TM8", "Mx8", "Sx8"]
+REQUIRED_NETWORKS = {
+    "Ethereum Sepolia",
+    "BNB Smart Chain Testnet",
+    "Solana Devnet",
+    "TON Testnet",
+    "Bitcoin Testnet4/Signet research",
+    "Pi Testnet",
+}
+ALLOWED_SIGNER_REQUIREMENTS = {
+    "OWNER_REQUIRED_FOR_ANY_BROADCAST",
+    "OWNER_REQUIRED_FOR_ANY_TRANSACTION",
+    "OWNER_REQUIRED_FOR_ANY_BROADCAST_OR_ACCOUNT_ACCESS",
+}
 FORBIDDEN_AUTH = {
     "mainnet_deployment",
     "testnet_broadcast_requiring_signer_or_funds",
@@ -51,6 +64,8 @@ def validate(root: Path) -> list[str]:
     coin = assets.get("native_coin", {})
     if coin.get("symbol") != "8x8" or coin.get("issuance_authorized") is not False:
         failures.append("native 8x8 coin identity/authorization drift")
+    if coin.get("final_supply") is not None or coin.get("decimals") is not None:
+        failures.append("native 8x8 coin final supply/decimals must remain unresolved")
     if coin.get("independent_multichain_supply_allowed") is not False:
         failures.append("independent multichain supply must remain prohibited")
 
@@ -82,25 +97,28 @@ def validate(root: Path) -> list[str]:
     if chains.get("product_version") != "0.0.1 Beta" or chains.get("mode") != "OWNER_AWAY_TESTNET_ONLY":
         failures.append("chain readiness mode/version drift")
     networks = chains.get("networks", [])
-    names = {row.get("network") for row in networks}
-    required = {"Ethereum Sepolia", "BNB Smart Chain Testnet", "Solana Devnet", "TON Testnet", "Bitcoin Testnet4/Signet research", "Pi Testnet"}
-    if names != required:
-        failures.append("chain readiness network set drift")
+    names = [row.get("network") for row in networks]
+    if len(networks) != len(REQUIRED_NETWORKS) or len(names) != len(set(names)) or set(names) != REQUIRED_NETWORKS:
+        failures.append("chain readiness networks must be exactly six unique canonical networks")
     for row in networks:
         if row.get("verification_state") not in {"DESIGN_ONLY", "RESEARCH_ONLY"}:
             failures.append(f"{row.get('network')} cannot claim deployed verification")
         if row.get("testnet_receipts") != []:
             failures.append(f"{row.get('network')} cannot contain unverified testnet receipts")
-        if "OWNER_REQUIRED" not in str(row.get("signer_requirements")):
-            failures.append(f"{row.get('network')} signer gate must remain OWNER_REQUIRED")
+        if row.get("signer_requirements") not in ALLOWED_SIGNER_REQUIREMENTS:
+            failures.append(f"{row.get('network')} signer gate must use an exact OWNER_REQUIRED policy")
         if row.get("rollback") not in {"NO_DEPLOYMENT_EXISTS", "NO_TRANSACTION_OR_ASSET_EXISTS"}:
             failures.append(f"{row.get('network')} rollback state must prove no deployment")
 
-    evm = {row["network"]: row for row in networks if row.get("chain_family") == "EVM"}
-    if evm.get("Ethereum Sepolia", {}).get("chain_id") != 11155111:
-        failures.append("Sepolia chain-id drift")
-    if evm.get("BNB Smart Chain Testnet", {}).get("chain_id") != 97:
-        failures.append("BSC Testnet chain-id drift")
+    for row in networks:
+        if row.get("chain_family") != "EVM":
+            continue
+        if row.get("network") == "Ethereum Sepolia" and row.get("chain_id") != 11155111:
+            failures.append("Sepolia chain-id drift")
+        elif row.get("network") == "BNB Smart Chain Testnet" and row.get("chain_id") != 97:
+            failures.append("BSC Testnet chain-id drift")
+        elif row.get("network") not in {"Ethereum Sepolia", "BNB Smart Chain Testnet"}:
+            failures.append("unexpected EVM network")
 
     invariants = set(chains.get("global_invariants", []))
     for invariant in (
