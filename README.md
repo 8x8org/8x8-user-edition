@@ -4,6 +4,12 @@
 
 8x8 User Edition is the canonical public-safe client for the wider 8x8 Fabric. It exposes an evidence-gated projection of the operating model, Three Realities, public repository DNA, agent archetypes, mission/evidence concepts, Studio, trading research, blockchain research and spatial-interface direction without exposing the private owner control plane.
 
+## Live public carrier
+
+**Production:** `https://8x8-os-ecosystem.vercel.app`
+
+The Vercel project name is a historical carrier name. Canonical source authority remains **`8x8org/8x8-user-edition`**. The production carrier currently serves the reviewed 0.0.1 Beta interface, with `/`, `/first-blink`, `/world`, and `/art-board` verified server-side as browser-renderable HTML. See [`docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md`](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md).
+
 ## ❤️ Sponsor 8x8
 
 [**Sponsor 8x8 on GitHub → github.com/sponsors/8x8org**](https://github.com/sponsors/8x8org)
@@ -90,12 +96,14 @@ No guaranteed profit, rewards, APY, token value, zero gas or zero latency is pro
 
 ## Deployment acceptance
 
-A deployment is not considered verified merely because Vercel accepted a deployment request. The public release requires a real project/deployment record and route checks proving that `/`, `/first-blink`, `/world`, and `/art-board` return browser-renderable HTML without attachment headers. See [`docs/MSG296E_FABRIC_MIRROR_V010.md`](docs/MSG296E_FABRIC_MIRROR_V010.md).
+The production carrier now passes server-side route and response-header checks for the required public routes. Physical logged-out Android Chromium and mobile Safari visual smoke remain separate client-side certification evidence. See [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md) and [`docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md`](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md).
 
 ## Documentation
 
 - [Architecture](ARCHITECTURE.md)
 - [Implementation status](IMPLEMENTATION_STATUS.md)
+- [0.0.1 Beta changelog](CHANGELOG_0.0.1.md)
+- [Public deployment receipt](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md)
 - [Security policy](SECURITY.md)
 - [Public information boundary](PUBLIC_INFORMATION_BOUNDARY.md)
 - [Machine-readable public state](state/public-state.json)
