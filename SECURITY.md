@@ -15,42 +15,42 @@ This repository is the public 8x8 User Edition shell. It must never contain or e
 
 ## Current beta security posture
 
-The `0.1.0-beta` cockpit is static and local-only. It has:
+The canonical product version is **`0.0.1 Beta`**. The public cockpit is static/public-safe and has:
 
-- no backend;
-- no database;
-- no environment variables;
+- no backend private-control bridge;
+- no private database;
+- no embedded environment secrets;
 - no analytics SDK;
 - no wallet connection;
-- no account system;
-- no network API calls;
-- no camera, microphone, location, payment, USB, serial or Bluetooth permission;
+- no public production account system;
+- no private runtime API calls;
+- no automatic camera, microphone, location, payment, USB, serial or Bluetooth permission;
 - no remote command path.
 
 The deployment configuration denies framing, restricts content sources and disables sensitive browser permissions.
 
+## Three-Reality security boundary
+
+- `PRIVATE_PAST` may contain private operational history, memory, receipts, topology and recovery material. It is not published here.
+- `PUBLIC_PRESENT` contains only approved public-safe projection data.
+- `FUTURE_LAB` contains research and unpromoted prototypes and must not be presented as production truth.
+- `PROTECTED_BETA` is a promotion state, not permission to expose private data.
+
 ## Reporting a vulnerability
 
-Do not publish secret values, wallet material, private messages, biometric data or private-system logs in a public issue.
+Do not publish secret values, wallet material, private messages, biometric data, protected repository inventory or private-system logs in a public issue.
 
-GitHub's private vulnerability reporting is **not yet enabled** for this repository; enabling it is a pending owner action tracked in [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md). Until it is enabled, open a GitHub issue that states only that you have a security report and how you can be reached — **without any vulnerability details** — and a maintainer will arrange a private channel. Once enabled, use the repository's *Security → Report a vulnerability* form. Reports should include:
+GitHub's private vulnerability reporting is **not yet enabled** for this repository; enabling it is tracked in [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md). Until it is enabled, open a GitHub issue that states only that you have a security report and how you can be reached, without vulnerability details, and a maintainer will arrange a private channel.
 
-- affected public path or revision;
-- vulnerability class;
-- reproduction steps using public-safe test data;
-- expected and observed behavior;
-- suggested remediation;
-- whether the issue appears exploitable on the live public deployment.
-
-Never include a real credential value. Report only the path, pattern class and remediation.
+Reports should include the affected public path or revision, vulnerability class, public-safe reproduction steps, expected and observed behavior, suggested remediation, and whether the issue appears exploitable on the live public deployment. Never include a real credential value.
 
 ## Supported versions
 
 | Version | Supported |
 |---|---|
-| 0.1.x beta | Yes |
-| Pre-beta README-only shell | No |
+| 0.0.1 Beta | Yes |
+| Historical pre-policy public beta labels | No; retained only as provenance where necessary |
 
 ## Security boundary
 
-A paid subscription, future account, public node enrollment or public installer will not grant access to the private owner control plane. Public entitlement and private authority are separate systems.
+A paid subscription, future account, public node enrollment or public installer will not grant access to the private owner control plane. Public entitlement and private authority remain separate systems.
