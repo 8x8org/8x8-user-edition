@@ -1,0 +1,47 @@
+name: Validate Protected Beta Economy
+
+on:
+  pull_request:
+    paths:
+      - "protected-beta/**"
+      - "supabase/migrations/**"
+      - "scripts/validate_protected_beta_economy.py"
+      - "tests/test_protected_beta_economy.py"
+      - ".github/workflows/validate-protected-beta-economy.yml"
+  push:
+    branches:
+      - feature/msg324-protected-beta-account-economy-shell-v1
+    paths:
+      - "protected-beta/**"
+      - "supabase/migrations/**"
+      - "scripts/validate_protected_beta_economy.py"
+      - "tests/test_protected_beta_economy.py"
+      - ".github/workflows/validate-protected-beta-economy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact submitted head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+      - name: Validate protected-beta policy
+        run: python -B scripts/validate_protected_beta_economy.py
+      - name: Run regression tests
+        run: python -B -m unittest tests/test_protected_beta_economy.py -v
+      - name: Parse policy JSON
+        run: |
+          python -m json.tool protected-beta/account-economy-state.json >/dev/null
+          python -m json.tool protected-beta/economy-policy.json >/dev/null
+      - name: Verify checkout stayed clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"

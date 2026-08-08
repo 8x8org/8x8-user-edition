@@ -1,0 +1,78 @@
+{
+  "schema": "8x8.protected-beta-economy-policy.v1",
+  "status": "OWNER_REQUESTED_DRAFT_NOT_CHAIN_EFFECTIVE",
+  "inherits_release": "0.1.0-stable",
+  "canonical_supply_rule": {
+    "max_live_total_supply_per_market_asset": 8888888,
+    "cap_is_immutable_after_deployment": true,
+    "mintable_within_cap": true,
+    "burnable": true,
+    "burn_reopens_mint_headroom_up_to_cap": true,
+    "independent_multichain_supply": false,
+    "multichain_model": "ONE_CANONICAL_ORIGIN_SUPPLY_PLUS_BRIDGED_OR_WRAPPED_REPRESENTATIONS"
+  },
+  "market_assets": [
+    {"symbol":"8x8","role":"SETTLEMENT_AND_NETWORK_SECURITY","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"Tx8","role":"TRANSACTION_AND_MARKETPLACE","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"Ux8","role":"USER_UTILITY_AND_ACCESS","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"Fx8","role":"FABRIC_OPERATIONS","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"XM8","role":"EXECUTION_AND_COMPUTE","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"0x8","role":"PROTOCOL_AND_INNOVATION","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"TM8","role":"COMMUNITY_AND_IDENTITY","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"Mx8","role":"MINING_AND_RESOURCE_CONTRIBUTION","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"},
+    {"symbol":"Sx8","role":"STORAGE_AND_SERVICES","requested_cap":8888888,"requested_initial_mint":8888888,"initial_destination_role":"OWNER_TREASURY"}
+  ],
+  "non_market_credential": {
+    "symbol": "SRP",
+    "classification": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL",
+    "included_in_8888888_market_supply_policy": false
+  },
+  "wallet_roles": [
+    "OWNER_TREASURY",
+    "OPERATING_TREASURY",
+    "LIQUIDITY",
+    "FEE_COLLECTION",
+    "TOKEN_ADMIN",
+    "ASSET_RESERVE",
+    "AGENT_OPERATIONAL_TESTNET_ONLY",
+    "USER_SELF_CUSTODY"
+  ],
+  "allocation_policy": {
+    "owner_can_configure_before_distribution": true,
+    "buckets": [
+      {"role":"OWNER_TREASURY","percentage":null},
+      {"role":"OPERATING_TREASURY","percentage":null},
+      {"role":"LIQUIDITY","percentage":null},
+      {"role":"FEE_COLLECTION","percentage":null},
+      {"role":"ASSET_RESERVE","percentage":null},
+      {"role":"AGENT_OPERATIONAL_TESTNET_ONLY","percentage":null}
+    ],
+    "must_sum_to_100_when_enabled": true
+  },
+  "tokenomics_settings": {
+    "primary_sale_price": {"configurable":true,"currency":null,"amount":null,"effective":false},
+    "transfer_fee_bps": {"configurable":true,"value":null,"maximum":null,"effective":false},
+    "burn_policy": {"configurable":true,"mode":"HOLDER_BURN_PLUS_AUTHORIZED_POLICY_ACTIONS","effective":false},
+    "mint_policy": {"configurable":true,"mode":"ROLE_GATED_WITH_HARD_CAP","effective":false},
+    "vesting": {"configurable":true,"schedule":null,"effective":false}
+  },
+  "pricing_truth": {
+    "primary_sale_price_can_be_set_by_authorized_8x8_policy": true,
+    "secondary_market_price_can_be_directly_set_by_admin": false,
+    "secondary_market_price_is_market_or_pool_derived": true,
+    "price_oracle_values_require_source_timestamp_and_chain": true
+  },
+  "first_execution_target": {
+    "network": "Ethereum Sepolia",
+    "chain_id": 11155111,
+    "mode": "TESTNET_ONLY_UNTIL_SIGNER_AND_DEPLOYMENT_RECEIPT",
+    "reason": "ERC20Capped plus role-based minting and holder burn semantics map cleanly to the requested hard-cap model"
+  },
+  "truth": {
+    "wallet_addresses_created_or_verified": false,
+    "contracts_deployed": false,
+    "tokens_minted": false,
+    "sale_live": false,
+    "users_onboarded": false
+  }
+}

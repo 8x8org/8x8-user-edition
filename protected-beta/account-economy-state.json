@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.1.1",
+  "release_scope": "PROTECTED_BETA_ACCOUNT_ECONOMY",
+  "inherits_fabric": "8x8 OS 0.1.0 Stable / Living Omniversal Gate R4",
+  "truth": {
+    "protected_beta_admin_shell_implemented": true,
+    "protected_beta_user_shell_implemented": true,
+    "wallet_binding_migration_staged": true,
+    "production_admin_login": false,
+    "production_account_database": false,
+    "owner_wallet_verified": false,
+    "mainnet_assets_deployed": false,
+    "testnet_assets_deployed": false,
+    "tokens_minted": false,
+    "primary_sale_live": false,
+    "verified_user_count": null,
+    "whole_system_score": "NOT_INFERRED"
+  },
+  "planned_routes": {
+    "owner_admin": "/admin",
+    "user_account": "/account",
+    "source_admin_shell": "/protected-beta/admin/",
+    "source_user_shell": "/protected-beta/account/"
+  },
+  "identity": {
+    "stable_8x8_id": true,
+    "replaceable_login_bindings": true,
+    "passkey_ready_target": true,
+    "owner_role_separate": true,
+    "production_backend_required": true
+  },
+  "wallet_model": {
+    "store_private_keys_in_app": false,
+    "store_seed_phrases_in_app": false,
+    "store_public_address_bindings": true,
+    "require_signed_address_challenge_for_verified_binding": true,
+    "roles": [
+      "OWNER_TREASURY",
+      "OPERATING_TREASURY",
+      "LIQUIDITY",
+      "FEE_COLLECTION",
+      "TOKEN_ADMIN",
+      "ASSET_RESERVE",
+      "AGENT_OPERATIONAL_TESTNET_ONLY",
+      "USER_SELF_CUSTODY"
+    ]
+  },
+  "market_asset_family": ["8x8", "Tx8", "Ux8", "Fx8", "XM8", "0x8", "TM8", "Mx8", "Sx8"],
+  "non_market_credential": {
+    "symbol": "SRP",
+    "classification": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL"
+  },
+  "requested_market_asset_policy": {
+    "max_live_total_supply_each": 8888888,
+    "requested_initial_mint_each": 8888888,
+    "initial_destination_role": "OWNER_TREASURY",
+    "mintable_within_hard_cap": true,
+    "burnable": true,
+    "independent_supply_per_network": false
+  },
+  "pricing": {
+    "primary_sale_price_configurable": true,
+    "secondary_market_price_admin_control": false,
+    "market_reference_requires_source_timestamp_and_network": true
+  },
+  "first_chain_target": "ETHEREUM_SEPOLIA",
+  "first_chain_id": 11155111,
+  "additional_test_research_networks": ["BNB Smart Chain Testnet", "Solana Devnet", "TON Testnet", "Bitcoin Testnet4/Signet research", "Pi Testnet"],
+  "mainnet_requires_exact_transaction_gate": true,
+  "acceptance": {
+    "bounded_100_100_only": true,
+    "gates": [
+      "identity_integrity",
+      "auth_session_security",
+      "public_private_boundary",
+      "wallet_key_isolation",
+      "wallet_binding_verification",
+      "mint_burn_cap_invariants",
+      "tokenomics_policy_bounds",
+      "sale_market_price_truth_separation",
+      "treasury_role_separation",
+      "testnet_verification",
+      "rollback_recovery",
+      "sbom_provenance_security",
+      "browser_mobile_accessibility",
+      "exact_head_ci",
+      "context_bootstrap_receipts"
+    ]
+  }
+}
