@@ -1,8 +1,11 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "0.0.1",
   "product": "8x8 User Edition",
-  "release": "0.1.0-beta",
+  "product_version": "0.0.1",
+  "release": "0.0.1-beta",
   "truth_class": "DEPLOYMENT_CANDIDATE",
+  "reality": "PUBLIC_PRESENT",
+  "promotion_state": "PROTECTED_BETA",
   "public_beta": true,
   "private_control_plane_connected": false,
   "private_repositories_connected": false,
