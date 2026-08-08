@@ -105,8 +105,9 @@ def validate(root: Path) -> list[str]:
             failures.append(f"{row.get('network')} cannot claim deployed verification")
         if row.get("testnet_receipts") != []:
             failures.append(f"{row.get('network')} cannot contain unverified testnet receipts")
-        if row.get("signer_requirements") not in ALLOWED_SIGNER_REQUIREMENTS:
-            failures.append(f"{row.get('network')} signer gate must use an exact OWNER_REQUIRED policy")
+        signer = row.get("signer_requirements")
+        if not isinstance(signer, str) or signer not in ALLOWED_SIGNER_REQUIREMENTS:
+            failures.append(f"{row.get('network')} signer gate must use an exact OWNER_REQUIRED policy string")
         if row.get("rollback") not in {"NO_DEPLOYMENT_EXISTS", "NO_TRANSACTION_OR_ASSET_EXISTS"}:
             failures.append(f"{row.get('network')} rollback state must prove no deployment")
 
