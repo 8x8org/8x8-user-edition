@@ -9,12 +9,12 @@ COMMIT = "1" * 40
 
 
 def test_issue_and_verify_round_trip():
-    receipt = issue_receipt(COMMIT, "test-receipt-0.0.1")
+    receipt = issue_receipt(COMMIT, "test-receipt-0.1.0")
     verify_receipt(receipt)
 
 
 def test_tampered_receipt_is_rejected():
-    receipt = issue_receipt(COMMIT, "test-receipt-0.0.1")
+    receipt = issue_receipt(COMMIT, "test-receipt-0.1.0")
     tampered = deepcopy(receipt)
     tampered["truth_class"] = "FAKE"
     with pytest.raises(ValueError, match="tamper seal"):
@@ -22,13 +22,20 @@ def test_tampered_receipt_is_rejected():
 
 
 def test_version_drift_is_rejected():
-    receipt = issue_receipt(COMMIT, "test-receipt-0.0.1")
+    receipt = issue_receipt(COMMIT, "test-receipt-0.1.0")
     receipt["product_version"] = "1.0.0"
     receipt["receipt_sha256"] = receipt_digest(receipt)
-    with pytest.raises(ValueError, match="version must be 0.0.1"):
+    with pytest.raises(ValueError, match="version must be 0.1.0-stable"):
         verify_receipt(receipt)
+
+
+def test_whole_system_truth_is_bound_into_receipt():
+    receipt = issue_receipt(COMMIT, "test-receipt-0.1.0")
+    assert receipt["assertions"]["whole_system_complete"] is False
+    assert receipt["assertions"]["whole_system_score"] == "NOT_INFERRED"
+    assert receipt["assertions"]["stable_scope"] == "PUBLIC_WEB_CLIENT"
 
 
 def test_bad_commit_is_rejected():
     with pytest.raises(ValueError, match="40-character hexadecimal"):
-        issue_receipt("not-a-commit", "test-receipt-0.0.1")
+        issue_receipt("not-a-commit", "test-receipt-0.1.0")
