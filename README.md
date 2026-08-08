@@ -1,5 +1,10 @@
 # 8x8 User Edition
 
+[![Version](https://img.shields.io/badge/8x8%20OS-0.0.1%20Beta-7b61ff)](VERSION.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Contributing](https://img.shields.io/badge/Contributing-guide-brightgreen.svg)](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md)
+[![Security](https://img.shields.io/badge/Security-policy-red.svg)](SECURITY.md)
+
 > **8x8 OS 0.0.1 Beta · Public Present projection · Protected Beta promotion state. Not whole-system stable or complete.**
 
 8x8 User Edition is the canonical public-safe client for the wider 8x8 Fabric. It exposes an evidence-gated projection of the operating model, Three Realities, public repository DNA, agent archetypes, mission/evidence concepts, Studio, trading research, blockchain research and spatial-interface direction without exposing the private owner control plane.
@@ -103,6 +108,7 @@ The production carrier now passes server-side route and response-header checks f
 - [Architecture](ARCHITECTURE.md)
 - [Implementation status](IMPLEMENTATION_STATUS.md)
 - [0.0.1 Beta changelog](CHANGELOG_0.0.1.md)
+- [Public modernization convergence](docs/PUBLIC_MODERNIZATION_CONVERGENCE_0.0.1.md)
 - [Public deployment receipt](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md)
 - [Security policy](SECURITY.md)
 - [Public information boundary](PUBLIC_INFORMATION_BOUNDARY.md)
