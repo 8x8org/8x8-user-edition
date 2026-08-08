@@ -22,6 +22,7 @@ contract EightX8CappedAsset is ERC20, ERC20Burnable, ERC20Capped, AccessControl 
     event PolicyVersionRecorded(bytes32 indexed policyDigest, string policyVersion);
 
     error ZeroAddress();
+    error InvalidDecimals();
 
     constructor(
         string memory name_,
@@ -31,9 +32,10 @@ contract EightX8CappedAsset is ERC20, ERC20Burnable, ERC20Capped, AccessControl 
         address policyAdmin_
     )
         ERC20(name_, symbol_)
-        ERC20Capped(8_888_888 * (10 ** decimals_))
+        ERC20Capped(_scaledCap(decimals_))
     {
         if (ownerTreasury_ == address(0) || policyAdmin_ == address(0)) revert ZeroAddress();
+        if (decimals_ > 18) revert InvalidDecimals();
         _assetDecimals = decimals_;
         wholeTokenCap = 8_888_888;
 
@@ -70,5 +72,10 @@ contract EightX8CappedAsset is ERC20, ERC20Burnable, ERC20Capped, AccessControl 
         override(ERC20, ERC20Capped)
     {
         super._update(from, to, value);
+    }
+
+    function _scaledCap(uint8 decimals_) private pure returns (uint256) {
+        if (decimals_ > 18) revert InvalidDecimals();
+        return 8_888_888 * (10 ** uint256(decimals_));
     }
 }
