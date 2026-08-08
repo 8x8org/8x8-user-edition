@@ -1,0 +1,66 @@
+{
+  "schema": "8x8.msg325.sepolia-deployment-spec.v1.1",
+  "status": "SOURCE_PINNED_NOT_BROADCAST",
+  "network": "Ethereum Sepolia",
+  "chain_id": 11155111,
+  "contract": "contracts/evm/EightX8CappedAsset.sol:EightX8CappedAsset",
+  "toolchain": {
+    "solidity": "0.8.35",
+    "openzeppelin_contracts": "5.6.1",
+    "source_pragma": "^0.8.24"
+  },
+  "supply_model": {
+    "whole_token_cap_each": 8888888,
+    "initial_mint_each": 8888888,
+    "initial_destination": "OWNER_TREASURY_ADDRESS_REQUIRED_AT_DEPLOYMENT",
+    "mintable": true,
+    "burnable": true,
+    "burn_reopens_headroom": true,
+    "cap_immutable": true,
+    "allowed_decimals_min": 0,
+    "allowed_decimals_max": 18,
+    "deployment_decimals": 18
+  },
+  "assets": [
+    {"name":"8x8 Coin","symbol":"8x8","role":"SETTLEMENT_AND_NETWORK_SECURITY"},
+    {"name":"8x8 Transaction","symbol":"Tx8","role":"TRANSACTION_AND_MARKETPLACE"},
+    {"name":"8x8 User Utility","symbol":"Ux8","role":"USER_UTILITY_AND_ACCESS"},
+    {"name":"8x8 Fabric","symbol":"Fx8","role":"FABRIC_OPERATIONS"},
+    {"name":"8x8 Execution","symbol":"XM8","role":"EXECUTION_AND_COMPUTE"},
+    {"name":"8x8 Protocol","symbol":"0x8","role":"PROTOCOL_AND_INNOVATION"},
+    {"name":"FlashTM8","symbol":"TM8","role":"COMMUNITY_AND_IDENTITY"},
+    {"name":"8x8 Mining","symbol":"Mx8","role":"MINING_AND_RESOURCE_CONTRIBUTION"},
+    {"name":"8x8 Storage","symbol":"Sx8","role":"STORAGE_AND_SERVICES"}
+  ],
+  "not_a_market_asset": {
+    "symbol": "SRP",
+    "name": "Seraphim Reputation Proof",
+    "classification": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL",
+    "deploy_with_market_family": false
+  },
+  "wallet_roles": [
+    "OWNER_TREASURY",
+    "OPERATING_TREASURY",
+    "LIQUIDITY",
+    "FEE_COLLECTION",
+    "TOKEN_ADMIN",
+    "ASSET_RESERVE",
+    "AGENT_OPERATIONAL_TESTNET_ONLY",
+    "USER_SELF_CUSTODY"
+  ],
+  "required_runtime_inputs": [
+    "OWNER_TREASURY_PUBLIC_ADDRESS",
+    "POLICY_ADMIN_PUBLIC_ADDRESS",
+    "FUNDED_SEPOLIA_SIGNER_CONTROLLED_BY_OWNER"
+  ],
+  "pricing_truth": {
+    "primary_sale_price_may_be_policy_configurable": true,
+    "secondary_market_price_direct_admin_control": false,
+    "reason": "DEX/secondary price is determined by trades and liquidity-pool state, not an application settings field"
+  },
+  "broadcast_performed": false,
+  "contract_addresses": {},
+  "transaction_hashes": [],
+  "verification_receipts": [],
+  "rollback": "NO_CHAIN_STATE_CREATED_BY_THIS_SPEC"
+}

@@ -1,0 +1,69 @@
+name: Validate MSG325 Sepolia Contract
+
+on:
+  pull_request:
+    paths:
+      - "contracts/evm/**"
+      - ".github/workflows/validate-msg325-sepolia-contract.yml"
+  push:
+    branches:
+      - feature/msg325-sepolia-capped-token-family-v1
+    paths:
+      - "contracts/evm/**"
+      - ".github/workflows/validate-msg325-sepolia-contract.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compile-and-contract-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact submitted head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "22"
+          package-manager-cache: false
+      - name: Install pinned compiler and contract library outside repository
+        run: |
+          rm -rf /tmp/msg325-deps
+          mkdir -p /tmp/msg325-deps
+          npm install --prefix /tmp/msg325-deps --no-save --ignore-scripts solc@0.8.35 @openzeppelin/contracts@5.6.1
+      - name: Compile capped asset
+        run: |
+          rm -rf /tmp/msg325-compile
+          mkdir -p /tmp/msg325-compile
+          /tmp/msg325-deps/node_modules/.bin/solcjs --base-path . --include-path /tmp/msg325-deps/node_modules --bin --abi contracts/evm/EightX8CappedAsset.sol -o /tmp/msg325-compile
+          test -s /tmp/msg325-compile/contracts_evm_EightX8CappedAsset_sol_EightX8CappedAsset.bin
+          test -s /tmp/msg325-compile/contracts_evm_EightX8CappedAsset_sol_EightX8CappedAsset.abi
+      - name: Verify deployment contract truth
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('contracts/evm/MSG325_SEPOLIA_DEPLOYMENT_SPEC.json').read_text())
+          assert p['network']=='Ethereum Sepolia'
+          assert p['chain_id']==11155111
+          assert p['toolchain']['solidity']=='0.8.35'
+          assert p['toolchain']['openzeppelin_contracts']=='5.6.1'
+          assert p['supply_model']['whole_token_cap_each']==8888888
+          assert p['supply_model']['initial_mint_each']==8888888
+          assert p['supply_model']['cap_immutable'] is True
+          assert p['supply_model']['deployment_decimals']==18
+          assert p['broadcast_performed'] is False
+          assert p['contract_addresses']=={}
+          assert p['transaction_hashes']==[]
+          assert len(p['assets'])==9
+          assert {x['symbol'] for x in p['assets']}=={'8x8','Tx8','Ux8','Fx8','XM8','0x8','TM8','Mx8','Sx8'}
+          assert p['not_a_market_asset']['symbol']=='SRP'
+          assert p['pricing_truth']['secondary_market_price_direct_admin_control'] is False
+          print('MSG325_SEPOLIA_CONTRACT_VALIDATION=PASS')
+          PY
+      - name: Verify exact repository cleanliness
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
