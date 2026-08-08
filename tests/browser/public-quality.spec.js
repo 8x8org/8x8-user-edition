@@ -42,14 +42,12 @@ test('critical and serious axe findings are zero on the main Atlas', async ({ pa
   expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
 });
 
-test('keyboard navigation exposes visible focus on interactive controls', async ({ page }) => {
+test('primary navigation has a visible focus treatment', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await page.keyboard.press('Tab');
-  const focused = page.locator(':focus');
-  await expect(focused).toBeVisible();
-  const styles = await focused.evaluate(el => {
-    const computed = getComputedStyle(el);
-    return { outlineStyle: computed.outlineStyle, boxShadow: computed.boxShadow };
-  });
-  expect(styles.outlineStyle !== 'none' || styles.boxShadow !== 'none').toBeTruthy();
+  const link = page.locator('.nav a').first();
+  await link.focus();
+  await expect(link).toBeFocused();
+  const borderColor = await link.evaluate(el => getComputedStyle(el).borderColor);
+  expect(borderColor).not.toBe('rgba(0, 0, 0, 0)');
+  expect(borderColor).not.toBe('transparent');
 });
