@@ -448,7 +448,11 @@ def reopen_receipts(exported: dict) -> list:
 def _demo() -> dict:
     """A deterministic, self-verifying happy-path run for CI evidence."""
     ticks = iter(range(1, 10_000))
-    clock = lambda: float(next(ticks))  # noqa: E731 - deterministic reference clock
+
+    def clock() -> float:
+        """Deterministic reference clock for reproducible receipts."""
+        return float(next(ticks))
+
     ledger = ProofCarryingLedger(clock=clock, secret=b"public-reference-secret")
 
     m = ledger.create("demo-1", inputs={"task": "publish public evidence"}, dependencies=["dep-a"])
