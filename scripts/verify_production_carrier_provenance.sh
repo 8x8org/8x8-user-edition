@@ -35,7 +35,7 @@ if [[ "$source_sha256" != "$live_sha256" ]]; then
   exit 1
 fi
 
-for marker in 'Living Omniversal Gate R4' '0.1.0 Stable' 'whole_system_complete=false'; do
+for marker in 'Living Omniversal Gate R4' '0.1.0 Stable' 'WHOLE_SYSTEM_COMPLETE=false'; do
   grep -Fq "$marker" "$body" || {
     echo "PROVENANCE=FAIL reason=truth_marker_missing marker=$marker" >&2
     exit 1
