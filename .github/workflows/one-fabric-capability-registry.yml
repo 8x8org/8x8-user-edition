@@ -1,0 +1,24 @@
+name: One-Fabric Capability Registry
+
+on:
+  pull_request:
+    paths:
+      - 'fabric/external_capability_registry/**'
+      - '.github/workflows/one-fabric-capability-registry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Run registry regression suite
+        run: python3 -m unittest fabric.external_capability_registry.test_registry -v
+      - name: Emit canonical registry receipt
+        run: python3 fabric/external_capability_registry/registry.py
