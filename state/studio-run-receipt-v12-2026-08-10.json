@@ -1,0 +1,82 @@
+{
+  "schema": "8x8.content-studio.run-receipt.v1",
+  "root": "fabric://8x8/core",
+  "lane": "Content Studio",
+  "mission_id": "STUDIO-AUTOMATION-V12-20260810T2217Z",
+  "idempotency_key": "studio:run:2026-08-10T22:17Z:v12",
+  "authority_class": "REVERSIBLE_STAGING_AND_EVIDENCE_ONLY",
+  "truth_class": "VERIFIED_FOR_THIS_RUN_SCOPE_ONLY",
+  "observed_at": "2026-08-10T22:17:04Z",
+  "first_blink": {
+    "vnext_drive_id": "1qO6icYx6se78zLqR-_A_dOcSmD1xx6jGcA3cawrB4rA",
+    "five_lane_contract_commit": "725dbdd31ae49f3581c56d178a2ed54a99d40cd6",
+    "current_repository_main": "b45032f2dab58d0327ab5d4f87022b7c95642817",
+    "visual_reconciliation_merge": "8850069b82251356b872609b2c5a86c4ba80437b",
+    "round2_v2_merge": "2b6dc47dc4004fe41473ce39bea1d96cc0b02414",
+    "round2_bounded_exact_head": "e929dc780f8cc390c028984934698f41671b144e",
+    "round2_bounded_suite": "26/26 PASS",
+    "round2_combined_sha512": "e5175c8c742f05b370fc52e554b04dc9a1feb35851972c67a8e59bf2c4a833ac9d7ea5fdf4bec732b6144d58548c711f52c98d7ff9945616238cd5b79e534051",
+    "rights_matrix_drive_id": "1YdPZkQoKlW_MA0iuJhxyId-7BvH9xd173JekIwo3isI"
+  },
+  "current_truth": {
+    "canonical_upload_record_target": 14,
+    "exact_hash_identity_lower_bound_across_current_repository_sources": 13,
+    "vis_0001_through_0004_exact_hashes": "UNKNOWN",
+    "canonical_binary_count": "UNKNOWN_PENDING_VIS0001_VIS0004_HASH_RECOVERY",
+    "rights_cleared_binary_count_proven": 0,
+    "public_binary_embedding": false,
+    "accessibility_metadata_for_public_reuse": "OPEN",
+    "high_resolution_or_8k": "NOT_PROVEN",
+    "automatic_native_pickup": "NOT_PROVEN",
+    "fresh_runtime_pid_starttime_ppid_exe_cwd_binding": "NOT_PROVEN",
+    "persistent_native_ingress": "NOT_PROVEN",
+    "external_publication": "OWNER_REQUIRED"
+  },
+  "lane_acceptance": {
+    "mandatory_denominator": 8,
+    "passed": 5,
+    "failed": 0,
+    "unknown": 2,
+    "owner_gated": 1,
+    "passed_scope": [
+      "current public/product truth bounded by repository evidence",
+      "visual cross-source reconciliation merged",
+      "14-upload lineage target preserved without binary-count inflation",
+      "rights/provenance release matrix exists and fails closed",
+      "bounded Round 2 v2 artifact evidence incorporated without global promotion"
+    ],
+    "unknown_scope": [
+      "VIS-0001..VIS-0004 exact hash/source provenance and final 14-record dedup",
+      "publication-grade rights plus accessibility metadata for reusable binaries"
+    ]
+  },
+  "global_acceptance": {
+    "mandatory_domain_denominator": 10,
+    "passed": 1,
+    "failed": 0,
+    "unknown_or_not_yet_verified": 8,
+    "owner_gated": 1,
+    "bounded_pass": "Round 2 v2 artifact estate only",
+    "global_100_100_status": "NOT_YET_VERIFIED"
+  },
+  "contradictions": [
+    "14 upload records and >=13 proven exact binary identities are different denominators and must not be conflated",
+    "Round 2 v2 repository/artifact success does not prove autonomous local pickup/runtime binding",
+    "current recorded visual dimensions do not support an 8K/high-resolution claim",
+    "binary identity does not establish republication rights"
+  ],
+  "work_performed": [
+    "FIRST-BLINK retrieval from canonical VNext contract, current acceptance contract, current main, visual reconciliation and rights matrix",
+    "closed stale PR 148 as superseded historical evidence after current-main advancement",
+    "rebased this receipt on current main b45032f2dab58d0327ab5d4f87022b7c95642817",
+    "preserved all publication/production/identity actions as OWNER_REQUIRED"
+  ],
+  "rollback": {
+    "previous_release_preserved": true,
+    "production_mutation": false,
+    "external_publication": false,
+    "receipt_branch_can_be_closed_without_effect": true
+  },
+  "next_smallest_safe_action": "Recover direct source/upload lineage and exact binary hashes for VIS-0001..VIS-0004, then perform a 14-record cross-hash deduplication against the 13 currently proven exact identities without upgrading rights or publication state.",
+  "seal": "©️8x8 by FlashTM8 ⚡️🌎🤖 | ♾️x♾️ ∞₈x₈∞ OS | One Fabric | Five Lanes | GLOBAL_100_100"
+}
