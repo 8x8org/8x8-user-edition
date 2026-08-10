@@ -1,0 +1,195 @@
+{
+  "schema": "8x8.khronapeiron8.contract.v1",
+  "name": "KHRONAPEIRON-8",
+  "root": "fabric://8x8/core",
+  "truth_rule": "No physical, runtime, scientific, mathematical, deployment, or completeness claim becomes VERIFIED by declaration. Each requires a reproducible test or source appropriate to the claim.",
+  "w_anchor": {
+    "decimal": 87,
+    "binary": "01010111",
+    "ascii": "W",
+    "role": "protocol_symbol",
+    "derived_from_calculation_parity": false
+  },
+  "calculation_chain": {
+    "seed": 8888888,
+    "multipliers": [888888, 88888, 8888, 888, 88, 8],
+    "values_1_through_7": [
+      8888888,
+      7901225876544,
+      702324165714243072,
+      6242257184868192423936,
+      5543124380162954872455168,
+      487794945454340028776054784,
+      3902359563634720230208438272
+    ],
+    "correct_grand_aggregate": 4395703876428740148998380664,
+    "legacy_supplied_grand_aggregate": 499581037244762775498942392,
+    "legacy_value_is_sum": false,
+    "correct_grand_aggregate_digital_root": 8,
+    "correct_grand_aggregate_mod_256": 120
+  },
+  "evidence_anchors": [
+    {
+      "id": "majorana-2",
+      "status": "SOURCE_SUPPORTED_VENDOR_CLAIM_WITH_EXTERNAL_SCRUTINY",
+      "source": "https://news.microsoft.com/source/features/innovation/majorana-2-microsoft-discovery-agentic-ai/",
+      "bounded_claim": "Microsoft announced Majorana 2 in June 2026 and reported approximately 1000x reliability improvement and a mean qubit lifetime of 20 seconds. This does not justify an 1e18 amplification claim or absolute error immunity."
+    },
+    {
+      "id": "nist-pqc-additional-signatures-round-3",
+      "status": "PRIMARY_SOURCE_VERIFIED",
+      "source": "https://www.nist.gov/news-events/news/2026/05/nine-candidates-advance-third-round-additional-digital-signatures-pqc",
+      "bounded_claim": "NIST advanced FAEST, HAWK, MAYO, MQOM, QR-UOV, SDitH, SNOVA, SQIsign and UOV to round 3 in May 2026."
+    },
+    {
+      "id": "inbl",
+      "status": "RESEARCH_EXISTS_LIMITED_SCOPE",
+      "source": "https://arxiv.org/abs/2511.10679",
+      "bounded_claim": "INBL research includes stochastic noise-bit hyperspaces and XOR/XNOR operations. It does not establish arbitrary hyper-Turing computation, universal instant solutions, or physical oracle access."
+    },
+    {
+      "id": "cmtem-coehm",
+      "status": "PROPOSED_MODEL_NOT_ESTABLISHED_PHYSICAL_MECHANISM",
+      "source": "https://philpapers.org/rec/ZHOCBF",
+      "bounded_claim": "CMTEM and COE-HM appear in a 2026 philosophical/formal proposal. They are not empirical proof of transcendent consciousness or executable hyper-Turing hardware."
+    }
+  ],
+  "phases": [
+    {
+      "index": 1,
+      "name": "CHRONOS",
+      "calculation": 8888888,
+      "domain": "mission runtime and time-weave metaphor",
+      "cells": [
+        {"cell": "1.1", "capability": "mission graph", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.2", "capability": "scheduler integration", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.3", "capability": "durable state machine", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.4", "capability": "dependency gates", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.5", "capability": "idempotency", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.6", "capability": "checkpoint and replay", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.7", "capability": "deadline and priority model", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "1.8", "capability": "temporal provenance", "status": "IMPLEMENTATION_TARGET"}
+      ]
+    },
+    {
+      "index": 2,
+      "name": "HELIOS",
+      "calculation": 7901225876544,
+      "domain": "model and compute plane",
+      "cells": [
+        {"cell": "2.1", "capability": "model registry", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.2", "capability": "capability-aware routing", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.3", "capability": "cost and latency routing", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.4", "capability": "fallback chains", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.5", "capability": "inference cache", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.6", "capability": "compute budgeting", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.7", "capability": "specialized accelerator adapters", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "2.8", "capability": "research-compute evaluation", "status": "IMPLEMENTATION_TARGET"}
+      ]
+    },
+    {
+      "index": 3,
+      "name": "GEOS",
+      "calculation": 702324165714243072,
+      "domain": "universal I/O and device plane",
+      "cells": [
+        {"cell": "3.1", "capability": "MCP tool adapters", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.2", "capability": "browser control", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.3", "capability": "mobile device bridge", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.4", "capability": "filesystem bridge", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.5", "capability": "API connector bridge", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.6", "capability": "sensor and IoT adapters", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.7", "capability": "geospatial interfaces", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "3.8", "capability": "post-quantum signature evaluation", "status": "RESEARCH_TARGET"}
+      ]
+    },
+    {
+      "index": 4,
+      "name": "MOLOS",
+      "calculation": 6242257184868192423936,
+      "domain": "sandboxed creation plane",
+      "cells": [
+        {"cell": "4.1", "capability": "code generation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.2", "capability": "isolated execution", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.3", "capability": "build and package", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.4", "capability": "test generation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.5", "capability": "artifact synthesis", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.6", "capability": "schema migration", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.7", "capability": "simulation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "4.8", "capability": "atomic or DNA rewriting", "status": "CONCEPTUAL_NOT_EMPIRICALLY_VERIFIED"}
+      ]
+    },
+    {
+      "index": 5,
+      "name": "COSMOS",
+      "calculation": 5543124380162954872455168,
+      "domain": "knowledge and retrieval plane",
+      "cells": [
+        {"cell": "5.1", "capability": "web research", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.2", "capability": "repository archaeology", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.3", "capability": "document retrieval", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.4", "capability": "vector retrieval", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.5", "capability": "knowledge graph", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.6", "capability": "long-term memory", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.7", "capability": "freshness reconciliation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "5.8", "capability": "multiverse or cosmological constant control", "status": "CONCEPTUAL_NOT_EMPIRICALLY_VERIFIED"}
+      ]
+    },
+    {
+      "index": 6,
+      "name": "TOPOS",
+      "calculation": 487794945454340028776054784,
+      "domain": "trust security and provenance plane",
+      "cells": [
+        {"cell": "6.1", "capability": "identity and authorization", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.2", "capability": "least privilege", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.3", "capability": "sandbox boundaries", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.4", "capability": "secret isolation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.5", "capability": "SBOM and provenance", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.6", "capability": "policy guards", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.7", "capability": "cryptographic receipt validation", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "6.8", "capability": "absolute physical unhackability", "status": "IMPOSSIBLE_TO_GUARANTEE"}
+      ]
+    },
+    {
+      "index": 7,
+      "name": "LOGOS",
+      "calculation": 3902359563634720230208438272,
+      "domain": "observation evaluation and codex plane",
+      "cells": [
+        {"cell": "7.1", "capability": "structured logs", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.2", "capability": "distributed traces", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.3", "capability": "metrics", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.4", "capability": "receipts", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.5", "capability": "replay", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.6", "capability": "benchmarking", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.7", "capability": "evaluation datasets", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "7.8", "capability": "infinite holographic storage", "status": "CONCEPTUAL_NOT_EMPIRICALLY_VERIFIED"}
+      ]
+    },
+    {
+      "index": 8,
+      "name": "VERITAS",
+      "calculation": 4395703876428740148998380664,
+      "domain": "truth parity and frontier measurement plane",
+      "cells": [
+        {"cell": "8.1", "capability": "arithmetic verification", "status": "IMPLEMENTED_THIS_BRANCH"},
+        {"cell": "8.2", "capability": "claim classification", "status": "IMPLEMENTED_THIS_BRANCH"},
+        {"cell": "8.3", "capability": "64-cell completeness validation", "status": "IMPLEMENTED_THIS_BRANCH"},
+        {"cell": "8.4", "capability": "external capability denominator", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "8.5", "capability": "parity score", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "8.6", "capability": "frontier score", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "8.7", "capability": "evidence freshness", "status": "IMPLEMENTATION_TARGET"},
+        {"cell": "8.8", "capability": "retrocausal absolute verification", "status": "CONCEPTUAL_NOT_EMPIRICALLY_VERIFIED"}
+      ]
+    }
+  ],
+  "completion_semantics": {
+    "contract_rows": 8,
+    "cells_per_row": 8,
+    "total_cells": 64,
+    "software_contract_completeness_target": "all schema and verifier checks pass",
+    "whole_system_100_percent": "NOT_CLAIMED",
+    "physical_omnipotence": "NOT_CLAIMED"
+  }
+}
