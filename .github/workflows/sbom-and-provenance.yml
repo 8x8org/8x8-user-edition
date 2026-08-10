@@ -54,11 +54,11 @@ jobs:
           if-no-files-found: error
       - name: Attest SBOM provenance
         if: github.event_name != 'pull_request'
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: sbom.cdx.json
       - name: Attest release bundle provenance
         if: github.event_name != 'pull_request'
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: release-assets.tar.gz
