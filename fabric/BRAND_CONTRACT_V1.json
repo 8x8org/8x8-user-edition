@@ -17,6 +17,7 @@
     "fabric/EIGHT_GATE_CONTRACT_V1.md",
     "fabric/BRAND_CONTRACT_V1.md",
     "fabric/external_capability_registry/README.md",
+    "fabric/khronapeiron8/README.md",
     ".github/workflows/one-fabric-eight-gate-contract.yml"
   ],
   "eightfold_identity": [
