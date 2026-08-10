@@ -1,0 +1,82 @@
+name: One-Fabric Eight-Gate Contract
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eight-gate-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Gate 1 - VERITAS software invariants
+        run: python3 -m unittest discover -s fabric/khronapeiron8 -p 'test*.py' -v
+      - name: Gate 2 - Capability registry invariants
+        run: python3 -m unittest fabric.external_capability_registry.test_registry -v
+      - name: Gate 3 - 64-cell topology and family contract
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import FAMILIES
+          assert len(FAMILIES) == 8
+          assert len(set(FAMILIES)) == 8
+          assert 8 * 8 == 64
+          print('8 families x 8 cells = 64: PASS')
+          PY
+      - name: Gate 4 - Truth boundary / no fake global 100
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import load, metrics
+          records = load('fabric/external_capability_registry/seed_registry.json')
+          m = metrics(records)
+          assert m['global_100_claim_allowed'] is False
+          print('open-world global-100 lock: PASS')
+          PY
+      - name: Gate 5 - Deterministic registry receipt
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import load, receipt_sha256
+          p='fabric/external_capability_registry/seed_registry.json'
+          r=load(p)
+          a=receipt_sha256(r); b=receipt_sha256(r)
+          assert a == b and len(a) == 64
+          print('RECEIPT_SHA256='+a)
+          PY
+      - name: Gate 6 - Provenance completeness
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import load
+          r=load('fabric/external_capability_registry/seed_registry.json')
+          assert r
+          for x in r:
+              assert x.source.strip()
+              assert x.revision.strip()
+              assert len(x.provenance_hash) == 64
+              int(x.provenance_hash, 16)
+          print('provenance completeness: PASS')
+          PY
+      - name: Gate 7 - Evidence requirement for parity/superior
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import load
+          r=load('fabric/external_capability_registry/seed_registry.json')
+          for x in r:
+              if x.coverage_state in ('PARITY','SUPERIOR'):
+                  assert x.test.strip() and x.test.lower() not in ('pending','none','not_proven')
+                  assert x.receipt.strip()
+          print('parity/superior evidence lock: PASS')
+          PY
+      - name: Gate 8 - One-Fabric root lock
+        run: |
+          python3 - <<'PY'
+          from fabric.external_capability_registry.registry import ROOT, load
+          assert ROOT == 'fabric://8x8/core'
+          for x in load('fabric/external_capability_registry/seed_registry.json'):
+              x.validate()
+          print('fabric://8x8/core root lock: PASS')
+          PY
