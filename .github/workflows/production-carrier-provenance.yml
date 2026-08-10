@@ -1,0 +1,30 @@
+name: Production Carrier Provenance
+
+on:
+  pull_request:
+    paths:
+      - 'stable/index.html'
+      - 'scripts/verify_production_carrier_provenance.sh'
+      - '.github/workflows/production-carrier-provenance.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  source-to-live-digest:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify canonical source bytes equal public production bytes
+        run: |
+          set -Eeuo pipefail
+          bash scripts/verify_production_carrier_provenance.sh
+      - name: Preserve public truth boundary
+        run: |
+          echo 'This gate proves canonical public source bytes == live public carrier bytes.'
+          echo 'It does not publish Vercel project/deployment identifiers.'
+          echo 'Protected deployment identifiers belong in the private provenance receipt.'
+          echo 'Whole-system score remains NOT_INFERRED.'
