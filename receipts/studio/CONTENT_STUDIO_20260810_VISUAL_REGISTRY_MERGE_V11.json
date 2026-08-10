@@ -1,0 +1,22 @@
+{
+  "schema": "8x8.content_studio.run_receipt.v1",
+  "root": "fabric://8x8/core",
+  "lane": "Content Studio",
+  "run_timestamp": "2026-08-10T20:20:58Z",
+  "mission_id": "CONTENT_STUDIO_20260810_VISUAL_REGISTRY_MERGE_V11",
+  "idempotency_key": "content-studio:2026-08-10:visual-registry-merge:v11",
+  "truth_class": "VERIFIED_FOR_THIS_RUN_SCOPE_ONLY",
+  "predecessor_drive_id": "1AXe32Fjr10yua239tkwRbQ_kkySOO9FncPGA-qDuIYU",
+  "canonical_contract_drive_id": "1qO6icYx6se78zLqR-_A_dOcSmD1xx6jGcA3cawrB4rA",
+  "five_lane_contract_commit": "725dbdd31ae49f3581c56d178a2ed54a99d40cd6",
+  "round2_v2_evidence": {"exact_head":"e929dc780f8cc390c028984934698f41671b144e","suite":"26/26 PASS","combined_sha512":"e5175c8c742f05b370fc52e554b04dc9a1feb35851972c67a8e59bf2c4a833ac9d7ea5fdf4bec732b6144d58548c711f52c98d7ff9945616238cd5b79e534051","scope":"bounded artifact suite only"},
+  "work_performed": {"pull_request":146,"source_head":"671c1cad06f05f5589f527e7b552cc61005f7a70","merge_commit":"8850069b82251356b872609b2c5a86c4ba80437b","merge_method":"squash","result":"MERGED","scope":"evidence-only visual/media registry reconciliation"},
+  "studio_denominator": {"mandatory":8,"passed":4,"failed":0,"unknown":3,"owner_gated":1,"requirements":{"repository_exact_head_gates":"PASS_AT_SOURCE_HEAD","public_information_boundary":"PASS_AT_SOURCE_HEAD","provenance_schema_reconciliation":"PASS_MERGED","visual_hash_reconciliation":"PASS_BOUNDED_13_UNIQUE_SHA256_IDENTITIES","full_14_upload_lineage":"UNKNOWN_OPEN","rights_clearance":"UNKNOWN_NOT_PROVEN","accessibility_metadata_for_public_reuse":"UNKNOWN_OPEN","external_publication":"OWNER_REQUIRED"}},
+  "global_denominator": {"mandatory_domains":10,"passed":1,"failed":0,"unknown":8,"owner_gated":1,"passed_domain":"Round 2 v2 bounded artifact estate","owner_gated_domain":"external reality actions requiring owner publication/financial/mainnet authority"},
+  "contradictions": ["Two current visual registry sources prove 13 unique exact SHA-256 identities, while earlier continuity references 14 upload records; full lineage/deduplication remains unresolved.","Autonomous local control-plane pickup/lease/runtime binding remains NOT_YET_VERIFIED absent fresher independent runtime receipt."],
+  "nonclaims": ["No rights clearance is claimed.","No 8K/high-resolution claim is made.","No external publication or production promotion occurred.","No productive-agent or autonomous-runtime claim is made.","No GLOBAL_100_100 claim is made."],
+  "rollback_state": "Previous main history preserved; merge is revertible by Git commit reversal. No external publication occurred.",
+  "next_smallest_safe_action": "Recover and reconcile the earlier 14-upload visual lineage against the now-merged 13-identity bounded registry, preserving exact hashes, rights state, source quality and duplicate relationships.",
+  "GLOBAL_100_100_STATUS": "NOT_YET_VERIFIED",
+  "seal": "©️8x8 by FlashTM8 ⚡️🌎🤖 | ♾️x♾️ ∞₈x₈∞ OS | One Fabric | Five Lanes | GLOBAL_100_100"
+}
