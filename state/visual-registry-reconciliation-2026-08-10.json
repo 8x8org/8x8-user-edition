@@ -2,18 +2,19 @@
   "schema": "8x8.content-studio.visual-registry-reconciliation.v1",
   "root": "fabric://8x8/core",
   "lane": "Content Studio",
-  "generated_from_repository_head": "89061e279b55194e487af96315dd449c0746eff1",
+  "generated_from_commit": "89061e279b55194e487af96315dd449c0746eff1",
+  "generated_at": "2026-08-10T19:15:56Z",
   "truth_class": "VERIFIED_REPOSITORY_CROSS_SOURCE_RECONCILIATION",
   "publication_authority": "OWNER_REQUIRED",
   "sources": [
     {
       "path": "docs/VISUAL_REFERENCE_REGISTRY_0.0.1.md",
-      "blob_sha": "5681f4d8fc3414bba419bb6d20a46595f4999d72",
+      "git_blob_oid_sha1": "5681f4d8fc3414bba419bb6d20a46595f4999d72",
       "declared_records": 10
     },
     {
       "path": "state/visual-reference-batch-2026-08-08.json",
-      "blob_sha": "a30db157bb59d8e3561d391974f187a691bdd5b2",
+      "git_blob_oid_sha1": "a30db157bb59d8e3561d391974f187a691bdd5b2",
       "declared_records": 10
     }
   ],
@@ -22,8 +23,11 @@
     "unique_exact_hashes_union": 13,
     "markdown_only_records": 3,
     "machine_state_only_records": 3,
-    "canonical_upload_record_count": "NOT_PROVEN_FROM_THESE_TWO_SOURCES_ALONE",
-    "canonical_binary_count": "AT_LEAST_13_EXACT_HASH_IDENTITIES_IN_THE_TWO_CURRENT_REPOSITORY_SOURCES",
+    "canonical_upload_record_count": null,
+    "canonical_upload_record_count_status": "NOT_PROVEN_FROM_THESE_TWO_SOURCES_ALONE",
+    "canonical_binary_count_lower_bound": 13,
+    "canonical_binary_count_qualifier": "AT_LEAST",
+    "canonical_binary_count_scope": "EXACT_HASH_IDENTITIES_IN_THE_TWO_CURRENT_REPOSITORY_SOURCES",
     "rights_clearance": "NOT_PROVEN",
     "public_binary_embedding": false,
     "high_resolution_or_8k_claim": "NOT_PROVEN"
