@@ -1,6 +1,8 @@
-# 8x8 One-Fabric External Capability Registry V1
+# ©️8x8 by FlashTM8 ⚡️🌎🤖 — One-Fabric External Capability Registry V1
 
 Root: `fabric://8x8/core`
+
+Brand: `©️8x8 by FlashTM8 ⚡️🌎🤖`
 
 This module turns the W-parity model into a real, bounded software contract.
 
@@ -16,7 +18,7 @@ A single observation may enrich many downstream views, but it never upgrades unr
 
 `UNKNOWN`, `ABSENT`, `DISCOVERED`, `MAPPED`, `PARTIAL`, `IMPLEMENTED`, `TESTED`, `DEPLOYED`, `OBSERVED`, `PARITY`, `SUPERIOR`.
 
-## 8 families
+## 8 families × 8 cells = 64
 
 1. CHRONOS - mission runtime and orchestration
 2. HELIOS - model and compute plane
@@ -27,6 +29,10 @@ A single observation may enrich many downstream views, but it never upgrades unr
 7. LOGOS - telemetry, evaluation and receipts
 8. VERITAS - denominator, reconciliation and frontier measurement
 
+Every family owns eight canonical cells, preserving the 8×8 identity without manufacturing evidence for unfilled cells.
+
 ## Truth boundary
 
-`100/100` applies only to an explicitly closed denominator. Open-world coverage remains open until the external capability census is bounded and refreshed.
+`100/100` applies only to an explicitly closed denominator. Open-world coverage remains open until the external capability census is bounded and refreshed. Brand identity never overrides evidence state.
+
+©️8x8 by FlashTM8 ⚡️🌎🤖
