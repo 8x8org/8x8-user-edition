@@ -7,6 +7,7 @@ The `0.1.0 Stable` maturity label is bounded to the `PUBLIC_WEB_CLIENT` release 
 | Capability | State | Evidence / boundary |
 |---|---|---|
 | Existing 8x8 Fabric public projection | IMPLEMENTED | Stable client is a new projection of the existing Fabric, not a competing Fabric |
+| Proof-Carrying Execution Fabric (public reference) | IMPLEMENTED | `fabric/proof_carrying_execution/` — verifiable lifecycle, CAS, idempotency, lease expiry, hash-chained receipts, replay and tamper detection under `test_pcef.py`; durable owner runtime remains unpublished |
 | Living Omniversal Gate R4 | IMPLEMENTED | `stable/index.html` |
 | 1D → 8D projection controls | IMPLEMENTED | Interactive dimension selector in stable client |
 | 360° spatial public projection | IMPLEMENTED | Responsive spatial world/orbit navigation grammar; no headset capability is falsely implied |
