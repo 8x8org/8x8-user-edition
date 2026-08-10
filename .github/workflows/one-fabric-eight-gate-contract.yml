@@ -1,4 +1,4 @@
-name: One-Fabric Eight-Gate Contract
+name: ©️8x8 by FlashTM8 ⚡️🌎🤖 — One-Fabric Eight-Gate Contract
 
 on:
   pull_request:
@@ -15,20 +15,26 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Gate 1 - VERITAS software invariants
+      - name: Gate 1 CHRONOS - VERITAS software invariants
         run: python3 -m unittest discover -s fabric/khronapeiron8 -p 'test*.py' -v
-      - name: Gate 2 - Capability registry invariants
+      - name: Gate 2 HELIOS - Capability registry invariants
         run: python3 -m unittest fabric.external_capability_registry.test_registry -v
-      - name: Gate 3 - 64-cell topology and family contract
+      - name: Gate 3 GEOS - 8x8 / 64-cell topology
         run: |
           python3 - <<'PY'
+          import json
           from fabric.external_capability_registry.registry import FAMILIES
+          brand=json.load(open('fabric/BRAND_CONTRACT_V1.json', encoding='utf-8'))
           assert len(FAMILIES) == 8
           assert len(set(FAMILIES)) == 8
-          assert 8 * 8 == 64
-          print('8 families x 8 cells = 64: PASS')
+          assert brand['gate_count'] == 8
+          assert brand['family_count'] == 8
+          assert brand['cells_per_family'] == 8
+          assert brand['cell_count'] == 64 == 8 * 8
+          assert brand['eightfold_identity'] == list(FAMILIES)
+          print('8 gates x 8 families x 8 cells/family identity: PASS')
           PY
-      - name: Gate 4 - Truth boundary / no fake global 100
+      - name: Gate 4 MOLOS - Truth boundary / no fake global 100
         run: |
           python3 - <<'PY'
           from fabric.external_capability_registry.registry import load, metrics
@@ -37,7 +43,7 @@ jobs:
           assert m['global_100_claim_allowed'] is False
           print('open-world global-100 lock: PASS')
           PY
-      - name: Gate 5 - Deterministic registry receipt
+      - name: Gate 5 COSMOS - Deterministic SHA-256 receipt
         run: |
           python3 - <<'PY'
           from fabric.external_capability_registry.registry import load, receipt_sha256
@@ -47,7 +53,7 @@ jobs:
           assert a == b and len(a) == 64
           print('RECEIPT_SHA256='+a)
           PY
-      - name: Gate 6 - Provenance completeness
+      - name: Gate 6 TOPOS - Provenance completeness
         run: |
           python3 - <<'PY'
           from fabric.external_capability_registry.registry import load
@@ -60,7 +66,7 @@ jobs:
               int(x.provenance_hash, 16)
           print('provenance completeness: PASS')
           PY
-      - name: Gate 7 - Evidence requirement for parity/superior
+      - name: Gate 7 LOGOS - Evidence requirement for PARITY / SUPERIOR
         run: |
           python3 - <<'PY'
           from fabric.external_capability_registry.registry import load
@@ -71,12 +77,23 @@ jobs:
                   assert x.receipt.strip()
           print('parity/superior evidence lock: PASS')
           PY
-      - name: Gate 8 - One-Fabric root lock
+      - name: Gate 8 VERITAS - One-Fabric root and ©️8x8 brand lock
         run: |
           python3 - <<'PY'
+          import json
+          from pathlib import Path
           from fabric.external_capability_registry.registry import ROOT, load
-          assert ROOT == 'fabric://8x8/core'
+          brand=json.load(open('fabric/BRAND_CONTRACT_V1.json', encoding='utf-8'))
+          expected='©️8x8 by FlashTM8 ⚡️🌎🤖'
+          assert ROOT == 'fabric://8x8/core' == brand['root']
+          assert brand['brand'] == expected
+          assert brand['canonical_number'] == 8
+          assert brand['w_anchor_binary'] == '01010111'
+          assert brand['w_anchor_decimal'] == 87
           for x in load('fabric/external_capability_registry/seed_registry.json'):
               x.validate()
-          print('fabric://8x8/core root lock: PASS')
+          for path in brand['canonical_surfaces']:
+              text=Path(path).read_text(encoding='utf-8')
+              assert expected in text, f'canonical brand missing from {path}'
+          print('fabric://8x8/core + ©️8x8 by FlashTM8 brand lock: PASS')
           PY
