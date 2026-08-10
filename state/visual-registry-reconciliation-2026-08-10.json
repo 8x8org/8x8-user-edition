@@ -1,0 +1,60 @@
+{
+  "schema": "8x8.content-studio.visual-registry-reconciliation.v1",
+  "root": "fabric://8x8/core",
+  "lane": "Content Studio",
+  "generated_from_repository_head": "89061e279b55194e487af96315dd449c0746eff1",
+  "truth_class": "VERIFIED_REPOSITORY_CROSS_SOURCE_RECONCILIATION",
+  "publication_authority": "OWNER_REQUIRED",
+  "sources": [
+    {
+      "path": "docs/VISUAL_REFERENCE_REGISTRY_0.0.1.md",
+      "blob_sha": "5681f4d8fc3414bba419bb6d20a46595f4999d72",
+      "declared_records": 10
+    },
+    {
+      "path": "state/visual-reference-batch-2026-08-08.json",
+      "blob_sha": "a30db157bb59d8e3561d391974f187a691bdd5b2",
+      "declared_records": 10
+    }
+  ],
+  "reconciliation": {
+    "shared_exact_hashes": 7,
+    "unique_exact_hashes_union": 13,
+    "markdown_only_records": 3,
+    "machine_state_only_records": 3,
+    "canonical_upload_record_count": "NOT_PROVEN_FROM_THESE_TWO_SOURCES_ALONE",
+    "canonical_binary_count": "AT_LEAST_13_EXACT_HASH_IDENTITIES_IN_THE_TWO_CURRENT_REPOSITORY_SOURCES",
+    "rights_clearance": "NOT_PROVEN",
+    "public_binary_embedding": false,
+    "high_resolution_or_8k_claim": "NOT_PROVEN"
+  },
+  "records": [
+    {"file":"1000200505.png","sha256":"cb1b268e0d39d1e6948093981ced3112749ff2fdb49ae408d5b358e4a2409a5f","sources":["docs","state"]},
+    {"file":"1000512604.jpg","sha256":"3e6575b7bd51d9d891ff5779fa05f2ec80377cc4834e69a7946e39c1ebf052d3","sources":["docs","state"]},
+    {"file":"1000675059.jpg","sha256":"b5688a8559c9bf7248c0cbdbab684d54503f5d27f01f9db27c954e0e1ef95926","sources":["state"]},
+    {"file":"1000675060.jpg","sha256":"f45c80a1260273602cb68065b6e3a93fe5349de870e3b38d2cdf6003933f7f3c","sources":["docs"]},
+    {"file":"1000678579.png","sha256":"ede628d8b3a5559b004e95cff6b25ffe4201b056c8c86dbdafc61c48887a5279","sources":["docs","state"]},
+    {"file":"1000700729.png","sha256":"cae2e937f6d92e90293168cd513f760fc97082a99eb3cd80c946ea6930ad9e93","sources":["docs","state"]},
+    {"file":"1000700785.png","sha256":"b911481557eeb2a556a9fc38ced37565a8374798790cb59cf80ff27cf51c03f1","sources":["docs"]},
+    {"file":"1000788684.png","sha256":"9c8a97de183c08fe4d1dfdb76de470fb5e3b1191a181823235a16aab6e662a71","sources":["docs","state"]},
+    {"file":"1000788687.jpg","sha256":"d809baec708a04bfd957b0ed1d86d2775b474c29243d2fa9ec570e84ecc1132a","sources":["docs","state"]},
+    {"file":"1000788689.jpg","sha256":"fbe6b50ae4654e91f0c1d48ed973779e7a52dea2c2c5ce6f4433bb7efde83aa2","sources":["state"]},
+    {"file":"1000788690.jpg","sha256":"b2e19da81c826d0df6cf0fa8546e2e383844f99950082e729f91f5c4945f9dbf","sources":["state"]},
+    {"file":"1000788693.jpg","sha256":"3357995e6faad1026ad3c853c6b4b0b6e47f5e15532a6670b8c6d1d4ecb5c32b","sources":["docs"]},
+    {"file":"1000788696.jpg","sha256":"193340c9abae7e7bb6c87ead5555ead310f4d17f7053b4fd95b25e99e93ac473","sources":["docs","state"]}
+  ],
+  "dependency_gates": {
+    "recover_full_14_upload_record_lineage": "OPEN",
+    "exact_hash_dedup_against_earlier_canonical_registry": "OPEN",
+    "rights_and_license_verification": "OPEN",
+    "accessibility_metadata_for_public_reuse": "OPEN",
+    "publication": "OWNER_REQUIRED"
+  },
+  "safety": {
+    "does_not_publish_binaries": true,
+    "does_not_upgrade_rights": true,
+    "does_not_claim_8k": true,
+    "does_not_claim_complete_registry": true,
+    "preserves_previous_release": true
+  }
+}
