@@ -18,6 +18,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 DIRECTIVE = Path("docs/round2/ROUND2_AWAKENING_CANONICAL_EXECUTION_EVIDENCE_MANIFESTATION_VALIDATION_DIRECTIVE_V2.md")
+CANONICAL_OUT = Path("build/round2-v2")
 PLACEHOLDER = "[COMBINED_SHA512]"
 BRAND = "©️8x8 by FlashTM8 ⚡️🌎🤖"
 PROGRAM = "The Unlimited ♾️x♾️ Infinite Sovereign Reality OS"
@@ -67,6 +68,17 @@ def seal(digest=PLACEHOLDER):
         "combined_sha512": digest,
         "proof_scope": "100/100 applies only to the defined Round 2 validation suite when every mandatory measured gate passes",
     }
+
+
+def resolve_output(raw: str) -> Path:
+    """Return the one repository-local output path this generator is allowed to mutate."""
+    if raw != CANONICAL_OUT.as_posix():
+        raise SystemExit(
+            f"unsafe --out rejected: {raw!r}; only {CANONICAL_OUT.as_posix()!r} is permitted"
+        )
+    if CANONICAL_OUT.is_symlink():
+        raise SystemExit("unsafe canonical output rejected: build/round2-v2 is a symlink")
+    return CANONICAL_OUT
 
 
 def extract_kernel() -> bytes:
@@ -267,8 +279,8 @@ def validate(out: Path, kernel_before: str, kernel_after: str, digest: str, pass
 
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--out",default="build/round2-v2"); args=ap.parse_args()
-    out=Path(args.out); shutil.rmtree(out,ignore_errors=True); out.mkdir(parents=True)
+    ap=argparse.ArgumentParser(); ap.add_argument("--out",default=CANONICAL_OUT.as_posix()); args=ap.parse_args()
+    out=resolve_output(args.out); shutil.rmtree(out,ignore_errors=True); out.mkdir(parents=True)
     kernel=extract_kernel(); kernel_before=sha256(kernel); (out/"self_proof_kernel.js").write_bytes(kernel); kernel_after=sha256((out/"self_proof_kernel.js").read_bytes())
     write_json(out/"frequencies.json",generate_frequencies()); write_json(out/"screens.json",generate_screens())
     with (out/"components_attributes.jsonl").open("w",encoding="utf-8",newline="\n") as fh:
