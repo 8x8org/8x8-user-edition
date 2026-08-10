@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import unittest
 
 from fabric.khronapeiron8.veritas import (
@@ -11,6 +12,8 @@ from fabric.khronapeiron8.veritas import (
     grand_aggregate,
     verify,
 )
+
+CONTRACT = Path(__file__).with_name("contract.v1.json")
 
 
 class VeritasV1Tests(unittest.TestCase):
@@ -59,6 +62,42 @@ class VeritasV1Tests(unittest.TestCase):
             payload["truth_boundary"]["phononium_8"],
             "CONCEPTUAL_NOT_EMPIRICALLY_VERIFIED",
         )
+
+    def test_contract_is_exactly_8_by_8(self):
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        phases = payload["phases"]
+        self.assertEqual(len(phases), 8)
+        self.assertEqual([phase["index"] for phase in phases], list(range(1, 9)))
+        self.assertTrue(all(len(phase["cells"]) == 8 for phase in phases))
+        cells = [cell["cell"] for phase in phases for cell in phase["cells"]]
+        self.assertEqual(len(cells), 64)
+        self.assertEqual(len(set(cells)), 64)
+
+    def test_contract_and_verifier_agree_on_calculations(self):
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        contract_values = payload["calculation_chain"]["values_1_through_7"] + [
+            payload["calculation_chain"]["correct_grand_aggregate"]
+        ]
+        self.assertEqual(contract_values, [row.value for row in calculations()])
+        self.assertFalse(payload["calculation_chain"]["legacy_value_is_sum"])
+        self.assertFalse(payload["w_anchor"]["derived_from_calculation_parity"])
+
+    def test_no_conceptual_physics_is_marked_verified(self):
+        payload = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        forbidden_verified_capabilities = {
+            "atomic or DNA rewriting",
+            "multiverse or cosmological constant control",
+            "absolute physical unhackability",
+            "infinite holographic storage",
+            "retrocausal absolute verification",
+        }
+        found = {}
+        for phase in payload["phases"]:
+            for cell in phase["cells"]:
+                if cell["capability"] in forbidden_verified_capabilities:
+                    found[cell["capability"]] = cell["status"]
+        self.assertEqual(set(found), forbidden_verified_capabilities)
+        self.assertTrue(all(status != "VERIFIED" for status in found.values()))
 
     def test_complete_verifier_passes(self):
         result = verify()
