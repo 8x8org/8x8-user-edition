@@ -20,9 +20,9 @@
   },
   "control_plane": {
     "preferred_route": [
-      "Drive mission ingress pointer/index",
-      "native Termux runit ingress sentinel",
-      "local CAS/append-only inbox",
+      "immutable mission ingress pointer/index",
+      "native runtime ingress sentinel",
+      "append-only execution inbox",
       "authority + lease gate",
       "control fabric / council routing",
       "agent/sub-swarm execution",
@@ -30,10 +30,11 @@
       "receipt + manifest",
       "GitHub/Drive continuity writeback"
     ],
-    "known_distribution_contract": "Drive file ID -> rclone copyid -> expected SHA-256 -> syntax gate -> execute -> receipt -> manifest",
+    "known_distribution_contract": "immutable file identity -> expected SHA-256 -> syntax gate -> execute -> receipt -> manifest",
+    "private_topology_location": "CANONICAL_PRIVATE_DRIVE_RECORDS",
     "autonomous_pickup_status": "NOT_PROVEN",
     "persistent_native_ingress_status": "NOT_PROVEN",
-    "runtime_entrypoint_status": "CONTRADICTED / REQUIRES UNIQUE LIVE BINDING",
+    "runtime_entrypoint_status": "REQUIRES_UNIQUE_LIVE_BINDING",
     "do_not_claim_runtime_execution_without_receipt": true
   },
   "required_outputs": {
