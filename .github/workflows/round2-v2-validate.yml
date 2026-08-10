@@ -1,0 +1,53 @@
+name: Round 2 v2 Validate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/round2/**'
+      - 'docs/agent_bridge/**'
+      - 'tools/round2_v2_generate_validate.py'
+      - '.github/workflows/round2-v2-validate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  round2-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate head
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate and validate Round 2 v2
+        run: |
+          python tools/round2_v2_generate_validate.py --out build/round2-v2 | tee build-round2-v2.log
+      - name: Show validation summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('build/round2-v2/ROUND2_VALIDATION.json')
+          if p.exists():
+              d=json.loads(p.read_text())
+              print('ROUND2_COMPLETE=', d['round2_complete'])
+              print('VALIDATION_SCORE=', d['validation_score'])
+              print('COMBINED_SHA512=', json.loads(pathlib.Path('build/round2-v2/manifest.json').read_text())['combined_sha512'])
+              for c in d['checks']:
+                  print(c['check_id'], c['status'], 'expected=', c['expected'], 'observed=', c['observed'])
+          else:
+              print('ROUND2_VALIDATION.json missing')
+          PY
+      - name: Upload generated evidence estate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round2-v2-evidence-${{ github.sha }}
+          path: |
+            build/round2-v2/
+            build-round2-v2.log
+          if-no-files-found: error
+          retention-days: 30
