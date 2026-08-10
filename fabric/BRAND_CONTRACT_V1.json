@@ -1,0 +1,31 @@
+{
+  "schema": "8x8.one-fabric.brand-contract.v1",
+  "root": "fabric://8x8/core",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "short_brand": "©️8x8",
+  "creator_handle": "FlashTM8",
+  "creator_signature": "FlashTM8 ⚡️🌎🤖",
+  "canonical_number": 8,
+  "gate_count": 8,
+  "family_count": 8,
+  "cells_per_family": 8,
+  "cell_count": 64,
+  "w_anchor_binary": "01010111",
+  "w_anchor_decimal": 87,
+  "truth_rule": "Brand identity never overrides evidence state or denominator truth.",
+  "canonical_surfaces": [
+    "fabric/EIGHT_GATE_CONTRACT_V1.md",
+    "fabric/external_capability_registry/README.md",
+    ".github/workflows/one-fabric-eight-gate-contract.yml"
+  ],
+  "eightfold_identity": [
+    "CHRONOS",
+    "HELIOS",
+    "GEOS",
+    "MOLOS",
+    "COSMOS",
+    "TOPOS",
+    "LOGOS",
+    "VERITAS"
+  ]
+}
