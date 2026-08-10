@@ -1,4 +1,4 @@
-name: Validate Public Stable
+name: Validate Public Beta
 
 on:
   push:
@@ -14,11 +14,13 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: '3.12'
 
-      - name: Validate required files and stable public state
+      - name: Validate required files and protected-beta public state
         run: |
           python3 - <<'PY'
           import json
@@ -33,7 +35,7 @@ jobs:
               'art-board/index.html', 'art-board/styles.css', 'art-board/app.js',
               'art-board/state.json', 'art-board/release-unit.json', 'art-board/README.md',
               'tests/test_art_board.py', 'tests/test_stable_release.py',
-              'tests/test_public_information_boundary.py',
+              'tests/test_public_information_boundary.py', 'tests/test_receipt_verifier.py',
               'scripts/validate_public_information_boundary.py'
           ]
           missing = [path for path in required if not Path(path).is_file()]
@@ -50,12 +52,14 @@ jobs:
               raise SystemExit('Reality snapshot must be 0.1.0-stable')
           if stable.get('version') != '0.1.0' or stable.get('scope') != 'PUBLIC_WEB_CLIENT':
               raise SystemExit('Stable release unit version/scope drift detected')
-          if state.get('promotion_state') != 'PUBLIC_STABLE' or reality.get('promotion_state') != 'PUBLIC_STABLE':
-              raise SystemExit('PUBLIC_STABLE promotion state missing')
+          if state.get('promotion_state') != 'PROTECTED_BETA' or reality.get('promotion_state') != 'PROTECTED_BETA':
+              raise SystemExit('Protected-beta truth model requires promotion_state=PROTECTED_BETA')
+          if state.get('public_beta') is not True or reality.get('public_beta') is not True:
+              raise SystemExit('Protected-beta truth model requires public_beta=true')
           if reality.get('three_realities') != ['PRIVATE_PAST', 'PUBLIC_PRESENT', 'FUTURE_LAB']:
               raise SystemExit('Three-Reality model drift detected')
           if state.get('whole_system_complete') is not False or state.get('whole_system_score') != 'NOT_INFERRED':
-              raise SystemExit('Stable public web client must not claim whole-system completion')
+              raise SystemExit('Public web client must not claim whole-system completion')
 
           score = stable.get('bounded_acceptance_score', {})
           if score.get('earned') != 100 or score.get('possible') != 100:
@@ -112,7 +116,7 @@ jobs:
           if '0 ms' not in Path('VERSION.md').read_text().lower() and '0ms' not in Path('stable/index.html').read_text().lower():
               raise SystemExit('Release truth must explicitly reject zero-latency marketing')
 
-          print('PUBLIC_STABLE_VALIDATION=PASS')
+          print('PROTECTED_BETA_VALIDATION=PASS')
           PY
 
       - name: Parse JSON files
@@ -130,6 +134,7 @@ jobs:
           python3 -m unittest tests.test_art_board -v
           python3 -m unittest tests.test_stable_release -v
           python3 -m unittest tests.test_public_information_boundary -v
+          python3 -m unittest tests.test_receipt_verifier -v
 
       - name: Enforce public information boundary
         run: python3 scripts/validate_public_information_boundary.py
