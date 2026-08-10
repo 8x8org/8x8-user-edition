@@ -11,8 +11,8 @@ jobs:
   eight-gate-contract:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: '3.12'
       - name: Gate 1 CHRONOS - VERITAS software invariants
@@ -70,11 +70,18 @@ jobs:
         run: |
           python3 - <<'PY'
           from fabric.external_capability_registry.registry import load
+          placeholders=('pending','none','not_proven','not proven','tbd','todo','unknown','not yet')
           r=load('fabric/external_capability_registry/seed_registry.json')
           for x in r:
               if x.coverage_state in ('PARITY','SUPERIOR'):
-                  assert x.test.strip() and x.test.lower() not in ('pending','none','not_proven')
-                  assert x.receipt.strip()
+                  test=x.test.strip().lower()
+                  receipt=x.receipt.strip().lower()
+                  assert test
+                  assert receipt
+                  assert not any(token in test for token in placeholders), f'placeholder test evidence: {x.project}'
+                  assert not any(token in receipt for token in placeholders), f'placeholder receipt evidence: {x.project}'
+                  assert len(x.provenance_hash) == 64
+                  int(x.provenance_hash,16)
           print('parity/superior evidence lock: PASS')
           PY
       - name: Gate 8 VERITAS - One-Fabric root and ©️8x8 brand lock
