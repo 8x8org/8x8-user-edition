@@ -15,6 +15,7 @@
   "truth_rule": "Brand identity never overrides evidence state or denominator truth.",
   "canonical_surfaces": [
     "fabric/EIGHT_GATE_CONTRACT_V1.md",
+    "fabric/BRAND_CONTRACT_V1.md",
     "fabric/external_capability_registry/README.md",
     ".github/workflows/one-fabric-eight-gate-contract.yml"
   ],
