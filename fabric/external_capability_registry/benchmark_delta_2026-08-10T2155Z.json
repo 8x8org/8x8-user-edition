@@ -1,0 +1,32 @@
+{
+  "schema": "8x8.one-fabric.external-benchmark-delta.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "observed_at": "2026-08-10T21:55:00Z",
+  "supersedes_status_only": "benchmark_2026-08-10.json#8x8 One Fabric evidence_summary",
+  "score_before": 75,
+  "score_after": 75,
+  "uncertainty_points": 3,
+  "score_change": 0,
+  "reason_no_score_change": "The Round 2 security blocker was closed, but the same weighted security/authority and reproducibility dimensions still contain unproven native runtime authority, 18 Sonar new-code issues, 0% new-code coverage, and no end-to-end native pickup/recovery proof. A gate pass removes a blocker; it does not by itself earn a new capability point.",
+  "new_evidence": {
+    "round2_pr": 147,
+    "round2_merge_sha": "2b6dc47dc4004fe41473ce39bea1d96cc0b02414",
+    "exact_head_sha": "7747852e66373be988f6b48a0b8fa90d0b0a078e",
+    "github_exact_head_checks": {
+      "round2_v2_validate": "PASS",
+      "public_information_boundary": "PASS",
+      "sbom_provenance": "PASS",
+      "browser_quality": "PASS",
+      "codeql": "PASS"
+    },
+    "sonar_quality_gate": "PASS",
+    "sonar_security_hotspots": 0,
+    "sonar_new_issues": 18,
+    "sonar_new_code_coverage_percent": 0.0,
+    "security_change": "User-controlled --out no longer reaches Path/rmtree/writes/ZIP creation; only build/round2-v2 is accepted and a symlinked canonical output fails closed; CI proves traversal and symlink rejection."
+  },
+  "current_8x8_evidence_summary": "Strong evidence/truth-boundary architecture, machine-tested PCEF semantics, production route health, exact source-to-live digest provenance, and a passing Round 2 security gate coexist with unproven autonomous native pickup, incomplete production PCEF convergence, quality/test debt, and limited external adoption evidence.",
+  "remaining_parity_gate": "Bind PCEF to real native ingress, council/control workers and external-effect adapters; prove crash/restart/duplicate/stale-lease recovery; raise test/reproducibility evidence; close adoption denominators.",
+  "global_100_claim_allowed": false,
+  "whole_system_score": "NOT_INFERRED"
+}
