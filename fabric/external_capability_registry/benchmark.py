@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-BENCHMARK = HERE / "benchmark_2026-08-10.json"
+BENCHMARK = HERE / "benchmark_2026-08-11.json"
 EXPECTED_DIMENSIONS = tuple(f"D{i}" for i in range(1, 9))
 
 
