@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+RECEIPTS_ROOT = (ROOT / "receipts").resolve()
 STATE_PATH = ROOT / "state/public-state.json"
 STATE_REPO_PATH = "state/public-state.json"
 EXPECTED_VERSION = "0.1.0"
@@ -29,6 +30,32 @@ def receipt_digest(receipt: dict) -> str:
     body = deepcopy(receipt)
     body.pop("receipt_sha256", None)
     return sha256_bytes(canonical_bytes(body))
+
+
+def validate_source_commit(value: object) -> str:
+    if not isinstance(value, str) or len(value) != 40 or any(c not in "0123456789abcdef" for c in value.lower()):
+        raise ValueError("source_commit must be a 40-character hexadecimal Git commit")
+    return value.lower()
+
+
+def resolve_receipt_path(value: str, *, must_exist: bool = False) -> Path:
+    """Resolve a receipt path inside the repository receipt root only.
+
+    This prevents CLI path traversal from turning receipt issuance/verification
+    into arbitrary repository/host file write or read behavior. Symlink escapes
+    are also rejected because resolution happens before the containment check.
+    """
+    candidate = Path(value)
+    if candidate.is_absolute():
+        raise ValueError("receipt path must be repository-relative under receipts/")
+    resolved = (ROOT / candidate).resolve(strict=False)
+    try:
+        resolved.relative_to(RECEIPTS_ROOT)
+    except ValueError as exc:
+        raise ValueError("receipt path must remain under receipts/") from exc
+    if must_exist and not resolved.is_file():
+        raise ValueError("receipt path must identify an existing regular file under receipts/")
+    return resolved
 
 
 def critical_assertions(state: dict) -> dict:
@@ -50,8 +77,16 @@ def critical_assertions(state: dict) -> dict:
 
 
 def state_bytes_at_commit(source_commit: str) -> bytes:
-    """Read the exact public-state snapshot from the receipt's source commit."""
+    """Read the exact public-state snapshot from one immutable full commit ID."""
+    source_commit = validate_source_commit(source_commit)
     try:
+        subprocess.run(
+            ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+            cwd=ROOT,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+        )
         completed = subprocess.run(
             ["git", "show", f"{source_commit}:{STATE_REPO_PATH}"],
             cwd=ROOT,
@@ -62,14 +97,15 @@ def state_bytes_at_commit(source_commit: str) -> bytes:
     except subprocess.CalledProcessError as exc:
         detail = exc.stderr.decode("utf-8", errors="replace").strip()
         raise ValueError(
-            f"unable to resolve public state at source_commit={source_commit}; "
-            "ensure the referenced commit is available in local git history"
+            f"unable to resolve immutable public state at source_commit={source_commit}; "
+            "ensure the full commit object and referenced state path are available in local git history"
             + (f": {detail}" if detail else "")
         ) from exc
     return completed.stdout
 
 
 def state_at_commit(source_commit: str) -> tuple[bytes, dict]:
+    source_commit = validate_source_commit(source_commit)
     raw = state_bytes_at_commit(source_commit)
     try:
         state = json.loads(raw.decode("utf-8"))
@@ -86,9 +122,7 @@ def validate_release_identity(state: dict, *, context: str) -> None:
 
 
 def issue_receipt(source_commit: str, receipt_id: str) -> dict:
-    if len(source_commit) != 40 or any(c not in "0123456789abcdef" for c in source_commit.lower()):
-        raise ValueError("source_commit must be a 40-character hexadecimal Git commit")
-    source_commit = source_commit.lower()
+    source_commit = validate_source_commit(source_commit)
     state_raw, state = state_at_commit(source_commit)
     validate_release_identity(state, context="source public state")
     receipt = {
@@ -135,7 +169,11 @@ def verify_receipt(receipt: dict) -> None:
     if receipt_digest(receipt) != receipt["receipt_sha256"]:
         raise ValueError("receipt tamper seal mismatch")
 
-    state_raw, state = state_at_commit(receipt["source_commit"])
+    # Validate immutable commit identity after the receipt's own tamper seal, but
+    # before any Git rev resolution. Branches, tags, HEAD expressions and short
+    # SHAs are therefore never accepted as historical receipt anchors.
+    source_commit = validate_source_commit(receipt["source_commit"])
+    state_raw, state = state_at_commit(source_commit)
     if sha256_bytes(state_raw) != receipt["state_sha256"]:
         raise ValueError("source-commit public-state SHA-256 mismatch")
     validate_release_identity(state, context="source-commit public state")
@@ -149,19 +187,19 @@ def main() -> None:
     issue = sub.add_parser("issue")
     issue.add_argument("--commit", required=True)
     issue.add_argument("--id", required=True)
-    issue.add_argument("--out", required=True)
+    issue.add_argument("--out", required=True, help="repository-relative path under receipts/")
     verify = sub.add_parser("verify")
-    verify.add_argument("receipt")
+    verify.add_argument("receipt", help="repository-relative path under receipts/")
     args = parser.parse_args()
 
     if args.command == "issue":
         receipt = issue_receipt(args.commit, args.id)
-        out = ROOT / args.out
+        out = resolve_receipt_path(args.out)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
         print(f"RECEIPT_ISSUED=PASS path={out} state_sha256={receipt['state_sha256']}")
     else:
-        path = ROOT / args.receipt
+        path = resolve_receipt_path(args.receipt, must_exist=True)
         receipt = json.loads(path.read_text(encoding="utf-8"))
         verify_receipt(receipt)
         print(f"RECEIPT_VERIFIED=PASS receipt_id={receipt['receipt_id']} commit={receipt['source_commit']}")
