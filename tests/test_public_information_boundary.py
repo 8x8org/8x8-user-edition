@@ -2,9 +2,20 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import tempfile
 import unittest
+from pathlib import Path
 
-from scripts.validate_public_information_boundary import FORBIDDEN_PATH_PATTERNS, ROOT
+from scripts.validate_public_information_boundary import (
+    EXCLUDED,
+    FORBIDDEN_PATH_PATTERNS,
+    ROOT,
+    binary_content_policy_violations,
+    is_public_text_file,
+    iter_public_binary_files,
+    iter_public_text_files,
+    tracked_paths,
+)
 
 
 class PublicInformationBoundaryTests(unittest.TestCase):
@@ -18,6 +29,49 @@ class PublicInformationBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("PUBLIC_INFORMATION_BOUNDARY=PASS", result.stdout)
+        self.assertIn("binary=", result.stdout)
+        self.assertIn("scanned=", result.stdout)
+        self.assertIn("expected=", result.stdout)
+
+    def test_every_tracked_regular_artifact_is_classified_for_content_scan(self) -> None:
+        tracked = tracked_paths()
+        text_files = set(iter_public_text_files(tracked))
+        binary_files = set(iter_public_binary_files(tracked))
+        expected = {path for path in tracked if path.is_file() and path not in EXCLUDED}
+        self.assertEqual(text_files | binary_files, expected)
+        self.assertFalse(text_files & binary_files)
+
+    def test_text_classification_uses_content_not_extension(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            shell_file = Path(tmp) / "probe.sh"
+            sql_file = Path(tmp) / "probe.sql"
+            extensionless = Path(tmp) / "PROBE"
+            opaque = Path(tmp) / "looks-like-text.txt"
+            for path in (shell_file, sql_file, extensionless):
+                path.write_bytes(b"plain utf-8 test fixture\n")
+                self.assertTrue(is_public_text_file(path), path.name)
+            opaque.write_bytes(b"plain-prefix\x00opaque-payload")
+            self.assertFalse(is_public_text_file(opaque))
+
+    def test_binary_payload_with_private_marker_is_rejected(self) -> None:
+        # Assemble the forbidden sequence at runtime so this regression test does not
+        # itself place a private-path-shaped literal in the public source tree.
+        marker = b"/" + b"root" + b"/private/runtime"
+        with tempfile.TemporaryDirectory() as tmp:
+            artifact = Path(tmp) / "opaque.bin"
+            artifact.write_bytes(b"\x00\xffpayload:" + marker + b"\x00")
+            violations = binary_content_policy_violations([artifact])
+        self.assertTrue(any(item.startswith("binary_private_root_path:") for item in violations))
+
+    def test_binary_payload_with_credential_shape_is_rejected(self) -> None:
+        # Build the credential-shaped canary in pieces for the same reason: the public
+        # repository must never contain the complete forbidden token-shaped fixture.
+        canary = b"s" + b"k-" + b"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        with tempfile.TemporaryDirectory() as tmp:
+            artifact = Path(tmp) / "opaque.dat"
+            artifact.write_bytes(b"\x89BIN\x00" + canary + b"\x00")
+            violations = binary_content_policy_violations([artifact])
+        self.assertTrue(any(item.startswith("binary_credential_like_token:") for item in violations))
 
     def test_private_research_projection_is_absent(self) -> None:
         self.assertFalse((ROOT / "research" / "external-capabilities").exists())
