@@ -65,6 +65,7 @@
     "failed_reservations_remain_blocked": true,
     "external_provider_replay": false,
     "distributed_checkpoint_backend": false,
+    "distributed_session_backend": false,
     "cross_database_replay_reservation": false,
     "native_device_checkpoint_binding": false,
     "production_workflow_replay_adoption": false,
