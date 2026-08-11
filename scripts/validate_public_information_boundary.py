@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Fail closed when private operational topology appears in public source.
 
-The public boundary is byte-complete: every tracked regular file is classified and
-scanned. Text files receive the full semantic-pattern scan; non-text/binary files
-receive an ASCII byte-pattern scan so private paths, key headers, deployment IDs,
-and credential-shaped values cannot hide in an uninspected binary payload.
+The public boundary is content-complete: every tracked regular file is classified
+from its bytes, not from its filename. Strict UTF-8 text receives the full semantic
+pattern scan; opaque/binary payloads receive raw-byte scanning so private paths,
+key headers, deployment IDs, and credential-shaped values cannot hide in any
+tracked artifact or in a misleading/unknown extension.
 """
 
 from __future__ import annotations
@@ -21,10 +22,6 @@ EXCLUDED = {
     ROOT / "PUBLIC_INFORMATION_BOUNDARY.md",
     ROOT / ".github" / "workflows" / "validate-public-information-boundary.yml",
 }
-TEXT_SUFFIXES = {
-    ".css", ".csv", ".html", ".js", ".json", ".md", ".mjs", ".py",
-    ".svg", ".txt", ".webmanifest", ".yaml", ".yml",
-}
 
 PATTERNS = {
     "private_android_path": re.compile(r"/data/data/", re.IGNORECASE),
@@ -40,9 +37,8 @@ PATTERNS = {
     "private_drive_artifact_field": re.compile(r'"(?:vnext|rights_matrix)_drive_id"\s*:', re.IGNORECASE),
 }
 
-# Binary scanning uses ASCII-safe byte patterns only. These deliberately mirror the
-# value-bearing/high-risk subset of PATTERNS and are applied to every tracked
-# non-text artifact without decoding it or trusting its file extension.
+# Raw-byte scanning mirrors the value-bearing/high-risk subset of PATTERNS. Binary
+# artifacts do not get decoded, rendered, executed, unpacked, or trusted by suffix.
 BYTE_PATTERNS = {
     "private_android_path": re.compile(rb"/data/data/", re.IGNORECASE),
     "private_root_path": re.compile(rb"/root/", re.IGNORECASE),
@@ -85,7 +81,15 @@ def display_path(path: Path) -> str:
 
 
 def is_public_text_file(path: Path) -> bool:
-    return path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE"
+    """Classify from content so text cannot bypass semantics via its extension."""
+    payload = path.read_bytes()
+    if b"\x00" in payload:
+        return False
+    try:
+        payload.decode("utf-8", errors="strict")
+    except UnicodeDecodeError:
+        return False
+    return True
 
 
 def iter_public_text_files(tracked: Sequence[Path]) -> list[Path]:
@@ -123,10 +127,11 @@ def content_policy_violations(files: Sequence[Path]) -> list[str]:
     violations: list[str] = []
     for path in files:
         rel = display_path(path)
+        payload = path.read_bytes()
         try:
-            text = path.read_text(encoding="utf-8")
+            text = payload.decode("utf-8", errors="strict")
         except UnicodeDecodeError:
-            violations.append(f"non-UTF-8 public text file: {rel}")
+            violations.append(f"classification_drift_non_utf8_text: {rel}")
             continue
         violations.extend(
             f"{label}: {rel}"
@@ -153,11 +158,18 @@ def main() -> int:
     tracked = tracked_paths()
     text_files = iter_public_text_files(tracked)
     binary_files = iter_public_binary_files(tracked)
+    scanned_files = set(text_files) | set(binary_files)
+    expected_files = {path for path in tracked if path.is_file() and path not in EXCLUDED}
     violations = (
         path_policy_violations(tracked)
         + content_policy_violations(text_files)
         + binary_content_policy_violations(binary_files)
     )
+    if scanned_files != expected_files:
+        missing = sorted(display_path(path) for path in expected_files - scanned_files)
+        duplicate = sorted(display_path(path) for path in set(text_files) & set(binary_files))
+        violations.extend(f"unclassified_tracked_artifact: {path}" for path in missing)
+        violations.extend(f"multiply_classified_tracked_artifact: {path}" for path in duplicate)
 
     if violations:
         print("PUBLIC_INFORMATION_BOUNDARY=FAIL")
@@ -168,7 +180,7 @@ def main() -> int:
     print(
         "PUBLIC_INFORMATION_BOUNDARY=PASS "
         f"tracked={len(tracked)} text={len(text_files)} binary={len(binary_files)} "
-        f"scanned={len(text_files) + len(binary_files)}"
+        f"scanned={len(scanned_files)} expected={len(expected_files)}"
     )
     return 0
 
