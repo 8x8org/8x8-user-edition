@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-BENCHMARK = HERE / "benchmark_2026-08-11.json"
+BENCHMARK = HERE / "benchmark_2026-08-11_v2.json"
 EXPECTED_DIMENSIONS = tuple(f"D{i}" for i in range(1, 9))
 
 
@@ -65,8 +65,11 @@ def validate(data: dict) -> dict:
     frontier = data.get("frontier", {})
     require(frontier.get("single_plus_one_feature") == "Sovereign Proof-Carrying Autonomy", "frontier feature drift")
     frontier_status = str(frontier.get("current_status", ""))
-    require("NOT_YET_PROVEN" in frontier_status, "native end-to-end nonclaim must remain explicit")
-    require("NOT_YET_IMPLEMENTED" in frontier_status, "privacy attestation nonclaim must remain explicit")
+    require("A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED" in frontier_status, "A2A self-interoperability evidence missing")
+    require("INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN" in frontier_status, "third-party A2A nonclaim missing")
+    require("AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED" in frontier_status, "production-auth A2A nonclaim missing")
+    require("NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN" in frontier_status, "native end-to-end nonclaim missing")
+    require("PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED" in frontier_status, "privacy attestation nonclaim missing")
 
     return {
         "external_denominator": len(external),
