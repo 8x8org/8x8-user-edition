@@ -1,0 +1,40 @@
+{
+  "schema": "8x8.one-fabric.external-benchmark-overlay.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "base_snapshot": "benchmark_2026-08-11_checkpoint_replay_overlay.json",
+  "observed_at": "2026-08-11T08:54:00Z",
+  "baseline_project": "8x8 One Fabric",
+  "expected_base_score": 83,
+  "expected_materialized_score": 84,
+  "component_patch": {
+    "D5": 11
+  },
+  "baseline_fields": {
+    "primary_source": "github://horbolsi/8x8@4e6fbe0ae4822744e2210fda6a94b754f329e560",
+    "evidence_summary": "One Fabric now has a bounded authenticated A2A 1.0 HTTP+JSON edge in repository/two-process CI scope while PCEF remains execution authority. Agent Cards declare Bearer security; short-lived signed capability tokens bind issuer, subject, tenant, audience, operation scopes and PCEF authority ceilings; deterministic task ownership is durably reserved before ingress; Get/List/Cancel/follow-up/duplicate handling is caller-scoped and fail-closed; ListTasks is ACL-first; cross-principal takeover and resource projection are rejected; same-principal retries survive credential rotation; token revocation survives store reopen; router-to-specialist service authentication completes with eight verified PCEF receipts on both processes. Production HTTPS/TLS, OAuth/OIDC, independent third-party A2A interoperability, native binding and external-provider effects remain unproven/not implemented.",
+    "single_extra_feature": "Sovereign Proof-Carrying Autonomy: authenticated interoperability binds caller identity, operation scope and authority to durable task ownership before consequential execution, then still requires PCEF proof before terminal completion.",
+    "8x8_parity_gate": "Promote the authenticated A2A edge to a real HTTPS/TLS deployment with independent third-party interoperability while preserving caller-scoped ACL-first authorization, crash-safe ownership reservation, non-escalating authority and PCEF terminal proof."
+  },
+  "external_source_patch": {},
+  "frontier_patch": {
+    "definition": "Every consequential agent/tool/external effect must carry authorization-bound, idempotent, replay-verifiable proof before terminal completion; interoperability must authenticate the caller and reserve durable authority/ownership before ingress; risky execution must prove isolation; guarded runs must prove session/guardrail/trace completeness; historical replay must preserve immutable proof lineage.",
+    "current_status": "PCEF_CORE_IMPLEMENTED_AND_TESTED; REPOSITORY_PROCESS_DEATH_RECOVERY_VALIDATED; AGENT_STATE_CAPSULE_VALIDATED; VERSIONED_SPCA_EVAL_CORPUS_VALIDATED; A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED; REPOSITORY_TWO_PROCESS_AUTHENTICATED_A2A_EDGE_VALIDATED; A2A_CALLER_SCOPED_ACL_FIRST_AUTHORIZATION_VALIDATED; A2A_PRE_INGRESS_OWNERSHIP_RESERVATION_VALIDATED; A2A_CREDENTIAL_ROTATION_IDEMPOTENCY_VALIDATED; A2A_DURABLE_TOKEN_REVOCATION_VALIDATED; REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED; PCEF_GUARDED_PERSISTENT_SESSION_TRACE_VALIDATED; GUARDED_SESSION_COMBINED_MASTER_COMPATIBILITY_VALIDATED; PCEF_CHECKPOINT_REPLAY_FORK_V1_VALIDATED; REPLAY_SOURCE_TERMINAL_SEAL_VALIDATED; REPLAY_HISTORICAL_RECEIPT_MEMBERSHIP_VALIDATED; REPLAY_THREAD_WIDE_EFFECT_IDENTITY_VALIDATED; PRODUCTION_WORKFLOW_REPLAY_ADOPTION_NOT_YET_PROVEN; DISTRIBUTED_CHECKPOINT_BACKEND_NOT_IMPLEMENTED; CROSS_DATABASE_REPLAY_RESERVATION_NOT_IMPLEMENTED; DISTRIBUTED_SESSION_BACKEND_NOT_IMPLEMENTED; ALL_PRODUCTION_AGENT_RUNS_GUARDED_NOT_YET_PROVEN; PRODUCTION_MODEL_PROVIDER_GUARDED_RUN_NOT_YET_PROVEN; ALL_RISKY_PRODUCTION_LANES_SANDBOXED_NOT_YET_PROVEN; VM_MICROVM_ISOLATION_NOT_IMPLEMENTED; INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN; AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED; PUBLIC_HTTPS_TLS_A2A_NOT_YET_PROVEN; OAUTH_OIDC_AUTHORIZATION_SERVER_NOT_IMPLEMENTED; NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN; EXTERNAL_PROVIDER_EXACTLY_ONCE_NOT_YET_PROVEN; PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED",
+    "why_it_is_one_feature": "Authentication is not a second parent architecture. Caller identity, scope, authority, ownership reservation and PCEF proof become evidence-bearing constraints of the same Sovereign Proof-Carrying Autonomy completion law."
+  },
+  "truth_boundary": {
+    "score_is_universal_rank": false,
+    "global_100_claim_allowed": false,
+    "repository_two_process_authenticated_a2a": true,
+    "caller_scoped_acl_first_authorization": true,
+    "pre_ingress_ownership_reservation": true,
+    "credential_rotation_idempotency": true,
+    "durable_token_revocation": true,
+    "public_https_tls_deployment": false,
+    "oauth_oidc_authorization_server": false,
+    "independent_third_party_a2a_interop": false,
+    "authenticated_production_a2a_edge": false,
+    "native_device_service_binding": false,
+    "external_provider_effect": false,
+    "privacy_preserving_attestation_implemented": false
+  }
+}
