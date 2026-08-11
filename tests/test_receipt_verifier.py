@@ -60,6 +60,35 @@ class ReceiptVerifierSourceCommitTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "source-commit public-state SHA-256 mismatch"):
                 verifier.verify_receipt(receipt)
 
+    def test_mutable_branch_revspec_is_rejected_before_git_resolution(self):
+        _, receipt = self.receipt_for(self.source_state())
+        receipt["source_commit"] = "main"
+        receipt["receipt_sha256"] = verifier.receipt_digest(receipt)
+        with patch.object(verifier, "state_bytes_at_commit") as state_lookup:
+            with self.assertRaisesRegex(ValueError, "40-character hexadecimal"):
+                verifier.verify_receipt(receipt)
+            state_lookup.assert_not_called()
+
+    def test_abbreviated_commit_is_rejected_before_git_resolution(self):
+        _, receipt = self.receipt_for(self.source_state())
+        receipt["source_commit"] = "a" * 12
+        receipt["receipt_sha256"] = verifier.receipt_digest(receipt)
+        with patch.object(verifier, "state_bytes_at_commit") as state_lookup:
+            with self.assertRaisesRegex(ValueError, "40-character hexadecimal"):
+                verifier.verify_receipt(receipt)
+            state_lookup.assert_not_called()
+
+    def test_receipt_cli_path_cannot_escape_receipts_root(self):
+        with self.assertRaisesRegex(ValueError, "under receipts"):
+            verifier.resolve_receipt_path("../outside.json")
+        with self.assertRaisesRegex(ValueError, "under receipts"):
+            verifier.resolve_receipt_path("state/public-state.json")
+
+    def test_receipt_cli_path_accepts_receipts_subtree(self):
+        path = verifier.resolve_receipt_path("receipts/example.json")
+        self.assertEqual(path.name, "example.json")
+        self.assertEqual(path.parent.name, "receipts")
+
 
 if __name__ == "__main__":
     unittest.main()
