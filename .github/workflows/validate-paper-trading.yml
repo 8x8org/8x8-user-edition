@@ -8,18 +8,19 @@ on:
       - ".github/workflows/validate-paper-trading.yml"
   push:
     branches:
-      - feature/msg326-v2-current-main
+      - main
     paths:
       - "trading/**"
       - "tests/test_paper_engine.py"
       - ".github/workflows/validate-paper-trading.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   deterministic-paper-suite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Checkout exact submitted head
@@ -31,7 +32,7 @@ jobs:
       - name: Assert exact head
         shell: bash
         run: |
-          set -euo pipefail
+          set -Eeuo pipefail
           EXPECTED='${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}'
           OBSERVED="$(git rev-parse HEAD)"
           test "$OBSERVED" = "$EXPECTED"
@@ -39,21 +40,61 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Run deterministic regression suite
         run: python -B -m unittest tests/test_paper_engine.py -v
       - name: Generate reproducible paper receipt twice
         run: |
+          set -Eeuo pipefail
           python -B trading/paper_engine.py > /tmp/receipt-a.json
           python -B trading/paper_engine.py > /tmp/receipt-b.json
           cmp /tmp/receipt-a.json /tmp/receipt-b.json
           python -m json.tool /tmp/receipt-a.json >/dev/null
       - name: Generate commercial scenario fixture
         run: |
+          set -Eeuo pipefail
           python -B trading/commercial_model.py > /tmp/commercial.json
           python -m json.tool /tmp/commercial.json >/dev/null
-      - name: Fail if live financial adapters appear in paper modules
+      - name: Fail closed if live financial adapters appear in paper modules
+        shell: bash
         run: |
-          ! grep -RniE 'ccxt|web3\.HTTPProvider|send_raw_transaction|sendTransaction|private[_ -]?key|seed phrase|mnemonic|exchange api' trading/
+          set -Eeuo pipefail
+          python - <<'PY'
+          import pathlib
+          import sys
+
+          root = pathlib.Path('trading')
+          forbidden = [
+              b'ccxt',
+              b'web3.httpprovider',
+              b'send_raw_transaction',
+              b'sendtransaction',
+              b'private key',
+              b'private_key',
+              b'private-key',
+              b'seed phrase',
+              b'mnemonic',
+              b'exchange api',
+          ]
+          violations = []
+          try:
+              files = sorted(path for path in root.rglob('*') if path.is_file())
+              if not files:
+                  raise RuntimeError('trading scan found no files')
+              for path in files:
+                  data = path.read_bytes().lower()
+                  for token in forbidden:
+                      if token in data:
+                          violations.append(f'{path}:{token.decode("ascii")}')
+          except Exception as exc:
+              print(f'PAPER_BOUNDARY_SCAN=ERROR detail={exc}', file=sys.stderr)
+              raise
+          if violations:
+              print('PAPER_BOUNDARY_SCAN=FAIL', file=sys.stderr)
+              for violation in violations:
+                  print(violation, file=sys.stderr)
+              raise SystemExit(1)
+          print(f'PAPER_BOUNDARY_SCAN=PASS files={len(files)}')
+          PY
       - name: Verify checkout stayed clean
         run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
