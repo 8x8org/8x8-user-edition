@@ -1,0 +1,70 @@
+{
+  "schema": "8x8.one-fabric.external-donor-delta.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "observed_at": "2026-08-11T02:56:00Z",
+  "base_benchmark_merge": "671f4fb8d6d895a56542385d4f5b55fdf29ccfdf",
+  "base_score": 75,
+  "uncertainty_points": 3,
+  "score_changed": false,
+  "global_100_claim_allowed": false,
+  "reason_no_score_change": "These are newly tracked capability donors. No benchmark point moves until the corresponding 8x8 parity gate is implemented and independently evidenced in the benchmark denominator.",
+  "donors": [
+    {
+      "id": "google-adk",
+      "project": "Google Agent Development Kit",
+      "capability_family": "INTEROPERABLE_AGENT_RUNTIME",
+      "primary_sources": [
+        "https://google.github.io/agents-cli/guide/templates/",
+        "https://google.github.io/adk-docs/api-reference/java/com/google/adk/sessions/BaseSessionService.html"
+      ],
+      "evidence_summary": "Google's current agents-cli documentation states that Python ADK agents can serve A2A agent-card and JSON-RPC routes automatically; ADK's session service defines Session/Event creation, retrieval, listing, deletion and event append behavior.",
+      "single_extra_feature": "A2A-facing agent serving combined with an explicit session/event service contract.",
+      "8x8_parity_gate": "Expose a bounded One-Fabric agent through a typed A2A adapter whose Agent Card, session/context identity, task lifecycle and event stream are bound to PCEF authority and receipt lineage; prove cross-framework interop without creating a second task bus."
+    },
+    {
+      "id": "a2a-protocol",
+      "project": "Agent2Agent Protocol (A2A)",
+      "capability_family": "CROSS_FRAMEWORK_AGENT_PROTOCOL",
+      "primary_sources": [
+        "https://a2a-protocol.org/dev/specification/",
+        "https://a2a-protocol.org/latest/topics/key-concepts/"
+      ],
+      "evidence_summary": "A2A standardizes discoverable Agent Cards, stateful Tasks, Messages, Artifacts, context IDs, streaming task updates, push notifications and standard web authentication boundaries.",
+      "single_extra_feature": "A framework-neutral discovery and stateful remote-task protocol with explicit artifact and streaming semantics.",
+      "8x8_parity_gate": "Implement an evidence-bounded A2A compatibility edge over existing One-Fabric/PCEF missions, including Agent Card authority declarations, terminal-state rules, artifact receipt binding, reconnect/resubscribe behavior and denial of authority escalation."
+    },
+    {
+      "id": "letta-agentfile",
+      "project": "Letta AgentFile",
+      "capability_family": "PORTABLE_STATEFUL_AGENT_MEMORY",
+      "primary_sources": [
+        "https://docs.letta.com/guides/core-concepts/agent-file"
+      ],
+      "evidence_summary": "AgentFile is an open serialization format for stateful agents that packages system prompts, editable memory, tools and model settings for transfer, checkpointing and version control.",
+      "single_extra_feature": "Portable serialization of a stateful agent's memory, behavior, tools and model configuration.",
+      "8x8_parity_gate": "Define a versioned 8x8 Agent State Capsule that can export/import a deliberately scoped agent state with provenance, authority classification, secret redaction, memory freshness and deterministic round-trip tests across two clean runtimes."
+    },
+    {
+      "id": "mastra",
+      "project": "Mastra",
+      "capability_family": "DURABLE_WORKFLOW_OBSERVABILITY",
+      "primary_sources": [
+        "https://mastra.ai/blog/mastra-workflows-enhanced"
+      ],
+      "evidence_summary": "Mastra documents workflow snapshots for pause/resume and a Temporal integration that adds durable execution, retries and richer workflow observability.",
+      "single_extra_feature": "A workflow abstraction that can retain Mastra ergonomics while delegating crash durability to Temporal.",
+      "8x8_parity_gate": "Prove a real One-Fabric mission survives worker termination from its last committed PCEF checkpoint with correlated traces/metrics showing retry, recovery latency, duplicate suppression and final receipt lineage."
+    },
+    {
+      "id": "pydantic-evals",
+      "project": "Pydantic Evals",
+      "capability_family": "VERSIONED_TYPED_EVALUATION",
+      "primary_sources": [
+        "https://ai.pydantic.dev/evals/how-to/dataset-serialization/"
+      ],
+      "evidence_summary": "Pydantic Evals supports serializing typed evaluation datasets to YAML or JSON, generating schemas and preserving custom evaluator definitions for version-controlled reproducible evaluation.",
+      "single_extra_feature": "Schema-backed, versionable typed evaluation datasets with serializable custom evaluators.",
+      "8x8_parity_gate": "Publish a versioned machine-readable 8x8 acceptance corpus for PCEF, handoffs, memory freshness, public/private truth and recovery canaries; reproduce the same results from a clean checkout and preserve evaluator/version provenance in receipts."
+    }
+  ]
+}
