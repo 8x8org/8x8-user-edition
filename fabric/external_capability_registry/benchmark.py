@@ -5,7 +5,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 BASE_BENCHMARK = HERE / "benchmark_2026-08-11.json"
-OVERLAY = HERE / "benchmark_2026-08-11_a2a_overlay.json"
+OVERLAYS = (
+    HERE / "benchmark_2026-08-11_a2a_overlay.json",
+    HERE / "benchmark_2026-08-11_sandbox_overlay.json",
+)
 EXPECTED_DIMENSIONS = tuple(f"D{i}" for i in range(1, 9))
 
 
@@ -37,20 +40,16 @@ def _competition_ranks(projects: list[dict]) -> None:
         prior_rank = rank
 
 
-def materialize_benchmark(
-    base_path: Path = BASE_BENCHMARK,
-    overlay_path: Path = OVERLAY,
-) -> dict:
-    base = read_json(base_path)
-    overlay = read_json(overlay_path)
+def _apply_overlay(data: dict, overlay: dict, *, expected_base_artifact: str) -> dict:
     require(overlay.get("schema") == "8x8.one-fabric.external-benchmark-overlay.v1", "overlay schema mismatch")
-    require(overlay.get("base_snapshot") == base_path.name, "overlay base snapshot mismatch")
-    require(overlay.get("truth_boundary", {}).get("score_is_universal_rank") is False, "overlay universal-rank claim forbidden")
-    require(overlay.get("truth_boundary", {}).get("global_100_claim_allowed") is False, "overlay global-100 claim forbidden")
+    require(overlay.get("base_snapshot") == expected_base_artifact, "overlay base artifact mismatch")
+    boundary = overlay.get("truth_boundary", {})
+    require(boundary.get("score_is_universal_rank") is False, "overlay universal-rank claim forbidden")
+    require(boundary.get("global_100_claim_allowed") is False, "overlay global-100 claim forbidden")
 
-    data = json.loads(json.dumps(base, ensure_ascii=False, allow_nan=False))
-    baselines = [project for project in data.get("projects", []) if project.get("kind") == "baseline"]
-    require(len(baselines) == 1, "base must contain exactly one baseline")
+    result = json.loads(json.dumps(data, ensure_ascii=False, allow_nan=False))
+    baselines = [project for project in result.get("projects", []) if project.get("kind") == "baseline"]
+    require(len(baselines) == 1, "materialized input must contain exactly one baseline")
     baseline = baselines[0]
     require(baseline.get("project") == overlay.get("baseline_project"), "overlay baseline project mismatch")
     require(int(baseline.get("score", -1)) == int(overlay.get("expected_base_score", -2)), "overlay base score mismatch")
@@ -71,7 +70,7 @@ def materialize_benchmark(
 
     external_source_patch = overlay.get("external_source_patch", {})
     require(isinstance(external_source_patch, dict), "external_source_patch must be an object")
-    projects_by_name = {project["project"]: project for project in data["projects"]}
+    projects_by_name = {project["project"]: project for project in result["projects"]}
     for name, source in external_source_patch.items():
         require(name in projects_by_name, f"source patch project missing: {name}")
         require(isinstance(source, str) and source.startswith("https://"), f"source patch invalid: {name}")
@@ -81,10 +80,23 @@ def materialize_benchmark(
     require(isinstance(frontier_patch, dict), "frontier_patch must be an object")
     for key in ("definition", "current_status", "why_it_is_one_feature"):
         require(isinstance(frontier_patch.get(key), str) and frontier_patch[key].strip(), f"frontier patch missing: {key}")
-        data["frontier"][key] = frontier_patch[key]
+        result["frontier"][key] = frontier_patch[key]
 
-    data["observed_at"] = overlay["observed_at"]
-    _competition_ranks(data["projects"])
+    result["observed_at"] = overlay["observed_at"]
+    _competition_ranks(result["projects"])
+    return result
+
+
+def materialize_benchmark(
+    base_path: Path = BASE_BENCHMARK,
+    overlay_paths: tuple[Path, ...] = OVERLAYS,
+) -> dict:
+    data = read_json(base_path)
+    expected_base_artifact = base_path.name
+    for overlay_path in overlay_paths:
+        overlay = read_json(overlay_path)
+        data = _apply_overlay(data, overlay, expected_base_artifact=expected_base_artifact)
+        expected_base_artifact = overlay_path.name
     return data
 
 
@@ -137,6 +149,9 @@ def validate(data: dict) -> dict:
     frontier_status = str(frontier.get("current_status", ""))
     for marker in (
         "A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED",
+        "REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED",
+        "ALL_RISKY_PRODUCTION_LANES_SANDBOXED_NOT_YET_PROVEN",
+        "VM_MICROVM_ISOLATION_NOT_IMPLEMENTED",
         "INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN",
         "AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED",
         "NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN",
