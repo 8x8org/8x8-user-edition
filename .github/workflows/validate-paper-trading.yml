@@ -61,19 +61,20 @@ jobs:
           set -Eeuo pipefail
           python - <<'PY'
           import pathlib
-          import re
           import sys
 
           root = pathlib.Path('trading')
-          patterns = [
-              re.compile(r'ccxt', re.IGNORECASE),
-              re.compile(r'web3\.HTTPProvider', re.IGNORECASE),
-              re.compile(r'send_raw_transaction', re.IGNORECASE),
-              re.compile(r'sendTransaction', re.IGNORECASE),
-              re.compile(r'private[_ -]?key', re.IGNORECASE),
-              re.compile(r'seed phrase', re.IGNORECASE),
-              re.compile(r'mnemonic', re.IGNORECASE),
-              re.compile(r'exchange api', re.IGNORECASE),
+          forbidden = [
+              b'ccxt',
+              b'web3.httpprovider',
+              b'send_raw_transaction',
+              b'sendtransaction',
+              b'private key',
+              b'private_key',
+              b'private-key',
+              b'seed phrase',
+              b'mnemonic',
+              b'exchange api',
           ]
           violations = []
           try:
@@ -81,13 +82,10 @@ jobs:
               if not files:
                   raise RuntimeError('trading scan found no files')
               for path in files:
-                  try:
-                      text = path.read_text(encoding='utf-8')
-                  except UnicodeDecodeError:
-                      continue
-                  for pattern in patterns:
-                      if pattern.search(text):
-                          violations.append(f'{path}:{pattern.pattern}')
+                  data = path.read_bytes().lower()
+                  for token in forbidden:
+                      if token in data:
+                          violations.append(f'{path}:{token.decode("ascii")}')
           except Exception as exc:
               print(f'PAPER_BOUNDARY_SCAN=ERROR detail={exc}', file=sys.stderr)
               raise
