@@ -10,13 +10,12 @@ class ExternalBenchmarkTests(unittest.TestCase):
         result = validate(load_benchmark())
         self.assertGreaterEqual(result["external_denominator"], 10)
         self.assertEqual(result["project_denominator"], 12)
-        self.assertEqual(result["baseline_score"], 84)
+        self.assertEqual(result["baseline_score"], 85)
         self.assertFalse(result["global_100_claim_allowed"])
         self.assertEqual(result["status"], "VALIDATED_BOUNDED_SNAPSHOT")
 
     def test_frontier_is_not_promoted_by_declaration(self) -> None:
-        data = load_benchmark()
-        status = data["frontier"]["current_status"]
+        status = load_benchmark()["frontier"]["current_status"]
         for marker in (
             "REPOSITORY_PROCESS_DEATH_RECOVERY_VALIDATED",
             "AGENT_STATE_CAPSULE_VALIDATED",
@@ -34,6 +33,14 @@ class ExternalBenchmarkTests(unittest.TestCase):
             "REPLAY_SOURCE_TERMINAL_SEAL_VALIDATED",
             "REPLAY_HISTORICAL_RECEIPT_MEMBERSHIP_VALIDATED",
             "REPLAY_THREAD_WIDE_EFFECT_IDENTITY_VALIDATED",
+            "PCEF_TYPED_EIGHT_WAY_SUPERSTEP_VALIDATED",
+            "SUPERSTEP_EIGHT_DISTINCT_PCEF_WORKER_PIDS_VALIDATED",
+            "SUPERSTEP_INDEPENDENT_CHILD_VERIFICATION_VALIDATED",
+            "SUPERSTEP_TIMING_EVIDENCE_PCEF_BOUND_VALIDATED",
+            "SUPERSTEP_COORDINATOR_DEATH_REOPEN_VALIDATED",
+            "PCEF_VERIFICATION_RESERVED_AUDIT_FIELDS_VALIDATED",
+            "PRODUCTION_COUNCIL_CONTROL_PLANE_ADOPTION_NOT_YET_PROVEN",
+            "DISTRIBUTED_ORCHESTRATION_BACKEND_NOT_IMPLEMENTED",
             "PRODUCTION_WORKFLOW_REPLAY_ADOPTION_NOT_YET_PROVEN",
             "DISTRIBUTED_CHECKPOINT_BACKEND_NOT_IMPLEMENTED",
             "CROSS_DATABASE_REPLAY_RESERVATION_NOT_IMPLEMENTED",
