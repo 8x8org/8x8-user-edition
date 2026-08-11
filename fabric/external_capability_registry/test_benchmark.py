@@ -10,7 +10,7 @@ class ExternalBenchmarkTests(unittest.TestCase):
         result = validate(load_benchmark())
         self.assertGreaterEqual(result["external_denominator"], 10)
         self.assertEqual(result["project_denominator"], 12)
-        self.assertEqual(result["baseline_score"], 83)
+        self.assertEqual(result["baseline_score"], 84)
         self.assertFalse(result["global_100_claim_allowed"])
         self.assertEqual(result["status"], "VALIDATED_BOUNDED_SNAPSHOT")
 
@@ -22,6 +22,11 @@ class ExternalBenchmarkTests(unittest.TestCase):
             "AGENT_STATE_CAPSULE_VALIDATED",
             "VERSIONED_SPCA_EVAL_CORPUS_VALIDATED",
             "A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED",
+            "REPOSITORY_TWO_PROCESS_AUTHENTICATED_A2A_EDGE_VALIDATED",
+            "A2A_CALLER_SCOPED_ACL_FIRST_AUTHORIZATION_VALIDATED",
+            "A2A_PRE_INGRESS_OWNERSHIP_RESERVATION_VALIDATED",
+            "A2A_CREDENTIAL_ROTATION_IDEMPOTENCY_VALIDATED",
+            "A2A_DURABLE_TOKEN_REVOCATION_VALIDATED",
             "REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED",
             "PCEF_GUARDED_PERSISTENT_SESSION_TRACE_VALIDATED",
             "GUARDED_SESSION_COMBINED_MASTER_COMPATIBILITY_VALIDATED",
@@ -39,6 +44,8 @@ class ExternalBenchmarkTests(unittest.TestCase):
             "VM_MICROVM_ISOLATION_NOT_IMPLEMENTED",
             "INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN",
             "AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED",
+            "PUBLIC_HTTPS_TLS_A2A_NOT_YET_PROVEN",
+            "OAUTH_OIDC_AUTHORIZATION_SERVER_NOT_IMPLEMENTED",
             "NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN",
             "EXTERNAL_PROVIDER_EXACTLY_ONCE_NOT_YET_PROVEN",
             "PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED",
