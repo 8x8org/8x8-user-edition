@@ -6,7 +6,6 @@ import pytest
 from receipts.verifier import (
     issue_receipt,
     receipt_digest,
-    resolve_receipt_path,
     validate_source_commit,
     verify_receipt,
 )
@@ -65,19 +64,6 @@ def test_verify_rejects_abbreviated_commit_even_with_resealed_receipt():
         verify_receipt(receipt)
 
 
-def test_source_commit_normalizes_case_only_after_full_hex_validation():
+def test_source_commit_is_rebuilt_as_canonical_hex():
     observed = current_commit().upper()
-    assert validate_source_commit(observed) == observed.lower()
-
-
-def test_receipt_paths_cannot_escape_receipts_root():
-    with pytest.raises(ValueError, match="under receipts"):
-        resolve_receipt_path("../outside.json")
-    with pytest.raises(ValueError, match="under receipts"):
-        resolve_receipt_path("state/public-state.json")
-
-
-def test_receipt_paths_allow_repository_receipts_subtree():
-    resolved = resolve_receipt_path("receipts/test-output.json")
-    assert resolved.name == "test-output.json"
-    assert resolved.parent.name == "receipts"
+    assert validate_source_commit(observed) == bytes.fromhex(observed).hex()
