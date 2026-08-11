@@ -11,8 +11,50 @@ OVERLAYS = (
     HERE / "benchmark_2026-08-11_guarded_session_overlay.json",
     HERE / "benchmark_2026-08-11_checkpoint_replay_overlay.json",
     HERE / "benchmark_2026-08-11_authenticated_a2a_overlay.json",
+    HERE / "benchmark_2026-08-11_typed_superstep_overlay.json",
 )
 EXPECTED_DIMENSIONS = tuple(f"D{i}" for i in range(1, 9))
+FRONTIER_STATUS_REQUIRED_MARKERS = (
+    "REPOSITORY_PROCESS_DEATH_RECOVERY_VALIDATED",
+    "AGENT_STATE_CAPSULE_VALIDATED",
+    "VERSIONED_SPCA_EVAL_CORPUS_VALIDATED",
+    "A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED",
+    "REPOSITORY_TWO_PROCESS_AUTHENTICATED_A2A_EDGE_VALIDATED",
+    "A2A_CALLER_SCOPED_ACL_FIRST_AUTHORIZATION_VALIDATED",
+    "A2A_PRE_INGRESS_OWNERSHIP_RESERVATION_VALIDATED",
+    "A2A_CREDENTIAL_ROTATION_IDEMPOTENCY_VALIDATED",
+    "A2A_DURABLE_TOKEN_REVOCATION_VALIDATED",
+    "REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED",
+    "PCEF_GUARDED_PERSISTENT_SESSION_TRACE_VALIDATED",
+    "GUARDED_SESSION_COMBINED_MASTER_COMPATIBILITY_VALIDATED",
+    "PCEF_CHECKPOINT_REPLAY_FORK_V1_VALIDATED",
+    "REPLAY_SOURCE_TERMINAL_SEAL_VALIDATED",
+    "REPLAY_HISTORICAL_RECEIPT_MEMBERSHIP_VALIDATED",
+    "REPLAY_THREAD_WIDE_EFFECT_IDENTITY_VALIDATED",
+    "PCEF_TYPED_EIGHT_WAY_SUPERSTEP_VALIDATED",
+    "SUPERSTEP_EIGHT_DISTINCT_PCEF_WORKER_PIDS_VALIDATED",
+    "SUPERSTEP_INDEPENDENT_CHILD_VERIFICATION_VALIDATED",
+    "SUPERSTEP_TIMING_EVIDENCE_PCEF_BOUND_VALIDATED",
+    "SUPERSTEP_COORDINATOR_DEATH_REOPEN_VALIDATED",
+    "PCEF_VERIFICATION_RESERVED_AUDIT_FIELDS_VALIDATED",
+    "PRODUCTION_COUNCIL_CONTROL_PLANE_ADOPTION_NOT_YET_PROVEN",
+    "DISTRIBUTED_ORCHESTRATION_BACKEND_NOT_IMPLEMENTED",
+    "PRODUCTION_WORKFLOW_REPLAY_ADOPTION_NOT_YET_PROVEN",
+    "DISTRIBUTED_CHECKPOINT_BACKEND_NOT_IMPLEMENTED",
+    "CROSS_DATABASE_REPLAY_RESERVATION_NOT_IMPLEMENTED",
+    "DISTRIBUTED_SESSION_BACKEND_NOT_IMPLEMENTED",
+    "ALL_PRODUCTION_AGENT_RUNS_GUARDED_NOT_YET_PROVEN",
+    "PRODUCTION_MODEL_PROVIDER_GUARDED_RUN_NOT_YET_PROVEN",
+    "ALL_RISKY_PRODUCTION_LANES_SANDBOXED_NOT_YET_PROVEN",
+    "VM_MICROVM_ISOLATION_NOT_IMPLEMENTED",
+    "INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN",
+    "AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED",
+    "PUBLIC_HTTPS_TLS_A2A_NOT_YET_PROVEN",
+    "OAUTH_OIDC_AUTHORIZATION_SERVER_NOT_IMPLEMENTED",
+    "NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN",
+    "EXTERNAL_PROVIDER_EXACTLY_ONCE_NOT_YET_PROVEN",
+    "PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED",
+)
 
 
 class BenchmarkValidationError(ValueError):
@@ -29,6 +71,10 @@ def read_json(path: Path) -> dict:
         value = json.load(fh)
     require(isinstance(value, dict), f"{path.name}: root must be an object")
     return value
+
+
+def frontier_status_markers(status: str) -> set[str]:
+    return {item.strip() for item in status.split(";") if item.strip()}
 
 
 def _competition_ranks(projects: list[dict]) -> None:
@@ -83,6 +129,25 @@ def _apply_overlay(data: dict, overlay: dict, *, expected_base_artifact: str) ->
     require(isinstance(frontier_patch, dict), "frontier_patch must be an object")
     for key in ("definition", "current_status", "why_it_is_one_feature"):
         require(isinstance(frontier_patch.get(key), str) and frontier_patch[key].strip(), f"frontier patch missing: {key}")
+
+    previous_status = str(result.get("frontier", {}).get("current_status", ""))
+    new_status = str(frontier_patch["current_status"])
+    previous_markers = frontier_status_markers(previous_status)
+    new_markers = frontier_status_markers(new_status)
+    retirements = overlay.get("frontier_retirements", [])
+    require(isinstance(retirements, list), "frontier_retirements must be a list")
+    require(all(isinstance(item, str) and item.strip() for item in retirements), "frontier_retirements must contain non-empty strings")
+    retirement_set = {item.strip() for item in retirements}
+    require(len(retirement_set) == len(retirements), "frontier_retirements must be unique")
+    unknown_retirements = sorted(retirement_set - previous_markers)
+    require(not unknown_retirements, f"frontier retirement not present in prior state: {unknown_retirements}")
+    missing_inherited = sorted((previous_markers - retirement_set) - new_markers)
+    require(
+        not missing_inherited,
+        f"overlay dropped inherited frontier markers without explicit retirement: {missing_inherited}",
+    )
+
+    for key in ("definition", "current_status", "why_it_is_one_feature"):
         result["frontier"][key] = frontier_patch[key]
 
     result["observed_at"] = overlay["observed_at"]
@@ -150,36 +215,7 @@ def validate(data: dict) -> dict:
     frontier = data.get("frontier", {})
     require(frontier.get("single_plus_one_feature") == "Sovereign Proof-Carrying Autonomy", "frontier feature drift")
     frontier_status = str(frontier.get("current_status", ""))
-    for marker in (
-        "A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED",
-        "REPOSITORY_TWO_PROCESS_AUTHENTICATED_A2A_EDGE_VALIDATED",
-        "A2A_CALLER_SCOPED_ACL_FIRST_AUTHORIZATION_VALIDATED",
-        "A2A_PRE_INGRESS_OWNERSHIP_RESERVATION_VALIDATED",
-        "A2A_CREDENTIAL_ROTATION_IDEMPOTENCY_VALIDATED",
-        "A2A_DURABLE_TOKEN_REVOCATION_VALIDATED",
-        "REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED",
-        "PCEF_GUARDED_PERSISTENT_SESSION_TRACE_VALIDATED",
-        "GUARDED_SESSION_COMBINED_MASTER_COMPATIBILITY_VALIDATED",
-        "PCEF_CHECKPOINT_REPLAY_FORK_V1_VALIDATED",
-        "REPLAY_SOURCE_TERMINAL_SEAL_VALIDATED",
-        "REPLAY_HISTORICAL_RECEIPT_MEMBERSHIP_VALIDATED",
-        "REPLAY_THREAD_WIDE_EFFECT_IDENTITY_VALIDATED",
-        "PRODUCTION_WORKFLOW_REPLAY_ADOPTION_NOT_YET_PROVEN",
-        "DISTRIBUTED_CHECKPOINT_BACKEND_NOT_IMPLEMENTED",
-        "CROSS_DATABASE_REPLAY_RESERVATION_NOT_IMPLEMENTED",
-        "DISTRIBUTED_SESSION_BACKEND_NOT_IMPLEMENTED",
-        "ALL_PRODUCTION_AGENT_RUNS_GUARDED_NOT_YET_PROVEN",
-        "PRODUCTION_MODEL_PROVIDER_GUARDED_RUN_NOT_YET_PROVEN",
-        "ALL_RISKY_PRODUCTION_LANES_SANDBOXED_NOT_YET_PROVEN",
-        "VM_MICROVM_ISOLATION_NOT_IMPLEMENTED",
-        "INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN",
-        "AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED",
-        "PUBLIC_HTTPS_TLS_A2A_NOT_YET_PROVEN",
-        "OAUTH_OIDC_AUTHORIZATION_SERVER_NOT_IMPLEMENTED",
-        "NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN",
-        "EXTERNAL_PROVIDER_EXACTLY_ONCE_NOT_YET_PROVEN",
-        "PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED",
-    ):
+    for marker in FRONTIER_STATUS_REQUIRED_MARKERS:
         require(marker in frontier_status, f"frontier status marker missing: {marker}")
 
     return {
