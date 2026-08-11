@@ -38,16 +38,22 @@ class PublicInformationBoundaryTests(unittest.TestCase):
         self.assertEqual(classified, expected)
 
     def test_binary_payload_with_private_marker_is_rejected(self) -> None:
+        # Assemble the forbidden sequence at runtime so this regression test does not
+        # itself place a private-path-shaped literal in the public source tree.
+        marker = b"/" + b"root" + b"/private/runtime"
         with tempfile.TemporaryDirectory() as tmp:
             artifact = Path(tmp) / "opaque.bin"
-            artifact.write_bytes(b"\x00\xffpayload:/root/private/runtime\x00")
+            artifact.write_bytes(b"\x00\xffpayload:" + marker + b"\x00")
             violations = binary_content_policy_violations([artifact])
         self.assertTrue(any(item.startswith("binary_private_root_path:") for item in violations))
 
     def test_binary_payload_with_credential_shape_is_rejected(self) -> None:
+        # Build the credential-shaped canary in pieces for the same reason: the public
+        # repository must never contain the complete forbidden token-shaped fixture.
+        canary = b"s" + b"k-" + b"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         with tempfile.TemporaryDirectory() as tmp:
             artifact = Path(tmp) / "opaque.dat"
-            artifact.write_bytes(b"\x89BIN\x00sk-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\x00")
+            artifact.write_bytes(b"\x89BIN\x00" + canary + b"\x00")
             violations = binary_content_policy_violations([artifact])
         self.assertTrue(any(item.startswith("binary_credential_like_token:") for item in violations))
 
