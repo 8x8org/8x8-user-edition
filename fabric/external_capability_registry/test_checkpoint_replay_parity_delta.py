@@ -63,6 +63,7 @@ class CheckpointReplayParityDeltaTests(unittest.TestCase):
         for key in (
             "external_provider_replay",
             "distributed_checkpoint_backend",
+            "distributed_session_backend",
             "cross_database_replay_reservation",
             "native_device_checkpoint_binding",
             "production_workflow_replay_adoption",
