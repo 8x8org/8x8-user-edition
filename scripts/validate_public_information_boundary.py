@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Fail closed when private operational topology appears in public source."""
+"""Fail closed when private operational topology appears in public source.
+
+The public boundary is byte-complete: every tracked regular file is classified and
+scanned. Text files receive the full semantic-pattern scan; non-text/binary files
+receive an ASCII byte-pattern scan so private paths, key headers, deployment IDs,
+and credential-shaped values cannot hide in an uninspected binary payload.
+"""
 
 from __future__ import annotations
 
@@ -34,6 +40,21 @@ PATTERNS = {
     "private_drive_artifact_field": re.compile(r'"(?:vnext|rights_matrix)_drive_id"\s*:', re.IGNORECASE),
 }
 
+# Binary scanning uses ASCII-safe byte patterns only. These deliberately mirror the
+# value-bearing/high-risk subset of PATTERNS and are applied to every tracked
+# non-text artifact without decoding it or trusting its file extension.
+BYTE_PATTERNS = {
+    "private_android_path": re.compile(rb"/data/data/", re.IGNORECASE),
+    "private_root_path": re.compile(rb"/root/", re.IGNORECASE),
+    "private_runtime_directory": re.compile(rb"(?:^|[\\/])\.hermes(?:[\\/]|$)", re.IGNORECASE),
+    "private_state_database": re.compile(rb"\bstate\.db\b", re.IGNORECASE),
+    "private_repository_name": re.compile(rb"\bhorbolsi/8x8-os-june2026\b", re.IGNORECASE),
+    "protected_deployment_identifier": re.compile(rb"\bdpl_[A-Za-z0-9]{16,}\b"),
+    "private_key_material": re.compile(rb"BEGIN (?:RSA|OPENSSH|EC) PRIVATE KEY"),
+    "credential_like_token": re.compile(rb"\b(?:gh[opsu]_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_-]{20,})\b"),
+    "private_drive_artifact_field": re.compile(rb'"(?:vnext|rights_matrix)_drive_id"\s*:', re.IGNORECASE),
+}
+
 FORBIDDEN_PATH_PREFIXES = (
     "research/external-capabilities/",
     "adapters/supervision/",
@@ -55,13 +76,23 @@ def tracked_paths() -> list[Path]:
     return [ROOT / name for name in names]
 
 
+def is_public_text_file(path: Path) -> bool:
+    return path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE"
+
+
 def iter_public_text_files(tracked: Sequence[Path]) -> list[Path]:
     return sorted(
         path
         for path in tracked
-        if path.is_file()
-        and path not in EXCLUDED
-        and (path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE")
+        if path.is_file() and path not in EXCLUDED and is_public_text_file(path)
+    )
+
+
+def iter_public_binary_files(tracked: Sequence[Path]) -> list[Path]:
+    return sorted(
+        path
+        for path in tracked
+        if path.is_file() and path not in EXCLUDED and not is_public_text_file(path)
     )
 
 
@@ -97,10 +128,28 @@ def content_policy_violations(files: Sequence[Path]) -> list[str]:
     return violations
 
 
+def binary_content_policy_violations(files: Sequence[Path]) -> list[str]:
+    violations: list[str] = []
+    for path in files:
+        rel = path.relative_to(ROOT).as_posix()
+        payload = path.read_bytes()
+        violations.extend(
+            f"binary_{label}: {rel}"
+            for label, pattern in BYTE_PATTERNS.items()
+            if pattern.search(payload)
+        )
+    return violations
+
+
 def main() -> int:
     tracked = tracked_paths()
-    files = iter_public_text_files(tracked)
-    violations = path_policy_violations(tracked) + content_policy_violations(files)
+    text_files = iter_public_text_files(tracked)
+    binary_files = iter_public_binary_files(tracked)
+    violations = (
+        path_policy_violations(tracked)
+        + content_policy_violations(text_files)
+        + binary_content_policy_violations(binary_files)
+    )
 
     if violations:
         print("PUBLIC_INFORMATION_BOUNDARY=FAIL")
@@ -108,7 +157,11 @@ def main() -> int:
             print(f"- {item}")
         return 1
 
-    print(f"PUBLIC_INFORMATION_BOUNDARY=PASS files={len(files)}")
+    print(
+        "PUBLIC_INFORMATION_BOUNDARY=PASS "
+        f"tracked={len(tracked)} text={len(text_files)} binary={len(binary_files)} "
+        f"scanned={len(text_files) + len(binary_files)}"
+    )
     return 0
 
 
