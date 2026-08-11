@@ -15,9 +15,12 @@ on:
   push:
     branches: [main]
     paths:
+      - 'fabric/external_capability_registry/benchmark_2026-08-10.json'
       - 'fabric/external_capability_registry/benchmark_2026-08-11.json'
       - 'fabric/external_capability_registry/benchmark.py'
       - 'fabric/external_capability_registry/test_benchmark.py'
+      - 'fabric/external_capability_registry/donor_delta_2026-08-11.json'
+      - 'fabric/external_capability_registry/test_donor_delta.py'
       - 'fabric/external_capability_registry/spca_parity_delta_2026-08-11.json'
       - 'fabric/external_capability_registry/test_spca_parity_delta.py'
       - '.github/workflows/one-fabric-external-benchmark.yml'
