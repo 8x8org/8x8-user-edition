@@ -76,6 +76,14 @@ def tracked_paths() -> list[Path]:
     return [ROOT / name for name in names]
 
 
+def display_path(path: Path) -> str:
+    """Return a stable public-tree path, or only the basename for external fixtures."""
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.name
+
+
 def is_public_text_file(path: Path) -> bool:
     return path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE"
 
@@ -114,7 +122,7 @@ def path_policy_violations(tracked: Sequence[Path]) -> list[str]:
 def content_policy_violations(files: Sequence[Path]) -> list[str]:
     violations: list[str] = []
     for path in files:
-        rel = path.relative_to(ROOT).as_posix()
+        rel = display_path(path)
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
@@ -131,7 +139,7 @@ def content_policy_violations(files: Sequence[Path]) -> list[str]:
 def binary_content_policy_violations(files: Sequence[Path]) -> list[str]:
     violations: list[str] = []
     for path in files:
-        rel = path.relative_to(ROOT).as_posix()
+        rel = display_path(path)
         payload = path.read_bytes()
         violations.extend(
             f"binary_{label}: {rel}"
