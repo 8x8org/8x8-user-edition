@@ -11,6 +11,7 @@ from scripts.validate_public_information_boundary import (
     FORBIDDEN_PATH_PATTERNS,
     ROOT,
     binary_content_policy_violations,
+    is_public_text_file,
     iter_public_binary_files,
     iter_public_text_files,
     tracked_paths,
@@ -30,12 +31,27 @@ class PublicInformationBoundaryTests(unittest.TestCase):
         self.assertIn("PUBLIC_INFORMATION_BOUNDARY=PASS", result.stdout)
         self.assertIn("binary=", result.stdout)
         self.assertIn("scanned=", result.stdout)
+        self.assertIn("expected=", result.stdout)
 
     def test_every_tracked_regular_artifact_is_classified_for_content_scan(self) -> None:
         tracked = tracked_paths()
-        classified = set(iter_public_text_files(tracked)) | set(iter_public_binary_files(tracked))
+        text_files = set(iter_public_text_files(tracked))
+        binary_files = set(iter_public_binary_files(tracked))
         expected = {path for path in tracked if path.is_file() and path not in EXCLUDED}
-        self.assertEqual(classified, expected)
+        self.assertEqual(text_files | binary_files, expected)
+        self.assertFalse(text_files & binary_files)
+
+    def test_text_classification_uses_content_not_extension(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            shell_file = Path(tmp) / "probe.sh"
+            sql_file = Path(tmp) / "probe.sql"
+            extensionless = Path(tmp) / "PROBE"
+            opaque = Path(tmp) / "looks-like-text.txt"
+            for path in (shell_file, sql_file, extensionless):
+                path.write_bytes(b"plain utf-8 test fixture\n")
+                self.assertTrue(is_public_text_file(path), path.name)
+            opaque.write_bytes(b"plain-prefix\x00opaque-payload")
+            self.assertFalse(is_public_text_file(opaque))
 
     def test_binary_payload_with_private_marker_is_rejected(self) -> None:
         # Assemble the forbidden sequence at runtime so this regression test does not
