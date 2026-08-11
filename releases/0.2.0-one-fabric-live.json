@@ -6,7 +6,7 @@
   "codename": "One Fabric Live R5",
   "status": "RELEASE_CANDIDATE",
   "public_carrier_path": "stable/r5/index.html",
-  "public_carrier_blob_sha": "b21d1411cde169a838d227fa0697083fbcf358d3",
+  "public_carrier_blob_sha": "83bed6faef9e416995cf9770626cb7a5912589b5",
   "bounded_engineering_benchmark": {
     "score": 85,
     "uncertainty": 3,
