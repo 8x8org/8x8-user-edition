@@ -148,7 +148,7 @@ def execute_order(order: Order, market: MarketConfig, outage: bool = False) -> F
     fee = abs(gross) * validated_market.fee_bps / 10_000.0
     spread_cost = filled * reference_price * spread_rate
     slippage_cost = filled * reference_price * slippage_rate
-    if any(not math.isfinite(value) or value < 0 for value in (filled, gross if gross >= 0 else -gross, fee, spread_cost, slippage_cost)):
+    if any(not math.isfinite(value) or value < 0 for value in (filled, abs(gross), fee, spread_cost, slippage_cost)):
         return _rejected_invalid(normalized_order)
     if not math.isfinite(fill_price) or fill_price <= 0:
         return _rejected_invalid(normalized_order)
@@ -365,13 +365,23 @@ def model_drift(reference: Sequence[float], recent: Sequence[float]) -> dict:
     new_vol = pstdev(recent_values) if len(recent_values) > 1 else 0.0
     pooled = math.sqrt((ref_vol * ref_vol + new_vol * new_vol) / 2.0)
     mean_delta = new_mu - ref_mu
-    if pooled > 0:
+    if pooled > 0.0:
         standardized_mean_shift = mean_delta / pooled
         mean_shift_flag = abs(standardized_mean_shift) >= 1.0
+    elif mean_delta > 0.0:
+        standardized_mean_shift = math.inf
+        mean_shift_flag = True
+    elif mean_delta < 0.0:
+        standardized_mean_shift = -math.inf
+        mean_shift_flag = True
     else:
-        standardized_mean_shift = 0.0 if mean_delta == 0 else math.copysign(math.inf, mean_delta)
-        mean_shift_flag = mean_delta != 0
-    if ref_vol == 0.0:
+        standardized_mean_shift = 0.0
+        mean_shift_flag = False
+
+    # pstdev() is non-negative. Avoid direct floating-point equality while
+    # preserving the important zero-reference case: any positive recent
+    # volatility emerging from a non-positive reference is a shift.
+    if ref_vol <= 0.0:
         volatility_shift_flag = new_vol > 0.0
     else:
         volatility_shift_flag = new_vol / ref_vol >= 1.5
