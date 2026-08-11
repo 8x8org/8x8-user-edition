@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+from collections.abc import Sequence
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,11 +31,16 @@ PATTERNS = {
     "protected_deployment_identifier": re.compile(r"\bdpl_[A-Za-z0-9]{16,}\b"),
     "private_key_material": re.compile(r"BEGIN (?:RSA|OPENSSH|EC) PRIVATE KEY"),
     "credential_like_token": re.compile(r"\b(?:gh[opsu]_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_-]{20,})\b"),
+    "private_drive_artifact_field": re.compile(r'"(?:vnext|rights_matrix)_drive_id"\s*:', re.IGNORECASE),
 }
 
 FORBIDDEN_PATH_PREFIXES = (
     "research/external-capabilities/",
     "adapters/supervision/",
+)
+FORBIDDEN_PATH_PATTERNS = (
+    re.compile(r"^state/.*(?:run|operational)[-_]receipt.*\.json$", re.IGNORECASE),
+    re.compile(r"^state/.*receipt.*(?:mission|runtime).*\.json$", re.IGNORECASE),
 )
 
 
@@ -49,24 +55,33 @@ def tracked_paths() -> list[Path]:
     return [ROOT / name for name in names]
 
 
-def iter_public_text_files() -> list[Path]:
-    files: list[Path] = []
-    for path in tracked_paths():
-        if not path.is_file() or path in EXCLUDED:
-            continue
-        if path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE":
-            files.append(path)
-    return sorted(files)
+def iter_public_text_files(tracked: Sequence[Path]) -> list[Path]:
+    return sorted(
+        path
+        for path in tracked
+        if path.is_file()
+        and path not in EXCLUDED
+        and (path.suffix.lower() in TEXT_SUFFIXES or path.name == "LICENSE")
+    )
 
 
-def main() -> int:
+def path_policy_violations(tracked: Sequence[Path]) -> list[str]:
+    rel_paths = [path.relative_to(ROOT).as_posix() for path in tracked]
+    violations = [
+        f"forbidden public path exists: {prefix}"
+        for prefix in FORBIDDEN_PATH_PREFIXES
+        if any(rel.startswith(prefix) for rel in rel_paths)
+    ]
+    violations.extend(
+        f"operational receipt path forbidden in public state: {rel}"
+        for rel in rel_paths
+        if any(pattern.fullmatch(rel) for pattern in FORBIDDEN_PATH_PATTERNS)
+    )
+    return violations
+
+
+def content_policy_violations(files: Sequence[Path]) -> list[str]:
     violations: list[str] = []
-    files = iter_public_text_files()
-
-    for prefix in FORBIDDEN_PATH_PREFIXES:
-        if any(path.relative_to(ROOT).as_posix().startswith(prefix) for path in tracked_paths()):
-            violations.append(f"forbidden public path exists: {prefix}")
-
     for path in files:
         rel = path.relative_to(ROOT).as_posix()
         try:
@@ -74,9 +89,18 @@ def main() -> int:
         except UnicodeDecodeError:
             violations.append(f"non-UTF-8 public text file: {rel}")
             continue
-        for label, pattern in PATTERNS.items():
-            if pattern.search(text):
-                violations.append(f"{label}: {rel}")
+        violations.extend(
+            f"{label}: {rel}"
+            for label, pattern in PATTERNS.items()
+            if pattern.search(text)
+        )
+    return violations
+
+
+def main() -> int:
+    tracked = tracked_paths()
+    files = iter_public_text_files(tracked)
+    violations = path_policy_violations(tracked) + content_policy_violations(files)
 
     if violations:
         print("PUBLIC_INFORMATION_BOUNDARY=FAIL")
