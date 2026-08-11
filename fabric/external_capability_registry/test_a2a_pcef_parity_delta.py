@@ -8,6 +8,7 @@ from fabric.external_capability_registry.benchmark import materialize_benchmark
 
 ROOT = Path(__file__).resolve().parent
 BEFORE = ROOT / "benchmark_2026-08-11.json"
+A2A_OVERLAY = ROOT / "benchmark_2026-08-11_a2a_overlay.json"
 DELTA = ROOT / "a2a_pcef_parity_delta_2026-08-11.json"
 EXPECTED_DELTA = {"D1": 0, "D2": 1, "D3": 0, "D4": 0, "D5": 0, "D6": 1, "D7": 0, "D8": 0}
 
@@ -23,7 +24,10 @@ class A2APCEFParityDeltaTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.before = json.loads(BEFORE.read_text(encoding="utf-8"))
-        cls.after = materialize_benchmark()
+        # Historical acceptance must be materialized only through the A2A
+        # overlay. Calling the current benchmark here would allow later,
+        # independently accepted overlays to rewrite the 78→80 event.
+        cls.after = materialize_benchmark(BEFORE, (A2A_OVERLAY,))
         cls.delta = json.loads(DELTA.read_text(encoding="utf-8"))
 
     def test_exact_score_and_component_delta(self) -> None:
@@ -50,7 +54,7 @@ class A2APCEFParityDeltaTests(unittest.TestCase):
         self.assertGreater(measured["hosted_runner_total_ms"], 0)
         self.assertEqual(measured["timing_scope"], "SINGLE_CI_CANARY_NOT_PRODUCTION_THROUGHPUT")
 
-    def test_nonclaims_and_order_survive_materialization(self) -> None:
+    def test_nonclaims_and_order_survive_historical_materialization(self) -> None:
         self.assertTrue(all(value is False for value in self.delta["truth_boundary"].values()))
         self.assertFalse(self.after["score_is_universal_rank"])
         self.assertFalse(self.after["global_100_claim_allowed"])

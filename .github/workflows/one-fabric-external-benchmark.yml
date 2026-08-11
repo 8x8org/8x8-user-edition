@@ -6,6 +6,7 @@ on:
       - 'fabric/external_capability_registry/benchmark_2026-08-10.json'
       - 'fabric/external_capability_registry/benchmark_2026-08-11.json'
       - 'fabric/external_capability_registry/benchmark_2026-08-11_a2a_overlay.json'
+      - 'fabric/external_capability_registry/benchmark_2026-08-11_sandbox_overlay.json'
       - 'fabric/external_capability_registry/benchmark.py'
       - 'fabric/external_capability_registry/test_benchmark.py'
       - 'fabric/external_capability_registry/donor_delta_2026-08-11.json'
@@ -14,6 +15,8 @@ on:
       - 'fabric/external_capability_registry/test_spca_parity_delta.py'
       - 'fabric/external_capability_registry/a2a_pcef_parity_delta_2026-08-11.json'
       - 'fabric/external_capability_registry/test_a2a_pcef_parity_delta.py'
+      - 'fabric/external_capability_registry/sandbox_pcef_parity_delta_2026-08-11.json'
+      - 'fabric/external_capability_registry/test_sandbox_pcef_parity_delta.py'
       - '.github/workflows/one-fabric-external-benchmark.yml'
   push:
     branches: [main]
@@ -21,6 +24,7 @@ on:
       - 'fabric/external_capability_registry/benchmark_2026-08-10.json'
       - 'fabric/external_capability_registry/benchmark_2026-08-11.json'
       - 'fabric/external_capability_registry/benchmark_2026-08-11_a2a_overlay.json'
+      - 'fabric/external_capability_registry/benchmark_2026-08-11_sandbox_overlay.json'
       - 'fabric/external_capability_registry/benchmark.py'
       - 'fabric/external_capability_registry/test_benchmark.py'
       - 'fabric/external_capability_registry/donor_delta_2026-08-11.json'
@@ -29,6 +33,8 @@ on:
       - 'fabric/external_capability_registry/test_spca_parity_delta.py'
       - 'fabric/external_capability_registry/a2a_pcef_parity_delta_2026-08-11.json'
       - 'fabric/external_capability_registry/test_a2a_pcef_parity_delta.py'
+      - 'fabric/external_capability_registry/sandbox_pcef_parity_delta_2026-08-11.json'
+      - 'fabric/external_capability_registry/test_sandbox_pcef_parity_delta.py'
       - '.github/workflows/one-fabric-external-benchmark.yml'
   workflow_dispatch:
 
@@ -57,16 +63,18 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
         with:
           python-version: '3.12'
-      - name: Validate benchmark JSON, overlay materialization and deterministic scoring
+      - name: Validate benchmark JSON, chained overlay materialization and deterministic scoring
         run: |
           set -Eeuo pipefail
           for file in \
             benchmark_2026-08-10.json \
             benchmark_2026-08-11.json \
             benchmark_2026-08-11_a2a_overlay.json \
+            benchmark_2026-08-11_sandbox_overlay.json \
             donor_delta_2026-08-11.json \
             spca_parity_delta_2026-08-11.json \
-            a2a_pcef_parity_delta_2026-08-11.json
+            a2a_pcef_parity_delta_2026-08-11.json \
+            sandbox_pcef_parity_delta_2026-08-11.json
           do
             python3 -m json.tool "fabric/external_capability_registry/${file}" >/dev/null
           done
@@ -76,4 +84,5 @@ jobs:
             fabric.external_capability_registry.test_benchmark \
             fabric.external_capability_registry.test_donor_delta \
             fabric.external_capability_registry.test_spca_parity_delta \
-            fabric.external_capability_registry.test_a2a_pcef_parity_delta
+            fabric.external_capability_registry.test_a2a_pcef_parity_delta \
+            fabric.external_capability_registry.test_sandbox_pcef_parity_delta
