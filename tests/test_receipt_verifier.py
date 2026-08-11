@@ -60,6 +60,28 @@ class ReceiptVerifierSourceCommitTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "source-commit public-state SHA-256 mismatch"):
                 verifier.verify_receipt(receipt)
 
+    def test_mutable_branch_revspec_is_rejected_before_git_resolution(self):
+        _, receipt = self.receipt_for(self.source_state())
+        receipt["source_commit"] = "main"
+        receipt["receipt_sha256"] = verifier.receipt_digest(receipt)
+        with patch.object(verifier, "state_bytes_at_commit") as state_lookup:
+            with self.assertRaisesRegex(ValueError, "40-character hexadecimal"):
+                verifier.verify_receipt(receipt)
+            state_lookup.assert_not_called()
+
+    def test_abbreviated_commit_is_rejected_before_git_resolution(self):
+        _, receipt = self.receipt_for(self.source_state())
+        receipt["source_commit"] = "a" * 12
+        receipt["receipt_sha256"] = verifier.receipt_digest(receipt)
+        with patch.object(verifier, "state_bytes_at_commit") as state_lookup:
+            with self.assertRaisesRegex(ValueError, "40-character hexadecimal"):
+                verifier.verify_receipt(receipt)
+            state_lookup.assert_not_called()
+
+    def test_full_hex_commit_is_canonicalized_without_revspec_syntax(self):
+        upper = "ABCDEF0123456789ABCDEF0123456789ABCDEF01"
+        self.assertEqual(verifier.validate_source_commit(upper), bytes.fromhex(upper).hex())
+
 
 if __name__ == "__main__":
     unittest.main()

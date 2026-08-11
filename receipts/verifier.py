@@ -5,16 +5,18 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
+import sys
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-STATE_PATH = ROOT / "state/public-state.json"
 STATE_REPO_PATH = "state/public-state.json"
 EXPECTED_VERSION = "0.1.0"
 EXPECTED_RELEASE = "0.1.0-stable"
+FULL_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{40}$")
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -29,6 +31,19 @@ def receipt_digest(receipt: dict) -> str:
     body = deepcopy(receipt)
     body.pop("receipt_sha256", None)
     return sha256_bytes(canonical_bytes(body))
+
+
+def validate_source_commit(value: object) -> str:
+    """Return a newly canonicalized immutable full commit ID.
+
+    The bytes round-trip is deliberate: downstream Git arguments are built from
+    a fresh hex-only value rather than forwarding an arbitrary caller string.
+    Branches, tags, option-like values, rev expressions and abbreviated SHAs
+    cannot survive this boundary.
+    """
+    if not isinstance(value, str) or FULL_COMMIT_RE.fullmatch(value) is None:
+        raise ValueError("source_commit must be a 40-character hexadecimal Git commit")
+    return bytes.fromhex(value).hex()
 
 
 def critical_assertions(state: dict) -> dict:
@@ -50,26 +65,39 @@ def critical_assertions(state: dict) -> dict:
 
 
 def state_bytes_at_commit(source_commit: str) -> bytes:
-    """Read the exact public-state snapshot from the receipt's source commit."""
+    """Read the exact public-state snapshot from one immutable full commit ID."""
+    source_commit = validate_source_commit(source_commit)
+    commit_object = source_commit + "^{commit}"
+    state_object = source_commit + ":" + STATE_REPO_PATH
     try:
+        subprocess.run(
+            ["git", "cat-file", "-e", commit_object],
+            cwd=ROOT,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            shell=False,
+        )
         completed = subprocess.run(
-            ["git", "show", f"{source_commit}:{STATE_REPO_PATH}"],
+            ["git", "show", "--no-ext-diff", "--no-textconv", state_object],
             cwd=ROOT,
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            shell=False,
         )
     except subprocess.CalledProcessError as exc:
         detail = exc.stderr.decode("utf-8", errors="replace").strip()
         raise ValueError(
-            f"unable to resolve public state at source_commit={source_commit}; "
-            "ensure the referenced commit is available in local git history"
+            f"unable to resolve immutable public state at source_commit={source_commit}; "
+            "ensure the full commit object and referenced state path are available in local git history"
             + (f": {detail}" if detail else "")
         ) from exc
     return completed.stdout
 
 
 def state_at_commit(source_commit: str) -> tuple[bytes, dict]:
+    source_commit = validate_source_commit(source_commit)
     raw = state_bytes_at_commit(source_commit)
     try:
         state = json.loads(raw.decode("utf-8"))
@@ -86,9 +114,7 @@ def validate_release_identity(state: dict, *, context: str) -> None:
 
 
 def issue_receipt(source_commit: str, receipt_id: str) -> dict:
-    if len(source_commit) != 40 or any(c not in "0123456789abcdef" for c in source_commit.lower()):
-        raise ValueError("source_commit must be a 40-character hexadecimal Git commit")
-    source_commit = source_commit.lower()
+    source_commit = validate_source_commit(source_commit)
     state_raw, state = state_at_commit(source_commit)
     validate_release_identity(state, context="source public state")
     receipt = {
@@ -135,7 +161,10 @@ def verify_receipt(receipt: dict) -> None:
     if receipt_digest(receipt) != receipt["receipt_sha256"]:
         raise ValueError("receipt tamper seal mismatch")
 
-    state_raw, state = state_at_commit(receipt["source_commit"])
+    # Validate immutable commit identity after the receipt's own tamper seal, but
+    # before any Git resolution. The canonicalized value is fresh hex-only data.
+    source_commit = validate_source_commit(receipt["source_commit"])
+    state_raw, state = state_at_commit(source_commit)
     if sha256_bytes(state_raw) != receipt["state_sha256"]:
         raise ValueError("source-commit public-state SHA-256 mismatch")
     validate_release_identity(state, context="source-commit public state")
@@ -146,25 +175,24 @@ def verify_receipt(receipt: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
-    issue = sub.add_parser("issue")
+    issue = sub.add_parser("issue", help="emit one receipt JSON object to stdout")
     issue.add_argument("--commit", required=True)
     issue.add_argument("--id", required=True)
-    issue.add_argument("--out", required=True)
-    verify = sub.add_parser("verify")
-    verify.add_argument("receipt")
+    sub.add_parser("verify", help="read one receipt JSON object from stdin and verify it")
     args = parser.parse_args()
 
     if args.command == "issue":
         receipt = issue_receipt(args.commit, args.id)
-        out = ROOT / args.out
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-        print(f"RECEIPT_ISSUED=PASS path={out} state_sha256={receipt['state_sha256']}")
+        print(json.dumps(receipt, indent=2, ensure_ascii=False))
     else:
-        path = ROOT / args.receipt
-        receipt = json.loads(path.read_text(encoding="utf-8"))
+        receipt = json.load(sys.stdin)
+        if not isinstance(receipt, dict):
+            raise ValueError("receipt input must be a JSON object")
         verify_receipt(receipt)
-        print(f"RECEIPT_VERIFIED=PASS receipt_id={receipt['receipt_id']} commit={receipt['source_commit']}")
+        print(
+            f"RECEIPT_VERIFIED=PASS receipt_id={receipt['receipt_id']} "
+            f"commit={receipt['source_commit']}"
+        )
 
 
 if __name__ == "__main__":

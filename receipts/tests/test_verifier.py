@@ -3,7 +3,12 @@ import subprocess
 
 import pytest
 
-from receipts.verifier import issue_receipt, receipt_digest, verify_receipt
+from receipts.verifier import (
+    issue_receipt,
+    receipt_digest,
+    validate_source_commit,
+    verify_receipt,
+)
 
 
 def current_commit() -> str:
@@ -41,3 +46,24 @@ def test_whole_system_truth_is_bound_into_receipt():
 def test_bad_commit_is_rejected():
     with pytest.raises(ValueError, match="40-character hexadecimal"):
         issue_receipt("not-a-commit", "test-receipt-0.1.0")
+
+
+def test_verify_rejects_branch_or_tag_revspec_even_with_resealed_receipt():
+    receipt = issue_receipt(current_commit(), "test-receipt-0.1.0")
+    receipt["source_commit"] = "main"
+    receipt["receipt_sha256"] = receipt_digest(receipt)
+    with pytest.raises(ValueError, match="40-character hexadecimal"):
+        verify_receipt(receipt)
+
+
+def test_verify_rejects_abbreviated_commit_even_with_resealed_receipt():
+    receipt = issue_receipt(current_commit(), "test-receipt-0.1.0")
+    receipt["source_commit"] = current_commit()[:12]
+    receipt["receipt_sha256"] = receipt_digest(receipt)
+    with pytest.raises(ValueError, match="40-character hexadecimal"):
+        verify_receipt(receipt)
+
+
+def test_source_commit_is_rebuilt_as_canonical_hex():
+    observed = current_commit().upper()
+    assert validate_source_commit(observed) == bytes.fromhex(observed).hex()
