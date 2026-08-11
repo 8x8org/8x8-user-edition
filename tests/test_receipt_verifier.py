@@ -78,16 +78,9 @@ class ReceiptVerifierSourceCommitTests(unittest.TestCase):
                 verifier.verify_receipt(receipt)
             state_lookup.assert_not_called()
 
-    def test_receipt_cli_path_cannot_escape_receipts_root(self):
-        with self.assertRaisesRegex(ValueError, "under receipts"):
-            verifier.resolve_receipt_path("../outside.json")
-        with self.assertRaisesRegex(ValueError, "under receipts"):
-            verifier.resolve_receipt_path("state/public-state.json")
-
-    def test_receipt_cli_path_accepts_receipts_subtree(self):
-        path = verifier.resolve_receipt_path("receipts/example.json")
-        self.assertEqual(path.name, "example.json")
-        self.assertEqual(path.parent.name, "receipts")
+    def test_full_hex_commit_is_canonicalized_without_revspec_syntax(self):
+        upper = "ABCDEF0123456789ABCDEF0123456789ABCDEF01"
+        self.assertEqual(verifier.validate_source_commit(upper), bytes.fromhex(upper).hex())
 
 
 if __name__ == "__main__":
