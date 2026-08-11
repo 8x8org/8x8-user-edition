@@ -10,7 +10,7 @@ class ExternalBenchmarkTests(unittest.TestCase):
         result = validate(load_benchmark())
         self.assertGreaterEqual(result["external_denominator"], 10)
         self.assertEqual(result["project_denominator"], 12)
-        self.assertEqual(result["baseline_score"], 80)
+        self.assertEqual(result["baseline_score"], 81)
         self.assertFalse(result["global_100_claim_allowed"])
         self.assertEqual(result["status"], "VALIDATED_BOUNDED_SNAPSHOT")
 
@@ -21,6 +21,9 @@ class ExternalBenchmarkTests(unittest.TestCase):
         self.assertIn("AGENT_STATE_CAPSULE_VALIDATED", status)
         self.assertIn("VERSIONED_SPCA_EVAL_CORPUS_VALIDATED", status)
         self.assertIn("A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED", status)
+        self.assertIn("REPOSITORY_CI_PCEF_SANDBOX_ISOLATION_VALIDATED", status)
+        self.assertIn("ALL_RISKY_PRODUCTION_LANES_SANDBOXED_NOT_YET_PROVEN", status)
+        self.assertIn("VM_MICROVM_ISOLATION_NOT_IMPLEMENTED", status)
         self.assertIn("INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN", status)
         self.assertIn("AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED", status)
         self.assertIn("NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN", status)
