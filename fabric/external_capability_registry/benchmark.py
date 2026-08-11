@@ -73,6 +73,10 @@ def read_json(path: Path) -> dict:
     return value
 
 
+def frontier_status_markers(status: str) -> set[str]:
+    return {item.strip() for item in status.split(";") if item.strip()}
+
+
 def _competition_ranks(projects: list[dict]) -> None:
     projects.sort(key=lambda project: (-int(project["score"]), str(project["project"])))
     prior_score: int | None = None
@@ -125,6 +129,25 @@ def _apply_overlay(data: dict, overlay: dict, *, expected_base_artifact: str) ->
     require(isinstance(frontier_patch, dict), "frontier_patch must be an object")
     for key in ("definition", "current_status", "why_it_is_one_feature"):
         require(isinstance(frontier_patch.get(key), str) and frontier_patch[key].strip(), f"frontier patch missing: {key}")
+
+    previous_status = str(result.get("frontier", {}).get("current_status", ""))
+    new_status = str(frontier_patch["current_status"])
+    previous_markers = frontier_status_markers(previous_status)
+    new_markers = frontier_status_markers(new_status)
+    retirements = overlay.get("frontier_retirements", [])
+    require(isinstance(retirements, list), "frontier_retirements must be a list")
+    require(all(isinstance(item, str) and item.strip() for item in retirements), "frontier_retirements must contain non-empty strings")
+    retirement_set = {item.strip() for item in retirements}
+    require(len(retirement_set) == len(retirements), "frontier_retirements must be unique")
+    unknown_retirements = sorted(retirement_set - previous_markers)
+    require(not unknown_retirements, f"frontier retirement not present in prior state: {unknown_retirements}")
+    missing_inherited = sorted((previous_markers - retirement_set) - new_markers)
+    require(
+        not missing_inherited,
+        f"overlay dropped inherited frontier markers without explicit retirement: {missing_inherited}",
+    )
+
+    for key in ("definition", "current_status", "why_it_is_one_feature"):
         result["frontier"][key] = frontier_patch[key]
 
     result["observed_at"] = overlay["observed_at"]
