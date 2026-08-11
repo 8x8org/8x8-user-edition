@@ -1,0 +1,35 @@
+{
+  "schema": "8x8.one-fabric.external-benchmark-overlay.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "base_snapshot": "benchmark_2026-08-11.json",
+  "observed_at": "2026-08-11T04:33:00Z",
+  "baseline_project": "8x8 One Fabric",
+  "expected_base_score": 78,
+  "expected_materialized_score": 80,
+  "component_patch": {
+    "D2": 10,
+    "D6": 9
+  },
+  "baseline_fields": {
+    "primary_source": "github://horbolsi/8x8@c7213cd2ef360087b0eb5f816200281ae12153a4",
+    "evidence_summary": "PCEF convergence now includes portable agent state, real repository process-death recovery, versioned SPCA evaluations, plus a bounded A2A 1.0 HTTP+JSON compatibility edge. Two independent 8x8 processes complete router-to-specialist delegation with stable context, parent-receipt lineage, authority non-escalation, Artifact digest binding and PCEF terminal verification. Independent third-party A2A interoperability, authenticated production A2A, native device-local binding, external-provider exactly-once delivery and privacy-preserving attestation remain unproven.",
+    "single_extra_feature": "Sovereign Proof-Carrying Autonomy: standards-facing agent interoperability whose completion remains governed by proof-carrying authority, effects, verification and truth boundaries.",
+    "8x8_parity_gate": "Add independent third-party A2A compatibility, production authentication/HTTPS, per-tool guardrails/traces and sandbox-first risky execution while retaining PCEF as the only completion law."
+  },
+  "external_source_patch": {
+    "OpenAI Agents SDK": "https://openai.github.io/openai-agents-python/"
+  },
+  "frontier_patch": {
+    "definition": "Every consequential agent/tool/external effect must carry an authorization-bound, idempotent, replay-verifiable proof receipt before terminal completion; standards-facing inter-agent operations must preserve context, authority and receipt lineage; a future privacy-preserving attestation layer may prove policy compliance without disclosing prompts, secrets or private topology.",
+    "current_status": "PCEF_CORE_IMPLEMENTED_AND_TESTED; REPOSITORY_PROCESS_DEATH_RECOVERY_VALIDATED; AGENT_STATE_CAPSULE_VALIDATED; VERSIONED_SPCA_EVAL_CORPUS_VALIDATED; A2A_HTTP_JSON_TWO_PROCESS_SELF_INTEROP_VALIDATED; INDEPENDENT_THIRD_PARTY_A2A_INTEROP_NOT_YET_PROVEN; AUTHENTICATED_PRODUCTION_A2A_EDGE_NOT_YET_IMPLEMENTED; NATIVE_END_TO_END_BINDING_NOT_YET_PROVEN; PRIVACY_PRESERVING_ATTESTATION_NOT_YET_IMPLEMENTED",
+    "why_it_is_one_feature": "It is one proof-carrying completion law applied uniformly to local agents, interoperable agent tasks, tools, connectors and external effects rather than a bundle of unrelated product features."
+  },
+  "truth_boundary": {
+    "score_is_universal_rank": false,
+    "global_100_claim_allowed": false,
+    "independent_third_party_a2a_interop": false,
+    "authenticated_production_a2a_edge": false,
+    "native_end_to_end_binding_proven": false,
+    "privacy_preserving_attestation_implemented": false
+  }
+}
