@@ -81,7 +81,7 @@
       "score": 78,
       "components": {"D1": 12, "D2": 9, "D3": 15, "D4": 9, "D5": 9, "D6": 8, "D7": 10, "D8": 6},
       "primary_source": "github://horbolsi/8x8@54daf9c635bdd4a6a8cba64f1042decb4b9261cf",
-      "evidence_summary": "Strong evidence/truth-boundary architecture and PCEF convergence now include a versioned portable Agent State Capsule, strict finite-JSON and freshness checks, a real child-process death/reopen canary with durable duplicate suppression, and a versioned 9-case SPCA evaluation corpus. Native Android/Termux pickup, phone reboot recovery, external-provider exactly-once delivery and privacy-preserving attestation remain unproven.",
+      "evidence_summary": "Strong evidence/truth-boundary architecture and PCEF convergence now include a versioned portable Agent State Capsule, strict finite-JSON and freshness checks, a real child-process death/reopen canary with durable duplicate suppression, and a versioned 9-case SPCA evaluation corpus. Native device-local pickup, device reboot recovery, external-provider exactly-once delivery and privacy-preserving attestation remain unproven.",
       "single_extra_feature": "Sovereign Proof-Carrying Autonomy: proof-carrying completion plus a strict private-past/public-present/future-lab truth boundary.",
       "8x8_parity_gate": "Bind the accepted SPCA contracts to real native ingress, council/control workers, sandboxed execution and external-effect adapters; then close interoperability, security, performance and adoption denominators."
     },
