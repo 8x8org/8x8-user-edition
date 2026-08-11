@@ -50,10 +50,10 @@
     }
   ],
   "still_open": [
-    "native_android_termux_ingress_identity",
+    "native_device_ingress_identity",
     "autonomous_native_pickup",
     "native_worker_kill_service_restart_recovery",
-    "phone_reboot_recovery",
+    "device_reboot_recovery",
     "external_provider_exactly_once_effects",
     "openhands_grade_sandbox_isolation",
     "a2a_cross_framework_interoperability",
@@ -64,7 +64,7 @@
   ],
   "truth_boundary": {
     "native_end_to_end_binding_proven": false,
-    "phone_reboot_recovery_proven": false,
+    "device_reboot_recovery_proven": false,
     "external_provider_exactly_once_proven": false,
     "privacy_preserving_attestation_implemented": false,
     "global_100_100": false
