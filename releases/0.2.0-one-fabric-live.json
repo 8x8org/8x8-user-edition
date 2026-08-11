@@ -1,0 +1,50 @@
+{
+  "schema": "8x8.public_release_manifest.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "canonical_root": "fabric://8x8/core",
+  "release": "0.2.0",
+  "codename": "One Fabric Live R5",
+  "status": "RELEASE_CANDIDATE",
+  "public_carrier_path": "stable/r5/index.html",
+  "public_carrier_blob_sha": "b21d1411cde169a838d227fa0697083fbcf358d3",
+  "bounded_engineering_benchmark": {
+    "score": 85,
+    "uncertainty": 3,
+    "global_100_claim_allowed": false
+  },
+  "publicly_projected_proven_capabilities": [
+    "proof-carrying execution contracts",
+    "official A2A SDK bounded interoperability",
+    "authenticated A2A to PCEF edge evidence",
+    "guarded persistent sessions and privacy-first trace envelopes",
+    "proof-safe checkpoint replay and fork",
+    "typed 8-way PCEF fan-out and fan-in",
+    "deterministic paper trading and risk analytics",
+    "Studio provenance and visual-registry boundary hardening",
+    "content-complete public information boundary scanning"
+  ],
+  "release_gates": [
+    "EXACT_HEAD",
+    "PUBLIC_PRIVATE_BOUNDARY",
+    "SBOM_PROVENANCE",
+    "CODE_SECURITY",
+    "BROWSER_ACCESSIBILITY",
+    "SOURCE_CARRIER_DIGEST",
+    "PRODUCTION_HEALTH",
+    "ROLLBACK_TRUTH_INTEGRITY"
+  ],
+  "rollback": {
+    "r4": "PRESERVE",
+    "r3": "PRESERVE"
+  },
+  "not_claimed": [
+    "whole-system 100/100",
+    "all agents productive or verified",
+    "production-wide distributed orchestration",
+    "global native device binding",
+    "live trading or financial execution",
+    "wallet signing or mainnet activation",
+    "all connectors healthy",
+    "all private binaries publicly deployed"
+  ]
+}
