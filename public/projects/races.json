@@ -3,22 +3,20 @@
   "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
   "program": "8x8 OS Public Program",
   "root": "fabric://8x8/core",
-  "evidence_cutoff": "2026-08-12",
+  "evidence_cutoff": "2026-08-13",
   "scope": "PUBLIC_SAFE_COMPETITION_TRANSPARENCY",
   "policy": {
     "architecture_priority": "ONE_FABRIC_FIRST",
     "deadline_priority": "INFORMATIONAL_NOT_GOVERNING",
     "rank_policy": "NO_RANK_WITHOUT_OFFICIAL_RESULT_OR_FROZEN_REPRODUCIBLE_BENCHMARK",
-    "private_evidence_policy": "PRIVATE_COMMUNICATIONS_ARE_NOT_REPUBLISHED; ONLY NEUTRAL PUBLIC-SAFE STATUS MAY BE PROJECTED",
+    "private_evidence_policy": "PRIVATE_COMMUNICATIONS_ARE_NOT_REPUBLISHED; ONLY NEUTRAL PUBLIC-SAFE STATUS MAY_BE_PROJECTED",
     "fair_race_rules": [
       "All competition work remains subordinate to fabric://8x8/core and may not create a parallel root.",
-      "Every material race claim is classified as PAST_PRESERVED, PRESENT_PROVEN, or FUTURE_GATED.",
-      "A public receipt is preferred for every public claim; missing public receipts remain visibly marked.",
-      "Comparisons use the same declared denominator, environment, measurement method, and evidence standard for 8x8 and others.",
+      "Every material race claim is PAST_PRESERVED, PRESENT_PROVEN, or FUTURE_GATED.",
       "Users, revenue, latency, uptime, scores, placement, telemetry, and capability counts are never fabricated.",
       "Competition deadlines never override security, provenance, privacy, rollback, eligibility, or owner authority.",
-      "First place or superiority is never claimed without an official result or a frozen reproducible benchmark covering the stated competitor set.",
-      "Past evidence and rollback remain preserved; publication never exposes credentials, private topology, private messages, or signing authority."
+      "Submission is never claimed without an authoritative submission receipt.",
+      "Private credentials, topology, communications and signing authority are never published."
     ]
   },
   "races": [
@@ -30,26 +28,21 @@
       "participation": "SUBMITTED",
       "status": "SUBMITTED_OUTCOME_PENDING",
       "truth_class": "PRESENT_PROVEN",
-      "priority": "EVALUATION_LENS_ONLY",
-      "public_submission_receipt": "NOT_LINKED_PUBLICLY",
       "submission_evidence": "CONNECTED_OWNER_EVIDENCE_VERIFIED_NOT_PUBLICLY_REPUBLISHED",
       "result_receipt": "NOT_AVAILABLE",
       "official_timeline": {
         "submission_deadline": "2026-07-21",
-        "sponsor_page_current": "Judging July 22 through August 24; winners August 25, 2026",
-        "devpost_rules_current": "Judging July 22 through August 5; winners on or around August 12, 2026 at 2:00 PM Pacific",
-        "conflict_state": "AUTHORITATIVE_PUBLIC_SOURCES_CURRENTLY_DIFFER",
+        "current_winner_announcement": "2026-08-25",
         "effective_state": "WAIT_FOR_OFFICIAL_RESULT_RECEIPT"
       },
+      "freeze": "DO_NOT_EDIT_SUBMISSION_UNLESS_OFFICIAL_RULES_OR_MANAGER_INSTRUCTIONS_PERMIT",
       "pending": [
-        "Link a public submission receipt if an approved public project page becomes available.",
-        "Record the official result only after an authoritative public result or owner-provided result receipt exists.",
-        "Archive the competition lane without changing One Fabric product truth or rank claims."
+        "Record the official result only after an authoritative result receipt exists.",
+        "Archive the competition lane without changing One Fabric product truth or making unsupported rank claims."
       ],
       "sources": [
         "https://openai.com/build-week/",
-        "https://openai.devpost.com/rules",
-        "https://openai.devpost.com/updates/45418-submissions-are-closed"
+        "https://openai.devpost.com/"
       ]
     },
     {
@@ -57,16 +50,20 @@
       "name": "Build with Gemini XPRIZE",
       "organizer": "XPRIZE, backed by Google",
       "lane": "COMPETITION",
-      "participation": "BUILDING_NOT_SUBMITTED",
-      "status": "ACTIVE_BUILD_FUTURE_GATED_SUBMISSION",
+      "participation": "SUBMISSION_DRAFT_STARTED",
+      "status": "ACTIVE_FINAL_SPRINT_NOT_FINAL_SUBMITTED",
       "truth_class": "PRESENT_PROVEN",
-      "priority": "ONE_FABRIC_PRODUCT_WORK_FIRST",
+      "eligible_business": "8x8 Venture Operator",
+      "current_draft_title": "Untitled",
+      "required_final_title": "8x8 Venture Operator",
       "public_engineering_receipt": "https://github.com/8x8org/8x8-venture-operator/pull/3",
-      "result_receipt": "NOT_APPLICABLE_BEFORE_SUBMISSION",
+      "source_main_sha": "c2577d3fd3191f5604e5849f69861807bdc24e58",
+      "source_state": "FINAL_SPRINT_PR_MERGED_EXACT_HEAD_CI_PASSED",
+      "result_receipt": "NOT_APPLICABLE_BEFORE_FINAL_SUBMISSION",
       "official_timeline": {
         "build_window": "2026-05-19 through 2026-08-17",
-        "finalists_live_event": "2026-09-25",
-        "deadline_policy": "INFORMATIONAL_ONLY; NO UNSAFE OR UNPROVEN PROMOTION FOR DEADLINE PRESSURE"
+        "submission_deadline": "2026-08-17 13:00 PDT / 16:00 America/New_York",
+        "finalists_live_event": "2026-09-25"
       },
       "official_evaluation": [
         "Business Viability",
@@ -74,18 +71,19 @@
         "Category Impact"
       ],
       "pending": [
-        "Pass exact-head backend tests, secret scan, and frontend build for the current XPRIZE PR.",
-        "Produce a real Gemini production-call receipt.",
-        "Produce a real Google Cloud deployment and stable judge URL receipt.",
-        "Produce truthful real-user evidence.",
-        "Produce truthful arms-length revenue and business-evidence receipts required by the competition.",
-        "Complete judge-facing evidence and reproducible product path.",
-        "Create the final XPRIZE submission receipt.",
+        "Rename the existing Devpost draft from Untitled to 8x8 Venture Operator.",
+        "Produce a real Gemini API canary receipt from the deployed application.",
+        "Prove required Google/Google Cloud product usage.",
+        "Produce a stable judge-accessible HTTPS URL plus safe testing instructions.",
+        "Verify required judge source access if the repository remains private.",
+        "Enter truthful real-user/business evidence, actual revenue/expenses, and consented testimonials where available; zero is allowed where truthful.",
+        "Produce a functional demo video under three minutes.",
+        "Capture the final Devpost submission receipt.",
         "Preserve disclosure and provenance for pre-existing One Fabric material."
       ],
       "sources": [
-        "https://www.xprize.org/news/xprize-launches-hackathon-with-2-million-prize-pool-backed-by-google",
         "https://www.geminixprize.com/",
+        "https://geminixprize.devpost.com/",
         "https://github.com/8x8org/8x8-venture-operator/pull/3"
       ]
     },
@@ -102,11 +100,11 @@
         "submission_deadline": "2026-08-23 23:59 PDT",
         "winners": "2026-09-17"
       },
-      "fit": "A real 8x8 bug fix or performance optimization may qualify; no new feature work is justified merely to enter.",
+      "fit": "A real 8x8 bug fix or performance optimization may qualify; do not invent unnecessary work merely to enter.",
       "pending": [
-        "Identify a qualifying already-needed 8x8 bug fix or performance optimization.",
-        "Verify current official rules before any entry.",
-        "Create an entry receipt only if submission actually occurs."
+        "Identify an already-needed qualifying bug fix or optimization.",
+        "Refresh current official rules before entry.",
+        "Create a submission receipt only if an eligible entry actually occurs."
       ],
       "sources": [
         "https://dev.to/devteam/devs-big-summer-bug-smash-is-now-live-share-5000-in-cash-prizes-skateboards-and-more-across-57mk"
