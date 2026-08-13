@@ -1,0 +1,30 @@
+name: Proof-Carrying Execution Fabric
+
+on:
+  pull_request:
+    paths:
+      - 'fabric/proof_carrying_execution/**'
+      - '.github/workflows/proof-carrying-execution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pcef:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Byte-compile the reference and suite
+        run: |
+          python3 -m py_compile fabric/proof_carrying_execution/pcef.py
+          python3 -m py_compile fabric/proof_carrying_execution/test_pcef.py
+      - name: Validate the execution-law contract is well-formed
+        run: python3 -m json.tool fabric/proof_carrying_execution/contract.v1.json >/dev/null
+      - name: Run the hardened PCEF suite
+        run: python3 -m unittest fabric.proof_carrying_execution.test_pcef -v
+      - name: Run the PCEF self-verifying reference
+        run: python3 fabric/proof_carrying_execution/pcef.py
