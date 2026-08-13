@@ -1,4 +1,8 @@
-# KHRONAPEIRON-8 / VERITAS V1
+# ©️8x8 by FlashTM8 ⚡️🌎🤖 — KHRONAPEIRON-8 / VERITAS V1
+
+Canonical root: `fabric://8x8/core`
+
+Canonical brand: `©️8x8 by FlashTM8 ⚡️🌎🤖`
 
 This directory is the executable, evidence-bounded implementation of the computational portion of the Complete 8x8 Handoff Dossier.
 
@@ -12,7 +16,7 @@ This directory is the executable, evidence-bounded implementation of the computa
 - Evidence classifications that prevent conceptual physics from being promoted to verified runtime truth.
 - Deterministic canonical JSON and SHA-256 receipt generation.
 - Regression tests for arithmetic, contract shape, legacy Calc-8 rejection, truth boundaries and the W anchor.
-- A dedicated GitHub Actions VERITAS gate.
+- Integration into the canonical **8-gate** One-Fabric validation contract, with repository security/quality workflows layered above it.
 
 ## Correct calculation chain
 
@@ -31,6 +35,10 @@ The previously supplied value `499,581,037,244,762,775,498,942,392` is preserved
 
 The corrected aggregate has digital root **8** and `mod 256 = 120`. The W anchor is therefore intentionally a protocol symbol, not an asserted consequence of an undefined horizontal/vertical parity transformation.
 
+## 8 × 8 identity
+
+The executable contract uses exactly eight phases and eight cells per phase: `8 × 8 = 64`. Canonical gate completion is likewise expressed as `8/8 PASS`, never `5/5`, while historical CI evidence remains preserved as historical workflow results.
+
 ## Scientific/evidence boundary
 
 The contract distinguishes source-supported research from extrapolation. Majorana 2, NIST's 2026 additional-signature round, INBL research, and the CMTEM/COE-HM proposal are recorded with bounded claims. None of those sources establishes infinite energy/storage, arbitrary matter or DNA rewriting, cosmological-constant control, multiverse navigation, absolute physical unhackability, retrocausal verification, or hyper-Turing oracle hardware.
@@ -45,3 +53,5 @@ python3 -m unittest fabric.khronapeiron8.test_veritas -v
 ```
 
 A successful run means the **bounded software contract** passes every implemented invariant. It does not mean the entire 8x8 ecosystem, external world, physics, or future work has reached global 100% completeness.
+
+©️8x8 by FlashTM8 ⚡️🌎🤖
