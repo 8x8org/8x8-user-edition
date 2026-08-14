@@ -41,13 +41,13 @@ jobs:
             sbom.cdx.json receipts/schema/public-receipt-0.1.0.schema.json \
             receipts/verifier.py
       - name: Upload SBOM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-${{ github.sha }}
           path: sbom.cdx.json
           if-no-files-found: error
       - name: Upload release bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-assets-${{ github.sha }}
           path: release-assets.tar.gz
