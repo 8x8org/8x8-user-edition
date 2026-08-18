@@ -1,0 +1,140 @@
+{
+  "schema_version": "1",
+  "artifact_id": "HERMES_PROVIDER_FAILURE_CLASSIFICATION_V1",
+  "description": "Canonical failure taxonomy for AI provider routing. Each class defines detection criteria, circuit-breaker action, and recovery behaviour.",
+  "failure_classes": [
+    {
+      "id": "PROVIDER_QUOTA_EXHAUSTED",
+      "http_status": [429],
+      "error_codes": ["free-models-per-day", "quota_exceeded", "daily_limit_exceeded"],
+      "detection": "HTTP 429 with a provider-level quota signal (remaining=0 or limit_source contains provider name); affects all models on the provider.",
+      "circuit_breaker_action": "open_provider",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_provider",
+      "recovery": "reset_at_provider_quota_reset_timestamp",
+      "queue_preserved": true,
+      "example": "OpenRouter HTTP 429 free-models-per-day remaining=0"
+    },
+    {
+      "id": "MODEL_QUOTA_EXHAUSTED",
+      "http_status": [429],
+      "error_codes": ["model_quota_exceeded", "model_rate_limit"],
+      "detection": "HTTP 429 scoped to a single model identifier; other models on the same provider remain eligible.",
+      "circuit_breaker_action": "open_model",
+      "retry_same_provider": true,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_model_on_provider",
+      "recovery": "reset_at_model_quota_reset_timestamp",
+      "queue_preserved": true
+    },
+    {
+      "id": "TRANSIENT_RATE_LIMIT",
+      "http_status": [429, 503],
+      "error_codes": ["rate_limit", "too_many_requests"],
+      "detection": "HTTP 429 or 503 with Retry-After header or short-lived backoff signal; no quota exhaustion indicator.",
+      "circuit_breaker_action": "half_open",
+      "retry_same_provider": true,
+      "retry_same_model": true,
+      "failover": "jittered_exponential_backoff_max_3_retries_then_failover",
+      "recovery": "automatic_after_retry_after_interval",
+      "queue_preserved": true
+    },
+    {
+      "id": "INVALID_CREDENTIAL",
+      "http_status": [401, 403],
+      "error_codes": ["invalid_api_key", "unauthorized", "forbidden"],
+      "detection": "HTTP 401 or 403 not caused by authority policy.",
+      "circuit_breaker_action": "disable_provider",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_provider",
+      "recovery": "owner_secret_remediation_gate",
+      "queue_preserved": true
+    },
+    {
+      "id": "CONTEXT_TOO_LARGE",
+      "http_status": [400, 413],
+      "error_codes": ["context_length_exceeded", "max_tokens_exceeded"],
+      "detection": "Request payload exceeds model context window; reported token count > model max_context.",
+      "circuit_breaker_action": "none",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "compact_context_or_route_to_larger_context_model",
+      "recovery": "immediate_after_context_reduction",
+      "queue_preserved": true
+    },
+    {
+      "id": "PROVIDER_UNAVAILABLE",
+      "http_status": [500, 502, 503, 504],
+      "error_codes": ["service_unavailable", "internal_server_error", "gateway_timeout"],
+      "detection": "5xx response after max transient retries exhausted.",
+      "circuit_breaker_action": "open_provider",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_provider",
+      "recovery": "health_probe_after_cooldown_interval",
+      "queue_preserved": true
+    },
+    {
+      "id": "MODEL_UNAVAILABLE_OR_RETIRED",
+      "http_status": [400, 404],
+      "error_codes": ["model_not_found", "model_deprecated", "invalid_model"],
+      "detection": "Model identifier rejected by provider; model no longer served.",
+      "circuit_breaker_action": "retire_model",
+      "retry_same_provider": true,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_model_on_provider",
+      "recovery": "manual_registry_update",
+      "queue_preserved": true
+    },
+    {
+      "id": "TOOL_INCOMPATIBLE",
+      "http_status": [400],
+      "error_codes": ["tool_not_supported", "function_calling_not_supported"],
+      "detection": "Model or provider rejects tool/function-calling schema.",
+      "circuit_breaker_action": "exclude_model_for_tool_tasks",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "select_model_with_tool_support",
+      "recovery": "capability_registry_update",
+      "queue_preserved": true
+    },
+    {
+      "id": "AUTHORITY_DENIED",
+      "http_status": [403],
+      "error_codes": ["content_policy_violation", "safety_filter", "permission_denied"],
+      "detection": "Request rejected by safety filter or authority policy, not credential failure.",
+      "circuit_breaker_action": "log_and_escalate",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "none_escalate_to_owner",
+      "recovery": "owner_review",
+      "queue_preserved": true
+    },
+    {
+      "id": "UNKNOWN_FAIL_CLOSED",
+      "http_status": [],
+      "error_codes": [],
+      "detection": "Any unclassified error or network failure.",
+      "circuit_breaker_action": "open_provider",
+      "retry_same_provider": false,
+      "retry_same_model": false,
+      "failover": "select_next_eligible_provider_or_emit_blocked",
+      "recovery": "owner_review",
+      "queue_preserved": true
+    }
+  ],
+  "incident_reference": {
+    "issue": "MSG231",
+    "observed_class": "PROVIDER_QUOTA_EXHAUSTED",
+    "provider": "OpenRouter",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "http_status": 429,
+    "error_code": "free-models-per-day",
+    "remaining": 0,
+    "context_tokens": 57387,
+    "retries_observed": 10,
+    "root_cause": "Router retried same exhausted provider 10 times without classifying provider-level quota exhaustion and opening the provider circuit."
+  }
+}

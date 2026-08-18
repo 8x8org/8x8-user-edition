@@ -1,0 +1,112 @@
+{
+  "schema_version": "1",
+  "artifact_id": "HERMES_FALLBACK_ROUTER_POLICY_V1",
+  "description": "Provider-fallback routing policy for the AI coordinator. Defines circuit-breaker rules, candidate scoring, and blocked-receipt behaviour.",
+  "circuit_breaker_rules": [
+    {
+      "trigger": "PROVIDER_QUOTA_EXHAUSTED",
+      "action": "open_provider_circuit",
+      "same_provider_retries": 0,
+      "failover": "select_next_eligible_provider",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "MODEL_QUOTA_EXHAUSTED",
+      "action": "suppress_model",
+      "same_provider_retries": "unlimited_other_models",
+      "failover": "select_next_eligible_model",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "INVALID_CREDENTIAL",
+      "action": "disable_provider_open_remediation_gate",
+      "same_provider_retries": 0,
+      "failover": "select_next_eligible_provider",
+      "queue_behaviour": "preserve_and_pause_pending_owner_gate"
+    },
+    {
+      "trigger": "CONTEXT_TOO_LARGE",
+      "action": "compact_or_reroute",
+      "same_provider_retries": 0,
+      "failover": "compact_context_then_retry_or_select_larger_context_model",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "TRANSIENT_RATE_LIMIT",
+      "action": "jittered_backoff",
+      "max_retries": 3,
+      "backoff_base_ms": 1000,
+      "backoff_max_ms": 30000,
+      "jitter": "full",
+      "failover": "select_next_eligible_provider_after_max_retries",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "PROVIDER_UNAVAILABLE",
+      "action": "open_provider_circuit",
+      "same_provider_retries": 0,
+      "failover": "select_next_eligible_provider",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "MODEL_UNAVAILABLE_OR_RETIRED",
+      "action": "retire_model",
+      "same_provider_retries": "unlimited_other_models",
+      "failover": "select_next_eligible_model",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "TOOL_INCOMPATIBLE",
+      "action": "exclude_model_for_tool_tasks",
+      "same_provider_retries": "unlimited_other_models_with_tool_support",
+      "failover": "select_model_with_required_tool_support",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "AUTHORITY_DENIED",
+      "action": "escalate_to_owner",
+      "same_provider_retries": 0,
+      "failover": "none",
+      "queue_behaviour": "preserve_and_pause_pending_owner_review"
+    },
+    {
+      "trigger": "UNKNOWN_FAIL_CLOSED",
+      "action": "open_provider_circuit",
+      "same_provider_retries": 0,
+      "failover": "select_next_eligible_provider_or_emit_blocked",
+      "queue_behaviour": "preserve_and_continue"
+    },
+    {
+      "trigger": "NO_ELIGIBLE_ROUTE",
+      "action": "emit_blocked_receipt",
+      "same_provider_retries": 0,
+      "failover": "none",
+      "queue_behaviour": "preserve_mission_queue_emit_blocked_receipt"
+    }
+  ],
+  "route_scoring": {
+    "description": "Deterministic score for each candidate route. Higher is better. Route with highest score is selected.",
+    "dimensions": [
+      {"name": "provider_health", "weight": 20, "values": {"healthy": 20, "degraded": 10, "open_circuit": 0}},
+      {"name": "model_health", "weight": 15, "values": {"healthy": 15, "degraded": 7, "suppressed": 0}},
+      {"name": "context_capacity", "weight": 15, "description": "15 if task tokens <= 50% model max; 10 if <= 80%; 5 if <= 100%; 0 if oversized"},
+      {"name": "capability_match", "weight": 15, "values": {"exact": 15, "partial": 8, "none": 0}},
+      {"name": "tool_support", "weight": 10, "values": {"all_required": 10, "partial": 5, "none": 0}},
+      {"name": "recent_error_rate", "weight": 10, "description": "10 if 0% error last 10 min; linear decay to 0 at 100%"},
+      {"name": "latency_score", "weight": 5, "description": "5 if p95 < 2s; 3 if < 5s; 1 if < 10s; 0 otherwise"},
+      {"name": "cost_policy", "weight": 5, "values": {"free": 5, "paid_budget_available": 3, "paid_budget_exhausted": 0}},
+      {"name": "authority", "weight": 3, "values": {"owner_approved": 3, "default": 2, "restricted": 0}},
+      {"name": "privacy_class", "weight": 2, "values": {"public": 2, "private_ok": 2, "blocked": 0}}
+    ],
+    "minimum_score_to_select": 30,
+    "tiebreak": "lowest_cost_then_lowest_latency"
+  },
+  "blocked_receipt_schema": {
+    "type": "BLOCKED",
+    "fields": ["task_id", "timestamp_utc", "attempted_routes", "failure_classes", "queue_position", "resume_condition"]
+  },
+  "redacted_receipt_schema": {
+    "type": "ROUTE_SELECTED",
+    "fields": ["task_id", "timestamp_utc", "selected_provider_alias", "selected_model_alias", "score", "rejected_route_count", "rejection_summary_redacted"]
+  }
+}
