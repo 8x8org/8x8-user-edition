@@ -7,7 +7,11 @@
 
 > **8x8 OS 0.0.1 Beta · Public Present projection · Protected Beta promotion state. Not whole-system stable or complete.**
 
+> **Current cross-repository product/interface checkpoint:** [`8x8org/.github/CURRENT_PUBLIC_STATE.md`](https://github.com/8x8org/.github/blob/main/CURRENT_PUBLIC_STATE.md). Use that page when an older demo, screenshot or legacy 22-module repository conflicts with newer public-state evidence.
+
 8x8 User Edition is the canonical public-safe client for the wider 8x8 Fabric. It exposes an evidence-gated projection of the operating model, Three Realities, public repository DNA, agent archetypes, mission/evidence concepts, Studio, trading research, blockchain research and spatial-interface direction without exposing the private owner control plane.
+
+A separate protected user release train is progressively converging the richer authenticated browser/PWA experience, Telegram Mini App promotion and installed-client/APK path. **Source presence in that train does not make a capability publicly released; the exact browser/Telegram/installer state remains receipt-gated.**
 
 ## Live public carrier
 
@@ -85,7 +89,9 @@ Capability claims follow the evidence ladder documented in [`ARCHITECTURE.md`](A
 
 ## Explicit beta limits
 
-The public beta has no public production account database, no live subscription billing, no private-control access, no live financial execution authority, no hidden telemetry and no unrestricted remote shell.
+This static public repository has no embedded production account database, no live subscription billing, no private-control access, no live financial execution authority, no hidden telemetry and no unrestricted remote shell.
+
+A separately protected backend/release train may contain production data-plane foundations without making those capabilities available through this public static mirror. Availability must be proven through the current public-state and deployment receipts, not inferred from private/protected implementation progress.
 
 Buttons in the static public mirror demonstrate interface contracts. They do not silently grant external authority.
 
@@ -105,6 +111,7 @@ The production carrier now passes server-side route and response-header checks f
 
 ## Documentation
 
+- [Current public state](https://github.com/8x8org/.github/blob/main/CURRENT_PUBLIC_STATE.md)
 - [Architecture](ARCHITECTURE.md)
 - [Implementation status](IMPLEMENTATION_STATUS.md)
 - [0.0.1 Beta changelog](CHANGELOG_0.0.1.md)
