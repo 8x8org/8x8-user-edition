@@ -1,0 +1,50 @@
+{
+  "canonical_root": "fabric://8x8/core",
+  "release": "V40_AUTHENTIC_ONE_SURFACE",
+  "source_authority": {
+    "repository": "horbolsi/8x8",
+    "branch": "interface/v30-full-convergence-20260826",
+    "verified_source_head": "6210a35cdbdbc08b5f0b9511e08c3c465ae94314",
+    "local_acceptance": "PRESENT_PROVEN_V39_CURRENT_RELEASE_STAGED_FOR_EXACT_PUBLIC_PROMOTION"
+  },
+  "public_projection_authority": "8x8org/8x8-user-edition",
+  "identity_law": "ONE_RELEASE_UI_AND_CONTRACTS_MULTI_CARRIER_ADAPTERS",
+  "carriers": {
+    "browser": {"role": "WEB_PWA_CARRIER", "must_match_release": true},
+    "telegram": {"role": "TELEGRAM_MINI_APP_ADAPTER", "must_match_release": true},
+    "discord": {"role": "DISCORD_BOT_AND_LINK_ADAPTER", "must_match_release": true},
+    "android": {"role": "ANDROID_INSTALLED_CLIENT_ADAPTER", "must_match_release": true},
+    "ios": {"role": "IOS_INSTALLED_CLIENT_ADAPTER", "must_match_release": true}
+  },
+  "shared_planes": {
+    "identity": "ONE_TENANT_IDENTITY_SERVICE",
+    "mail": "ONE_MAIL_SERVICE",
+    "vault": "ONE_ENCRYPTED_TENANT_VAULT_SERVICE",
+    "connectors": "ONE_CONNECTOR_BROKER",
+    "agent_notifications": "ONE_FLASH_SERAPHIM_EVENT_STREAM"
+  },
+  "authority_boundary": {
+    "shared_ui_does_not_mean_shared_authority": true,
+    "owner_private_core_projected_to_normal_users": false,
+    "raw_secret_rendering": false,
+    "wallet_signing_automatic": false,
+    "payment_effect_automatic": false,
+    "mainnet_effect_automatic": false,
+    "live_trade_automatic": false
+  },
+  "acceptance": {
+    "browser": "REQUIRE_EXACT_RELEASE_MARKER_AND_ROUTE_PARITY",
+    "telegram": "REQUIRE_EXACT_RELEASE_MARKER_AND_AUTH_SUCCESS",
+    "discord": "REQUIRE_BOT_IDENTITY_AND_RELEASE_MARKER",
+    "android": "REQUIRE_SIGNED_BUILD_OR_EXPLICIT_PWA_STATE_AND_RELEASE_MARKER",
+    "ios": "REQUIRE_SIGNED_BUILD_OR_EXPLICIT_WEB_STATE_AND_RELEASE_MARKER",
+    "cross_carrier": "ALL_CARRIERS_REPORT_SAME_RELEASE_ID_AND_SOURCE_DIGEST"
+  },
+  "truth": {
+    "public_browser_parity_at_v39": "FAIL_OLD_RELEASE",
+    "public_telegram_parity_at_v39": "FAIL_OLD_RELEASE",
+    "discord_current_release": "NOT_YET_PROVEN",
+    "android_current_release": "NOT_YET_PROVEN",
+    "ios_current_release": "NOT_YET_PROVEN"
+  }
+}
