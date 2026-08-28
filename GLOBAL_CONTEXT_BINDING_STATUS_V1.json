@@ -1,0 +1,62 @@
+{
+  "schema_version": "1",
+  "artifact_id": "GLOBAL_CONTEXT_BINDING_STATUS_V1",
+  "description": "Status of Global Context Snapshot distribution and binding across the 8x8 agent fleet.",
+  "timestamp_utc": "2026-08-06T11:00:00Z",
+  "overall_status": "in_progress",
+  "snapshot_distribution": {
+    "status": "pending",
+    "notes": "Context snapshot digests are pending first verified context load per agent."
+  },
+  "agent_bindings": [
+    {
+      "agent_id": "8x8-agent-arch-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-sec-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-mem-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-infra-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-product-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-world-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-studio-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    },
+    {
+      "agent_id": "8x8-agent-research-001",
+      "context_snapshot_digest": "sha256:pending",
+      "load_receipt": "pending",
+      "bound": false
+    }
+  ],
+  "resume_condition": "Owner runs context snapshot build; digests are computed and loaded per agent; load receipts are signed; this status document is updated with verified digests."
+}

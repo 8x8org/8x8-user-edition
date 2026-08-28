@@ -1,0 +1,125 @@
+{
+  "schema_version": "1",
+  "artifact_id": "PUBLIC_PRESENT_RELEASE_TRAIN_STATUS_V1",
+  "description": "Current status of the Public Present release train. Each release unit must complete the full gate sequence before production promotion.",
+  "gate_sequence": [
+    "branch",
+    "CI",
+    "protected_preview",
+    "exact_head_route_verification",
+    "security_privacy_accessibility",
+    "rollback_receipt",
+    "owner_gate",
+    "production_canary"
+  ],
+  "policy": {
+    "vercel_ready_not_sufficient": true,
+    "private_runtime_data_in_public_repo": "blocked",
+    "exact_head_verification_required": true,
+    "owner_gate_required": true
+  },
+  "release_units": [
+    {
+      "id": "MSG229",
+      "title": "Visual Council route verification and merge readiness",
+      "pr": "8x8org/8x8-user-edition#16",
+      "gates": {
+        "branch": "pass",
+        "CI": "pass",
+        "protected_preview": "ready",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "in_progress",
+      "blocker": "exact_head_route_verification required before owner gate"
+    },
+    {
+      "id": "MSG228",
+      "title": "Product Map route verification and merge readiness",
+      "pr": "8x8org/8x8-user-edition#pending",
+      "gates": {
+        "branch": "pass",
+        "CI": "pass",
+        "protected_preview": "ready",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "in_progress",
+      "blocker": "exact_head_route_verification required before owner gate"
+    },
+    {
+      "id": "PUBLIC_SECURITY_CONVERGENCE",
+      "title": "Public security-remediation convergence with protected beta",
+      "pr": "8x8org/8x8-user-edition#pending",
+      "gates": {
+        "branch": "pending",
+        "CI": "pending",
+        "protected_preview": "pending",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "queued",
+      "blocker": "selective merge of public-safe security changes required"
+    },
+    {
+      "id": "GLOBAL_CONTEXT_SNAPSHOT",
+      "title": "Global Context Snapshot distribution and load receipts",
+      "pr": "8x8org/8x8-user-edition#pending",
+      "gates": {
+        "branch": "pending",
+        "CI": "pending",
+        "protected_preview": "pending",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "queued",
+      "blocker": "context snapshot digests pending"
+    },
+    {
+      "id": "THREE_REALITY_EVENT_BUS",
+      "title": "Three-Reality Event Bus integration",
+      "pr": "8x8org/8x8-user-edition#pending",
+      "gates": {
+        "branch": "pending",
+        "CI": "pending",
+        "protected_preview": "pending",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "queued",
+      "blocker": "spatial layer design not yet finalized"
+    },
+    {
+      "id": "AGENT_REGISTRY_PUBLIC_PROJECTION",
+      "title": "Agent/body/project registry public-safe projection",
+      "pr": "8x8org/8x8-user-edition#pending",
+      "gates": {
+        "branch": "pass",
+        "CI": "pending",
+        "protected_preview": "pending",
+        "exact_head_route_verification": "pending",
+        "security_privacy_accessibility": "pending",
+        "rollback_receipt": "pending",
+        "owner_gate": "pending",
+        "production_canary": "pending"
+      },
+      "status": "in_progress",
+      "blocker": "registry receipt hashes pending"
+    }
+  ]
+}
