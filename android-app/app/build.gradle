@@ -1,0 +1,20 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'world.eightx8.user'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'world.eightx8.user'
+        minSdk 26
+        targetSdk 35
+        versionCode 20050
+        versionName '0.2.0-v50'
+        def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-user-8888-8x8-team-url.vercel.app'
+        buildConfigField 'String', 'HOME_URL', '"' + home + '"'
+    }
+    buildFeatures { buildConfig true }
+    buildTypes {
+        debug { applicationIdSuffix '.dev'; versionNameSuffix '-dev' }
+        release { minifyEnabled false }
+    }
+}
