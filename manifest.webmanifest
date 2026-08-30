@@ -1,19 +1,22 @@
 {
-  "name": "8x8 OS Public Beta",
+  "name": "8x8 OS User Edition V50",
   "short_name": "8x8 OS",
-  "description": "A public-safe, permission-first cockpit for supervised human–AI work.",
-  "start_url": "/",
+  "description": "Public-safe One-Fabric sovereign superpower interface for agents, Studio, Browser, worlds, media, community and research.",
+  "id": "/?release=v50",
+  "start_url": "/?carrier=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#050816",
-  "theme_color": "#050816",
+  "background_color": "#02030a",
+  "theme_color": "#03040b",
   "orientation": "any",
-  "categories": ["productivity", "utilities", "developer"],
+  "categories": ["productivity", "utilities", "developer", "entertainment"],
   "icons": [
-    {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    {"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Telegram Mini App","url":"/telegram"},
+    {"name":"Discord","url":"/discord"},
+    {"name":"World","url":"/world"},
+    {"name":"Android","url":"/android"}
   ]
 }
