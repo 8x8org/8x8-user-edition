@@ -1,0 +1,31 @@
+{
+  "schema": "8x8.user-edition.release.v50",
+  "canonical_root": "fabric://8x8/core",
+  "release_id": "USER_EDITION_V50_0.2.0",
+  "version": "0.2.0",
+  "public_projection": "8x8org/8x8-user-edition",
+  "source_authority": {
+    "repository": "horbolsi/8x8",
+    "branch": "interface/v30-full-convergence-20260826",
+    "v50_source_present": true,
+    "private_runtime_projected": false
+  },
+  "carriers": {
+    "web_pwa": {"route":"/","source":"PRESENT","deployed":"REQUIRES_READBACK"},
+    "telegram": {"route":"/telegram","source":"PRESENT","mini_app_binding":"REQUIRES_AUTHENTICATED_WRITE_READBACK"},
+    "discord": {"route":"/discord","source":"PRESENT","application_binding":"REQUIRES_AUTHENTICATED_WRITE_READBACK"},
+    "android": {"source":"PRESENT","apk_build":"REQUIRES_WORKFLOW_ARTIFACT_READBACK","production_signed":"REQUIRES_SIGNING_RECEIPT"}
+  },
+  "public_capability_families": [
+    "seraphim-agents","voice-vision","barehand-spatial","browser","studio","unreal-world-xr","global-stream","radio","tv","global-chat","social-connectors","tiktok-shop","marketplace","nft-studio","wallet-account","8x8-eight-assets","8x8scan","mining","staking","trading-lab","games-worlds","creator-factory","builder","research-supermind","memory-knowledge","8x8-mail","devices","robotics","security","public-data","future-namespaced-capabilities"
+  ],
+  "automatic_effects": {
+    "wallet_signing": false,
+    "payments": false,
+    "token_mint": false,
+    "mainnet": false,
+    "live_trade": false,
+    "unrestricted_device_control": false
+  },
+  "truth_law": "SOURCE_PRESENT != DEPLOYED != CARRIER_BOUND != INSTALLED != PRODUCTIVE != VERIFIED"
+}

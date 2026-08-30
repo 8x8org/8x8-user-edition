@@ -1,22 +1,28 @@
 # 8x8 OS Version
 
-**Canonical public web-client version:** `0.1.0 Stable`
+**Canonical public User Edition version:** `0.2.0 Stable · V50`
 
-This repository is the public-safe web projection of the wider existing 8x8 Fabric. The `0.1.0 Stable` label applies only to the named `PUBLIC_WEB_CLIENT` release scope after its exact-head acceptance gates pass. It does not imply that every private runtime, connector, agent, wallet, chain, social channel, backend, local device or FUTURE_LAB capability is complete.
+Canonical root: `fabric://8x8/core`  
+Public projection: `8x8org/8x8-user-edition`  
+Release ID: `USER_EDITION_V50_0.2.0`
 
-Historical MSG identifiers, branch names, commit SHAs, protocol revisions, runtime generations and document revisions remain implementation/provenance metadata rather than product-maturity claims.
+This version is the public-safe multi-carrier projection for Web/PWA, Telegram Mini App surface, Discord surface and Android carrier source. It does not publish the private owner control plane, secrets, signing material, raw user data or private runtime state.
 
 ## Reality classification
 
-- Reality: `PUBLIC_PRESENT`
-- Promotion state: `PUBLIC_STABLE`
-- Stable scope: `PUBLIC_WEB_CLIENT`
-- Private Past: protected and not published here
-- Future Lab: shown only as explicitly labeled research or target state
-- Whole-system score: `NOT_INFERRED`
+- Public web source: `PRESENT`
+- Telegram Mini App surface source: `PRESENT`
+- Discord surface source: `PRESENT`
+- Android app source: `PRESENT`
+- Vercel production: `REQUIRES_EXACT_DEPLOYMENT_READBACK`
+- Telegram bot/menu binding: `REQUIRES_AUTHENTICATED_TELEGRAM_WRITE_READBACK`
+- Discord bot/application binding: `REQUIRES_AUTHENTICATED_DISCORD_WRITE_READBACK`
+- Android development APK: `REQUIRES_BUILD_ARTIFACT_READBACK`
+- Android production-signed APK: `REQUIRES_SIGNING_AND_ARTIFACT_READBACK`
+- Whole private Fabric completion: `NOT_INFERRED`
 
-## Release truth
+## Truth boundary
 
-A bounded `100/100` score is valid only when all eight named stable web-client gates pass against the exact release head: version integrity, public/private boundary, browser behavior, accessibility, SBOM/provenance, production route health, rollback presence, and truth-label integrity.
+`SOURCE_PRESENT != DEPLOYED != CARRIER_BOUND != INSTALLED != PRODUCTIVE != VERIFIED`
 
-No `0 ms` claim is permitted. Latency must be measured. `1D` through `8D` are interface/projection semantics, `360°` is the responsive spatial navigation projection, and `8K` is a source-dependent adaptive media/export target rather than a fabricated source-resolution claim.
+A visible wallet, blockchain, NFT, marketplace, mining, staking or trading capability does not imply custody, signing, mainnet, minting, payment movement or live trading. Those effects remain separately gated and receipt-bound.
