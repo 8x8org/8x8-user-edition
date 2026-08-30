@@ -52,12 +52,13 @@ class StableReleaseContract(unittest.TestCase):
         self.assertFalse(self.state['live_trading_enabled'])
         self.assertFalse(self.state['wallet_material_included'])
 
-    def test_rollback_is_preserved(self):
+    def test_rollback_is_preserved_while_v50_is_root(self):
         self.assertTrue(self.release['rollback']['available'])
         self.assertEqual(self.release['rollback']['projection'], '/r3')
         rewrites = {(r['source'], r['destination']) for r in self.vercel['rewrites']}
         self.assertIn(('/r3', '/index.html'), rewrites)
-        self.assertIn(('/', '/stable/index.html'), rewrites)
+        self.assertIn(('/stable', '/stable/index.html'), rewrites)
+        self.assertIn(('/', '/v50.html'), rewrites)
 
 
 if __name__ == '__main__':
