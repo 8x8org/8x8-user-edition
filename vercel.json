@@ -6,68 +6,34 @@
     {
       "source": "/(.*)",
       "headers": [
+        {"key": "X-8x8-Release", "value": "USER_EDITION_V50_0.2.0"},
+        {"key": "X-8x8-Canonical-Root", "value": "fabric://8x8/core"},
         {"key": "X-Content-Type-Options", "value": "nosniff"},
-        {"key": "X-Frame-Options", "value": "DENY"},
+        {"key": "X-Frame-Options", "value": "SAMEORIGIN"},
         {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
         {"key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=()"},
         {"key": "Cross-Origin-Opener-Policy", "value": "same-origin"},
         {"key": "Cross-Origin-Resource-Policy", "value": "same-origin"},
-        {"key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'; upgrade-insecure-requests"}
-      ]
-    },
-    {
-      "source": "/",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
-      ]
-    },
-    {
-      "source": "/first-blink",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
-      ]
-    },
-    {
-      "source": "/world",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
-      ]
-    },
-    {
-      "source": "/art-board",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
-      ]
-    },
-    {
-      "source": "/projects",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
-      ]
-    },
-    {
-      "source": "/r3",
-      "headers": [
-        {"key": "Content-Type", "value": "text/html; charset=utf-8"},
-        {"key": "Content-Disposition", "value": "inline"}
+        {"key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'none'; upgrade-insecure-requests"}
       ]
     }
   ],
   "rewrites": [
-    {"source": "/", "destination": "/stable/index.html"},
-    {"source": "/first-blink", "destination": "/stable/index.html"},
-    {"source": "/first-blink/", "destination": "/stable/index.html"},
+    {"source": "/", "destination": "/v50.html"},
+    {"source": "/telegram", "destination": "/telegram/index.html"},
+    {"source": "/telegram/", "destination": "/telegram/index.html"},
+    {"source": "/discord", "destination": "/discord/index.html"},
+    {"source": "/discord/", "destination": "/discord/index.html"},
+    {"source": "/android", "destination": "/android/index.html"},
+    {"source": "/android/", "destination": "/android/index.html"},
+    {"source": "/first-blink", "destination": "/v50.html"},
+    {"source": "/first-blink/", "destination": "/v50.html"},
     {"source": "/world", "destination": "/stable/index.html"},
     {"source": "/art-board", "destination": "/stable/index.html"},
     {"source": "/projects", "destination": "/projects/index.html"},
     {"source": "/projects/", "destination": "/projects/index.html"},
     {"source": "/stable", "destination": "/stable/index.html"},
     {"source": "/r3", "destination": "/index.html"},
-    {"source": "/((?!.*\\.).*)", "destination": "/stable/index.html"}
+    {"source": "/((?!.*\\.).*)", "destination": "/v50.html"}
   ]
 }
