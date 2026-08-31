@@ -9,7 +9,7 @@
     {
       "source": "/(.*)",
       "headers": [
-        {"key": "X-8x8-Release", "value": "USER_EDITION_THREE_GATE_CAPABILITY_ESTATE_V52"},
+        {"key": "X-8x8-Release", "value": "USER_EDITION_THREE_GATE_INTERACTION_ESTATE_V53"},
         {"key": "X-8x8-Canonical-Root", "value": "fabric://8x8/core"},
         {"key": "X-Content-Type-Options", "value": "nosniff"},
         {"key": "X-Frame-Options", "value": "SAMEORIGIN"},

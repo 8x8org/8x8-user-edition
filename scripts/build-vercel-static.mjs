@@ -9,6 +9,7 @@ const items = [
   'index.html',
   'manifest.webmanifest',
   'one-fabric-capability-estate-v52.js',
+  'one-fabric-interaction-estate-v53.js',
   'stable',
   'presale',
   'telegram',
@@ -22,13 +23,15 @@ for (const item of items) {
   cpSync(item, `${out}/${item}`, { recursive: true });
 }
 
-// Canonical public root remains the Three-Gate surface. V52 adds a public-safe
-// whole-estate denominator without creating a second authority or interface root.
-const tag = '<script src="/one-fabric-capability-estate-v52.js"></script>';
+const tags = [
+  '<script src="/one-fabric-capability-estate-v52.js"></script>',
+  '<script src="/one-fabric-interaction-estate-v53.js"></script>'
+];
 const inject = (path) => {
   let html = readFileSync(path, 'utf8');
-  if (!html.includes('one-fabric-capability-estate-v52.js')) {
-    html = html.replace('</body>', `${tag}</body>`);
+  for (const tag of tags) {
+    const src = tag.match(/src="([^"]+)/)?.[1] || '';
+    if (src && !html.includes(src)) html = html.replace('</body>', `${tag}</body>`);
   }
   writeFileSync(path, html);
 };
@@ -42,3 +45,4 @@ console.log('CANONICAL_ROOT=fabric://8x8/core');
 console.log('OUTPUT_DIRECTORY=dist');
 console.log('WEB_TELEGRAM_PRESALE_SAME_BUILD=true');
 console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
+console.log('INTERACTION_ESTATE_V53_INJECTED=true');
