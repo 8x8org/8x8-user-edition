@@ -1,12 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist",
   "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {"key": "X-8x8-Release", "value": "USER_EDITION_V50_0.2.0"},
+        {"key": "X-8x8-Release", "value": "USER_EDITION_V50_PRESALE_V5"},
         {"key": "X-8x8-Canonical-Root", "value": "fabric://8x8/core"},
         {"key": "X-Content-Type-Options", "value": "nosniff"},
         {"key": "X-Frame-Options", "value": "SAMEORIGIN"},
@@ -19,23 +22,15 @@
     }
   ],
   "rewrites": [
-    {"source": "/", "destination": "/v50.html"},
     {"source": "/presale", "destination": "/presale/index.html"},
-    {"source": "/presale/", "destination": "/presale/index.html"},
     {"source": "/telegram", "destination": "/telegram/index.html"},
-    {"source": "/telegram/", "destination": "/telegram/index.html"},
     {"source": "/discord", "destination": "/discord/index.html"},
-    {"source": "/discord/", "destination": "/discord/index.html"},
     {"source": "/android", "destination": "/android/index.html"},
-    {"source": "/android/", "destination": "/android/index.html"},
-    {"source": "/first-blink", "destination": "/v50.html"},
-    {"source": "/first-blink/", "destination": "/v50.html"},
+    {"source": "/first-blink", "destination": "/index.html"},
     {"source": "/world", "destination": "/stable/index.html"},
     {"source": "/art-board", "destination": "/stable/index.html"},
     {"source": "/projects", "destination": "/projects/index.html"},
-    {"source": "/projects/", "destination": "/projects/index.html"},
     {"source": "/stable", "destination": "/stable/index.html"},
-    {"source": "/r3", "destination": "/index.html"},
-    {"source": "/((?!.*\\.).*)", "destination": "/v50.html"}
+    {"source": "/r3", "destination": "/index.html"}
   ]
 }

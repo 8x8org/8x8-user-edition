@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
+    "build:vercel": "node scripts/build-vercel-static.mjs",
     "test:browser": "playwright test"
   },
   "devDependencies": {
