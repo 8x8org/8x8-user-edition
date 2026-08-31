@@ -1,0 +1,9 @@
+CANONICAL_ROOT=fabric://8x8/core
+SOURCE_FIX=PUBLIC_TRANSPARENCY_V54_1
+MARKER=multidimensional spatial world
+PAYMENT_EFFECT=false
+WALLET_SIGNING=false
+MAINNET=false
+TOKEN_MINT=false
+NFT_MINT=false
+LIVE_TRADE=false

@@ -26,7 +26,7 @@ const competitions=[
 const recovered=[
  'Agent Civilization + SOUL/Memory + Councils + Dynamic Specialists + Agent Bus + Shared Brain',
  'Art Board + Whole-System Puzzle + relationship graph + movable evidence/artifact nodes',
- '2D/3D/5D/XR spatial world + WebGPU/WebXR + Unreal/Unity + hologram + Reality Graph',
+ 'multidimensional spatial world + 2D/3D/5D/XR + WebGPU/WebXR + Unreal/Unity + hologram + Reality Graph',
  'Barehand fullscreen + multi-object spatial physics + agent↔human artifact throws',
  '8x8 Studio + content hub + research→script→storyboard→image/video/audio→TTS→captions→render→publish',
  'Trading intelligence + scanners + market/news/sentiment + backtests + paper engine + risk + portfolio/execution simulation',

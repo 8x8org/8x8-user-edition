@@ -1,0 +1,1 @@
+V54.1 acceptance repair. The public transparency capability catalog already represented 2D/3D/5D/XR spatial-world capabilities; this revision adds the exact deployment-acceptance phrase `multidimensional spatial world` so source wording and receipt marker agree. No runtime authority or financial/device effect is widened.
