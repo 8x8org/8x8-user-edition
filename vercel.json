@@ -20,6 +20,8 @@
   ],
   "rewrites": [
     {"source": "/", "destination": "/v50.html"},
+    {"source": "/presale", "destination": "/presale/index.html"},
+    {"source": "/presale/", "destination": "/presale/index.html"},
     {"source": "/telegram", "destination": "/telegram/index.html"},
     {"source": "/telegram/", "destination": "/telegram/index.html"},
     {"source": "/discord", "destination": "/discord/index.html"},
