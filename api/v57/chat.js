@@ -21,7 +21,7 @@ export default async function handler(req,res){
     if(!model||!message) return res.status(400).json({error:'MODEL_AND_MESSAGE_REQUIRED'});
     const cred=await getCredential(subject,provider);
     if(!cred) return res.status(409).json({error:'PROVIDER_CREDENTIAL_NOT_CONFIGURED',provider});
-    const base=provider==='OPENROUTER'?'https://openrouter.ai/api/v1':process.env.EIGHTX8_9ROUTER_BASE_URL;
+    const base=provider==='OPENROUTER'?'https://openrouter.ai/api/v1':cred.payload.base_url;
     if(!base) return res.status(503).json({error:'ROUTER_BASE_NOT_CONFIGURED',provider});
     const r=await fetch(`${base.replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{Authorization:`Bearer ${cred.payload.api_key}`,'Content-Type':'application/json'},body:JSON.stringify({model,messages:[{role:'system',content:AGENTS[agent]},{role:'user',content:message}],stream:false}),signal:AbortSignal.timeout(45000)});
     const body=await r.json().catch(()=>({}));
