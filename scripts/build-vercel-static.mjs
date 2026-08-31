@@ -12,6 +12,7 @@ const items = [
   'one-fabric-interaction-estate-v53.js',
   'one-fabric-public-transparency-v54.js',
   'one-fabric-three-gate-experience-v55.js',
+  'one-fabric-live-membership-v56.js',
   'stable',
   'presale',
   'telegram',
@@ -29,7 +30,8 @@ const tags = [
   '<script src="/one-fabric-capability-estate-v52.js"></script>',
   '<script src="/one-fabric-interaction-estate-v53.js"></script>',
   '<script src="/one-fabric-public-transparency-v54.js"></script>',
-  '<script src="/one-fabric-three-gate-experience-v55.js"></script>'
+  '<script src="/one-fabric-three-gate-experience-v55.js"></script>',
+  '<script src="/one-fabric-live-membership-v56.js"></script>'
 ];
 const inject = (path) => {
   let html = readFileSync(path, 'utf8');
@@ -52,3 +54,4 @@ console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
 console.log('INTERACTION_ESTATE_V53_INJECTED=true');
 console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
 console.log('THREE_GATE_EXPERIENCE_V55_INJECTED=true');
+console.log('LIVE_MEMBERSHIP_V56_INJECTED=true');
