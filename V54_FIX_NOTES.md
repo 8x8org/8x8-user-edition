@@ -1,0 +1,1 @@
+V54.1 note: public transparency acceptance wording now includes the exact phrase `multidimensional spatial world` so the deployment receipt checks the same human-facing capability family already represented by 2D/3D/5D/XR/WebGPU/WebXR/Unreal/Unity/hologram/Reality Graph.
