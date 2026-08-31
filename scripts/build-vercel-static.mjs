@@ -13,6 +13,7 @@ const items = [
   'one-fabric-public-transparency-v54.js',
   'one-fabric-three-gate-experience-v55.js',
   'one-fabric-live-membership-v56.js',
+  'config',
   'stable',
   'presale',
   'telegram',
@@ -55,3 +56,4 @@ console.log('INTERACTION_ESTATE_V53_INJECTED=true');
 console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
 console.log('THREE_GATE_EXPERIENCE_V55_INJECTED=true');
 console.log('LIVE_MEMBERSHIP_V56_INJECTED=true');
+console.log('DIRECT_CRYPTO_CONFIG_V56_EXPORTED=true');
