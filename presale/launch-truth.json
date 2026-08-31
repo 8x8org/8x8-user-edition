@@ -1,0 +1,37 @@
+{
+  "schema": "EIGHTX8_MEMBERSHIP_LAUNCH_TRUTH_V1",
+  "canonical_root": "fabric://8x8/core",
+  "commercial_object": "8x8 membership subscription",
+  "subscription_registration": true,
+  "server_side_enrollment": false,
+  "payment_effect": false,
+  "wallet_signing": false,
+  "mainnet": false,
+  "token_mint": false,
+  "nft_mint": false,
+  "live_trade": false,
+  "wallet_model": {
+    "eightx8_wallet": "membership-native wallet/account layer",
+    "external_wallets": ["BTC", "EVM_ETH_BNB", "SOL", "TON", "PI"],
+    "coexist": true,
+    "private_keys_requested": false,
+    "seed_phrases_requested": false,
+    "proof_of_control_required_before_verified_binding": true
+  },
+  "membership_entitlements": {
+    "included_token_entitlement": "reserved_not_minted",
+    "nft_vault_entitlement": "reserved_not_minted",
+    "canonical_8x8_backing": "1_to_1_rule_reserved_not_onchain"
+  },
+  "nft_vault_invariant": "NFT_VAULT_MINTED <= CANONICAL_8X8_RESERVED_FOR_VAULTS",
+  "payment_networks": {
+    "BTC": "VERIFYING",
+    "ETH": "VERIFYING",
+    "BNB": "VERIFYING",
+    "SOL": "VERIFYING",
+    "TON": "VERIFYING",
+    "PI": "VERIFYING"
+  },
+  "activation_law": "REGISTERED != PAYMENT_CONFIRMED != ENTITLED != VAULT_ALLOCATED != BACKING_RESERVED != MINT_AUTHORIZED != MINTED != VERIFIED",
+  "disclosure": "Membership registration does not itself constitute blockchain payment, token transfer, NFT minting, investment return, yield, profit guarantee, or custody of external wallet secrets."
+}
