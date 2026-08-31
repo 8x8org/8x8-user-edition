@@ -20,7 +20,7 @@ export default async function handler(req,res){
     if(!['OPENROUTER','9ROUTER'].includes(provider)) return res.status(400).json({error:'PROVIDER_NOT_ALLOWED'});
     const cred=await getCredential(subject,provider);
     if(!cred) return res.status(404).json({provider,status:'NOT_CONFIGURED',models:[]});
-    const base=provider==='OPENROUTER'?'https://openrouter.ai/api/v1':process.env.EIGHTX8_9ROUTER_BASE_URL;
+    const base=provider==='OPENROUTER'?'https://openrouter.ai/api/v1':cred.payload.base_url;
     if(!base) return res.status(503).json({provider,status:'ROUTER_BASE_NOT_CONFIGURED',models:[]});
     try{
       const models=await fetchModels(base,cred.payload.api_key);
