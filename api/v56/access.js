@@ -1,1 +1,1 @@
-export default async function handler(req,res){res.setHeader('Cache-Control','no-store');return res.status(503).json({schema:'8x8.access.v56',canonical_root:'fabric://8x8/core',authority:'SERVER_REQUIRED',remaining_active_seconds:0,membership_active:false,locked:true,unlock_at:null,state:'BACKEND_AUTHORITY_NOT_CONNECTED',truth:'FAIL_CLOSED'});}
+export { default } from '../v57/access.js';
