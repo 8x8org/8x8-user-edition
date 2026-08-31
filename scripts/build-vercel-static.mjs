@@ -10,6 +10,7 @@ const items = [
   'manifest.webmanifest',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
+  'one-fabric-public-transparency-v54.js',
   'stable',
   'presale',
   'telegram',
@@ -25,7 +26,8 @@ for (const item of items) {
 
 const tags = [
   '<script src="/one-fabric-capability-estate-v52.js"></script>',
-  '<script src="/one-fabric-interaction-estate-v53.js"></script>'
+  '<script src="/one-fabric-interaction-estate-v53.js"></script>',
+  '<script src="/one-fabric-public-transparency-v54.js"></script>'
 ];
 const inject = (path) => {
   let html = readFileSync(path, 'utf8');
@@ -46,3 +48,4 @@ console.log('OUTPUT_DIRECTORY=dist');
 console.log('WEB_TELEGRAM_PRESALE_SAME_BUILD=true');
 console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
 console.log('INTERACTION_ESTATE_V53_INJECTED=true');
+console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
