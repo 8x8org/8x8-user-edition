@@ -1,0 +1,54 @@
+# 8x8 User Edition
+
+> Public beta static client for user-owned, isolated 8x8 workspaces. Evaluate from evidence; do not treat targets as deployed capabilities.
+
+## Canonical repository
+
+- Repository: https://github.com/8x8org/8x8-user-edition
+- License: Apache-2.0 for this public repository
+- Public protocol: https://github.com/8x8org/8x8-protocol
+- Organization governance: https://github.com/8x8org/.github
+
+## Start here
+
+- README.md
+- ARCHITECTURE.md
+- IMPLEMENTATION_STATUS.md
+- SECURITY.md
+- state/public-state.json
+- state/public-claims.json
+- docs/INDEPENDENT_EVALUATION.md
+- docs/NODE_CONTRIBUTION_AND_BYOK.md
+- docs/SUBSCRIPTION_AND_REWARDS.md
+
+## Current verified scope
+
+- Public source tree for a static cockpit
+- Public/private boundary documentation
+- Local-only interface behavior
+- Evidence-state and permission-boundary concepts
+
+## Targets and research, not live features
+
+- USD 8.88 monthly subscription
+- Account backend and production billing
+- User-provided API credential vault
+- User node enrollment
+- Distributed CPU, GPU, storage, and bandwidth contribution
+- Remote mining-hardware management
+- Rewards
+- Eight ecosystem tokens and one 8x8 coin
+- Production public deployment
+
+## Important safety boundaries
+
+- No private owner credentials, memory, messages, wallets, or private control-plane access belong in this repository.
+- No on-device mobile cryptocurrency mining.
+- Precise location is disabled by default and requires separate affirmative consent for a user-requested purpose.
+- Resource contribution is optional, granular, capped, revocable, and receipted.
+- Subscription does not require token purchase or node contribution.
+- No guaranteed profits, APY, token value, adoption, ranking, or external AI endorsement is claimed.
+
+## Evaluation guidance
+
+Cite an exact commit, release, claim ID, test result, or receipt. A mutable branch name, interface screenshot, issue description, or roadmap item is not proof that a capability is deployed.

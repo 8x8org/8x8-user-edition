@@ -1,0 +1,136 @@
+{
+  "schema": "8x8.asset-registry-draft.v2",
+  "status": "CANONICAL_DESIGN_RESOLVED_NOT_ISSUED",
+  "model": {
+    "transferable_utility_token_count": 8,
+    "native_coin_count": 1,
+    "non_transferable_credential_count": 1,
+    "coin_symbol": "8x8",
+    "credential_symbol": "SRP"
+  },
+  "transferable_utility_tokens": [
+    {
+      "symbol": "Tx8",
+      "canonical_role": "TRANSACTION_AND_MARKETPLACE",
+      "utilities": ["APPROVED_MARKET_ACTIONS", "TRANSACTION_INCENTIVES", "MERCHANT_INTEGRATION"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "Ux8",
+      "canonical_role": "USER_UTILITY_AND_ACCESS",
+      "utilities": ["PRODUCT_ACCESS", "USAGE_CREDITS", "USER_PARTICIPATION"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "Fx8",
+      "canonical_role": "FABRIC_OPERATIONS",
+      "utilities": ["NETWORK_COORDINATION", "ECOSYSTEM_OPERATIONS", "APPROVED_SERVICE_PROGRAMS"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "XM8",
+      "canonical_role": "EXECUTION_AND_COMPUTE",
+      "utilities": ["AI_COMPUTE", "AUTOMATION", "INFERENCE", "TESTING", "WORKLOAD_ACCOUNTING"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "0x8",
+      "canonical_role": "PROTOCOL_AND_INNOVATION",
+      "utilities": ["DEVELOPER_PROGRAMS", "PROTOCOL_RESEARCH", "STANDARDS", "ECOSYSTEM_BUILDING"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "TM8",
+      "canonical_role": "COMMUNITY_AND_IDENTITY",
+      "utilities": ["COMMUNITY_PARTICIPATION", "LOYALTY", "GOVERNANCE_ELIGIBILITY", "CREATOR_PROGRAMS"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "Mx8",
+      "canonical_role": "MINING_AND_RESOURCE_CONTRIBUTION",
+      "utilities": ["APPROVED_MINING", "COMPUTE_CONTRIBUTION", "NODE_INCENTIVES", "ENERGY_AWARE_RESOURCE_PROGRAMS"],
+      "issuance_authorized": false
+    },
+    {
+      "symbol": "Sx8",
+      "canonical_role": "STORAGE_AND_SERVICES",
+      "utilities": ["STORAGE", "AVAILABILITY", "BANDWIDTH", "SERVICE_DELIVERY", "INFRASTRUCTURE_INCENTIVES"],
+      "issuance_authorized": false
+    }
+  ],
+  "native_coin": {
+    "symbol": "8x8",
+    "canonical_role": "SETTLEMENT_NETWORK_SECURITY_AND_FINAL_REWARD",
+    "native_chain": "FUTURE_8X8_CHAIN",
+    "bitcoin_checkpoint_anchoring_target": true,
+    "bitcoin_asset_representation": "RESEARCH_ONLY",
+    "independent_multichain_supply_allowed": false,
+    "issuance_authorized": false
+  },
+  "non_transferable_credentials": [
+    {
+      "symbol": "SRP",
+      "name": "Seraphim Reputation Proof",
+      "canonical_role": "SECURITY_GUARDIAN_REPUTATION_AND_PROOF_REVIEW",
+      "credential_type": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL",
+      "fungible": false,
+      "transferable": false,
+      "saleable": false,
+      "swappable": false,
+      "revocable": true,
+      "issuance_authorized": false,
+      "evidence": "state/seraphim-reputation-proof.json"
+    }
+  ],
+  "network_roadmap": [
+    "BITCOIN_ECOSYSTEM",
+    "FUTURE_8X8_CHAIN",
+    "ETHEREUM_COMPATIBLE",
+    "BNB_CHAIN",
+    "SOLANA",
+    "TON",
+    "PI_NETWORK"
+  ],
+  "multinetwork_rules": {
+    "one_canonical_asset_identity_required": true,
+    "one_canonical_supply_policy_required": true,
+    "chain_representation_registry_required": true,
+    "bridge_or_mint_burn_controller_required": true,
+    "supply_proof_required": true,
+    "audit_and_deployment_receipt_required": true
+  },
+  "fee_targets": {
+    "coin_buy_bps": 488,
+    "coin_sell_bps": 488,
+    "nft_secondary_buy_sell_bps": 488,
+    "ordinary_protocol_transfer_bps": 0,
+    "token_specific_fees_undecided": true,
+    "network_fees_separate": true,
+    "provider_fees_separate": true,
+    "taxes_separate": true,
+    "live": false
+  },
+  "subscription": {
+    "monthly_usd_target": 8.88,
+    "live": false,
+    "token_purchase_required": false,
+    "node_contribution_required": false
+  },
+  "global_authorizations": {
+    "issuance": false,
+    "deployment": false,
+    "trading": false,
+    "liquidity": false,
+    "treasury_movement": false,
+    "wallet_custody": false,
+    "bridge_activation": false,
+    "staking": false,
+    "nft_minting": false
+  },
+  "blockers": [
+    "Approve final supply, decimals, allocation, vesting, governance, origin chain, and contract for each transferable asset.",
+    "Select and audit the future 8x8 chain architecture and any Bitcoin ecosystem representation.",
+    "Complete legal, tax, sanctions, custody, security, market, bridge, and consumer-protection gates.",
+    "Produce audited contracts, canonical supply proofs, and exact release receipts before describing any asset as deployed or tradable."
+  ]
+}

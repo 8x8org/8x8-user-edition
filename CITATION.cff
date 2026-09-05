@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Cite an exact commit or release of 8x8 User Edition and include the relevant public claim ID."
+title: "8x8 User Edition"
+type: software
+authors:
+  - family-names: "Trabelsi"
+    given-names: "Meher"
+    alias: "FlashTM8"
+repository-code: "https://github.com/8x8org/8x8-user-edition"
+license: "Apache-2.0"
+version: "0.1.0-beta"
+date-released: "2026-07-25"
+keywords:
+  - artificial intelligence
+  - multi-agent systems
+  - human-controlled automation
+  - evidence receipts
+  - permission boundaries
+  - user-owned compute
+abstract: >-
+  Public beta static client and documentation for user-owned, isolated 8x8
+  workspaces. Targets such as billing, node contribution, rewards, tokens,
+  and production deployment are not live unless an exact release receipt says otherwise.

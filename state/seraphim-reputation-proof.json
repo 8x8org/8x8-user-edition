@@ -1,0 +1,52 @@
+{
+  "schema": "8x8.seraphim-reputation-proof.v1",
+  "symbol": "SRP",
+  "name": "Seraphim Reputation Proof",
+  "classification": "NON_TRANSFERABLE_VERIFIABLE_CREDENTIAL",
+  "status": "DESIGNED_NOT_ISSUED",
+  "fungible": false,
+  "transferable": false,
+  "saleable": false,
+  "swappable": false,
+  "market_listing_allowed": false,
+  "guaranteed_value": false,
+  "revocable": true,
+  "expiry_required": true,
+  "periodic_reverification_required": true,
+  "holder_classes": [
+    "REGISTERED_SERAPHIM_AGENT",
+    "APPROVED_SECURITY_GUARDIAN"
+  ],
+  "eligible_uses": [
+    "SECURITY_REPUTATION",
+    "PROOF_REVIEW_ELIGIBILITY",
+    "GUARDIAN_QUORUM_PARTICIPATION",
+    "INCIDENT_RESPONSE_ELIGIBILITY",
+    "TRUST_SCORE_INPUT"
+  ],
+  "prohibited_uses": [
+    "SELF_AUTHORITY_EXPANSION",
+    "OWNER_KEY_REPLACEMENT",
+    "UNILATERAL_L5_APPROVAL",
+    "TREASURY_TRANSFER",
+    "TOKEN_ISSUANCE",
+    "PUBLIC_DEPLOYMENT",
+    "PERFECTION_CLAIM"
+  ],
+  "evidence_requirements": [
+    "REGISTERED_IDENTITY",
+    "SIGNED_CAPABILITY_ATTESTATION",
+    "RECENT_SECURITY_EVALUATION",
+    "INCIDENT_HISTORY_SUMMARY",
+    "POLICY_VERSION",
+    "ISSUER_SIGNATURE",
+    "REVOCATION_STATUS"
+  ],
+  "privacy": {
+    "selective_disclosure_target": true,
+    "raw_private_memory_allowed": false,
+    "secret_values_allowed": false,
+    "public_personal_identifiers_allowed": false
+  },
+  "issuance_authorized": false
+}
