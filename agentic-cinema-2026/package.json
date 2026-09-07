@@ -1,1 +1,10 @@
-{"name":"cinemaproof-agent","version":"0.1.0","private":false,"type":"module","scripts":{"start":"node server.js","dev":"node server.js"},"dependencies":{"@google/genai":"latest","express":"latest","cors":"latest","dotenv":"latest"},"engines":{"node":">=20"}}
+{
+  "name":"cinemaproof-agent",
+  "version":"0.3.0",
+  "private":false,
+  "type":"module",
+  "scripts":{"dev":"vercel dev","start":"vercel dev"},
+  "dependencies":{"@google/genai":"latest"},
+  "devDependencies":{"vercel":"latest"},
+  "engines":{"node":">=20"}
+}
