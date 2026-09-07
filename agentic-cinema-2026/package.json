@@ -1,0 +1,1 @@
+{"name":"cinemaproof-agent","version":"0.1.0","private":false,"type":"module","scripts":{"start":"node server.js","dev":"node server.js"},"dependencies":{"@google/genai":"latest","express":"latest","cors":"latest","dotenv":"latest"},"engines":{"node":">=20"}}
