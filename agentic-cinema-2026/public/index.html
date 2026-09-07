@@ -1,1 +1,67 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CinemaProof Agent</title><style>body{margin:0;font-family:Inter,system-ui,Arial;background:#09090f;color:#f5f7fb}main{max-width:1100px;margin:auto;padding:40px 20px}.hero{padding:36px;border:1px solid #303044;border-radius:28px;background:linear-gradient(135deg,#171725,#101018)}h1{font-size:48px;margin:0 0 10px}.tag{color:#aeb5ff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.card{border:1px solid #2c2c3c;background:#12121c;border-radius:22px;padding:22px}textarea{width:100%;height:180px;border-radius:18px;border:1px solid #3b3b4c;background:#080811;color:white;padding:16px;font-size:16px}button{border:0;border-radius:999px;padding:14px 22px;font-weight:800;background:#f5c542;color:#0a0a0f;cursor:pointer}pre{white-space:pre-wrap;background:#050507;border-radius:18px;padding:18px;overflow:auto}.pill{display:inline-block;border:1px solid #44445d;border-radius:999px;padding:6px 10px;margin:4px;color:#d8dbff}@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:34px}}</style></head><body><main><section class="hero"><div class="tag">Agentic Cinema 2026 • Google Cloud Gemini • Replit Track</div><h1>CinemaProof Agent</h1><p>A judgeable production-control agent that converts a film brief into story, shots, schedule, risks and a final production packet.</p><span class="pill">New contest project</span><span class="pill">No non-Google AI APIs</span><span class="pill">Demo mode labeled</span></section><section class="grid"><div class="card"><h2>Run the agent</h2><textarea id="brief">A near-future indie thriller about a refugee coder who discovers a citywide signal hidden in cinema lights, shot over three nights with a tiny crew.</textarea><p><button onclick="runAgent()">Run Agent Workflow</button></p><p id="status">Ready.</p></div><div class="card"><h2>Health</h2><pre id="health">Loading...</pre></div><div class="card"><h2>Agent Output</h2><pre id="out">Submit a brief to generate the production packet.</pre></div><div class="card"><h2>Architecture</h2><p>Backend imports <b>@google/genai</b> and calls Gemini when GEMINI_API_KEY is configured. Replit is the intended build/deploy partner track. Without credentials, output is returned as explicit demo data.</p><ol><li>Brief intake</li><li>Gemini or demo fallback</li><li>Structured production workflow</li><li>Judge-visible mode evidence</li></ol></div></section></main><script>async function loadHealth(){const r=await fetch('/api/health');document.getElementById('health').textContent=JSON.stringify(await r.json(),null,2)}async function runAgent(){const status=document.getElementById('status');const out=document.getElementById('out');status.textContent='Running staged workflow...';out.textContent='Working...';try{const r=await fetch('/api/run',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({brief:document.getElementById('brief').value})});const j=await r.json();out.textContent=JSON.stringify(j,null,2);status.textContent='Complete: '+(j.mode||'unknown');}catch(e){status.textContent='Error';out.textContent=String(e)}}loadHealth()</script></body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><title>CinemaProof Agent</title>
+<style>
+:root{--bg:#03060a;--panel:#0b1320ee;--line:#26364e;--text:#eef5ff;--muted:#8ea2ba;--cyan:#7ee7ff;--violet:#9b8cff;--ok:#6ef0a7;--warn:#ffd166;--bad:#ff6b7a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 18% -10%,#183354 0,#08111d 30%,#03060a 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+.shell{max-width:1500px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.brand h1{font-size:clamp(42px,7vw,86px);line-height:.88;letter-spacing:-.06em;margin:0;background:linear-gradient(90deg,#fff,#8deaff,#a996ff);-webkit-background-clip:text;color:transparent}.brand p{max-width:860px;color:var(--muted);font-size:17px;line-height:1.55}.badge{border:1px solid #335174;background:#091526;padding:8px 12px;border-radius:999px;color:var(--cyan);font-size:12px;white-space:nowrap}
+.ribbon{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric,.panel{background:linear-gradient(180deg,#0c1524e8,#070c15f2);border:1px solid var(--line);box-shadow:0 24px 70px #0007}.metric{border-radius:14px;padding:12px}.metric b{display:block;font-size:22px}.metric small{color:var(--muted)}.grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px;margin-top:14px}.panel{border-radius:22px;padding:16px}.panel h2{margin:0 0 10px}
+textarea{width:100%;min-height:150px;background:#050914;border:1px solid #233653;border-radius:14px;color:#fff;padding:14px;font:inherit}.controls{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:10px}select{background:#07101b;border:1px solid #2d405d;color:#eaf2ff;border-radius:12px;padding:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}button{border:0;border-radius:12px;padding:12px 15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#8ef0ff,#9a8fff);color:#06101a}.ghost{background:#0a1220;color:#cbd6e9;border:1px solid #2b3c56}
+.graph{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}.node{border:1px solid #263956;background:#08111d;border-radius:14px;padding:11px;position:relative}.node:after{content:"→";position:absolute;right:-10px;top:50%;color:#5e7899}.node:last-child:after{display:none}.node small{color:var(--muted)}
+.risks{display:grid;gap:8px;margin-top:10px}.risk{border-radius:12px;padding:11px;border:1px solid #2b3b54;background:#08101a}.risk.critical{border-color:#7a3140}.risk.high{border-color:#6f5b2b}.risk b{display:block}.risk span{color:var(--muted);font-size:13px}.output{white-space:pre-wrap;min-height:220px;max-height:460px;overflow:auto;background:#050913;border:1px solid #1e2b42;padding:14px;border-radius:14px;line-height:1.45}
+.list{margin:0;padding-left:18px;color:#dfe8f6}.list li{margin:6px 0}.truth{font-size:12px;color:#7890ad;margin-top:12px}.foot{margin-top:16px;color:#6f819f;font-size:12px}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.ribbon{grid-template-columns:repeat(2,1fr)}.graph{grid-template-columns:1fr}.node:after{display:none}.top{flex-direction:column}.controls{grid-template-columns:1fr}}
+</style></head>
+<body><div class="shell">
+<div class="top"><div class="brand"><h1>CinemaProof Agent</h1><p><b>Production Digital Twin + Counterfactual Director.</b> Compile the brief into a scene graph, continuity constraints, risk topology, shot plan and schedule. Then change a decision and see downstream consequences before the crew pays for them.</p></div><div class="badge">Agentic Cinema 2026 · Standalone Competition Build</div></div>
+<div class="ribbon"><div class="metric"><b id="mode">READY</b><small>Gemini runtime truth</small></div><div class="metric"><b id="parallel">READY</b><small>Parallel grounding</small></div><div class="metric"><b id="riskCount">—</b><small>production risks</small></div><div class="metric"><b id="confidence">—</b><small>agent confidence</small></div></div>
+<div class="grid">
+<section class="panel"><h2>01 · Production Compiler</h2>
+<textarea id="brief">A six-minute sci-fi short: one actor wakes inside a damaged orbital greenhouse. We have one shooting day, two practical locations, minimal VFX budget, no stunt coordinator, and continuity must stay exact as oxygen levels fall scene by scene.</textarea>
+<div class="controls"><select id="override"><option value="none">No director override</option><option value="remove-exterior">Override: remove exterior location</option><option value="actor-late">Override: lead actor arrives late</option><option value="no-vfx">Override: eliminate VFX budget</option></select><button id="run">Compile Production Proof</button></div>
+<div class="actions"><button class="ghost" id="ground">Ground Live Evidence</button><button class="ghost" id="demo">Force Demo Mode</button></div>
+<div class="truth">Truth boundary: LIVE GEMINI is displayed only when the server returns <code>mode=live-gemini</code>. Otherwise this is explicitly DEMO MODE.</div>
+<h2 style="margin-top:18px">Live Evidence Graph</h2><div id="groundOut" class="output">Parallel grounding has not run yet.</div><h2 style="margin-top:18px">Scene-State Graph</h2><div id="graph" class="graph"></div>
+<h2 style="margin-top:18px">Risk Topology</h2><div id="risks" class="risks"></div></section>
+<section class="panel"><h2>02 · Counterfactual Proof Packet</h2><div id="overrideOut" class="output">Choose a director override and compile. CinemaProof will show which downstream production decisions become invalid.</div>
+<h2 style="margin-top:16px">Shot + Schedule Plan</h2><div id="plan" class="output"></div></section>
+</div><div class="foot">©️8x8 by FlashTM8 ⚡️🌎🤖 · CinemaProof Agent is a standalone competition-window build that can feed verified capabilities back into 8x8 Studio. The pre-existing 8x8 estate is not represented as hackathon-created.</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function render(j){
+ $("mode").textContent=j.mode==="live-gemini"?"LIVE GEMINI":"DEMO MODE";
+ $("riskCount").textContent=(j.risks||[]).length;
+ $("confidence").textContent=typeof j.confidence==="number"?Math.round(j.confidence*100)+"%":(j.confidence||"—");
+ $("graph").innerHTML=(j.sceneGraph||[]).map(n=>'<div class="node"><b>'+n.id+' · '+n.label+'</b><small>'+n.state+'</small></div>').join("");
+ $("risks").innerHTML=(j.risks||[]).map(r=>'<div class="risk '+r.severity+'"><b>'+String(r.severity).toUpperCase()+' · '+r.type+'</b><span>'+r.finding+' → '+r.action+'</span></div>').join("");
+ const ov=j.override||{mode:"none",downstream:[]};
+ $("overrideOut").textContent='OVERRIDE: '+ov.mode+'\n\n'+(ov.downstream||[]).map((x,i)=>(i+1)+'. '+x).join('\n')+'\n\nPROOF\n'+(j.proof||[]).map(x=>'• '+x).join('\n');
+ $("plan").textContent='SHOT PLAN\n'+(j.shotPlan||[]).map(x=>'• '+x).join('\n')+'\n\nSCHEDULE\n'+(j.schedule||[]).map(x=>'• '+x).join('\n')+'\n\nCONTINUITY\n'+(j.continuity||[]).map(x=>'• '+x).join('\n');
+}
+let lastGrounding={mode:"not-run",sources:[]};
+function renderGrounding(j){
+  lastGrounding=j||{mode:"error",sources:[]};
+  $("parallel").textContent=j?.mode==="live-parallel-search-mcp"?"LIVE PARALLEL":"ERROR";
+  const src=j?.sources||[];
+  $("groundOut").textContent=(j?.mode||"unknown")+"\n\n"+src.map((s,i)=>(i+1)+". "+(s.title||"Source")+"\n"+(s.url||"")+"\n"+((s.excerpts||[])[0]||"")).join("\n\n");
+}
+async function ground(){
+  $("parallel").textContent="SEARCHING";
+  const r=await fetch('/api/cinemaproof-grounding',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+    brief:$("brief").value,
+    objective:"Find current, authoritative public evidence that could change safety, location, scheduling, technical, weather or production decisions for this film brief.",
+    search_queries:["film production safety guidance","location production requirements","film technical production guidance"]
+  })});
+  const j=await r.json(); renderGrounding(j); return j;
+}
+async function run(forceDemo=false){
+ $("mode").textContent="RUNNING";
+ try{
+   if(!forceDemo && lastGrounding.mode!=="live-parallel-search-mcp") await ground();
+   const r=await fetch('/api/cinemaproof',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({brief:$("brief").value,overrideMode:$("override").value,forceDemo,grounding:lastGrounding})});
+   render(await r.json())
+ } catch(e){$("mode").textContent="ERROR";$("overrideOut").textContent=e.message}
+}
+$("ground").onclick=()=>ground().catch(e=>{$("parallel").textContent="ERROR";$("groundOut").textContent=e.message});
+$("run").onclick=()=>run(false);$("demo").onclick=()=>run(true);run(true);
+</script></body></html>
