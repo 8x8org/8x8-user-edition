@@ -37,11 +37,11 @@ test('1D through 8D projection controls are interactive', async ({ page }) => {
   }
 });
 
-test('R3 rollback source remains renderable', async ({ page }) => {
+test('minimal V1 root is renderable while rollback donor remains preserved', async ({ page }) => {
   const response = await page.goto('/index.html', { waitUntil: 'networkidle' });
   expect(response).not.toBeNull();
   expect(response.status()).toBe(200);
-  await expect(page).toHaveTitle(/8x8 OS .* Living Omniversal Gate R3 .* 0\.0\.1 Beta/);
+  await expect(page).toHaveTitle(/©️8x8 Launch Mini/);
 });
 
 test('stable public UI does not make unexpected cross-origin requests', async ({ page, baseURL }) => {
