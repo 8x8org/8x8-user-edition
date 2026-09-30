@@ -56,7 +56,7 @@ The Minimal User Edition implementation remains the functional substrate. The Th
 Required release evidence includes source identity, build/check results, carrier rendering, identity boundary, wallet behavior, game behavior, radio controls, payment/reservation fail-closed behavior, Android artifact provenance, security/public-boundary checks, and rollback evidence.
 
 ## Safety and authority
-Owner-private fabric remains isolated. No seed/private keys are collected. No signing, fund movement, token minting, mainnet action, paid campaign spend, or legal acceptance occurs without the appropriate explicit authority and verified configuration.
+Owner-private fabric remains isolated. Public clients never receive private device/runtime topology or owner-control paths. No seed/private keys are collected. No signing, fund movement, token minting, mainnet action, paid campaign spend, or legal acceptance occurs without the appropriate explicit authority and verified configuration.
 
 ## Delivery doctrine
 Scope -> Architecture -> Dependencies -> Atomic Tasks -> ETA -> Implement Reversibly -> Test -> Verify -> Receipt -> Release -> Evolve.
