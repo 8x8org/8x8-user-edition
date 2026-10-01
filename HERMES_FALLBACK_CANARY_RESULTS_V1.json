@@ -1,0 +1,87 @@
+{
+  "schema_version": "1",
+  "artifact_id": "HERMES_FALLBACK_CANARY_RESULTS_V1",
+  "description": "Results of five synthetic canary scenarios validating provider-fallback circuit-breaker behaviour.",
+  "run_timestamp_utc": "2026-08-06T11:00:00Z",
+  "environment": "isolated_synthetic_test",
+  "canaries": [
+    {
+      "id": "CANARY_01",
+      "name": "Provider-wide daily quota exhaustion",
+      "scenario": "Inject HTTP 429 with error_code=free-models-per-day remaining=0 from primary provider for all models.",
+      "expected": "Provider circuit opens immediately; zero same-provider retries; task routed to next eligible provider.",
+      "steps": [
+        {"step": "classify_failure", "result": "PROVIDER_QUOTA_EXHAUSTED", "pass": true},
+        {"step": "open_provider_circuit", "provider": "provider_A_alias", "pass": true},
+        {"step": "same_provider_retry_count", "count": 0, "pass": true},
+        {"step": "route_selected", "provider": "provider_B_alias", "model": "model_B1_alias", "pass": true},
+        {"step": "receipt_written", "type": "ROUTE_SELECTED", "pass": true}
+      ],
+      "result": "PASS",
+      "notes": "Replicates MSG231 incident. Zero same-provider retries confirmed."
+    },
+    {
+      "id": "CANARY_02",
+      "name": "Model-only quota failure preserves provider eligibility",
+      "scenario": "Inject HTTP 429 scoped to one model; all other models on provider remain healthy.",
+      "expected": "Model circuit opens; provider circuit remains closed; another model on same provider selected.",
+      "steps": [
+        {"step": "classify_failure", "result": "MODEL_QUOTA_EXHAUSTED", "pass": true},
+        {"step": "open_model_circuit", "model": "model_A2_alias", "pass": true},
+        {"step": "provider_circuit_state", "provider": "provider_A_alias", "state": "closed", "pass": true},
+        {"step": "route_selected", "provider": "provider_A_alias", "model": "model_A1_alias", "pass": true},
+        {"step": "receipt_written", "type": "ROUTE_SELECTED", "pass": true}
+      ],
+      "result": "PASS"
+    },
+    {
+      "id": "CANARY_03",
+      "name": "Oversized context routes to larger-context model",
+      "scenario": "Submit task with 80,000 tokens to model with 32,000-token context window.",
+      "expected": "CONTEXT_TOO_LARGE classified; context compaction attempted; if insufficient, route to model with sufficient context window.",
+      "steps": [
+        {"step": "classify_failure", "result": "CONTEXT_TOO_LARGE", "pass": true},
+        {"step": "compaction_attempted", "original_tokens": 80000, "compacted_tokens": 28000, "pass": true},
+        {"step": "route_selected_after_compaction", "model": "model_A1_alias", "context_window": 32000, "pass": true},
+        {"step": "receipt_written", "type": "ROUTE_SELECTED", "pass": true}
+      ],
+      "result": "PASS"
+    },
+    {
+      "id": "CANARY_04",
+      "name": "No eligible route emits BLOCKED receipt",
+      "scenario": "All configured providers and models suppressed simultaneously.",
+      "expected": "BLOCKED receipt emitted; mission queue position preserved; no task dropped.",
+      "steps": [
+        {"step": "all_providers_suppressed", "provider_count": 3, "pass": true},
+        {"step": "no_eligible_route_detected", "pass": true},
+        {"step": "blocked_receipt_emitted", "pass": true},
+        {"step": "mission_queue_length_unchanged", "pass": true},
+        {"step": "task_not_dropped", "pass": true}
+      ],
+      "result": "PASS"
+    },
+    {
+      "id": "CANARY_05",
+      "name": "Transient rate limit bounded retry then failover",
+      "scenario": "Inject HTTP 429 with Retry-After on primary provider; three retries exhaust budget; route to secondary provider.",
+      "expected": "Maximum 3 jittered retries on same provider; then failover to next eligible provider.",
+      "steps": [
+        {"step": "classify_failure", "result": "TRANSIENT_RATE_LIMIT", "pass": true},
+        {"step": "retry_1", "provider": "provider_A_alias", "jitter_applied": true, "pass": true},
+        {"step": "retry_2", "provider": "provider_A_alias", "jitter_applied": true, "pass": true},
+        {"step": "retry_3", "provider": "provider_A_alias", "jitter_applied": true, "pass": true},
+        {"step": "retry_budget_exhausted_failover", "pass": true},
+        {"step": "route_selected", "provider": "provider_B_alias", "pass": true},
+        {"step": "receipt_written", "type": "ROUTE_SELECTED", "pass": true}
+      ],
+      "result": "PASS"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "canary_gate": "PASS"
+  }
+}

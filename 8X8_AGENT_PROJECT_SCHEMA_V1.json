@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "8X8_AGENT_PROJECT_SCHEMA_V1",
+  "title": "8x8 Agent Project Record",
+  "description": "Canonical schema for every agent and subagent in the 8x8 fleet. All required fields must be present and non-null before registry validation passes.",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "body_id",
+    "display_name",
+    "role",
+    "canonical_repository",
+    "authority_class",
+    "lane",
+    "health",
+    "capability_set",
+    "model_routes"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "description": "Stable unique identifier. Format: 8x8-agent-<slug>."
+    },
+    "body_id": {
+      "type": "string",
+      "description": "Bound body or persona identifier."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name."
+    },
+    "aliases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Alternative names or call-signs."
+    },
+    "role": {
+      "type": "string",
+      "description": "Primary organisational role."
+    },
+    "specialization": {
+      "type": "string",
+      "description": "Domain or technical specialty."
+    },
+    "persona": {
+      "type": "string",
+      "description": "Persona description and emoji."
+    },
+    "canonical_repository": {
+      "type": "string",
+      "description": "GitHub repository in owner/repo format."
+    },
+    "project_namespace": {
+      "type": "string",
+      "description": "GitHub project or issue namespace."
+    },
+    "active_missions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of active mission IDs."
+    },
+    "capability_set": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of capability identifiers."
+    },
+    "model_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider_alias", "model_alias", "priority"],
+        "properties": {
+          "provider_alias": {"type": "string"},
+          "model_alias": {"type": "string"},
+          "priority": {"type": "integer", "minimum": 1},
+          "context_window": {"type": "integer"},
+          "tool_support": {"type": "boolean"}
+        }
+      },
+      "description": "Ordered list of provider/model routes. Priority 1 is preferred."
+    },
+    "tool_allowlist": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Permitted tools for this agent."
+    },
+    "authority_class": {
+      "type": "string",
+      "enum": ["owner", "coordinator", "specialist", "observer"],
+      "description": "Authority level within the 8x8 system."
+    },
+    "context_snapshot_digest": {
+      "type": "string",
+      "description": "SHA-256 digest of the latest context snapshot."
+    },
+    "memory_pointer": {
+      "type": "string",
+      "description": "Reference to the agent memory store location (no credential data)."
+    },
+    "environment_node": {
+      "type": "string",
+      "description": "Deployment environment or node identifier."
+    },
+    "lane": {
+      "type": "string",
+      "enum": ["public_present", "private_past", "future_lab"],
+      "description": "Release lane."
+    },
+    "latest_receipt": {
+      "type": "string",
+      "description": "ID of the most recent task receipt."
+    },
+    "health": {
+      "type": "string",
+      "enum": ["healthy", "degraded", "offline", "unknown"],
+      "description": "Current health status."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Agent IDs this agent depends on."
+    },
+    "deployment_targets": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Deployment environments or services."
+    },
+    "visual_media_provenance": {
+      "type": "string",
+      "description": "Reference to visual/media asset provenance record."
+    },
+    "council": {
+      "type": "string",
+      "description": "Council this agent belongs to."
+    },
+    "task_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Bound task IDs."
+    },
+    "lease": {
+      "type": "string",
+      "description": "Active lease identifier."
+    },
+    "receipt_hash": {
+      "type": "string",
+      "description": "SHA-256 of the latest receipt."
+    }
+  },
+  "additionalProperties": false
+}
