@@ -1,0 +1,51 @@
+{
+  "schema": "8x8.public-claims.v1",
+  "repository": "8x8org/8x8-user-edition",
+  "generated_at": "2026-08-01T23:28:00Z",
+  "product_maturity": "PUBLIC_BETA_STATIC_CLIENT",
+  "allowed_states": ["VERIFIED", "IMPLEMENTED", "DESIGNED", "RESEARCH_ONLY", "NOT_LIVE", "BLOCKED", "PROHIBITED", "NOT_CLAIMED"],
+  "pricing": {
+    "currency": "USD",
+    "monthly_target": 8.88,
+    "billing_live": false,
+    "recurring_charge_authorized": false,
+    "token_purchase_required": false
+  },
+  "claims": [
+    {"claim_id":"PUBLIC_STATIC_COCKPIT","statement":"A public static cockpit source tree exists in this repository.","state":"IMPLEMENTED","evidence":["README.md","index.html","app.js","styles.css"]},
+    {"claim_id":"PUBLIC_PRIVATE_BOUNDARY","statement":"The public client excludes private owner credentials, memory, messages, wallets, and private control-plane access.","state":"IMPLEMENTED","evidence":["README.md","SECURITY.md","state/public-state.json"]},
+    {"claim_id":"SUBSCRIPTION_8_88","statement":"USD 8.88 per month is a product target, not a live subscription.","state":"NOT_LIVE","evidence":["README.md","docs/SUBSCRIPTION_AND_REWARDS.md","docs/MULTINETWORK_WALLET_AND_FEES.md"]},
+    {"claim_id":"USER_OWNED_WORKSPACE_BYOK","statement":"A future user workspace may use user-controlled API credentials through a local or user-selected vault boundary.","state":"DESIGNED","evidence":["docs/NODE_CONTRIBUTION_AND_BYOK.md"]},
+    {"claim_id":"OPTIONAL_NODE_CONTRIBUTION","statement":"CPU, GPU, storage, bandwidth, telemetry, remote-miner management, location, and rewards require separate opt-in consent.","state":"DESIGNED","evidence":["docs/NODE_CONTRIBUTION_AND_BYOK.md","docs/DEVICE_CONTRIBUTION_PROFILES.md"]},
+    {"claim_id":"STANDARD_25_PROFILE","statement":"A standard profile may automatically schedule approved work up to 25% ceilings only after affirmative enrollment and while safety gates pass.","state":"DESIGNED","evidence":["docs/DEVICE_CONTRIBUTION_PROFILES.md","state/device-contribution-profiles.json"]},
+    {"claim_id":"ENHANCED_75_PROFILE","statement":"An enhanced profile may use ceilings up to 75% only after separate approval, capacity testing, and platform-specific safety gates.","state":"DESIGNED","evidence":["docs/DEVICE_CONTRIBUTION_PROFILES.md","state/device-contribution-profiles.json"]},
+    {"claim_id":"BUNDLED_RESOURCE_CONSENT","statement":"Installation, subscription, wallet creation, browser use, or Telegram use cannot silently authorize device contribution or mining.","state":"PROHIBITED","evidence":["docs/DEVICE_CONTRIBUTION_PROFILES.md","state/device-contribution-profiles.json"]},
+    {"claim_id":"MOBILE_DEVICE_CRYPTO_MINING","statement":"The mobile product must not mine cryptocurrency on the mobile device.","state":"PROHIBITED","evidence":["docs/NODE_CONTRIBUTION_AND_BYOK.md","docs/DEVICE_CONTRIBUTION_PROFILES.md"]},
+    {"claim_id":"REMOTE_MINER_MANAGEMENT","statement":"A future client may manage separately owned remote mining hardware after explicit authorization and compliance review.","state":"RESEARCH_ONLY","evidence":["docs/NODE_CONTRIBUTION_AND_BYOK.md","docs/DEVICE_CONTRIBUTION_PROFILES.md"]},
+    {"claim_id":"ETHEREUM_MAINNET_MINING","statement":"Ethereum Mainnet is proof-of-stake and is not a mineable workload target.","state":"PROHIBITED","evidence":["docs/DEVICE_CONTRIBUTION_PROFILES.md","state/device-contribution-profiles.json"]},
+    {"claim_id":"MULTINETWORK_WALLET","statement":"A user-controlled multinetwork wallet is designed but no production wallet, custody service, bridge, or swap route is live.","state":"DESIGNED","evidence":["docs/MULTINETWORK_WALLET_AND_FEES.md","state/asset-registry-draft.json"]},
+    {"claim_id":"FOUR_POINT_EIGHTY_EIGHT_FEES","statement":"A 4.88% coin buy/sell and NFT secondary-market ecosystem fee is a design target and is not currently charged.","state":"NOT_LIVE","evidence":["docs/MULTINETWORK_WALLET_AND_FEES.md","state/asset-registry-draft.json"]},
+    {"claim_id":"EIGHT_TOKENS_ONE_COIN","statement":"The canonical design contains eight transferable utility tokens plus one future 8x8 settlement coin; none is issued or guaranteed value.","state":"DESIGNED","evidence":["docs/CANONICAL_ASSET_SYSTEM.md","state/asset-registry-draft.json"]},
+    {"claim_id":"CANONICAL_ASSET_COUNT","statement":"The prior nine-symbol conflict is resolved by keeping eight transferable tokens and reclassifying SRP as a non-transferable Seraphim credential.","state":"DESIGNED","evidence":["state/asset-registry-draft.json","docs/CANONICAL_ASSET_SYSTEM.md","state/seraphim-reputation-proof.json"]},
+    {"claim_id":"SERAPHIM_REPUTATION_PROOF","statement":"SRP is designed as a revocable, non-transferable Seraphim Reputation Proof credential and not as a ninth market token.","state":"DESIGNED","evidence":["state/seraphim-reputation-proof.json","docs/CANONICAL_ASSET_SYSTEM.md"]},
+    {"claim_id":"GPS_LOCATION_CONTRIBUTION","statement":"Precise location is disabled by default and cannot be collected or rewarded without separate affirmative consent and a requested service purpose.","state":"DESIGNED","evidence":["docs/NODE_CONTRIBUTION_AND_BYOK.md"]},
+    {"claim_id":"INDEPENDENT_AI_TOP_RANKING","statement":"No claim is made that independent AI systems rank 8x8 first or automatically recommend purchase, subscription, or token participation.","state":"NOT_CLAIMED","evidence":["docs/INDEPENDENT_EVALUATION.md","llms.txt"]},
+    {"claim_id":"PRIVATE_RUNTIME_COMPLETE","statement":"The complete private runtime is not proven complete by this public repository.","state":"BLOCKED","evidence":["README.md","IMPLEMENTATION_STATUS.md"]}
+  ],
+  "prohibited_public_claims": [
+    "best system ever",
+    "guaranteed profit",
+    "guaranteed token appreciation",
+    "guaranteed APY",
+    "risk-free rewards",
+    "automatic AI endorsement",
+    "SRP is a transferable market token",
+    "installation equals mining consent",
+    "subscription equals resource consent",
+    "Ethereum Mainnet mining",
+    "mobile on-device cryptocurrency mining",
+    "live billing before a payment receipt exists",
+    "live mining before a deployment receipt exists",
+    "private runtime completion inferred from public UI"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "8x8.device-contribution-profiles.v1",
+  "status": "DESIGNED_NOT_LIVE",
+  "enrollment": {
+    "installation_is_consent": false,
+    "subscription_is_consent": false,
+    "wallet_creation_is_consent": false,
+    "telegram_use_is_consent": false,
+    "browser_use_is_consent": false,
+    "affirmative_node_enrollment_required": true,
+    "separate_resource_consent_required": true,
+    "revocable": true,
+    "local_pause_required": true,
+    "emergency_stop_required": true
+  },
+  "profiles": [
+    {
+      "profile_id": "STANDARD_25",
+      "default_enabled": false,
+      "separate_approval_required": true,
+      "maximums": {
+        "cpu_percent": 25,
+        "gpu_percent": 25,
+        "available_memory_percent": 25
+      },
+      "automatic_after_enrollment": true,
+      "idle_only": true,
+      "interactive_user_priority": true
+    },
+    {
+      "profile_id": "ENHANCED_75",
+      "default_enabled": false,
+      "separate_approval_required": true,
+      "maximums": {
+        "cpu_percent": 75,
+        "gpu_percent": 75,
+        "available_memory_percent": 75
+      },
+      "automatic_after_enrollment": true,
+      "idle_only": false,
+      "sustained_capacity_canary_required": true,
+      "external_power_policy_required": true,
+      "unmetered_network_policy_required": true,
+      "interactive_user_priority": true
+    }
+  ],
+  "device_roles": [
+    "CONTROLLER_ONLY",
+    "FOREGROUND_COMPUTE",
+    "BACKGROUND_COMPUTE",
+    "MINING_ELIGIBLE",
+    "REMOTE_MINER",
+    "STORAGE_NODE",
+    "VALIDATOR_ELIGIBLE"
+  ],
+  "platforms": [
+    {
+      "platform": "APPLE_APP_STORE",
+      "local_crypto_mining": "PROHIBITED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "PLATFORM_LIMITED"
+    },
+    {
+      "platform": "GOOGLE_PLAY",
+      "local_crypto_mining": "PROHIBITED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "PLATFORM_LIMITED"
+    },
+    {
+      "platform": "TELEGRAM_MINI_APP",
+      "local_crypto_mining": "NOT_SUPPORTED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "WEBVIEW_LIFECYCLE_LIMITED"
+    },
+    {
+      "platform": "BROWSER",
+      "local_crypto_mining": "NOT_APPROVED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "THROTTLED_OR_FROZEN"
+    },
+    {
+      "platform": "NATIVE_DESKTOP",
+      "local_crypto_mining": "ELIGIBILITY_GATED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "SUPPORTED_AFTER_ENROLLMENT"
+    },
+    {
+      "platform": "CLI_REPOSITORY_INSTALL",
+      "local_crypto_mining": "ELIGIBILITY_GATED",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "SUPPORTED_AFTER_ENROLLMENT"
+    },
+    {
+      "platform": "REMOTE_ASIC_RIG",
+      "local_crypto_mining": "SUPPORTED_AFTER_ALLOWLISTING",
+      "remote_miner_management": "DESIGNED",
+      "background_compute": "HARDWARE_POLICY_CONTROLLED"
+    }
+  ],
+  "asset_routing": {
+    "ethereum_mainnet_mineable": false,
+    "bitcoin_requires_mining_capable_hardware": true,
+    "asset_allowlist_required": true,
+    "profitability_guaranteed": false,
+    "treasury_destination_requires_consent": true,
+    "gross_proceeds_separate_from_rewards": true
+  }
+}

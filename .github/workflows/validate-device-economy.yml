@@ -1,0 +1,82 @@
+name: Validate Device Economy
+
+on:
+  push:
+    branches:
+      - feature/public-evidence-node-economy-v1
+    paths:
+      - "docs/DEVICE_CONTRIBUTION_PROFILES.md"
+      - "docs/MULTINETWORK_WALLET_AND_FEES.md"
+      - "docs/CANONICAL_ASSET_SYSTEM.md"
+      - "state/device-contribution-profiles.json"
+      - "state/asset-registry-draft.json"
+      - "state/seraphim-reputation-proof.json"
+      - "state/public-claims.json"
+      - "scripts/validate_device_economy.py"
+      - "tests/test_device_economy.py"
+      - ".github/workflows/validate-device-economy.yml"
+  pull_request:
+    paths:
+      - "docs/DEVICE_CONTRIBUTION_PROFILES.md"
+      - "docs/MULTINETWORK_WALLET_AND_FEES.md"
+      - "docs/CANONICAL_ASSET_SYSTEM.md"
+      - "state/device-contribution-profiles.json"
+      - "state/asset-registry-draft.json"
+      - "state/seraphim-reputation-proof.json"
+      - "state/public-claims.json"
+      - "scripts/validate_device_economy.py"
+      - "tests/test_device_economy.py"
+      - ".github/workflows/validate-device-economy.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: device-economy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate Python syntax without bytecode
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B - <<'PY'
+          from pathlib import Path
+          for name in (
+              "scripts/validate_device_economy.py",
+              "tests/test_device_economy.py",
+          ):
+              path = Path(name)
+              compile(path.read_text(encoding="utf-8"), str(path), "exec")
+              print(f"VALID_PYTHON={path}")
+          PY
+
+      - name: Validate JSON syntax
+        run: |
+          python -m json.tool state/device-contribution-profiles.json >/dev/null
+          python -m json.tool state/asset-registry-draft.json >/dev/null
+          python -m json.tool state/seraphim-reputation-proof.json >/dev/null
+          python -m json.tool state/public-claims.json >/dev/null
+
+      - name: Validate device and economy contracts
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B scripts/validate_device_economy.py
+
+      - name: Run adversarial tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -m unittest tests/test_device_economy.py -v
+
+      - name: Verify checkout remained clean
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
