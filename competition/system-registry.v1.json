@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "product": "8x8 OS Competition Edition",
+  "competition": "Build with Gemini XPRIZE 2026",
+  "world_count": 8,
+  "sector_count": 64,
+  "truth_states": ["CLAIMED", "DESIGNED", "IMPLEMENTED", "TESTED", "RECEIPT_VERIFIED", "RUNNING", "DEPLOYED", "RELEASED", "ADOPTED", "BLOCKED"],
+  "production_claim_rule": "A sector may be represented, but it may be called production-ready only when current evidence reaches DEPLOYED or stronger.",
+  "worlds": [
+    {
+      "id": "W1",
+      "name": "Command & Identity",
+      "visibility": "SUMMARY_ONLY",
+      "sectors": ["Owner Profile", "Authentication", "Authorization", "Approvals", "Mission Inbox", "Notifications", "Preferences", "Identity Audit"]
+    },
+    {
+      "id": "W2",
+      "name": "Agent Council & Automation",
+      "visibility": "SUMMARY_ONLY",
+      "sectors": ["Orchestrator", "Agent Registry", "Subagents", "Mission Planner", "Work Queues", "Independent Verification", "Agent Handoffs", "Continuous Supervision"]
+    },
+    {
+      "id": "W3",
+      "name": "Workspaces, Memory & Knowledge",
+      "visibility": "PUBLIC",
+      "sectors": ["Workspace Manager", "Conversation Memory", "Knowledge Graph", "Documents", "Search & Retrieval", "Project Context", "Learning Profiles", "Retention Controls"]
+    },
+    {
+      "id": "W4",
+      "name": "Connectors, Data & Evidence",
+      "visibility": "SUMMARY_ONLY",
+      "sectors": ["Connector Registry", "Email & Calendar", "GitHub & Dev Tools", "Cloud Services", "Databases", "Evidence Ledger", "Receipts", "Privacy Exports"]
+    },
+    {
+      "id": "W5",
+      "name": "Tools, Nodes & Resources",
+      "visibility": "PUBLIC",
+      "sectors": ["Tool Catalog", "Device Registry", "Resource Profiles", "Job Router", "Storage Nodes", "Compute Nodes", "Browser Tools", "Sandbox Execution"]
+    },
+    {
+      "id": "W6",
+      "name": "Studio, Builder & Creation",
+      "visibility": "PUBLIC",
+      "sectors": ["Content Studio", "Website Builder", "App Builder", "Image & Media", "Audio & Voice", "Video Pipeline", "Templates", "Publishing Queue"]
+    },
+    {
+      "id": "W7",
+      "name": "Public & Private Experiences",
+      "visibility": "PUBLIC",
+      "sectors": ["Public Web", "Public Telegram Mini App", "Private Owner Mini App", "Mobile PWA", "Agent Chat", "Mission Console", "Living Puzzle", "Accessibility"]
+    },
+    {
+      "id": "W8",
+      "name": "Quality, Security & Release",
+      "visibility": "PUBLIC",
+      "sectors": ["Health & Observability", "Testing", "Security Policy", "Secret Protection", "Release Gates", "Deployment", "Rollback & Emergency", "Competition Evidence"]
+    }
+  ],
+  "initial_truth": {
+    "W7/Public Web": "IMPLEMENTED",
+    "W7/Mobile PWA": "IMPLEMENTED",
+    "W7/Living Puzzle": "IMPLEMENTED",
+    "W7/Accessibility": "IMPLEMENTED",
+    "W8/Testing": "IMPLEMENTED",
+    "W8/Security Policy": "IMPLEMENTED",
+    "W8/Secret Protection": "IMPLEMENTED"
+  },
+  "competition_required": [
+    "W1/Authentication",
+    "W1/Approvals",
+    "W2/Orchestrator",
+    "W2/Mission Planner",
+    "W2/Independent Verification",
+    "W3/Workspace Manager",
+    "W4/Connector Registry",
+    "W4/Cloud Services",
+    "W4/Evidence Ledger",
+    "W4/Receipts",
+    "W7/Public Web",
+    "W7/Public Telegram Mini App",
+    "W7/Private Owner Mini App",
+    "W7/Mobile PWA",
+    "W7/Agent Chat",
+    "W7/Mission Console",
+    "W7/Accessibility",
+    "W8/Health & Observability",
+    "W8/Testing",
+    "W8/Security Policy",
+    "W8/Secret Protection",
+    "W8/Release Gates",
+    "W8/Deployment",
+    "W8/Competition Evidence"
+  ],
+  "forbidden_public_capabilities": [
+    "owner authority",
+    "private control-plane access",
+    "remote shell",
+    "credential exposure",
+    "wallet custody",
+    "treasury movement",
+    "live trading",
+    "token or NFT issuance",
+    "automatic mining",
+    "unconsented telemetry"
+  ]
+}

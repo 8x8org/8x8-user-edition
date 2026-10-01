@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "product": "8x8 OS Competition Edition",
+  "updated_at": "2026-08-02T00:37:00Z",
+  "overall_status": "BUILDING_BLOCKED_PARTIAL",
+  "ready_100": false,
+  "public_deployment_authorized": false,
+  "submission_authorized": false,
+  "openai_build_week_assets_frozen": true,
+  "surfaces": {
+    "public_web": {"state": "IMPLEMENTED", "live_url_verified": false},
+    "public_telegram_miniapp": {"state": "DESIGNED", "bot": "@app8x8hub_bot", "binding_verified": false, "init_data_verified": false},
+    "private_owner_miniapp": {"state": "DESIGNED", "bot": "@xadmin8x8hub_bot", "binding_verified": false, "owner_allowlist_verified": false},
+    "competition_cockpit": {"state": "IMPLEMENTING", "deployment_verified": false}
+  },
+  "runtime": {
+    "hermes": {"state": "BLOCKED", "last_user_evidence": "HTTP 000000"},
+    "eightx8_os": {"state": "RUNNING_REPORTED", "last_user_evidence": "HTTP 200"},
+    "studio": {"state": "RUNNING_REPORTED", "last_user_evidence": "HTTP 200"},
+    "continuous_agents_24_7": {"state": "UNVERIFIED"}
+  },
+  "cloud": {
+    "gemini_api_source": {"state": "IMPLEMENTING"},
+    "gemini_api_production_call": {"state": "NOT_PROVEN"},
+    "google_cloud_product": {"state": "NOT_PROVEN"},
+    "cloud_run_revision": {"state": "NOT_DEPLOYED"},
+    "secret_manager": {"state": "NOT_PROVEN"}
+  },
+  "business": {
+    "offer": "$8.88 8x8 OS Competition Edition pilot",
+    "payment_method": {"state": "NOT_AUTHORIZED"},
+    "external_users": {"verified_count": 0},
+    "arms_length_paid_users": {"verified_count": 0},
+    "revenue_usd": {"verified_total": 0},
+    "expenses_usd": {"verified_total": 0},
+    "testimonials": {"consented_count": 0}
+  },
+  "evidence": {
+    "msg205_local_receipt": "NOT_RETURNED",
+    "genesis_convergence": "BLOCKED_PARTIAL",
+    "twenty_four_hour_canary": "NOT_RUN",
+    "demo_video": "NOT_RECORDED",
+    "judge_test_path": "NOT_READY",
+    "reuse_disclosure": "DRAFT_REQUIRED",
+    "final_submission": "NOT_SUBMITTED"
+  },
+  "hard_blockers": [
+    "MSG205 final local receipt is missing",
+    "HERMES health is not proven",
+    "Gemini production call is not proven",
+    "Google Cloud deployment is not proven",
+    "Telegram Mini App bindings are not proven",
+    "real external user and revenue evidence is absent",
+    "public deployment and payment remain owner-gated"
+  ]
+}

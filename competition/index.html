@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050816">
+  <meta name="description" content="8x8 OS Competition Edition: eight connected worlds, sixty-four sectors, supervised agents and evidence-backed missions.">
+  <meta name="referrer" content="no-referrer">
+  <meta name="eightx8-api-base" content="">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.run.app; img-src 'self' data:; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+  <title>8x8 OS Competition Edition</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#home"><b>8×8</b><span>OS COMPETITION EDITION</span></a>
+    <div class="truth"><i></i><span id="overallStatus">BUILDING • BLOCKED PARTIAL</span></div>
+    <nav aria-label="Primary navigation">
+      <button data-view="home" class="active">System</button>
+      <button data-view="worlds">8 Worlds</button>
+      <button data-view="mission">Mission</button>
+      <button data-view="evidence">Evidence</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="view active">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">HUMAN-CONTROLLED • GEMINI-POWERED • EVIDENCE-BACKED</p>
+          <h1>The complete 8x8 operating system, brought to life.</h1>
+          <p class="lead">Eight connected worlds coordinate agents, workspaces, tools, creation, public experiences and release evidence. Every capability carries a visible truth state. Plans are not execution, prototypes are not production, and final authority stays with the owner.</p>
+          <div class="actions">
+            <button class="primary" data-view="mission">Run a guided mission</button>
+            <button class="secondary" data-view="worlds">Explore all 64 sectors</button>
+          </div>
+        </div>
+        <div class="core-card">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
+          <div class="core"><strong>8×8</strong><span>ONE LIVING SYSTEM</span></div>
+          <div class="node n1">HERMES</div><div class="node n2">AEGIS</div><div class="node n3">PULSE</div><div class="node n4">VOLT</div><div class="node n5">WRENCH</div><div class="node n6">CANVAS</div><div class="node n7">SAGE</div><div class="node n8">ATLAS</div>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <article><b>8</b><span>Connected worlds</span></article>
+        <article><b>64</b><span>Canonical sectors</span></article>
+        <article><b>L3</b><span>Autonomous ceiling</span></article>
+        <article><b>L5</b><span>Dormant owner authority</span></article>
+      </div>
+
+      <div class="split">
+        <article class="panel"><div class="panel-title"><span>PRIVATE 8x8 CORE</span><em>OWNER-GATED</em></div><ul><li>Agent orchestration and subagents</li><li>Mission queues, verification and receipts</li><li>Private owner Mini App and approvals</li><li>Health, rollback and emergency controls</li><li>Memory, knowledge and connected operations</li></ul></article>
+        <article class="panel"><div class="panel-title"><span>PUBLIC 8x8 EXPERIENCE</span><em>PUBLIC-SAFE</em></div><ul><li>Web app and Telegram Mini App</li><li>Guided missions and agent council</li><li>Workspaces, Studio and builders</li><li>Research, learning and productivity tools</li><li>Visible evidence and capability states</li></ul></article>
+      </div>
+    </section>
+
+    <section id="worlds" class="view">
+      <div class="heading"><p class="eyebrow">THE LIVING PUZZLE</p><h2>Eight worlds. Sixty-four accountable sectors.</h2><p>Select a world to inspect its sectors and current truth. The complete architecture remains visible even when a sector is designed, blocked or awaiting evidence.</p></div>
+      <div id="worldGrid" class="world-grid"></div>
+      <article id="sectorPanel" class="sector-panel" aria-live="polite"><p>Select a world.</p></article>
+    </section>
+
+    <section id="mission" class="view">
+      <div class="heading"><p class="eyebrow">GUIDED SYSTEM MISSION</p><h2>Give the full agent council one real objective.</h2><p>The production API uses Gemini to create a bounded plan, assigns specialized agents and returns a digest-bound receipt.</p></div>
+      <div class="mission-layout">
+        <form id="missionForm" class="panel form-panel">
+          <label>Mission template<select id="template"><option value="launch-business">Launch a business or project</option><option value="build-product">Build and test a product</option><option value="research-problem">Research a market or technical problem</option><option value="content-campaign">Create a content campaign</option><option value="system-audit">Audit a system with evidence</option></select></label>
+          <label>Your objective<textarea id="goal" minlength="10" maxlength="3000" required placeholder="Example: Launch a mobile-first cybersecurity training service for small businesses."></textarea></label>
+          <label>Optional context<textarea id="context" maxlength="3000" placeholder="Audience, deadline, constraints, assets or success criteria."></textarea></label>
+          <label class="consent"><input id="consent" type="checkbox" required><span>I consent to sending this mission text to the configured AI service for planning. I will not include secrets or sensitive personal information.</span></label>
+          <button class="primary" type="submit">Generate mission plan</button>
+          <p class="micro">High-impact actions remain separately approved and are never implied by a generated plan.</p>
+        </form>
+        <article class="panel result-panel"><div class="panel-title"><span>MISSION RESULT</span><em id="missionState">NOT STARTED</em></div><div id="missionResult" class="result-empty">The result and receipt will appear here.</div></article>
+      </div>
+    </section>
+
+    <section id="evidence" class="view">
+      <div class="heading"><p class="eyebrow">TRUTH BEFORE TROPHIES</p><h2>Competition readiness, without ceremonial mathematics.</h2><p>Green means current evidence exists. Amber means implemented or reported but not deployment-verified. Red means blocked or missing.</p></div>
+      <div id="evidenceGrid" class="evidence-grid"></div>
+      <article class="panel boundary"><div class="panel-title"><span>PUBLIC SAFETY BOUNDARY</span><em>FAIL-CLOSED</em></div><p>The public competition interface is isolated from private owner authority and sensitive system data. Detailed restrictions are enforced by the machine-readable state and API contracts.</p></article>
+    </section>
+  </main>
+
+  <footer><span>8x8 OS Competition Edition</span><span>BUILDING • NOT YET 100/100</span><a href="https://github.com/8x8org/8x8-user-edition" rel="noreferrer">Public source</a></footer>
+  <script src="./app.js" defer></script>
+</body>
+</html>
