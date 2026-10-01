@@ -19,8 +19,8 @@ Public client UX and release artifacts that have passed its evidence gates.
 
 When documentation or code conflicts across repositories, apply this precedence:
 
-1. `horbolsi/8x8` defines overall private One-Fabric architecture and OWNER_ROOT policy.
-2. `horbolsi/8x8-blockchain` defines native-chain internals and economic invariants within that policy.
+1. The private One-Fabric architecture defines overall OWNER_ROOT policy.
+2. The bounded blockchain implementation defines native-chain internals and economic invariants within that policy.
 3. `8x8org/8x8-protocol` defines versioned public interoperability promises.
 4. Deployment/product repositories consume those authorities.
 5. Specialist implementations remain bounded to their declared capability.
@@ -28,7 +28,7 @@ When documentation or code conflicts across repositories, apply this precedence:
 
 ## Dependencies and information flow
 
-Consumes 8x8-protocol and approved projections from the private core; may use deployment carriers while retaining source identity.
+Consumes 8x8-protocol and approved public projections; may use deployment carriers while retaining source identity.
 
 A dependency is not automatically active. Source must be adopted, configured, authenticated, granted, started, tested, and independently verified before being labeled productive.
 
@@ -36,13 +36,7 @@ A dependency is not automatically active. Source must be adopted, configured, au
 
 Browser/PWA and separately certified Telegram/native clients; each channel needs its own receipt.
 
-The wider physical model is:
-
-- **Termux on S22:** hardware-facing body and Android capability boundary.
-- **Ubuntu PRoot:** Linux compute, builds, agents, brokers, databases, and engineering services.
-- **`/storage/emulated/0/8x8 OS`:** owner-visible persistent artifacts, archives, media, models, exports, and receipts—not the primary secret store or executable authority.
-- **GitHub:** versioned source, policy, CI, releases, and provenance—not live runtime proof.
-- **Blockchain:** source plus runtime plus independently operated validators; GitHub presence alone is not mainnet.
+Private device topology, local storage paths, internal service placement, build hosts, and owner execution infrastructure are intentionally outside this public repository contract. Carrier certification is based only on public interfaces and independently reproducible receipts.
 
 ## Prohibited responsibilities
 
@@ -79,11 +73,11 @@ The repository lifecycle classes are:
 5. Implement on a review branch.
 6. Test the bounded capability.
 7. Verify against the actual target runtime.
-8. produce a hash-linked receipt.
+8. Produce a hash-linked receipt.
 9. Promote only with explicit authority.
 
 Every adoption from this repository into another must record source repository, source commit, source path, destination, semantic changes, tests, receipt hashes, rollback, and invalidation/freshness rules.
 
 ## Current verification boundary
 
-This role contract classifies intent and authority. It does **not** prove that this repository is cloned on the S22, synchronized into Ubuntu PRoot, deployed publicly, authenticated, healthy, or productive. A fresh read-only device and deployment census is required for those claims.
+This role contract classifies intent and authority. It does **not** prove deployment, authentication, health, or productivity. Fresh carrier and deployment receipts are required for those claims.
