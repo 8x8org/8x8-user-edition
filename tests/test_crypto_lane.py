@@ -42,21 +42,15 @@ class CryptoLaneTests(unittest.TestCase):
         self.assertTrue(validate(root))
 
     def test_rejects_fake_testnet_receipt(self) -> None:
-        def mutate(c):
-            c["networks"][0]["testnet_receipts"] = [{"sha256": "0" * 64, "status": "PASS"}]
-        root = self._tampered_root(chain_mutator=mutate)
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"testnet_receipts": [{"sha256": "0" * 64, "status": "PASS"}]}))
         self.assertTrue(validate(root))
 
     def test_rejects_mainnet_like_verification_claim(self) -> None:
-        def mutate(c):
-            c["networks"][0]["verification_state"] = "DEPLOYED_VERIFIED"
-        root = self._tampered_root(chain_mutator=mutate)
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"verification_state": "DEPLOYED_VERIFIED"}))
         self.assertTrue(validate(root))
 
     def test_rejects_chain_id_drift(self) -> None:
-        def mutate(c):
-            c["networks"][0]["chain_id"] = 1
-        root = self._tampered_root(chain_mutator=mutate)
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"chain_id": 1}))
         self.assertTrue(validate(root))
 
     def test_rejects_resolved_supply_without_owner_gate(self) -> None:
@@ -72,30 +66,58 @@ class CryptoLaneTests(unittest.TestCase):
             duplicate = dict(c["networks"][0])
             duplicate["chain_id"] = 1
             c["networks"].append(duplicate)
-        root = self._tampered_root(chain_mutator=mutate)
-        self.assertTrue(validate(root))
+        self.assertTrue(validate(self._tampered_root(chain_mutator=mutate)))
 
     def test_rejects_signer_gate_substring_bypass(self) -> None:
-        def mutate(c):
-            c["networks"][0]["signer_requirements"] = "NOT_OWNER_REQUIRED"
-        root = self._tampered_root(chain_mutator=mutate)
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"signer_requirements": "NOT_OWNER_REQUIRED"}))
         self.assertTrue(validate(root))
 
     def test_rejects_unknown_signer_policy_even_with_owner_required_substring(self) -> None:
-        def mutate(c):
-            c["networks"][0]["signer_requirements"] = "OWNER_REQUIRED_BUT_AUTOMATION_MAY_BROADCAST"
-        root = self._tampered_root(chain_mutator=mutate)
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"signer_requirements": "OWNER_REQUIRED_BUT_AUTOMATION_MAY_BROADCAST"}))
         self.assertTrue(validate(root))
 
     def test_rejects_non_string_signer_policy_without_exception(self) -> None:
         for malformed in (["OWNER_REQUIRED_FOR_ANY_BROADCAST"], {"policy": "OWNER_REQUIRED_FOR_ANY_BROADCAST"}):
             with self.subTest(malformed=malformed):
-                def mutate(c, value=malformed):
-                    c["networks"][0]["signer_requirements"] = value
-                root = self._tampered_root(chain_mutator=mutate)
+                root = self._tampered_root(chain_mutator=lambda c, value=malformed: c["networks"][0].update({"signer_requirements": value}))
                 failures = validate(root)
-                self.assertTrue(failures)
                 self.assertTrue(any("signer gate" in failure for failure in failures))
+
+    def test_rejects_token_role_drift(self) -> None:
+        root = self._tampered_root(lambda a: a["transferable_utility_tokens"][0].update({"role": "TREASURY_CONTROL"}))
+        self.assertTrue(any("role drift" in f for f in validate(root)))
+
+    def test_rejects_srp_classification_drift(self) -> None:
+        root = self._tampered_root(lambda a: a["credential"].update({"classification": "TRANSFERABLE_TOKEN"}))
+        self.assertTrue(any("SRP classification" in f for f in validate(root)))
+
+    def test_rejects_native_chain_identity_drift(self) -> None:
+        root = self._tampered_root(lambda a: a["native_coin"].update({"native_chain": "ETHEREUM_MAINNET"}))
+        self.assertTrue(any("chain identity" in f for f in validate(root)))
+
+    def test_rejects_owner_required_gate_removal(self) -> None:
+        root = self._tampered_root(lambda a: a["owner_required"].remove("mainnet deployment"))
+        self.assertTrue(any("OWNER_REQUIRED" in f for f in validate(root)))
+
+    def test_rejects_unselected_source_claiming_bytecode(self) -> None:
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"bytecode_sha256": "1" * 64}))
+        self.assertTrue(any("bytecode digest" in f for f in validate(root)))
+
+    def test_rejects_unselected_source_claiming_toolchain_locks(self) -> None:
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"compiler_lock": "solc-0.8.30", "dependency_lock": "fake-lock"}))
+        self.assertTrue(any("compiler/dependency" in f for f in validate(root)))
+
+    def test_rejects_selected_source_without_promotion_contract(self) -> None:
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"source": "contracts/Token.sol"}))
+        self.assertTrue(any("source must remain explicitly unselected" in f for f in validate(root)))
+
+    def test_rejects_global_invariant_removal(self) -> None:
+        root = self._tampered_root(chain_mutator=lambda c: c["global_invariants"].remove("NO_SECRET_OR_WALLET_ACCESS"))
+        self.assertTrue(any("global crypto invariant" in f for f in validate(root)))
+
+    def test_rejects_readiness_field_surface_expansion(self) -> None:
+        root = self._tampered_root(chain_mutator=lambda c: c["networks"][0].update({"mainnet_rpc": "https://example.invalid"}))
+        self.assertTrue(any("readiness field surface" in f for f in validate(root)))
 
 
 if __name__ == "__main__":
