@@ -52,13 +52,16 @@ class StableReleaseContract(unittest.TestCase):
         self.assertFalse(self.state['live_trading_enabled'])
         self.assertFalse(self.state['wallet_material_included'])
 
-    def test_rollback_is_preserved_while_v50_is_root(self):
+    def test_rollback_donors_are_preserved_while_minimal_v1_is_active(self):
         self.assertTrue(self.release['rollback']['available'])
-        self.assertEqual(self.release['rollback']['projection'], '/r3')
+        for donor in ['index.html', 'stable/index.html', 'v50.html']:
+            self.assertTrue((ROOT / donor).is_file(), donor)
         rewrites = {(r['source'], r['destination']) for r in self.vercel['rewrites']}
-        self.assertIn(('/r3', '/index.html'), rewrites)
-        self.assertIn(('/stable', '/stable/index.html'), rewrites)
-        self.assertIn(('/', '/v50.html'), rewrites)
+        for source in ['/', '/telegram', '/telegram/', '/android', '/android/', '/presale', '/presale/']:
+            self.assertIn((source, '/launch/index.html'), rewrites)
+        self.assertNotIn(('/r3', '/index.html'), rewrites)
+        self.assertNotIn(('/stable', '/stable/index.html'), rewrites)
+        self.assertNotIn(('/', '/v50.html'), rewrites)
 
 
 if __name__ == '__main__':
