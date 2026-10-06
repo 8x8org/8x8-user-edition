@@ -46,6 +46,10 @@ The public repository is evidence-gated. A feature can be implemented or even de
 
 Machine-readable public state is published in [`state/public-state.json`](state/public-state.json) and [`public/reality-snapshot.json`](public/reality-snapshot.json).
 
+## Install / First Blink
+
+See [INSTALL.md](INSTALL.md) for copy-paste Termux local bootstrap, tenant/device-enrollment truth boundaries, credential-broker rules, and the APK release gate.
+
 ## Run locally
 
 No package installation is required.
