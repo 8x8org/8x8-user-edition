@@ -1,0 +1,70 @@
+{
+  "schema": "8x8.public_proof_gallery.v1",
+  "root": "fabric://8x8/core",
+  "prepared_at": "2026-10-06",
+  "canonical_checkpoint": "6952e1d4cbd1bb2e7568765651ce8fc0d34147b1",
+  "truth_classes": [
+    "PAST_PRESERVED",
+    "PRESENT_PROVEN",
+    "FUTURE_GATED"
+  ],
+  "scheduler": {
+    "exact_lane_count": 5,
+    "lanes": [
+      {
+        "name": "Execute",
+        "minute": 0
+      },
+      {
+        "name": "Research",
+        "minute": 12
+      },
+      {
+        "name": "Verify",
+        "minute": 24
+      },
+      {
+        "name": "Create",
+        "minute": 36
+      },
+      {
+        "name": "Improve",
+        "minute": 48
+      }
+    ],
+    "sixth_lane": false
+  },
+  "claims": {
+    "top_1": "UNPROVEN_REQUIRES_EXTERNAL_BENCHMARK",
+    "full_agi": "NOT_CLAIMED",
+    "human_equivalent_consciousness": "NOT_CLAIMED",
+    "all_agents_productive": "NOT_CLAIMED",
+    "all_connectors_productive": "NOT_CLAIMED"
+  },
+  "evaluation_tracks": [
+    "evidence_and_governance",
+    "agent_coordination_and_attribution",
+    "bounded_device_embodiment",
+    "creation_and_publishing",
+    "public_interest_pilots",
+    "cybersecurity_and_cryptographic_verification"
+  ],
+  "relationship_law": "CONTACTED != REPLIED != ROUTE_CONFIRMED != APPLIED != ACCEPTED != PARTNER",
+  "publishing_law": "CREATED != STAGED != DISPATCHED != PUBLISHED != VERIFIED_DELIVERED != ENGAGED",
+  "relationship_evidence": {
+    "evidenced_party_count": 25,
+    "partner_claim_count": 0,
+    "source": "config/partnerships/EXTERNAL_RELATIONSHIP_EVIDENCE_MATRIX_V1.json"
+  },
+  "first_party_syndication": {
+    "state": "IMPLEMENTED_SOURCE_ONLY",
+    "outputs": [
+      "CONTENT_ADDRESSED_MANIFEST",
+      "JSON_FEED",
+      "ATOM_FEED",
+      "STATIC_OWNED_WEB_PROJECTION"
+    ],
+    "hosting_truth": "SOURCE_READY_NE_HOSTED_NE_REACHABLE_NE_VERIFIED_REACHABLE"
+  },
+  "reconstruction_anchor": "config/ops/ONE_FABRIC_RECONSTRUCTION_ANCHOR_V1.json"
+}
