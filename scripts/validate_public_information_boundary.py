@@ -140,7 +140,21 @@ def content_policy_violations(files: Sequence[Path]) -> list[str]:
         except UnicodeDecodeError:
             violations.append(f"classification_drift_non_utf8_text: {rel}")
             continue
-        violations.extend(f"{label}: {rel}" for label, pattern in PATTERNS.items() if pattern.search(text))
+        for label, pattern in PATTERNS.items():
+            matches = list(pattern.finditer(text))
+            if not matches:
+                continue
+            # Public install documentation may name Termux as a user-chosen
+            # terminal app. That is a product install target, not disclosure of
+            # the private owner mobile runtime. Keep all other private-mobile
+            # identifiers forbidden, including Samsung Galaxy and Ubuntu PRoot.
+            if (
+                label == "private_mobile_runtime"
+                and rel in {"README.md", "INSTALL.md"}
+                and all(match.group(0).lower() == "termux" for match in matches)
+            ):
+                continue
+            violations.append(f"{label}: {rel}")
     return violations
 
 
