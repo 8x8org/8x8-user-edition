@@ -4,6 +4,8 @@ import {createServer} from 'node:http';
 import {readFileSync} from 'node:fs';
 import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
+const SCENARIOS=JSON.parse(readFileSync(new URL('../data/access_scenarios_v1.json',import.meta.url),'utf8'));
+const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
 // Source-backed atlas projection: render from ONE catalog; no duplicate UI authority.
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const MARKET_CLIENT=readFileSync(new URL('../ui/market-evidence.mjs',import.meta.url),'utf8').replace(/^export /gm,'');
@@ -13,7 +15,8 @@ const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8
  .replace('<!-- EXPERIENCE_ATLAS_ITEMS -->',ATLAS_ITEMS)
  .replace('<!-- EXPERIENCE_TOTAL -->',String(atlas.families.length))
  .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)))
- .replace('<!-- MARKET_VALIDATOR_JS -->',MARKET_CLIENT);
+ .replace('<!-- MARKET_VALIDATOR_JS -->',MARKET_CLIENT)
+ .replace('<!-- SCENARIO_CATALOG_JSON -->',SCENARIO_EMBED);
 
 // Pure source renderer for offline/browser contract testing. This is not a network endpoint.
 export function renderPublicUI(){return UI;}
@@ -34,7 +37,9 @@ const TOOLS=Object.freeze({
  'one_fabric.experience_atlas':'Explore the extensible 8x8 universal experience atlas, including all 20 source-classified families',
  'one_fabric.market_media_readiness':'Inspect market-feed provenance, chart readiness, Spotify and multimedia restrictions; no invented live data',
  'one_fabric.market_snapshot_contract':'Inspect the fail-closed local market chart import schema and explicitly unverified provenance',
- 'one_fabric.connector_inventory_status':'Inspect time-stamped advertised tool census without claims of installation or account access'
+ 'one_fabric.connector_inventory_status':'Inspect time-stamped advertised tool census without claims of installation or account access',
+ 'one_fabric.access_rescue':'Explore missing-access states and safe reversible connection guidance without collecting secrets',
+ 'one_fabric.scenario_catalog':'Explore eight source-classified cross-domain scenarios, agent role templates and acceptance receipts'
 });
 const json=(body,status=200,headers={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store',...headers}});
 const https=x=>{try{return new URL(x).protocol==='https:'}catch{return false}};
@@ -78,6 +83,8 @@ function value(name){
   case 'one_fabric.market_media_readiness':return {...COMMON,market_media_readiness:DATA.market_media_readiness};
   case 'one_fabric.market_snapshot_contract':return {...COMMON,contract:DATA.market_media_readiness.local_market_snapshot_contract,live_feed_connected:false,execution_authority:false};
   case 'one_fabric.connector_inventory_status':return {...COMMON,connector_census:DATA.connector_census};
+  case 'one_fabric.access_rescue':return {...COMMON,access_states:SCENARIOS.missing_access_states,privacy:SCENARIOS.privacy,external_connection_performed:false};
+  case 'one_fabric.scenario_catalog':return {...COMMON,scenarios:SCENARIOS.flows,classification:SCENARIOS.classification,automatic_execution:false};
   default:throw Error('UNKNOWN_TOOL');
  }
 }
