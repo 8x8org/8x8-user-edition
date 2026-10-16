@@ -23,6 +23,9 @@
 #eightx8-bubble-root .eightx8-row{display:flex;justify-content:space-between;gap:9px;border-bottom:1px solid #2c455a;padding:7px 0}
 #eightx8-bubble-root .eightx8-row b{font-size:11px;text-align:right}
 #eightx8-bubble-root .eightx8-warning{padding:8px 9px;border:1px solid #856a41;background:#362a1d;border-radius:8px;color:#ffdcac;margin:8px 0}
+#eightx8-bubble-root .eightx8-voicebtn{margin:6px 6px 3px 0;padding:9px 10px;border-radius:9px;border:1px solid #58abd5;color:#e8f8ff;background:#16547a;cursor:pointer}
+#eightx8-bubble-root .eightx8-voicebtn:disabled{opacity:.46;cursor:not-allowed}
+#eightx8-bubble-root .eightx8-voicefeedback{min-height:28px;border:1px solid #31506b;border-radius:8px;padding:8px;background:#0b2133;color:#dcecf6;margin:7px 0}
 #eightx8-bubble-root .eightx8-action{display:inline-block;margin:7px 8px 2px 0;padding:7px 10px;color:#eef9ff!important;background:#174f73;border:1px solid #5eabd2;border-radius:8px;text-decoration:none}
 #eightx8-bubble-root :focus-visible{outline:2px solid #e3ca7a;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){#eightx8-bubble-root *{animation:none!important}}
@@ -41,8 +44,94 @@
   const body=document.createElement("div");body.className="eightx8-body";body.id="eightx8-bubble-body";body.setAttribute("role","tabpanel");body.setAttribute("aria-live","polite");
   const launch=document.createElement("button");launch.type="button";launch.className="eightx8-orb";launch.textContent="8×8";launch.setAttribute("aria-expanded","false");launch.setAttribute("aria-controls",panel.id);launch.setAttribute("aria-label","Open 8x8 One Fabric bubble");
   let active="status";
-  const tabDefs=[["status","Status"],["agents","Agents"],["reports","Reports"],["access","Access"]];
+  const tabDefs=[["status","Status"],["agents","Agents"],["reports","Reports"],["access","Access"],["voice","Voice"]];
   const tabButtons=new Map();
+  // Voice is foreground / explicit tap only. This does not connect a model,
+  // accept a secret, start an ambient listener or send events to any 8x8 API.
+  let recognition=null;
+  let listening=false;
+  let statusNote="No microphone or speech operation started.";
+  const synth=()=>typeof window!=="undefined" && window.speechSynthesis;
+  const recognitionCtor=()=>window.SpeechRecognition||window.webkitSpeechRecognition||null;
+  const updateNote=(message)=>{
+    statusNote=message;
+    const node=document.getElementById("eightx8-voice-state");
+    if(node)node.textContent=message;
+  };
+  function cancelVoice(){
+    if(recognition){try{recognition.abort();}catch(_e){} recognition=null;}
+    listening=false;
+    try{synth()?.cancel();}catch(_e){}
+  }
+  const utteranceFor=()=>{
+    switch(active){
+      case "agents":return "8x8 agent roster is source indexed. Verified live model replies and council quorum are not established.";
+      case "reports":return "8x8 run reports require a signed, authenticated event feed. No current ChatGPT run is connected to this bubble.";
+      case "access":return "Access rescue is read only. Never say or paste private keys or passwords into this demonstration.";
+      default:return "8x8 One Fabric voice preview. No private agent event stream or 24 hour runtime is connected here.";
+    }
+  };
+  function speakCurrent(){
+    if(!synth()||!window.SpeechSynthesisUtterance){updateNote("Speech output unsupported here. Try Android system TTS in a verified native build.");return;}
+    try{
+      synth().cancel();
+      const u=new window.SpeechSynthesisUtterance(utteranceFor());
+      u.lang="en-US";
+      u.rate=1.0;
+      u.volume=0.9;
+      u.onerror=()=>updateNote("Speech output failed or was blocked by this browser.");
+      u.onend=()=>updateNote("One spoken interface status completed. No agent conversation took place.");
+      synth().speak(u);
+      updateNote("Reading verified interface status aloud; this is not a remote FlashTM8 model reply.");
+    }catch(_e){updateNote("Speech playback is unavailable in this browser.");}
+  }
+  function interpretVoiceCommand(raw){
+    // No transcript is persisted, echoed or transmitted. Only allowlisted
+    // local navigation commands can have effects.
+    const command=String(raw||"").toLowerCase().trim().replace(/[.!?]+$/,"");
+    let match=command.match(/^(?:show |open |go to )?(status|agents|reports|access|voice)$/);
+    if(match){
+      active=match[1];render();
+      updateNote("Recognized local navigation only. No agent or device command was executed.");
+    }else if(/^(help|what can you do)$/.test(command)){
+      updateNote("Supported local commands: status, agents, reports, access, voice, read status, stop voice.");
+    }else if(/^(read status|speak status|talk to me)$/.test(command)){
+      speakCurrent();
+    }else if(/^(stop voice|stop speaking|be quiet)$/.test(command)){
+      cancelVoice();
+      updateNote("Voice playback stopped. This is not the system-wide owner STOP.");
+    }else{
+      updateNote("Unsupported local voice command. Nothing stored, transmitted, approved or executed.");
+    }
+  }
+  function startListening(){
+    const Speech=recognitionCtor();
+    if(!Speech){updateNote("Browser speech recognition unavailable. The device needs a separately verified native speech route.");return;}
+    if(listening){updateNote("A one-shot listening request is already open.");return;}
+    // Stop current TTS to avoid listening to our own synthesized speech.
+    try{synth()?.cancel();}catch(_e){}
+    let rec;
+    try{
+      rec=new Speech();
+      rec.lang="en-US";
+      rec.continuous=false;
+      rec.interimResults=false;
+      rec.maxAlternatives=1;
+      rec.onresult=(event)=>{
+        const result=event?.results?.[0]?.[0]?.transcript;
+        interpretVoiceCommand(result);
+      };
+      rec.onerror=()=>{updateNote("Microphone or recognition permission denied, unsupported or interrupted.");};
+      rec.onend=()=>{
+        listening=false;
+        if(recognition===rec)recognition=null;
+      };
+      rec.start();
+      recognition=rec;
+      listening=true;
+      updateNote("One-shot listening requested. Browser/provider may process audio; no 8x8 recording is saved.");
+    }catch(_e){listening=false;recognition=null;updateNote("Speech recognition could not start or requires permission.");}
+  }
   const append=(parent,tag,value,cl)=>{const el=document.createElement(tag);if(value!==undefined)el.textContent=value;if(cl)el.className=cl;parent.append(el);return el;};
   const line=(k,v)=>{const row=append(body,"div",undefined,"eightx8-row");append(row,"span",k);append(row,"b",v);};
   const link=(label,href)=>{const a=append(body,"a",label,"eightx8-action");a.href=href;a.rel="noopener";};
@@ -70,6 +159,22 @@
       line("Report provenance","Source only");
       append(body,"p","A genuine run report requires recorded actions, receipt IDs, evidence timestamps, gaps, blockers, decisions and next steps. No hidden model thoughts or raw secrets will be exposed.");
       link("Review Observatory","/observatory/");
+    }else if(active==="voice"){
+      append(body,"h3","Jarvis-style voice interface · local pilot");
+      append(body,"p","Tap to speak or listen once. Speech playback is actual browser TTS, not a connected AI model. Microphone recognition depends on device/browser permissions and may use a provider service.");
+      line("Speech output",synth() && window.SpeechSynthesisUtterance?"Browser API present · audio unverified":"Unavailable here");
+      line("Microphone input",recognitionCtor()?"One-shot API present · consent required":"Unavailable here");
+      line("FlashTM8 model conversation","Not connected");
+      line("Ambient listening","OFF");
+      const play=append(body,"button","🔊 Speak current status","eightx8-voicebtn");
+      play.type="button";play.id="eightx8-voice-play";play.addEventListener("click",speakCurrent);
+      const mic=append(body,"button","🎙 Listen once","eightx8-voicebtn");
+      mic.type="button";mic.id="eightx8-voice-mic";mic.addEventListener("click",startListening);
+      const stop=append(body,"button","■ Stop voice","eightx8-voicebtn");
+      stop.type="button";stop.id="eightx8-voice-stop";stop.addEventListener("click",()=>{cancelVoice();updateNote("Voice input/output stopped locally. The 8x8 owner STOP remains a separate gate.");});
+      const note=append(body,"div",statusNote,"eightx8-voicefeedback");
+      note.id="eightx8-voice-state";note.setAttribute("role","status");
+      append(body,"p","Say: status, agents, reports, access, voice, read status, stop voice, help. Commands only navigate this visible UI or control TTS. No hidden system or device action.");
     }else{
       append(body,"h3","Access Rescue");
       append(body,"p","This public preview cannot collect credentials. Use an authenticated owner-only broker or provider OAuth flow after connection gates pass.");
@@ -88,9 +193,15 @@
     tabs.append(b);tabButtons.set(id,b);
   }
   panel.append(head,tabs,body);root.append(panel,launch);
-  const setOpen=(v)=>{panel.hidden=!v;launch.setAttribute("aria-expanded",String(v));if(v){render();close.focus();}else launch.focus();};
+  const setOpen=(v)=>{
+    if(!v){cancelVoice();statusNote="Voice paused when bubble closed.";}
+    panel.hidden=!v;launch.setAttribute("aria-expanded",String(v));
+    if(v){render();close.focus();}else launch.focus();
+  };
   launch.addEventListener("click",()=>setOpen(panel.hidden));
   close.addEventListener("click",()=>setOpen(false));
   root.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden)setOpen(false);});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelVoice();updateNote("Voice paused when page became hidden.");}});
+  window.addEventListener("pagehide",cancelVoice);
   document.body.append(root);
 })();
