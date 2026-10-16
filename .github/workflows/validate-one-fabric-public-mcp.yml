@@ -22,5 +22,6 @@ jobs:
           node-version: '22'
       - name: Check MCP syntax
         run: node --check plugins/one-fabric-world/server/public-mcp.mjs
+          node --check plugins/one-fabric-world/ui/market-evidence.mjs
       - name: Run isolated public MCP contract tests
-        run: node --test plugins/one-fabric-world/tests/public-mcp.test.mjs
+        run: node --test plugins/one-fabric-world/tests/*.test.mjs
