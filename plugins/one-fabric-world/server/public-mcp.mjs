@@ -6,12 +6,14 @@ import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
 // Source-backed atlas projection: render from ONE catalog; no duplicate UI authority.
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MARKET_CLIENT=readFileSync(new URL('../ui/market-evidence.mjs',import.meta.url),'utf8').replace(/^export /gm,'');
 const atlas=DATA.experience_atlas;
 const ATLAS_ITEMS=atlas.families.map(f=>'<details class="family"><summary>'+esc(f.title)+' <span class="state">SOURCE ONLY</span></summary><ul>'+f.features.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>').join('');
 const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8')
  .replace('<!-- EXPERIENCE_ATLAS_ITEMS -->',ATLAS_ITEMS)
  .replace('<!-- EXPERIENCE_TOTAL -->',String(atlas.families.length))
- .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)));
+ .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)))
+ .replace('<!-- MARKET_VALIDATOR_JS -->',MARKET_CLIENT);
 
 const SCOPE='8x8.public.read';
 const UI_URI='ui://8x8/one-fabric-user-edition-hub.html';
@@ -28,7 +30,9 @@ const TOOLS=Object.freeze({
  'one_fabric.connector_guidance':'Recommend optional connections, with consent required separately',
  'one_fabric.platform_surfaces':'Review one 8x8 World projection across web, ChatGPT, APK and Telegram',
  'one_fabric.experience_atlas':'Explore the extensible 8x8 universal experience atlas, including all 20 source-classified families',
- 'one_fabric.market_media_readiness':'Inspect market-feed provenance, chart readiness, Spotify and multimedia restrictions; no invented live data'
+ 'one_fabric.market_media_readiness':'Inspect market-feed provenance, chart readiness, Spotify and multimedia restrictions; no invented live data',
+ 'one_fabric.market_snapshot_contract':'Inspect the fail-closed local market chart import schema and explicitly unverified provenance',
+ 'one_fabric.connector_inventory_status':'Inspect time-stamped advertised tool census without claims of installation or account access'
 });
 const json=(body,status=200,headers={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store',...headers}});
 const https=x=>{try{return new URL(x).protocol==='https:'}catch{return false}};
@@ -70,6 +74,8 @@ function value(name){
   case 'one_fabric.platform_surfaces':return {...COMMON,surfaces:DATA.surfaces};
   case 'one_fabric.experience_atlas':return {...COMMON,experience_atlas:DATA.experience_atlas,legacy_domains:DATA.domains};
   case 'one_fabric.market_media_readiness':return {...COMMON,market_media_readiness:DATA.market_media_readiness};
+  case 'one_fabric.market_snapshot_contract':return {...COMMON,contract:DATA.market_media_readiness.local_market_snapshot_contract,live_feed_connected:false,execution_authority:false};
+  case 'one_fabric.connector_inventory_status':return {...COMMON,connector_census:DATA.connector_census};
   default:throw Error('UNKNOWN_TOOL');
  }
 }
