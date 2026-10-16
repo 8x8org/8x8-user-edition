@@ -1,22 +1,88 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>8x8 One Fabric — User Hub</title><style>
-body{margin:0;font-family:system-ui,sans-serif;background:#071526;color:#edf8ff}main{max-width:850px;margin:auto;padding:24px}.mark{color:#63d4f8}h1{font-size:clamp(28px,6vw,48px)}.panel{background:#102a43;border:1px solid #42647e;border-radius:16px;padding:20px;margin:18px 0}.modules{display:flex;gap:9px;flex-wrap:wrap}.module{border:1px solid #536e87;border-radius:10px;padding:9px 12px}.muted{color:#a1bed0;font-size:14px;line-height:1.6}a{color:#a4ecff}
-</style></head><body><main><p class="mark">⚡ ©8X8 · ONE FABRIC</p><h1>Your 8x8 World</h1><p class="muted">A unified future account interface spanning ChatGPT, web, Android and Telegram. Catalog only. This is a public-safe prelaunch projection, not an authenticated session.</p><section class="panel"><h2>8x8 ID — not connected</h2><p class="muted">OAuth linking requires a separately deployed verified identity provider, individual consent and protected tenant data.</p><a href="https://github.com/8x8org/8x8-user-edition/pull/200">Inspect the security and onboarding proposal</a></section><section class="panel"><h2>All One Fabric domains</h2><div class="modules"><span class="module">Agents</span>
-<span class="module">Models</span>
-<span class="module">Memory</span>
-<span class="module">World</span>
-<span class="module">Studio</span>
-<span class="module">Publishing</span>
-<span class="module">Finance</span>
-<span class="module">Trading</span>
-<span class="module">Wallet</span>
-<span class="module">Blockchain</span>
-<span class="module">Games</span>
-<span class="module">Radio</span>
-<span class="module">Books</span>
-<span class="module">Research</span>
-<span class="module">Planet</span>
-<span class="module">Security</span>
-<span class="module">Devices</span>
-<span class="module">Community</span>
-<span class="module">Settings</span></div></section><section class="panel"><h2>Protected default agent templates</h2><p class="muted">Seraphim · FlashTM8 Assistant · Aegis · Jarvis · Hermes · Anvil. User memory stays user-owned; founder-private memory and permissions are excluded.</p></section><section class="panel"><h2>Plan targets — not live</h2><p>88 introductory minutes · $8.88 monthly premium</p><p class="muted">External connectors and trading, publication, devices and wallet permissions each require separate approval.</p></section></main></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>8x8 One Fabric — Universal World Hub</title>
+<style>
+:root{font:16px/1.5 system-ui,-apple-system,sans-serif;color:#e8f4ff;background:#060e1d}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 88% 0%,#173b63 0%,transparent 38%),#060e1d;color:#e8f4ff}
+main{max-width:1180px;margin:auto;padding:18px clamp(14px,3vw,36px) 80px}
+a{color:#91e5ff}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #6ce8ff;outline-offset:3px}
+header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid #314967}
+.mark{font-weight:900;letter-spacing:.1em;color:#7ee6ff}h1{font-size:clamp(26px,4.5vw,51px);line-height:1.15;margin:22px 0 8px}
+h2{font-size:clamp(19px,2.5vw,26px);margin:0 0 12px}h3{font-size:17px;margin:0 0 7px}
+p{margin:6px 0 12px}.muted{color:#b0c6d9;font-size:14px}.tag,.state{font-size:11px;font-weight:800;letter-spacing:.04em;color:#a5d9ef;border:1px solid #3f6682;background:#13314b;border-radius:16px;padding:5px 9px}
+.state{color:#d8c3a0;border-color:#6a6145;background:#393426;margin-left:auto;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.panel{background:#102338e8;border:1px solid #33506b;border-radius:16px;padding:18px;min-width:0;box-shadow:0 10px 40px #0002}
+.span12{grid-column:span 12}.span7{grid-column:span 7}.span5{grid-column:span 5}.span6{grid-column:span 6}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:18px 0}.metric{background:#0c1c2e;border:1px solid #2a4862;padding:12px;border-radius:12px}
+.metric strong{font-size:clamp(19px,3vw,30px);display:block;line-height:1.3}.metric span{color:#adc4d8;font-size:12px}
+.chart{min-height:210px;background:repeating-linear-gradient(0deg,transparent 0 39px,#27405c 40px),repeating-linear-gradient(90deg,transparent 0 69px,#27405c 70px),#081627;border:1px solid #456781;border-radius:12px;display:grid;place-items:center;text-align:center;padding:20px;color:#b8d2e4}
+.chart strong{font-size:19px;color:#fff}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chips span{background:#182e44;color:#c8deef;padding:5px 10px;border-radius:7px;font-size:12px}
+.player{width:100%;background:#081627;border-radius:10px;min-height:46px;max-height:350px}input[type=file]{width:100%;color:#cde6f8;margin:8px 0}
+button{background:#125479;color:#fff;border:1px solid #52add4;padding:10px 15px;border-radius:10px;cursor:pointer;font-weight:700}
+button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;border:1px solid #557894;color:#fff;border-radius:9px;padding:11px;font:inherit}
+.embedded{width:100%;border:0;border-radius:12px;min-height:155px;margin-top:10px}
+.family{border:1px solid #32516e;background:#0c1e32;border-radius:10px;margin:7px 0}
+.family summary{cursor:pointer;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:13px;font-weight:650}
+.family ul{display:flex;gap:8px;flex-wrap:wrap;margin:0 12px 14px;padding:0;list-style:none}.family li{background:#192f46;border:1px solid #334c61;border-radius:8px;padding:5px 9px;font-size:13px}
+.truth{margin:10px 0;padding:11px 12px;border-left:3px solid #74c6e8;background:#102b42;color:#daeefa;font-size:13px}
+.privacy{font-size:13px;color:#bdd5e8}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:760px){.span7,.span5,.span6{grid-column:span 12}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{gap:11px}.panel{padding:14px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head>
+<body><main>
+<header><div class="mark">⚡ ©️8x8 by FlashTM8 · ONE FABRIC</div><span class="tag">CATALOG ONLY · PRELAUNCH</span></header>
+<h1>Your 8x8 World</h1>
+<p class="muted">One sovereign capability graph across ChatGPT MCP, World web/PWA, Android APK, Telegram mini app and future iPhone. This is a public-safe prelaunch preview, not an authenticated 8x8 session, not a trading terminal, and not a live market feed.</p>
+<div class="stats" aria-label="Capability and service truth">
+<div class="metric"><strong><!-- EXPERIENCE_TOTAL --></strong><span>Experience families (source)</span></div>
+<div class="metric"><strong><!-- CAPABILITY_TOTAL --></strong><span>Feature entries (source)</span></div>
+<div class="metric"><strong>—</strong><span>Verified live market trades</span></div>
+<div class="metric"><strong>UNKNOWN</strong><span>Connected user services</span></div>
+</div>
+<div class="grid">
+<section class="panel span7" aria-label="Market intelligence"><h2>Markets · Charts · Trade Counts</h2>
+<div class="chips"><span>Charts: no authorized feed</span><span>Trades: unavailable</span><span>Account fills: unavailable</span><span>Orders: gated</span></div>
+<div class="chart" role="img" aria-label="Empty chart grid because market data has not been authenticated or licensed">
+<div><strong>Market feed not connected</strong><p>Live candlesticks and massive trade-count displays appear only after independent data licensing, timestamps, source verification and authorized backend integration.</p></div>
+</div><p class="truth">Market-wide trade counts, your filled orders, bot execution counts, trade volume and simulated trades are different metrics. Each needs source, venue, window, units, delay/freshness and provenance. No invented values.</p></section>
+<section class="panel span5"><h2>Secure status · Three Gates</h2><p><strong>Gate 1:</strong> World welcome / public preview</p><p><strong>Gate 2:</strong> Verified 8x8 ID and tenant permissions — NOT VERIFIED</p><p><strong>Gate 3:</strong> Authorized 8x8 World capabilities — GATED</p>
+<div class="truth">No API secrets, wallet phrases, provider keys, orders, posts, mining jobs or financial transactions are accepted by this preview.</div>
+<p class="muted">OWNER_ROOT and owner-private resources are excluded from public user tenants. STOP, revocation and scoped leases are release requirements.</p></section>
+<section class="panel span6"><h2>8x8 Cinema · Video Player</h2>
+<p class="muted">Select a video you own or are authorized to play. The browser opens it locally; this does not upload, publish or distribute it.</p>
+<label for="video-file">Local video file</label><input id="video-file" type="file" accept="video/*">
+<video id="video-player" class="player" controls playsinline preload="none" aria-label="Local 8x8 video preview"></video>
+<p id="video-state" class="muted" role="status">No video selected. Studio streaming library is not connected.</p></section>
+<section class="panel span6"><h2>Music · Spotify · Radio</h2>
+<p class="muted">Preview an authorized local audio file, or open an official Spotify Embed for a public supported Spotify share link. Neither creates a Spotify account connection.</p>
+<label for="audio-file">Local audio file</label><input id="audio-file" type="file" accept="audio/*">
+<audio id="audio-player" class="player" controls preload="none" aria-label="Local 8x8 audio preview"></audio>
+<label for="spotify-link">Official Spotify share link</label><input id="spotify-link" type="url" placeholder="https://open.spotify.com/track/…" inputmode="url" autocomplete="off">
+<p><button type="button" id="spotify-load">Open Spotify Embed</button></p>
+<p id="spotify-state" class="muted" role="status">Spotify account connection unverified. Embed playback, availability and rights depend on Spotify.</p>
+<div id="spotify-container"></div>
+<p class="privacy">Spotify tracks may not be synced into 8x8 films, re-broadcast as radio or monetized as a streaming integration without the applicable rights and approvals.</p></section>
+<section class="panel span12"><h2>Universal One Fabric Atlas</h2>
+<p class="muted">Source-backed, expandable navigation. Every preserved feature remains in the canonical recovery graph even if it is not yet running. Expand a family to explore its capabilities.</p>
+<div id="experience-atlas"><!-- EXPERIENCE_ATLAS_ITEMS --></div>
+<p class="truth">Source present ≠ deployed ≠ authenticated ≠ granted ≠ productive ≠ verified. This atlas is a discovery projection, not evidence that all features are installed or operational.</p></section>
+<section class="panel span12"><h2>Cross-surface release truth</h2><div class="chips"><span>ChatGPT MCP: deployment gated</span><span>World PWA: source present</span><span>Android APK: release unverified</span><span>Telegram mini app: auth unverified</span><span>iPhone: future gated</span></div>
+<p class="muted">88 introductory minutes and $8.88/month are proposed plans, not active subscriptions. Direct providers, models and exchange connections remain separately authorized and quota-governed.</p>
+<p><a href="https://github.com/8x8org/8x8-user-edition/pull/200" target="_blank" rel="noopener noreferrer">Review source, security gates and rollout</a></p>
+</section></div>
+</main>
+<script>
+(()=>{'use strict';
+function localPreview(fileId,playerId,statusId){const input=document.getElementById(fileId),player=document.getElementById(playerId),status=document.getElementById(statusId);let old=null;
+input.addEventListener('change',()=>{const file=input.files&&input.files[0];if(old){player.pause();player.removeAttribute('src');player.load();URL.revokeObjectURL(old);old=null}if(!file){status.textContent='No local file selected.';return}const expected=fileId==='video-file'?'video/':'audio/';if(!file.type.startsWith(expected)){status.textContent='Unsupported media type.';return}old=URL.createObjectURL(file);player.src=old;status.textContent='Local preview ready; press play. No network upload or publishing.';});
+window.addEventListener('pagehide',()=>{if(old)URL.revokeObjectURL(old)});
+}
+localPreview('video-file','video-player','video-state');localPreview('audio-file','audio-player','spotify-state');
+const button=document.getElementById('spotify-load'),status=document.getElementById('spotify-state'),container=document.getElementById('spotify-container');
+button.addEventListener('click',()=>{const raw=document.getElementById('spotify-link').value.trim();let u;try{u=new URL(raw)}catch{status.textContent='Enter a valid Spotify share URL.';return}
+const parts=u.pathname.split('/').filter(Boolean),kinds=new Set(['track','album','playlist','show','episode','artist']);if(u.origin!=='https://open.spotify.com'||parts.length!==2||!kinds.has(parts[0])||!/^[a-zA-Z0-9]{10,64}$/.test(parts[1])){status.textContent='Only official public open.spotify.com share links are supported.';return}
+container.replaceChildren();const iframe=document.createElement('iframe');iframe.className='embedded';iframe.title='Spotify official content embed';iframe.loading='lazy';iframe.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.src='https://open.spotify.com/embed/'+parts[0]+'/'+parts[1];container.appendChild(iframe);status.textContent='Official Spotify Embed loaded on request. Provider permissions and licensing still apply.';
+});
+})();
+</script></body></html>
