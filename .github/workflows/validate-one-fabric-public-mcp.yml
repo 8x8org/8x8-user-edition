@@ -1,0 +1,26 @@
+name: Validate One Fabric Public MCP Atlas
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-public-mcp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout exact submitted head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Check MCP syntax
+        run: node --check plugins/one-fabric-world/server/public-mcp.mjs
+      - name: Run isolated public MCP contract tests
+        run: node --test plugins/one-fabric-world/tests/public-mcp.test.mjs
