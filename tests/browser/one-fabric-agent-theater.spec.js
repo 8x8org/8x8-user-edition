@@ -5,19 +5,20 @@ test.beforeAll(async()=>{
 });
 test.beforeEach(async({page})=>{
   await page.goto('/stable/index.html');
-  page.on('pageerror',e=>console.log('EIGHTX8_AGENT_STAGE_JS_ERROR',e.message));
   await page.setContent(renderAgentTheaterUI(),{waitUntil:'load'});
-  console.log('EIGHTX8_AGENT_STAGE_INITIAL',JSON.stringify(await page.evaluate(()=>({initialized:document.querySelectorAll('#transcript .entry').length,demo:!!document.getElementById('demo'),speaker:document.getElementById('speaker')?.textContent}))))
 });
 test('restored original cinematic portraits and ChatGPT connector are source-labeled',async({page})=>{
   await expect(page.getByRole('heading',{name:/Agents that look, speak and work/})).toBeVisible();
   await expect(page.locator('#rail button')).toHaveCount(8);
   await expect(page.locator('#rail img')).toHaveCount(7);
+  await expect(page.locator('#speaker')).toHaveCount(1);
+  await expect(page.locator('#transcript .entry')).toHaveCount(1);
   await expect(page.locator('#indexcount')).toContainText('212 total historical');
   await expect(page.locator('.toplabel')).toContainText('NO LIVE MODEL SESSIONS');
   await page.locator('#rail button').nth(3).click();
   await expect(page.locator('#agent')).toHaveText('Jarvis');
   await page.locator('#rail button').nth(7).click();
+  await expect(page.locator('#speaker')).toHaveCount(1);
   await expect(page.locator('#agent')).toHaveText('ChatGPT Bridge');
   await expect(page.locator('#runtime')).toContainText('no authenticated model session');
 });
