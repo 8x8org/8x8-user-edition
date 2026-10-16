@@ -25,3 +25,8 @@ jobs:
           node --check plugins/one-fabric-world/ui/market-evidence.mjs
       - name: Run isolated public MCP contract tests
         run: node --test plugins/one-fabric-world/tests/*.test.mjs
+      - name: Build and verify standalone Universal World web projection
+        run: |
+          node scripts/build-vercel-static.mjs
+          node --input-type=module -e "import fs from 'node:fs'; const html=fs.readFileSync('dist/universal/index.html','utf8'); if (!html.includes('Universal One Fabric Atlas') || !html.includes('function validateLocalMarketSnapshot') || !html.includes('Spotify Embed') || html.includes('<!-- EXPERIENCE_ATLAS_ITEMS -->')) process.exit(1);"
+
