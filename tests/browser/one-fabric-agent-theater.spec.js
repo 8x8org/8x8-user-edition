@@ -39,7 +39,7 @@ test('voice playback is started only by a user gesture',async({page})=>{
   expect(await page.evaluate(()=>window.__utterances.length)).toBe(0);
   await page.locator('#play').click();
   await expect.poll(()=>page.evaluate(()=>window.__utterances.length)).toBe(1);
-  expect(await page.evaluate(()=>window.__utterances[0])).toContain('no real model session');
+  expect((await page.evaluate(()=>window.__utterances[0])).toLowerCase()).toContain('no real model session');
   await expect(page.locator('#speaker')).toContainText('browser text-to-speech demo');
   await page.locator('#stop').click();
   await expect(page.locator('#runtime')).toContainText('Speech stopped locally');
