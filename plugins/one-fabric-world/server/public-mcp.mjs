@@ -4,7 +4,15 @@ import {createServer} from 'node:http';
 import {readFileSync} from 'node:fs';
 import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
-const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8');
+// Source-backed atlas projection: render from ONE catalog; no duplicate UI authority.
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const atlas=DATA.experience_atlas;
+const ATLAS_ITEMS=atlas.families.map(f=>'<details class="family"><summary>'+esc(f.title)+' <span class="state">SOURCE ONLY</span></summary><ul>'+f.features.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>').join('');
+const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8')
+ .replace('<!-- EXPERIENCE_ATLAS_ITEMS -->',ATLAS_ITEMS)
+ .replace('<!-- EXPERIENCE_TOTAL -->',String(atlas.families.length))
+ .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)));
+
 const SCOPE='8x8.public.read';
 const UI_URI='ui://8x8/one-fabric-user-edition-hub.html';
 const TOOLS=Object.freeze({
@@ -18,7 +26,9 @@ const TOOLS=Object.freeze({
  'one_fabric.user_agent_templates':'Explore default non-owner agent templates and custom agents',
  'one_fabric.usage_plans':'Review proposed 88 free minutes and $8.88/month limits',
  'one_fabric.connector_guidance':'Recommend optional connections, with consent required separately',
- 'one_fabric.platform_surfaces':'Review one 8x8 World projection across web, ChatGPT, APK and Telegram'
+ 'one_fabric.platform_surfaces':'Review one 8x8 World projection across web, ChatGPT, APK and Telegram',
+ 'one_fabric.experience_atlas':'Explore the extensible 8x8 universal experience atlas, including all 20 source-classified families',
+ 'one_fabric.market_media_readiness':'Inspect market-feed provenance, chart readiness, Spotify and multimedia restrictions; no invented live data'
 });
 const json=(body,status=200,headers={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store',...headers}});
 const https=x=>{try{return new URL(x).protocol==='https:'}catch{return false}};
@@ -58,6 +68,8 @@ function value(name){
   case 'one_fabric.usage_plans':return {...COMMON,plans:DATA.plans,billing_status:'NOT_CONNECTED_NO_PAYMENT_AUTHORIZED'};
   case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false};
   case 'one_fabric.platform_surfaces':return {...COMMON,surfaces:DATA.surfaces};
+  case 'one_fabric.experience_atlas':return {...COMMON,experience_atlas:DATA.experience_atlas,legacy_domains:DATA.domains};
+  case 'one_fabric.market_media_readiness':return {...COMMON,market_media_readiness:DATA.market_media_readiness};
   default:throw Error('UNKNOWN_TOOL');
  }
 }
