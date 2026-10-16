@@ -502,9 +502,10 @@
       ]
     },
     "chart_widget": {
-      "state": "NO_VERIFIED_FEED",
-      "may_show_sample_data_only_if_explicitly_marked_demo": true,
-      "unlabeled_live_counts_forbidden": true
+      "state": "SOURCE_RENDERER_FOR_EXPLICIT_LOCAL_MARKET_SNAPSHOT",
+      "no_live_claim": true,
+      "live_feed_connected": false,
+      "untested_browser_interaction": true
     },
     "spotify": {
       "connection_state": "NOT_VERIFIED",
@@ -550,6 +551,90 @@
       "official Spotify embed test and terms review",
       "paper trade independent risk and replay",
       "per-platform release and rollback receipt"
+    ],
+    "local_market_snapshot_contract": {
+      "schema": "8x8.public.market.snapshot.v1",
+      "classification": "LOCAL_IMPORT_UNVERIFIED",
+      "scope": "PUBLIC_MARKET_ONLY",
+      "allowed_top_level_fields": [
+        "schema",
+        "classification",
+        "scope",
+        "source_label",
+        "venue",
+        "instrument",
+        "interval",
+        "window_start",
+        "window_end",
+        "observed_at",
+        "market_trade_count",
+        "bars"
+      ],
+      "bar_fields": [
+        "timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ],
+      "max_bars": 1024,
+      "max_file_bytes": 262144,
+      "trade_count": "optional null or exact decimal integer string up to 80 digits, never a JS floating-point count",
+      "window": "UTC RFC3339 timestamps, max 31 days",
+      "separate_denominators": [
+        "market_trade_count represents venue-defined market events in the supplied window",
+        "account_fill_count never allowed in public import",
+        "paper_trades separately tracked outside public chart"
+      ],
+      "live_status": "NEVER_LIVE_FROM_FILE_IMPORT",
+      "server_feed_gate": "FUTURE_GATED_LICENSED_AUTHENTICATED_PROVIDER_ADAPTER_TIMESTAMPED_RECEIPT",
+      "privacy": "LOCAL_BROWSER_ONLY_NO_STORAGE_NO_UPLOAD_NO_ACCOUNT_FIELDS"
+    }
+  },
+  "connector_census": {
+    "source": "docs/evidence/whole-estate/2026-10-15/ONE_FABRIC_MASTER_COVERAGE_DELTA_V1.json",
+    "observed_at_date": "2026-10-15",
+    "advertised_mcp_actions_at_snapshot": 6105,
+    "advertised_tools_total_at_snapshot": 6116,
+    "advertised_namespaces_at_snapshot": 197,
+    "source_classification": "PAST_PRESERVED_SINGLE_SESSION_CENSUS_NOT_GLOBAL_DIRECTORY",
+    "global_provider_catalog_exhaustive": false,
+    "installed_plugins_denominator_verified": false,
+    "authenticated_connections_verified": false,
+    "runtime_qualified_actions_verified": false,
+    "public_user_tools_obtainable_by_8x8_automatically": false,
+    "public_exposes_private_source_names": false,
+    "provider_statuses": [
+      "DISCOVERED",
+      "INSTALLED",
+      "REACHABLE",
+      "HEALTHY",
+      "AUTHENTICATED",
+      "GRANTED",
+      "LEASED",
+      "STARTED",
+      "PRODUCTIVE",
+      "VERIFIED"
+    ],
+    "index_model": "Canonical source-index -> hash/provenance dedup -> tenant policy filter -> versioned paginated projection -> per-service connection -> independent receipt",
+    "read_only_tool_discovery": "SOURCE_METADATA_ONLY_UNTIL_PROVIDER_GRANT",
+    "future_page_api": "FUTURE_GATED_PAGE_TOKEN_AND_SOURCE_VERSION_REQUIRED_FOR_STABLE_PAGINATION",
+    "session_refresh": "ON_DEMAND_SOURCE_RECHECK_AND_VERSIONED_RECEIPT",
+    "unbounded_catalog": "EXTENSIBLE_REGISTRY_NOT_INFINITE_RUNTIME_CAPABILITY",
+    "five_scheduler_lanes": [
+      "Execute",
+      "Research",
+      "Verify",
+      "Create",
+      "Improve"
     ]
   }
 }
