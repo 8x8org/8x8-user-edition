@@ -29,6 +29,13 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 .privacy{font-size:13px;color:#bdd5e8}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 @media(max-width:760px){.span7,.span5,.span6{grid-column:span 12}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{gap:11px}.panel{padding:14px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.market-totals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.market-totals div{background:#0a1d31;border:1px solid #355677;padding:11px;border-radius:9px}
+.market-totals strong{display:block;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;font-size:clamp(14px,2vw,20px)}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .plotted{fill:none;stroke:#83eac5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.atlas-search{width:100%;background:#081627;border:1px solid #557894;border-radius:9px;color:#fff;padding:12px;font:inherit;margin:9px 0}
+@media(max-width:480px){.market-totals{grid-template-columns:1fr}}
 </style></head>
 <body><main>
 <header><div class="mark">⚡ ©️8x8 by FlashTM8 · ONE FABRIC</div><span class="tag">CATALOG ONLY · PRELAUNCH</span></header>
@@ -37,15 +44,23 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 <div class="stats" aria-label="Capability and service truth">
 <div class="metric"><strong><!-- EXPERIENCE_TOTAL --></strong><span>Experience families (source)</span></div>
 <div class="metric"><strong><!-- CAPABILITY_TOTAL --></strong><span>Feature entries (source)</span></div>
-<div class="metric"><strong>—</strong><span>Verified live market trades</span></div>
+<div class="metric"><strong id="market-top-count">—</strong><span>Imported market trade count · unverified</span></div>
 <div class="metric"><strong>UNKNOWN</strong><span>Connected user services</span></div>
 </div>
 <div class="grid">
 <section class="panel span7" aria-label="Market intelligence"><h2>Markets · Charts · Trade Counts</h2>
 <div class="chips"><span>Charts: no authorized feed</span><span>Trades: unavailable</span><span>Account fills: unavailable</span><span>Orders: gated</span></div>
-<div class="chart" role="img" aria-label="Empty chart grid because market data has not been authenticated or licensed">
-<div><strong>Market feed not connected</strong><p>Live candlesticks and massive trade-count displays appear only after independent data licensing, timestamps, source verification and authorized backend integration.</p></div>
-</div><p class="truth">Market-wide trade counts, your filled orders, bot execution counts, trade volume and simulated trades are different metrics. Each needs source, venue, window, units, delay/freshness and provenance. No invented values.</p></section>
+<div class="chart" id="market-chart" aria-label="Price chart from an explicitly selected public market snapshot">
+<div id="market-empty"><strong>Market feed not connected</strong><p>Select a local, public-market OHLCV JSON snapshot to render actual recorded data. The file is never uploaded; user-imported data is never labeled live.</p></div>
+<svg id="market-svg" viewBox="0 0 760 240" role="img" aria-label="Price chart drawn from locally imported OHLCV data" hidden>
+<title id="market-svg-title">Locally imported close-price chart, unverified</title><path class="plotted" id="market-chart-path" d=""></path></svg></div>
+<div class="market-totals" aria-label="Market snapshot metadata">
+<div><span class="muted">Reported market trades · imported</span><strong id="market-trade-count">UNAVAILABLE</strong></div>
+<div><span class="muted">Source & freshness</span><strong id="market-observed">UNAVAILABLE</strong></div></div>
+<label for="market-json">Load local public-market snapshot JSON</label>
+<input type="file" id="market-json" accept=".json,application/json" aria-describedby="market-import-state">
+<p id="market-import-state" class="muted" role="status">No snapshot selected. An authorized live feed and account fills are not connected.</p>
+<p class="truth">Market-wide trade counts, your filled orders, bot execution counts, trade volume and simulated trades are different metrics. Each needs source, venue, window, units, delay/freshness and provenance. No invented values.</p></section>
 <section class="panel span5"><h2>Secure status · Three Gates</h2><p><strong>Gate 1:</strong> World welcome / public preview</p><p><strong>Gate 2:</strong> Verified 8x8 ID and tenant permissions — NOT VERIFIED</p><p><strong>Gate 3:</strong> Authorized 8x8 World capabilities — GATED</p>
 <div class="truth">No API secrets, wallet phrases, provider keys, orders, posts, mining jobs or financial transactions are accepted by this preview.</div>
 <p class="muted">OWNER_ROOT and owner-private resources are excluded from public user tenants. STOP, revocation and scoped leases are release requirements.</p></section>
@@ -66,6 +81,9 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 <p class="privacy">Spotify tracks may not be synced into 8x8 films, re-broadcast as radio or monetized as a streaming integration without the applicable rights and approvals.</p></section>
 <section class="panel span12"><h2>Universal One Fabric Atlas</h2>
 <p class="muted">Source-backed, expandable navigation. Every preserved feature remains in the canonical recovery graph even if it is not yet running. Expand a family to explore its capabilities.</p>
+<label for="atlas-search">Search all source-backed experience entries</label>
+<input id="atlas-search" class="atlas-search" type="search" placeholder="Search agents, markets, music, wallets, science…" autocomplete="off" aria-controls="experience-atlas">
+<p id="atlas-filter-status" class="muted" role="status">20 source families; additional historical capabilities require canonical reconciliation.</p>
 <div id="experience-atlas"><!-- EXPERIENCE_ATLAS_ITEMS --></div>
 <p class="truth">Source present ≠ deployed ≠ authenticated ≠ granted ≠ productive ≠ verified. This atlas is a discovery projection, not evidence that all features are installed or operational.</p></section>
 <section class="panel span12"><h2>Cross-surface release truth</h2><div class="chips"><span>ChatGPT MCP: deployment gated</span><span>World PWA: source present</span><span>Android APK: release unverified</span><span>Telegram mini app: auth unverified</span><span>iPhone: future gated</span></div>
@@ -74,7 +92,47 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 </section></div>
 </main>
 <script>
+<!-- MARKET_VALIDATOR_JS -->
 (()=>{'use strict';
+const marketFile=document.getElementById('market-json'),marketState=document.getElementById('market-import-state');
+const marketCount=document.getElementById('market-trade-count'),marketTop=document.getElementById('market-top-count');
+const marketObserved=document.getElementById('market-observed'),marketSvg=document.getElementById('market-svg');
+const marketEmpty=document.getElementById('market-empty'),chartPath=document.getElementById('market-chart-path');
+marketFile.addEventListener('change',async()=>{
+ marketSvg.hidden=true;chartPath.setAttribute('d','');marketEmpty.hidden=false;
+ marketCount.textContent='UNAVAILABLE';marketTop.textContent='—';marketObserved.textContent='UNAVAILABLE';
+ const f=marketFile.files&&marketFile.files[0];
+ if(!f){marketState.textContent='No snapshot selected. Live feeds are not connected.';return}
+ if(f.size>262144||f.size===0){marketState.textContent='Rejected: JSON must be 1–262,144 bytes.';return}
+ let raw;try{raw=JSON.parse(await f.text())}catch{marketState.textContent='Rejected: invalid JSON.';return}
+ const result=validateLocalMarketSnapshot(raw);
+ if(!result.ok){marketState.textContent='Rejected: '+result.error+'. Private/account or misleading live claims are not accepted.';return}
+ const snapshot=result.snapshot,geometry=marketClosePath(snapshot.bars);
+ if(!geometry){marketState.textContent='Rejected: invalid chart geometry.';return}
+ chartPath.setAttribute('d',geometry.path);
+ const exactCount=formatMarketTradeCount(snapshot.market_trade_count);
+ marketCount.textContent=exactCount;marketTop.textContent=exactCount;
+ marketObserved.textContent=snapshot.observed_at;
+ document.getElementById('market-svg-title').textContent=snapshot.instrument+' · '+snapshot.venue+' · local unverified close-price data';
+ marketEmpty.hidden=true;marketSvg.hidden=false;
+ marketState.textContent='LOCAL IMPORT ONLY · UNVERIFIED · '+snapshot.venue+' / '+snapshot.instrument+' · '+snapshot.bars.length+' time-ordered bars · window '+snapshot.window_start+' to '+snapshot.window_end+' · '+snapshot.source_label+'. No feed, account or orders connected.';
+});
+const atlasSearch=document.getElementById('atlas-search'),atlasStatus=document.getElementById('atlas-filter-status'),families=Array.from(document.querySelectorAll('#experience-atlas details'));
+atlasSearch.addEventListener('input',()=>{
+ const needle=atlasSearch.value.trim().toLocaleLowerCase();
+ let showing=0;let items=0;
+ for(const family of families){
+  const labels=Array.from(family.querySelectorAll('li'));
+  const title=family.querySelector('summary').textContent.toLocaleLowerCase();
+  const titleMatch=title.includes(needle);
+  let hits=0;
+  for(const item of labels){const match=!needle||titleMatch||item.textContent.toLocaleLowerCase().includes(needle);item.hidden=!match;if(match)hits++}
+  family.hidden=hits===0;family.open=!!needle&&hits>0;
+  if(hits){showing++;items+=hits}
+ }
+ atlasStatus.textContent=showing+' source families and '+items+' matching entries. Catalog presence does not establish runtime access.';
+});
+
 function localPreview(fileId,playerId,statusId){const input=document.getElementById(fileId),player=document.getElementById(playerId),status=document.getElementById(statusId);let old=null;
 input.addEventListener('change',()=>{const file=input.files&&input.files[0];if(old){player.pause();player.removeAttribute('src');player.load();URL.revokeObjectURL(old);old=null}if(!file){status.textContent='No local file selected.';return}const expected=fileId==='video-file'?'video/':'audio/';if(!file.type.startsWith(expected)){status.textContent='Unsupported media type.';return}old=URL.createObjectURL(file);player.src=old;status.textContent='Local preview ready; press play. No network upload or publishing.';});
 window.addEventListener('pagehide',()=>{if(old)URL.revokeObjectURL(old)});
