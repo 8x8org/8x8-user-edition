@@ -148,7 +148,7 @@
       link("Open full Observatory","/observatory/");
     }else if(active==="agents"){
       append(body,"h3","Agent personas");
-      line("FlashTM8","Concept persona");line("Hermes","Inference reply unverified");
+      line("FlashTM8","Concept persona");line("Research Agent","Inference reply unverified");
       line("Council","No verified quorum");line("Seraphim","UI guide template");
       append(body,"p","Historical agent identities do not imply running or active instances.");
       link("Explore agent theater","/observatory/");
