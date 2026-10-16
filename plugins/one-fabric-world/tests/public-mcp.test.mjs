@@ -65,7 +65,7 @@ test('UI renders canonical atlas and non-autoplay media preview',async()=>{
  assert.ok(html.includes('Universal One Fabric Atlas'));
  assert.ok(html.includes('Markets · Charts · Trade Counts'));
  assert.ok(html.includes('Music · Spotify · Radio'));
- assert.ok(html.includes('8x8 World & Spatial Experience'));
+ assert.ok(html.includes('8x8 World &amp; Spatial Experience'));
  assert.ok(html.includes('233'));
  assert.ok(html.includes('Local 8x8 video preview'));
  assert.ok(!html.includes('<!-- EXPERIENCE_ATLAS_ITEMS -->'));
