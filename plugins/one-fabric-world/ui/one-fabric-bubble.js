@@ -151,7 +151,7 @@
       line("FlashTM8","Concept persona");line("Research Agent","Inference reply unverified");
       line("Council","No verified quorum");line("Seraphim","UI guide template");
       append(body,"p","Historical agent identities do not imply running or active instances.");
-      link("Explore agent theater","/observatory/");
+      link("Open the cinematic agent theater","/agents/");
     }else if(active==="reports"){
       append(body,"h3","Run summaries and receipts");
       line("Current ChatGPT run","Not instrumented");
