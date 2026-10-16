@@ -27,7 +27,7 @@ test('public atlas search shows matching families without fake runtime claims',a
  await page.locator('#atlas-search').fill('staking');
  await expect(page.locator('#atlas-filter-status')).toContainText('matching entries');
  await expect(page.locator('#experience-atlas details:visible').first()).toBeVisible();
- await expect(page.getByText(/source only/i).first()).toBeVisible();
+ await expect(page.locator('#experience-atlas details:visible summary .state').first()).toBeVisible();
 });
 test('local OHLCV import renders actual chart with exact big trade count without live badge',async({page})=>{
  await page.locator('#market-json').setInputFiles({name:'market.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(marketFixture()))});
