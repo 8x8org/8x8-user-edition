@@ -35,8 +35,8 @@ class Provider:
 # No credentials or live endpoint URLs are included. The actual provider OAuth
 # config and callback allowlists belong in a verified private deployment.
 _PROVIDERS = [
-    Provider("bitget", "trading", "SECURE_VAULT_API_KEY_FORM", frozenset({"account.read", "positions.read", "orders.read"}),
-             "Generate a dedicated Bitget API key with read-only permissions and IP restrictions; securely enter key, secret and API passphrase in the separate verified 8x8 Vault site. Disable transfers/withdrawals.", True),
+    Provider("bitget", "trading", "LOCAL_CUSTODY_BROKER_PENDING_JURISDICTION_REVIEW", frozenset({"account.read", "positions.read", "orders.read"}),
+             "Do not create or submit Bitget credentials to 8x8 yet. Bitget currently prohibits United States access, and its API terms advise against cloud-key storage. A jurisdiction-verified, provider-compliant user-owned local broker must be independently approved first; transfers and withdrawals are never permitted by default.", False),
     Provider("telegram", "publishing", "PROVIDER_BOT_ADMIN_AND_SECURE_VAULT", frozenset({"channel.read", "draft.prepare"}),
              "Create or manage a bot through Telegram, grant only required channel privileges, and enter its token in the verified 8x8 Vault site, never in chat.", True),
     Provider("discord", "publishing", "OAUTH_OR_VERIFIED_BOT_INSTALL", frozenset({"channel.read", "draft.prepare"}), "Authorize the minimal server/channel permissions in the provider flow."),
@@ -166,11 +166,51 @@ def validate_intent_owner(actor: Actor, intent: Intent, *, now: int) -> bool:
        and type(now) is int and intent.issued_at <= now < intent.expires_at
        and intent.state == "PREPARED_NOT_CONNECTED")
 
+# This is diagnostic policy for a server-authenticated caller, not an OAuth
+# token verifier or a way to authorize key enrollment from chat arguments.
+_BITGET_US_NAMES = frozenset({"US", "USA", "UNITED STATES", "UNITED STATES OF AMERICA"})
+
+def provider_enrollment_preflight(provider: str, *,
+       jurisdiction: str | None,
+       jurisdiction_verified_by_server: bool,
+       local_broker_security_accepted: bool = False,
+       provider_access_policy_accepted: bool = False) -> dict:
+    """Advisory fail-closed gate. Never accepts credentials or launches URLs.
+
+    All booleans and jurisdiction MUST be supplied by trusted backend state
+    after real compliance and security checks, never by user MCP tool args.
+    """
+    p = PROVIDERS.get(provider)
+    if p is None:
+        raise ConnectionDenied("UNSUPPORTED_PROVIDER")
+    if provider == "bitget":
+        if jurisdiction_verified_by_server is not True or not isinstance(jurisdiction, str):
+            state = "JURISDICTION_VERIFICATION_REQUIRED"
+        elif jurisdiction.strip().upper() in _BITGET_US_NAMES:
+            state = "PROVIDER_PROHIBITS_US_ACCESS"
+        elif not provider_access_policy_accepted:
+            state = "PROVIDER_TERMS_AND_ELIGIBILITY_REVIEW_REQUIRED"
+        elif not local_broker_security_accepted:
+            state = "USER_LOCAL_BROKER_SECURITY_PENDING"
+        else:
+            state = "LOCAL_READ_ONLY_BROKER_REVIEW_ONLY"
+    else:
+        state = "SEPARATE_PROVIDER_OAUTH_OR_CUSTODY_FLOW_NOT_DEPLOYED"
+    return {
+       "provider": p.id, "state": state, "credential_intake_allowed": False,
+       "chat_secret_submission_allowed": False,
+       "remote_cloud_bitget_key_storage_allowed": False if provider == "bitget" else None,
+       "authorized_trading": False, "authorized_publishing": False,
+       "next_step": "COMPLETE_INDEPENDENT_DEPLOYMENT_AND_PROVIDER_APPROVAL_CHECKS"
+    }
+
 def agent_guidance(provider: str) -> dict:
     """Safe MCP read-only response. No credentials, no fictitious link."""
     p=PROVIDERS.get(provider)
     if p is None:raise ConnectionDenied("UNSUPPORTED_PROVIDER")
     return {"root":FABRIC_ROOT,"provider":p.id,"domain":p.domain,
+            "bitget_us_access_prohibited":p.id=="bitget",
+            "bitget_local_broker_required":p.id=="bitget",
             "authentication_route":p.auth_mode,
             "approved_initial_scopes":sorted(p.scopes),
             "secret_form_required":p.secret_form_required,
