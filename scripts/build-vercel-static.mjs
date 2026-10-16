@@ -49,6 +49,9 @@ writeFileSync(`${out}/universal/index.html`,renderPublicUI());
 // separate authenticated tenant-scoped service and is never included here.
 mkdirSync(`${out}/observatory`, {recursive:true});
 writeFileSync(`${out}/observatory/index.html`,renderObservatoryUI());
+// Shared public-safe in-page bubble for Android web carrier and Telegram mini app.
+mkdirSync(`${out}/assets`, {recursive:true});
+cpSync('plugins/one-fabric-world/ui/one-fabric-bubble.js',`${out}/assets/8x8-bubble.js`);
 cpSync('v50.html', `${out}/index.html`);
 inject(`${out}/index.html`);
 inject(`${out}/v50.html`);
