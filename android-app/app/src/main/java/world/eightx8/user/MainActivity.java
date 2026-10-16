@@ -2,6 +2,13 @@ package world.eightx8.user;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Locale;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -33,6 +40,9 @@ public final class MainActivity extends Activity {
   private LinearLayout panel;
   private FrameLayout surface;
   private boolean observatoryOpened;
+  private TextToSpeech tts;
+  private boolean ttsReady=false;
+  private static final int VOICE_INTENT_REQUEST=7308;
 
   private int dp(int value) {
     return Math.round(value * getResources().getDisplayMetrics().density);
@@ -89,6 +99,21 @@ public final class MainActivity extends Activity {
     LinearLayout.LayoutParams titleSize=new LinearLayout.LayoutParams(
       0,ViewGroup.LayoutParams.WRAP_CONTENT,1f);
     header.addView(label,titleSize);
+    // Buttons are native explicit-action controls. No ambient microphone and
+    // no fake agent model output. Device recognizer may have its own privacy
+    // and cloud-processing terms; Android's system consent UI applies.
+    Button speak=new Button(this);
+    speak.setText("Speak");
+    speak.setContentDescription("Speak a local 8x8 status using Android TTS");
+    speak.setOnClickListener(v->speakStatus());
+    header.addView(speak,new LinearLayout.LayoutParams(
+      ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+    Button talk=new Button(this);
+    talk.setText("Talk");
+    talk.setContentDescription("Ask Android recognizer to listen once with owner consent");
+    talk.setOnClickListener(v->requestOneShotSpeech());
+    header.addView(talk,new LinearLayout.LayoutParams(
+      ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
     Button close=new Button(this);
     close.setText("Close");
     close.setContentDescription("Close in-app 8x8 Observatory");
@@ -120,7 +145,66 @@ public final class MainActivity extends Activity {
     surface.addView(bubble,bubbleSize);
 
     setContentView(surface);
+    tts=new TextToSpeech(getApplicationContext(), status->{
+      if(status==TextToSpeech.SUCCESS && tts!=null){
+        int lang=tts.setLanguage(Locale.US);
+        ttsReady=lang!=TextToSpeech.LANG_MISSING_DATA &&
+                 lang!=TextToSpeech.LANG_NOT_SUPPORTED;
+      }else ttsReady=false;
+    });
     web.loadUrl(BuildConfig.HOME_URL + "/?carrier=android");
+  }
+
+  private void speakStatus() {
+    if(!ttsReady || tts==null){
+      Toast.makeText(this,"Android speech engine is unavailable.",Toast.LENGTH_SHORT).show();
+      return;
+    }
+    // Status is intentionally static until a tenant-bound signed event feed
+    // connects. Never recite secrets, private file content or model thoughts.
+    tts.speak("8x8 One Fabric native voice preview. The live owner agent "
+       +"and ChatGPT bridge are not connected. Your app can speak this status "
+       +"through Android text to speech after you tap Speak.",
+       TextToSpeech.QUEUE_FLUSH,null,"8x8-owner-voice-preview");
+  }
+
+  private void requestOneShotSpeech() {
+    try{
+      Intent intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+      intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+      intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.US.toLanguageTag());
+      intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,1);
+      intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                     "8x8 local commands: open, close, speak status, stop voice");
+      startActivityForResult(intent,VOICE_INTENT_REQUEST);
+    }catch(ActivityNotFoundException e){
+      Toast.makeText(this,"No Android speech recognizer available.",Toast.LENGTH_SHORT).show();
+    }catch(SecurityException e){
+      Toast.makeText(this,"Speech permission was not granted.",Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  @Override protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+    super.onActivityResult(requestCode,resultCode,data);
+    if(requestCode!=VOICE_INTENT_REQUEST || resultCode!=RESULT_OK || data==null)return;
+    ArrayList<String> results=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+    if(results==null || results.isEmpty() || results.get(0)==null)return;
+    String command=results.get(0).toLowerCase(Locale.US).trim().replaceAll("[.!?]+$","");
+    if(command.matches("(open|show|open observatory|show status|show observatory)")){
+      showPanel();
+    }else if(command.matches("(close|close bubble|hide observatory)")){
+      hidePanel();
+    }else if(command.matches("(speak status|read status|talk to me)")){
+      speakStatus();
+    }else if(command.matches("(stop voice|be quiet|stop speaking)")){
+      if(tts!=null)tts.stop(); // Local audio only, not owner STOP.
+    }else{
+      Toast.makeText(this,"Unsupported local speech command; no action.",
+                     Toast.LENGTH_SHORT).show();
+    }
+    // Never save, echo, log, network-send or hand recognizer transcripts
+    // to unverified agent runtimes. Global device commands are not allowed.
   }
 
   private void showPanel() {
@@ -146,6 +230,7 @@ public final class MainActivity extends Activity {
 
   @Override protected void onPause() {
     hidePanel(); // Owner activity outside 8x8 preempts the visible overlay.
+    if(tts!=null)tts.stop();
     if(observatory!=null)observatory.onPause();
     if(web!=null)web.onPause();
     super.onPause();
@@ -158,6 +243,7 @@ public final class MainActivity extends Activity {
   }
 
   @Override protected void onDestroy() {
+    if(tts!=null){tts.stop();tts.shutdown();tts=null;}
     if(observatory!=null){observatory.stopLoading();observatory.destroy();observatory=null;}
     if(web!=null){web.stopLoading();web.destroy();web=null;}
     panel=null;surface=null;
