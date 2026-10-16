@@ -38,7 +38,7 @@
     "flash-assistant",
     "aegis-security",
     "jarvis-interface",
-    "hermes-research",
+    "research-guide",
     "anvil-builder"
   ],
   "authentication": {
@@ -54,7 +54,7 @@
     "Connect 8x8 MCP and approve requested read scopes",
     "Choose protected user-default agent templates",
     "Connect each external plugin/provider separately with consent",
-    "Optionally connect Termux/device using local consent, scope and revocation",
+    "Optionally connect a local device using local consent, scope and revocation",
     "Enable trading research and Studio; separate grants needed for live posts and orders"
   ],
   "plans": {
@@ -127,7 +127,7 @@
           "FlashTM8 orchestration",
           "Seraphim",
           "Jarvis",
-          "Hermes",
+          "research guide",
           "councils",
           "skills",
           "models",
@@ -300,7 +300,7 @@
         "features": [
           "Android S22",
           "iPhone/iSH",
-          "Termux/Ubuntu",
+          "local developer environments",
           "PC",
           "notifications",
           "permissions",
