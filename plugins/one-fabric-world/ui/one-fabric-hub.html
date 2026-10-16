@@ -37,6 +37,12 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 .chart .plotted{fill:none;stroke:#83eac5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .atlas-search{width:100%;background:#081627;border:1px solid #557894;border-radius:9px;color:#fff;padding:12px;font:inherit;margin:9px 0}
 @media(max-width:480px){.market-totals{grid-template-columns:1fr}}
+
+select,.studio-input{width:100%;border:1px solid #557894;background:#081627;color:#e8f4ff;border-radius:9px;padding:11px;font:inherit}
+.help-dialog{background:#102338;color:#e8f4ff;max-width:min(650px,94vw);width:100%;max-height:82vh;overflow:auto;border:1px solid #5a91ba;border-radius:16px;padding:22px;box-shadow:0 20px 90px #000a}
+.help-dialog::backdrop{background:#000b}.help-dialog li{margin:7px 0}.help-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.scenario-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scenarios-small{font-size:13px;color:#bfcee0}
+@media(max-width:700px){.scenario-layout{grid-template-columns:1fr}}
 </style></head>
 <body><main>
 <header><div class="mark">⚡ ©️8x8 by FlashTM8 · ONE FABRIC</div><span class="tag">CATALOG ONLY · PRELAUNCH</span></header>
@@ -87,14 +93,83 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 <p id="atlas-filter-status" class="muted" role="status">20 source families; additional historical capabilities require canonical reconciliation.</p>
 <div id="experience-atlas"><!-- EXPERIENCE_ATLAS_ITEMS --></div>
 <p class="truth">Source present ≠ deployed ≠ authenticated ≠ granted ≠ productive ≠ verified. This atlas is a discovery projection, not evidence that all features are installed or operational.</p></section>
+<section class="panel span12" aria-label="Access rescue lab">
+<h2>FlashTM8 · Scenario Lab & Access Rescue</h2>
+<p class="muted">Select a real capability area. When authentication, permission, funds, provider quota or release approval is missing, open the safe assistance panel. No secrets or orders are accepted here.</p>
+<div class="scenario-layout"><div><label for="scenario-select">Choose a mission</label><select id="scenario-select"></select>
+<p id="scenario-description" class="scenarios-small" role="status"></p><p id="scenario-agents" class="scenarios-small"></p></div>
+<div><label for="access-select">Choose a possible blocker (manual, not probed)</label><select id="access-select"></select>
+<p><button type="button" id="access-launch">Try connection preflight</button></p></div></div>
+<p class="truth">This lab demonstrates recovery guidance. OAuth, trading, wallet signing, device leases and publication are not activated by opening a dialog.</p>
+</section>
+<section class="panel span12" aria-label="Studio draft creation">
+<h2>Studio · Original 8:08 episode production kit</h2><p class="muted">Create an editable local treatment, eight-scene timing, asset-rights plan and eleven channel-specific draft captions. This is not a finished rendered video or publication.</p>
+<label for="episode-title">Episode theme</label><input id="episode-title" class="studio-input" maxlength="80" value="One Fabric Awakens">
+<p><button type="button" id="studio-draft">Generate editable production kit</button> <button id="studio-save" type="button" disabled>Export local JSON</button></p>
+<p id="studio-state" role="status" class="muted">No production draft generated.</p>
+<div id="studio-scenes" class="chips"></div>
+</section>
 <section class="panel span12"><h2>Cross-surface release truth</h2><div class="chips"><span>ChatGPT MCP: deployment gated</span><span>World PWA: source present</span><span>Android APK: release unverified</span><span>Telegram mini app: auth unverified</span><span>iPhone: future gated</span></div>
 <p class="muted">88 introductory minutes and $8.88/month are proposed plans, not active subscriptions. Direct providers, models and exchange connections remain separately authorized and quota-governed.</p>
 <p><a href="https://github.com/8x8org/8x8-user-edition/pull/200" target="_blank" rel="noopener noreferrer">Review source, security gates and rollout</a></p>
 </section></div>
 </main>
+<dialog id="access-dialog" class="help-dialog" aria-labelledby="access-dialog-title">
+<h2 id="access-dialog-title">Access preflight</h2><p id="access-state" class="truth"></p><p id="access-description" class="muted"></p>
+<h3>Safe steps</h3><ol id="access-steps"></ol><h3>Missing proofs</h3><ol id="access-missing"></ol>
+<p id="access-receipt" class="muted"></p>
+<div class="help-actions"><button id="access-export" type="button">Export checklist</button><button id="access-close" type="button">Close</button></div>
+</dialog>
+<script type="application/json" id="scenario-data"><!-- SCENARIO_CATALOG_JSON --></script>
 <script>
 <!-- MARKET_VALIDATOR_JS -->
 (()=>{'use strict';
+const scenarioData=JSON.parse(document.getElementById('scenario-data').textContent);
+const scenarioSelect=document.getElementById('scenario-select'),accessSelect=document.getElementById('access-select');
+for(const f of scenarioData.flows){const x=document.createElement('option');x.value=f.id;x.textContent=f.label;scenarioSelect.appendChild(x)}
+for(const f of scenarioData.missing_access_states){const x=document.createElement('option');x.value=f.id;x.textContent=f.label;accessSelect.appendChild(x)}
+const scenario=()=>scenarioData.flows.find(x=>x.id===scenarioSelect.value)||scenarioData.flows[0];
+const obstacle=()=>scenarioData.missing_access_states.find(x=>x.id===accessSelect.value)||scenarioData.missing_access_states[0];
+function setList(id,items){const el=document.getElementById(id);el.replaceChildren();for(const value of items){const li=document.createElement('li');li.textContent=value;el.appendChild(li)}}
+function updateScenario(){const v=scenario();document.getElementById('scenario-description').textContent=v.what_works;document.getElementById('scenario-agents').textContent='Candidate agent roles (not live): '+v.roles.join(' · ')}
+scenarioSelect.addEventListener('change',updateScenario);updateScenario();
+const dialog=document.getElementById('access-dialog');
+document.getElementById('access-launch').addEventListener('click',()=>{
+ const v=scenario(),st=obstacle();
+ document.getElementById('access-dialog-title').textContent='FlashTM8 preflight: '+v.label;
+ document.getElementById('access-state').textContent='Selected blocker: '+st.label+' — '+st.remedy;
+ document.getElementById('access-description').textContent='State: '+v.phase+' · Manual guidance only; no account check, grant or agent execution performed';
+ setList('access-steps',v.steps);setList('access-missing',v.missing);
+ document.getElementById('access-receipt').textContent='Required proof: '+v.receipt;
+ dialog.showModal();
+});
+document.getElementById('access-close').addEventListener('click',()=>dialog.close());
+function exportJSON(data,name){
+ const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+document.getElementById('access-export').addEventListener('click',()=>{
+ exportJSON({schema:'8x8.public.access-checklist.v1',classification:'UNVERIFIED_LOCAL_GUIDE',root:'fabric://8x8/core',scenario:scenario(),blocker:obstacle(),no_credentials:true,external_effects:0},'8x8-access-guide.json')
+});
+const names=['Spark','World','Intelligence','Markets','Cinema','Games and Assets','Planet and Devices','One Fabric Forward'];
+const seconds=[38,58,62,65,65,62,70,68];
+const channels=['YouTube','TikTok','Instagram','Telegram','Facebook','X','Threads','Pinterest','Bluesky','LinkedIn','Discord'];
+const stamp=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
+let kit=null;
+document.getElementById('studio-draft').addEventListener('click',()=>{
+ const title=document.getElementById('episode-title').value.trim().slice(0,80)||'One Fabric Awakens';
+ let offset=0;const scenes=names.map((name,i)=>{const start=offset;offset+=seconds[i];return {index:i+1,from:stamp(start),to:stamp(offset),duration_seconds:seconds[i],scene:name,visual:'Original futuristic cinema interpreting '+title+' / '+name,voice:'Write source-verified narration about '+name,asset_rights:'REVIEW_REQUIRED'}});
+ kit={schema:'8x8.public.production-kit.v1',classification:'LOCAL_DRAFT_NOT_RENDERED',root:'fabric://8x8/core',title,total_seconds:offset,scenes,licensed_audio_required:true,provider_render_complete:false,
+ channels:channels.map(platform=>({platform,caption_draft:title+' | Original ©8x8 One Fabric concept. #OneFabric #8x8',status:'DRAFT_NOT_POSTED',post_id:null})),
+ approval_gates:['Original asset rights','Video rendering entitlement','Caption review','Accessibility','Per-platform OAuth and quota','Publish consent','Verified delivery']};
+ const holder=document.getElementById('studio-scenes');holder.replaceChildren();
+ for(const sc of scenes){const chip=document.createElement('span');chip.textContent=sc.from+'–'+sc.to+' '+sc.scene;holder.appendChild(chip)}
+ document.getElementById('studio-state').textContent='Created '+stamp(offset)+' local storyboard · 8 scenes · 11 publishing drafts · ZERO rendered videos or submitted posts';
+ document.getElementById('studio-save').disabled=false;
+});
+document.getElementById('studio-save').addEventListener('click',()=>{if(kit)exportJSON(kit,'8x8-8m08s-production-kit.json')});
+
 const marketFile=document.getElementById('market-json'),marketState=document.getElementById('market-import-state');
 const marketCount=document.getElementById('market-trade-count'),marketTop=document.getElementById('market-top-count');
 const marketObserved=document.getElementById('market-observed'),marketSvg=document.getElementById('market-svg');
