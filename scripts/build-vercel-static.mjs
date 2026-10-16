@@ -1,6 +1,6 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
-import { renderPublicUI, renderObservatoryUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
+import { renderPublicUI, renderObservatoryUI, renderAgentTheaterUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
 
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
@@ -49,6 +49,8 @@ writeFileSync(`${out}/universal/index.html`,renderPublicUI());
 // separate authenticated tenant-scoped service and is never included here.
 mkdirSync(`${out}/observatory`, {recursive:true});
 writeFileSync(`${out}/observatory/index.html`,renderObservatoryUI());
+mkdirSync(`${out}/agents`,{recursive:true});
+writeFileSync(`${out}/agents/index.html`,renderAgentTheaterUI());
 // Shared public-safe in-page bubble for Android web carrier and Telegram mini app.
 mkdirSync(`${out}/assets`, {recursive:true});
 cpSync('plugins/one-fabric-world/ui/one-fabric-bubble.js',`${out}/assets/8x8-bubble.js`);
