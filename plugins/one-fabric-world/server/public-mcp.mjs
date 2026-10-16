@@ -15,6 +15,8 @@ const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8
  .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)))
  .replace('<!-- MARKET_VALIDATOR_JS -->',MARKET_CLIENT);
 
+// Pure source renderer for offline/browser contract testing. This is not a network endpoint.
+export function renderPublicUI(){return UI;}
 const SCOPE='8x8.public.read';
 const UI_URI='ui://8x8/one-fabric-user-edition-hub.html';
 const TOOLS=Object.freeze({
