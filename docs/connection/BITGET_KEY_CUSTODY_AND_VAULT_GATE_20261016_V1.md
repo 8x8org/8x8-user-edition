@@ -34,3 +34,12 @@ Social providers with supported OAuth use individual user grants. Telegram bot t
 88 daily free minutes and $8.88/month are **proposed** User Edition entitlements, not deployed guaranteed quotas or external API exemptions. Self-improvement on user data requires informed, separate and revocable consent; never train shared models on customer secrets by default.
 
 The ChatGPT plugin source release v0.4.1 adds a non-executing provider-custody preflight, with 16/16 offline tests passed and no authenticated account linkage or secret collection.
+
+## October 16 verified provider eligibility correction
+
+Bitget's **August 2026 Terms of Use explicitly include the United States in the Prohibited Countries definition**. 8x8 must not present Bitget key-enrollment or execution as available to U.S. users; IP/VPN workarounds, foreign relays and third-party accounts must not circumvent provider eligibility. Do not infer citizenship from an IP or a chat statement: before activating a provider, compliance eligibility needs independently verified account and jurisdiction checks. Work in U.S. jurisdictions may use independent non-executing market research and lawful providers instead.
+
+**Source:** https://www.bitget.com/support/articles/360014944032-terms-of-use (current terms). Bitget API Key Terms §4 expressly advise *not storing API keys in the cloud*: https://www.bitget.com/support/articles/12560603797947.
+
+The source function `provider_enrollment_preflight` denies Bitget user-specific credential intake in every state, even when positive flags appear. Only a future independent local broker certification and an actual permitted-jurisdiction review could unlock a separate, audited read-only broker enrollment implementation. These source tests are not a deployed identity service, live account link, legal clearance or connected provider action. The current 8x8 plugin remains private/prelaunch and no verified credential form URL is available.
+
