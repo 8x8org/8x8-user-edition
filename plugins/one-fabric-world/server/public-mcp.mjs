@@ -6,21 +6,23 @@ import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
 const SCENARIOS=JSON.parse(readFileSync(new URL('../data/access_scenarios_v1.json',import.meta.url),'utf8'));
 const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+const BUBBLE_SCRIPT=readFileSync(new URL('../ui/one-fabric-bubble.js',import.meta.url),'utf8');
+const withBubble=html=>html.replace('</body>','<script>'+BUBBLE_SCRIPT+'</script></body>');
 // Source-backed atlas projection: render from ONE catalog; no duplicate UI authority.
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const MARKET_CLIENT=readFileSync(new URL('../ui/market-evidence.mjs',import.meta.url),'utf8').replace(/^export /gm,'');
 const atlas=DATA.experience_atlas;
 const ATLAS_ITEMS=atlas.families.map(f=>'<details class="family"><summary>'+esc(f.title)+' <span class="state">SOURCE ONLY</span></summary><ul>'+f.features.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>').join('');
-const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8')
+const UI=withBubble(readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8')
  .replace('<!-- EXPERIENCE_ATLAS_ITEMS -->',ATLAS_ITEMS)
  .replace('<!-- EXPERIENCE_TOTAL -->',String(atlas.families.length))
  .replace('<!-- CAPABILITY_TOTAL -->',String(atlas.families.reduce((n,f)=>n+f.features.length,0)))
  .replace('<!-- MARKET_VALIDATOR_JS -->',MARKET_CLIENT)
- .replace('<!-- SCENARIO_CATALOG_JSON -->',SCENARIO_EMBED);
+ .replace('<!-- SCENARIO_CATALOG_JSON -->',SCENARIO_EMBED));
 
 // Pure source renderer for offline/browser contract testing. This is not a network endpoint.
 export function renderPublicUI(){return UI;}
-const OBSERVATORY_UI=readFileSync(new URL('../ui/one-fabric-observatory.html',import.meta.url),'utf8');
+const OBSERVATORY_UI=withBubble(readFileSync(new URL('../ui/one-fabric-observatory.html',import.meta.url),'utf8'));
 export function renderObservatoryUI(){return OBSERVATORY_UI;}
 const SCOPE='8x8.public.read';
 const UI_URI='ui://8x8/one-fabric-user-edition-hub.html';
