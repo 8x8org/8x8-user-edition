@@ -1,6 +1,6 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
-import { renderPublicUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
+import { renderPublicUI, renderObservatoryUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
 
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
@@ -45,6 +45,10 @@ const inject = (path) => {
 // Additional public-safe universal projection. Does not replace Gate 1 or grant private capabilities.
 mkdirSync(`${out}/universal`, {recursive:true});
 writeFileSync(`${out}/universal/index.html`,renderPublicUI());
+// The public observatory is an illustration. Owner telemetry requires a
+// separate authenticated tenant-scoped service and is never included here.
+mkdirSync(`${out}/observatory`, {recursive:true});
+writeFileSync(`${out}/observatory/index.html`,renderObservatoryUI());
 cpSync('v50.html', `${out}/index.html`);
 inject(`${out}/index.html`);
 inject(`${out}/v50.html`);
