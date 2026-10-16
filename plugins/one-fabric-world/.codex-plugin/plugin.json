@@ -1,0 +1,35 @@
+{
+  "interface": {
+    "displayName": "8x8 One Fabric World",
+    "developerName": "Flash TM8",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "shortDescription": "One 8x8 ID, 19 domains, protected user agents and MCP onboarding",
+    "longDescription": "Explore the single 8x8 User Edition interface inside ChatGPT: 8x8 ID sign-in requirements, default user agent archetypes, your future memory, 8x8 Studio, Finance research, World, media, creation, device onboarding and connectors. Prelaunch catalog only: no live account sign-in, billing, funded trades, posts, wallet signing or founder-private controls.",
+    "defaultPrompt": "Show my 8x8 One Fabric User Edition connection options, full domain directory, plan readiness, and steps to link my own accounts safely.",
+    "onboardingSkill": "./skills/one-fabric-start/SKILL.md"
+  },
+  "name": "8x8-one-fabric-world",
+  "version": "0.2.0",
+  "description": "\u00a98x8 One Fabric User Edition: unified 8x8 ID/OAuth onboarding, 19-domain directory, protected user agent templates, connector guidance, Studio, Finance and 88-minute/$8.88 plan preview. Private prelaunch read-only MCP package, no live login, billing, trades or posts.",
+  "author": {
+    "name": "Flash TM8"
+  },
+  "keywords": [
+    "8x8",
+    "One Fabric",
+    "8x8 ID",
+    "OAuth",
+    "ChatGPT",
+    "User Edition",
+    "MCP",
+    "studio",
+    "finance",
+    "agents"
+  ],
+  "repository": "https://github.com/8x8org/8x8-user-edition",
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json"
+}
