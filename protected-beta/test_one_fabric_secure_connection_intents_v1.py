@@ -68,6 +68,50 @@ class PolicyTests(unittest.TestCase):
  def test_bitget_initial_order_read_allowed(self):self.assertEqual(self.i(scopes=frozenset({"orders.read"})).provider,"bitget")
  def test_bitget_not_live_order(self):self.assertNotIn("orders.place",PROVIDERS["bitget"].scopes)
  def test_telegram_scope_read_only(self):self.assertNotIn("publisher.post",PROVIDERS["telegram"].scopes)
+ def test_bitget_cloud_credential_form_not_offered(self):
+  g=agent_guidance("bitget")
+  self.assertFalse(g["secret_form_required"])
+  self.assertTrue(g["bitget_local_broker_required"])
+ def test_bitget_us_is_prohibited(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="US",jurisdiction_verified_by_server=True,
+      local_broker_security_accepted=True,provider_access_policy_accepted=True)
+  self.assertEqual(r["state"],"PROVIDER_PROHIBITS_US_ACCESS")
+  self.assertFalse(r["credential_intake_allowed"])
+ def test_bitget_unverified_location_fails_closed(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="FR",jurisdiction_verified_by_server=False)
+  self.assertEqual(r["state"],"JURISDICTION_VERIFICATION_REQUIRED")
+ def test_bitget_missing_location_fails_closed(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction=None,jurisdiction_verified_by_server=True)
+  self.assertEqual(r["state"],"JURISDICTION_VERIFICATION_REQUIRED")
+ def test_bitget_local_broker_required_even_if_policy_cleared(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="TEST_ELIGIBLE",
+      jurisdiction_verified_by_server=True,provider_access_policy_accepted=True)
+  self.assertEqual(r["state"],"USER_LOCAL_BROKER_SECURITY_PENDING")
+ def test_bitget_provider_terms_required_even_with_local_broker(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="TEST_ELIGIBLE",
+      jurisdiction_verified_by_server=True,local_broker_security_accepted=True)
+  self.assertEqual(r["state"],"PROVIDER_TERMS_AND_ELIGIBILITY_REVIEW_REQUIRED")
+ def test_all_pass_still_not_secret_intake_or_trade(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="TEST_ELIGIBLE",jurisdiction_verified_by_server=True,
+      local_broker_security_accepted=True,provider_access_policy_accepted=True)
+  self.assertEqual(r["state"],"LOCAL_READ_ONLY_BROKER_REVIEW_ONLY")
+  self.assertFalse(r["credential_intake_allowed"])
+  self.assertFalse(r["authorized_trading"])
+ def test_social_oauth_not_credential_capture(self):
+  r=provider_enrollment_preflight("youtube",jurisdiction=None,jurisdiction_verified_by_server=False)
+  self.assertEqual(r["state"],"SEPARATE_PROVIDER_OAUTH_OR_CUSTODY_FLOW_NOT_DEPLOYED")
+  self.assertFalse(r["credential_intake_allowed"])
+ def test_unknown_provider_rejected_by_preflight(self):
+  with self.assertRaises(ConnectionDenied):
+   provider_enrollment_preflight("attacker",jurisdiction="US",jurisdiction_verified_by_server=True)
+ def test_bitget_unapproved_cloud_storage_never_allowed(self):
+  r=provider_enrollment_preflight("bitget",jurisdiction="TEST_ELIGIBLE",jurisdiction_verified_by_server=True)
+  self.assertIs(r["remote_cloud_bitget_key_storage_allowed"],False)
+ def test_original_intent_remains_metadata_only(self):
+  intent=self.i()
+  self.assertEqual(intent.state,"PREPARED_NOT_CONNECTED")
+  self.assertNotIn("secret_key",json.dumps(dataclasses.asdict(intent)))
+
  def test_invalid_time_rejected(self):
   with self.assertRaises(ConnectionDenied):propose_connection(A,"bitget",slot=1,scopes=frozenset({"account.read"}),now=-1)
  def test_invalid_scope_type_rejected(self):
