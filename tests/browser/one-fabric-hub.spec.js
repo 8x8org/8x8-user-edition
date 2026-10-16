@@ -31,6 +31,7 @@ test('public atlas search shows matching families without fake runtime claims',a
 });
 test('local OHLCV import renders actual chart with exact big trade count without live badge',async({page})=>{
  await page.locator('#market-json').setInputFiles({name:'market.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(marketFixture()))});
+ await expect(page.locator('#market-import-state')).toContainText('LOCAL IMPORT ONLY');
  await expect(page.locator('#market-svg')).toBeVisible();
  await expect(page.locator('#market-chart-path')).toHaveAttribute('d',/^M/);
  await expect(page.locator('#market-trade-count')).toHaveText('123,456,789,012,345,678,901,234,567,890');
