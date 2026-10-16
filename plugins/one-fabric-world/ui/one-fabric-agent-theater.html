@@ -125,7 +125,7 @@ $("cast").addEventListener("click",()=>{
    try{
      const u=new window.SpeechSynthesisUtterance(ROUND_TABLE[index]);
      if(voices.length)u.voice=voices[index%voices.length];
-     u.lang="en-US";u.rate=index===2?.93:index===5?1.08:1;u.pitch=index%2===0?1.05:.93;u.volume=.9;
+     u.lang="en-US";u.rate=index===2?0.93:index===5?1.08:1;u.pitch=index%2===0?1.05:0.93;u.volume=0.9;
      currentUtterance=u;busy=true;
      $("speaker").classList.add("speaking");
      $("speaker").textContent=PEOPLE[index].name+" · scripted browser speech";
