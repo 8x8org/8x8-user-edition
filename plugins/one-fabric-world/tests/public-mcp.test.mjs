@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 11 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,11);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 13 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,13);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -36,3 +36,38 @@ test('UI resource includes actual hub with 19 domain renderer',async()=>{const [
 test('not registered resource denied',async()=>{const [,x]=await post('resources/read',{uri:'ui://8x8/owner-secret'});assert.equal(x.error.code,-32602)});
 test('no host config implies not production ready',async()=>{const r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/health'));assert.equal((await r.json()).production_ready,false)});
 test('tool arguments must be empty to avoid implicit authority',async()=>{const [,x]=await post('tools/call',{name:toolName,arguments:{tenant:'other'}});assert.equal(x.error.code,-32602)});
+
+test('universal atlas retains all domains as extensible subfamily projection',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.experience_atlas',arguments:{}});
+ const a=x.result.structuredContent;
+ assert.equal(a.effect_count,0);
+ assert.equal(a.legacy_domains.length,19);
+ assert.equal(a.experience_atlas.families.length,20);
+ assert.equal(new Set(a.experience_atlas.families.map(f=>f.id)).size,20);
+ assert.ok(a.experience_atlas.families.reduce((n,f)=>n+f.features.length,0)>=230);
+ assert.ok(a.experience_atlas.families.every(f=>a.legacy_domains.includes(f.domain)));
+});
+test('market/media readiness never invents a live count or grants orders',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.market_media_readiness',arguments:{}});
+ const xdata=x.result.structuredContent;
+ assert.equal(xdata.effect_count,0);
+ assert.equal(xdata.market_media_readiness.market_feed.connected,false);
+ assert.equal(xdata.market_media_readiness.market_feed.market_trades_count,null);
+ assert.equal(xdata.market_media_readiness.market_feed.account_fills_count,null);
+ assert.equal(xdata.market_media_readiness.market_feed.orders_enabled,false);
+ assert.equal(xdata.market_media_readiness.spotify.connection_state,'NOT_VERIFIED');
+ assert.equal(xdata.market_media_readiness.spotify.content_sync_to_video_allowed,false);
+});
+test('UI renders canonical atlas and non-autoplay media preview',async()=>{
+ const [,l]=await post('resources/list',{});
+ const [,r]=await post('resources/read',{uri:l.result.resources[0].uri});
+ const html=r.result.contents[0].text;
+ assert.ok(html.includes('Universal One Fabric Atlas'));
+ assert.ok(html.includes('Markets · Charts · Trade Counts'));
+ assert.ok(html.includes('Music · Spotify · Radio'));
+ assert.ok(html.includes('8x8 World & Spatial Experience'));
+ assert.ok(html.includes('233'));
+ assert.ok(html.includes('Local 8x8 video preview'));
+ assert.ok(!html.includes('<!-- EXPERIENCE_ATLAS_ITEMS -->'));
+ assert.ok(!html.includes('<video autoplay'));
+});
