@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 18 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,18);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 19 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,19);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -32,7 +32,7 @@ test('8.88 dollars is target not live',async()=>{const [,x]=await post('tools/ca
 test('identity-only does not imply ChatGPT memory access',async()=>{const [,x]=await post('tools/call',{name:'one_fabric.identity_connection_guide',arguments:{}});assert.equal(x.result.structuredContent.authentication.chatgpt_history_or_memory_import,false)});
 test('default templates lack founder memory',async()=>{const [,x]=await post('tools/call',{name:'one_fabric.user_agent_templates',arguments:{}});assert.equal(x.result.structuredContent.owner_private_tools_exposed,false);assert.equal(x.result.structuredContent.templates.length,6)});
 test('connector suggestions do not install connectors',async()=>{const [,x]=await post('tools/call',{name:'one_fabric.connector_guidance',arguments:{}});assert.equal(x.result.structuredContent.auto_install,false)});
-test('UI resource includes actual hub with 19 domain renderer',async()=>{const [,l]=await post('resources/list',{});assert.equal(l.result.resources.length,2);const [,r]=await post('resources/read',{uri:l.result.resources[0].uri});assert.match(r.result.contents[0].text,/Your 8x8 World/);assert.match(r.result.contents[0].text,/catalog only/i)});
+test('UI resource includes actual hub with 19 domain renderer',async()=>{const [,l]=await post('resources/list',{});assert.equal(l.result.resources.length,3);const [,r]=await post('resources/read',{uri:l.result.resources[0].uri});assert.match(r.result.contents[0].text,/Your 8x8 World/);assert.match(r.result.contents[0].text,/catalog only/i)});
 test('not registered resource denied',async()=>{const [,x]=await post('resources/read',{uri:'ui://8x8/owner-secret'});assert.equal(x.error.code,-32602)});
 test('no host config implies not production ready',async()=>{const r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/health'));assert.equal((await r.json()).production_ready,false)});
 test('tool arguments must be empty to avoid implicit authority',async()=>{const [,x]=await post('tools/call',{name:toolName,arguments:{tenant:'other'}});assert.equal(x.error.code,-32602)});
@@ -156,4 +156,30 @@ test('observatory MCP resource is public-safe animation and has no owner secrets
  assert.ok(!html.includes('PRIVATE_KEY'));
  assert.ok(!html.includes('localStorage.'));
  assert.ok(!html.includes('fetch('));
+});
+
+test('original cinematic agent theater is a public-safe read-only MCP resource',async()=>{
+ const [,list]=await post('resources/list',{});
+ const uri='ui://8x8/one-fabric-agent-theater.html';
+ assert.ok(list.result.resources.some(x=>x.uri===uri));
+ const [,read]=await post('resources/read',{uri});
+ const html=read.result.contents[0].text;
+ assert.match(html,/CINEMATIC/);
+ assert.match(html,/SERAPHIM/);
+ assert.match(html,/FLASHTM8_ASSISTANT/);
+ assert.match(html,/CHATGPT_BRIDGE/);
+ assert.match(html,/212 historical source identities/);
+ assert.ok((html.match(/data:image\/webp;base64,/g)||[]).length>=7);
+ assert.doesNotMatch(html,/github_pat_|-----BEGIN PRIVATE KEY-----|sk-proj-/);
+});
+test('agent theater tool reports actual source-only state, not verified real voices',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.agent_theater',arguments:{}});
+ const d=r.result.structuredContent;
+ assert.equal(d.effect_count,0);
+ assert.equal(d.historical_agent_identities,212);
+ assert.equal(d.cinematic_character_sources,7);
+ assert.equal(d.verified_simultaneously_active_agent_sessions,0);
+ assert.equal(d.live_model_dialogue,false);
+ assert.equal(d.chatgpt_bridge_display_only,true);
+ assert.equal(r.result._meta['ui/resourceUri'],'ui://8x8/one-fabric-agent-theater.html');
 });
