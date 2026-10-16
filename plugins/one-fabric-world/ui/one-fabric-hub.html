@@ -100,7 +100,7 @@ const marketCount=document.getElementById('market-trade-count'),marketTop=docume
 const marketObserved=document.getElementById('market-observed'),marketSvg=document.getElementById('market-svg');
 const marketEmpty=document.getElementById('market-empty'),chartPath=document.getElementById('market-chart-path');
 marketFile.addEventListener('change',async()=>{
- marketSvg.hidden=true;chartPath.setAttribute('d','');marketEmpty.hidden=false;
+ marketSvg.setAttribute('hidden','');chartPath.setAttribute('d','');marketEmpty.hidden=false;
  marketCount.textContent='UNAVAILABLE';marketTop.textContent='—';marketObserved.textContent='UNAVAILABLE';
  const f=marketFile.files&&marketFile.files[0];
  if(!f){marketState.textContent='No snapshot selected. Live feeds are not connected.';return}
@@ -115,7 +115,7 @@ marketFile.addEventListener('change',async()=>{
  marketCount.textContent=exactCount;marketTop.textContent=exactCount;
  marketObserved.textContent=snapshot.observed_at;
  document.getElementById('market-svg-title').textContent=snapshot.instrument+' · '+snapshot.venue+' · local unverified close-price data';
- marketEmpty.hidden=true;marketSvg.hidden=false;
+ marketEmpty.hidden=true;marketSvg.removeAttribute('hidden');
  marketState.textContent='LOCAL IMPORT ONLY · UNVERIFIED · '+snapshot.venue+' / '+snapshot.instrument+' · '+snapshot.bars.length+' time-ordered bars · window '+snapshot.window_start+' to '+snapshot.window_end+' · '+snapshot.source_label+'. No feed, account or orders connected.';
 });
 const atlasSearch=document.getElementById('atlas-search'),atlasStatus=document.getElementById('atlas-filter-status'),families=Array.from(document.querySelectorAll('#experience-atlas details'));
