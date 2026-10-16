@@ -1,0 +1,20 @@
+{
+  "root":"fabric://8x8/core",
+  "schema":"8x8.public_user_one_fabric_mcp_catalog.v2",
+  "release":"PRELAUNCH_SOURCE_ONLY",
+  "capabilities":[{"id":"one_fabric","status":"READ_ONLY_CATALOG"},{"id":"owner_runtime","status":"NEVER_EXPOSED_TO_PUBLIC_USERS"}],
+  "domains":["agents","models","memory","world","studio","publishing","finance","trading","wallet","blockchain","games","radio","books","research","planet","security","devices","community","settings"],
+  "agent_templates":["seraphim-guide","flash-assistant","aegis-security","jarvis-interface","hermes-research","anvil-builder"],
+  "authentication":{
+    "method":"8x8 ID / OAuth 2.1 authorization code + S256 PKCE",
+    "oauth_deployed":false,
+    "sign_in_with_chatgpt_eligible":false,
+    "chatgpt_history_or_memory_import":false,
+    "cross_tenant_access":false,
+    "user_memory_owner":"each user owns their tenant memory"
+  },
+  "onboarding":["Sign in to 8x8 ID only through verified 8x8 identity provider","Connect 8x8 MCP and approve requested read scopes","Choose protected user-default agent templates","Connect each external plugin/provider separately with consent","Optionally connect Termux/device using local consent, scope and revocation","Enable trading research and Studio; separate grants needed for live posts and orders"],
+  "plans":{"free":{"target_minutes":88,"active":false,"period":"UNDECIDED"},"plus":{"usd_cents_month":888,"active":false,"requires_verified_subscription_webhook":true}},
+  "connector_guidance":{"mode":"RECOMMEND_ONLY","requires_explicit_chatgpt_plugin_install":true,"requires_each_provider_consent":true,"no_cross_app_token_sharing":true,"device_mounts":"CONSENTED_LOCAL_PERMISSIONS_REQUIRED"},
+  "surfaces":[{"id":"chatgpt_mcp","state":"NOT_DEPLOYED"},{"id":"world_pwa","state":"SOURCE_PRESENT_NOT_FULLY_ACCEPTED"},{"id":"android_apk","state":"RELEASE_NOT_VERIFIED"},{"id":"telegram_mini_app","state":"AUTH_FLOW_NOT_ACCEPTED"},{"id":"future_ios","state":"FUTURE_LAB"}]
+}
