@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 13 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,13);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 15 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,15);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -70,4 +70,35 @@ test('UI renders canonical atlas and non-autoplay media preview',async()=>{
  assert.ok(html.includes('Local 8x8 video preview'));
  assert.ok(!html.includes('<!-- EXPERIENCE_ATLAS_ITEMS -->'));
  assert.ok(!html.includes('<video autoplay'));
+});
+
+test('market snapshot contract is local unverified only and no account fills',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.market_snapshot_contract',arguments:{}});
+ const v=x.result.structuredContent;
+ assert.equal(v.effect_count,0);
+ assert.equal(v.contract.classification,'LOCAL_IMPORT_UNVERIFIED');
+ assert.equal(v.contract.live_status,'NEVER_LIVE_FROM_FILE_IMPORT');
+ assert.ok(!v.contract.allowed_top_level_fields.includes('account_fill_count'));
+ assert.equal(v.live_feed_connected,false);
+});
+test('connector census 6105 actions is explicitly historical, not authorization',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.connector_inventory_status',arguments:{}});
+ const c=x.result.structuredContent.connector_census;
+ assert.equal(c.advertised_mcp_actions_at_snapshot,6105);
+ assert.equal(c.authenticated_connections_verified,false);
+ assert.equal(c.global_provider_catalog_exhaustive,false);
+ assert.equal(c.public_user_tools_obtainable_by_8x8_automatically,false);
+});
+test('market renderer is included in the MCP Apps resource, no fabricated live bar content',async()=>{
+ const [,l]=await post('resources/list',{});
+ const [,r]=await post('resources/read',{uri:l.result.resources[0].uri});
+ const html=r.result.contents[0].text;
+ assert.ok(html.includes('function validateLocalMarketSnapshot'));
+ assert.ok(html.includes('function marketClosePath'));
+ assert.ok(html.includes('id="market-json"'));
+ assert.ok(html.includes('id="market-chart-path"'));
+ assert.ok(html.includes('Search all source-backed experience entries'));
+ assert.ok(!html.includes('<!-- MARKET_VALIDATOR_JS -->'));
+ assert.ok(!html.includes('LIVE_PROVIDER_VERIFIED · ACTIVE'));
+ assert.ok(!html.includes('account_fill_count='));
 });
