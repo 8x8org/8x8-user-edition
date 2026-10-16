@@ -57,3 +57,24 @@ test('all historic identities are searchable without claiming their voices',asyn
   await page.locator('#directory button').first().click();
   await expect(page.locator('#runtime')).toContainText('registered historical source identity');
 });
+
+test('eight scripted agent personas speak sequentially only after explicit tap',async({page})=>{
+ await page.evaluate(()=>{
+   window.__spoken=[];
+   Object.defineProperty(window,'speechSynthesis',{configurable:true,value:{
+     cancel(){},getVoices(){return [{name:'A',lang:'en-US'},{name:'B',lang:'en-GB'}]},
+     speak(u){window.__spoken.push({text:u.text,voice:u.voice?.name});u.onend?.()}
+   }});
+   window.SpeechSynthesisUtterance=class{constructor(t){this.text=t}};
+ });
+ expect(await page.evaluate(()=>window.__spoken.length)).toBe(0);
+ await page.locator('#cast').click();
+ await expect.poll(()=>page.evaluate(()=>window.__spoken.length)).toBe(8);
+ await expect(page.locator('#transcript .entry')).toHaveCount(8);
+ await expect(page.locator('#transcript')).toContainText('SCRIPTED VOICE PREVIEW');
+ await expect(page.locator('#speaker')).toContainText('not agent inference');
+ await expect(page.locator('#agent')).toHaveText('ChatGPT Bridge');
+ const names=await page.evaluate(()=>window.__spoken.map(v=>v.voice));
+ expect(names.slice(0,4)).toEqual(['A','B','A','B']);
+ expect((await page.evaluate(()=>window.__spoken[7].text))).toContain('not the current ChatGPT model');
+});
