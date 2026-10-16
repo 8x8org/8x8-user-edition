@@ -1,0 +1,323 @@
+{
+  "schema": "8x8.public.access-scenarios.v1",
+  "root": "fabric://8x8/core",
+  "classification": "PUBLIC_SAFE_DEMONSTRATION_AND_READ_ONLY_CONNECTIVITY_GUIDE",
+  "publication": "SOURCE_ONLY_PRELAUNCH_NOT_AN_ACCOUNT_SESSION",
+  "no_auto_execution": true,
+  "privacy": {
+    "never_collect": [
+      "password",
+      "api key",
+      "seed phrase",
+      "OAuth token",
+      "private device file",
+      "financial account number"
+    ],
+    "user_tenant_owns_grants": true,
+    "owner_private_resources_visible": false
+  },
+  "flows": [
+    {
+      "id": "markets",
+      "label": "Markets · actual data versus live orders",
+      "phase": "MARKET_READ_CONFIRMED_SEPARATELY_ORDER_DISABLED",
+      "roles": [
+        "Research",
+        "Risk Review",
+        "Verification"
+      ],
+      "what_works": "A provider price/ticker/candle read was independently demonstrated on 2026-10-16 outside this prelaunch UI; the public UI supports locally imported candles",
+      "steps": [
+        "Select market instrument and choose an approved public feed",
+        "Inspect venue, timestamps, depth, trade count and data freshness",
+        "Run read-only analysis or labeled paper simulation",
+        "Request account eligibility and separate risk-limited authorization for any live order"
+      ],
+      "missing": [
+        "Licensed streaming market adapter",
+        "Authenticated eligible broker session",
+        "Bounded risk policy and owner order grant"
+      ],
+      "allowed": [
+        "Public market reads",
+        "Local historical-chart import",
+        "Paper-trading research"
+      ],
+      "not_allowed": [
+        "Unbounded live orders",
+        "Exchange circumvention",
+        "Claiming account fills from public-market trades"
+      ],
+      "receipt": "Provider timestamp + read scope + instrument + data quality; paper test separately labeled"
+    },
+    {
+      "id": "studio",
+      "label": "8x8 Studio · original 8:08 episode",
+      "phase": "DRAFT_CAN_BE_PREPARED_NOT_FINISHED_RENDER",
+      "roles": [
+        "Creative Brief",
+        "Storyboard",
+        "Rights Review"
+      ],
+      "what_works": "Original episode concepts, scripts, shots and captions may be drafted in the local preview; external finished rendering is provider-gated",
+      "steps": [
+        "Create an original episode brief",
+        "Generate a timestamped storyboard and narration draft",
+        "Review music and asset permissions",
+        "Select an authorized renderer; export a locally owned draft when unavailable"
+      ],
+      "missing": [
+        "Authorized video renderer with available credits or local render capacity",
+        "Licensed music and approved branding",
+        "Verified quality/output acceptance"
+      ],
+      "allowed": [
+        "Generate editable original draft",
+        "Review storyboard",
+        "Export a structured local production package"
+      ],
+      "not_allowed": [
+        "Claim award-winning quality",
+        "Assume video was rendered",
+        "Use third-party tracks without license"
+      ],
+      "receipt": "Draft revision + asset/rights manifest + independent finished-video probe"
+    },
+    {
+      "id": "publishing",
+      "label": "Creators · direct publishing workflow",
+      "phase": "DRAFT_QUEUE_ONLY_NOT_SENT",
+      "roles": [
+        "Copy Editor",
+        "Brand Review",
+        "Distribution Policy"
+      ],
+      "what_works": "Channel-specific draft and preflight entries; no posting until provider OAuth, quota and delivery receipts",
+      "steps": [
+        "Select target platforms and content rights",
+        "Compose channel-specific captions, format and media manifest",
+        "Check provider consent, API limits and active scopes",
+        "Stage user-approved posts and require confirmed remote platform receipt"
+      ],
+      "missing": [
+        "Each platform account authorization",
+        "Provider-approved posting API capabilities",
+        "Provider quotas and confirmation evidence"
+      ],
+      "allowed": [
+        "Prepare offline drafts",
+        "Export a delivery manifest"
+      ],
+      "not_allowed": [
+        "Bypass quotas",
+        "Publish through unrelated identities",
+        "Treat queued as delivered"
+      ],
+      "receipt": "Per-destination platform post ID + permalink + timestamp + rights review"
+    },
+    {
+      "id": "agents",
+      "label": "FlashTM8 · coordinated agent missions",
+      "phase": "PUBLIC_ROLE_TEMPLATES_ONLY",
+      "roles": [
+        "Planning",
+        "Research",
+        "Build",
+        "Independent Verify"
+      ],
+      "what_works": "Mission decomposition and route proposals can be displayed; no authenticated cross-agent roundtrip is implied",
+      "steps": [
+        "Decompose one goal into source-bound subtasks",
+        "Match skill/tool roles with verified registry availability",
+        "Check tenant access, health, budget and owner STOP",
+        "Run bounded tasks only after actual agent/runtime leases and verify independent reply"
+      ],
+      "missing": [
+        "Authenticated agent-to-agent mission endpoint",
+        "Correlated replies and receipts",
+        "Active per-task scoped grants"
+      ],
+      "allowed": [
+        "Show coordination plan",
+        "Preserve task dependencies and evidence checklist"
+      ],
+      "not_allowed": [
+        "Claim all agents active",
+        "Pretend simulated conversations are real"
+      ],
+      "receipt": "Signed or source-bound task ID + agent identity + result + independent verification"
+    },
+    {
+      "id": "connections",
+      "label": "Access Rescue · missing tool or account",
+      "phase": "READ_ONLY_ASSISTANCE_READY",
+      "roles": [
+        "Access Guide",
+        "Security Review",
+        "Adapter Selection"
+      ],
+      "what_works": "Explain why an intended capability is unavailable and offer reversible alternatives without requesting secrets",
+      "steps": [
+        "Identify exact feature and provider, never ask for the key in chat",
+        "Distinguish NOT_INSTALLED, UNREACHABLE, NOT_AUTHENTICATED, NOT_GRANTED, QUOTA_BLOCKED, JURISDICTION_BLOCKED",
+        "Show authorized native OAuth, on-device local custody or safe offline route",
+        "Create a nonsecret local action checklist with steps, owner authority and revoke path"
+      ],
+      "missing": [
+        "Deployed issuer/tenant authorization, when account access is needed",
+        "Verified provider eligibility and scopes",
+        "Authenticated service canary"
+      ],
+      "allowed": [
+        "Recommend connection or safe local work",
+        "Show no-secret remediation checklist"
+      ],
+      "not_allowed": [
+        "Collect secrets in chat",
+        "Silently elevate privileges",
+        "Bypass a blocked jurisdiction"
+      ],
+      "receipt": "Connection fingerprint, granted scopes, tenant, expiry, revocation and tested canary"
+    },
+    {
+      "id": "media",
+      "label": "Radio · video · Spotify",
+      "phase": "LOCAL_PLAYBACK_PREVIEW_AND_EMBED_CANDIDATE",
+      "roles": [
+        "Media Librarian",
+        "License Review"
+      ],
+      "what_works": "Local audio/video file selection and an official Spotify link embed in the public source, without account linking",
+      "steps": [
+        "Choose owned or authorized local media",
+        "Preview locally through browser controls",
+        "Review Spotify official embed eligibility and rights",
+        "Enable live channels or broadcasting only after licensed sources and playback QA"
+      ],
+      "missing": [
+        "Verified provider session for extended features",
+        "Licenses for rebroadcast/commercial sync",
+        "Validated public playback on all surfaces"
+      ],
+      "allowed": [
+        "Local preview",
+        "Optional official Spotify embed"
+      ],
+      "not_allowed": [
+        "Mass rebroadcast without rights",
+        "Treat a Spotify link as account authorization"
+      ],
+      "receipt": "Content asset hash, license, player/browser QA result, provider rights"
+    },
+    {
+      "id": "devices",
+      "label": "Android · desktop · mini app",
+      "phase": "SOURCE_PROJECTION_NOT_DEVICE_LEASE",
+      "roles": [
+        "Device Access Guide",
+        "QA",
+        "Safety"
+      ],
+      "what_works": "Shared web source projections and preview links; device-control capability has not been independently verified in this public UI",
+      "steps": [
+        "Use public World/mini app preview",
+        "Identify actual device and consented permissions",
+        "Test read-only system health via native authorized adapter",
+        "Require owner presence/STOP and bounded reversible lease for any effect"
+      ],
+      "missing": [
+        "Native APK release identity and signature evidence",
+        "Device pairing and approved lease",
+        "Independent before/after device acceptance"
+      ],
+      "allowed": [
+        "Browse public web experience",
+        "Prepare permission checklist"
+      ],
+      "not_allowed": [
+        "Silent screen takeover",
+        "Unbounded phone automation",
+        "Claim APK installed from web link"
+      ],
+      "receipt": "Signed app build + device permission grant + before/after + STOP and rollback"
+    },
+    {
+      "id": "assets",
+      "label": "Wallet · NFT · 8x8 Coin",
+      "phase": "READ_ONLY_RESEARCH_MAINNET_GATED",
+      "roles": [
+        "Chain Research",
+        "Security Review",
+        "Proofs"
+      ],
+      "what_works": "Catalog exploration, public chain reading when allowed, source-only NFT and vault candidate views",
+      "steps": [
+        "Separate chain-read functions from signing and funds movement",
+        "Validate user 8x8 identity and wallet ownership externally",
+        "Review contract provenance and simulated transactions",
+        "Unlock signing only through separately approved signer, chain and tenant-specific grant"
+      ],
+      "missing": [
+        "Independently approved contract release",
+        "Protected authorized signer",
+        "Mainnet and value-transfer approval"
+      ],
+      "allowed": [
+        "Public market explorer research",
+        "Testnet read and reviewed simulation"
+      ],
+      "not_allowed": [
+        "Unreviewed minting",
+        "Wallet transfers",
+        "Collect seed phrases"
+      ],
+      "receipt": "Chain ID + tx hash after user-approved write, otherwise read-only receipt"
+    }
+  ],
+  "missing_access_states": [
+    {
+      "id": "SOURCE_ONLY",
+      "label": "Source exists, not running",
+      "remedy": "Inspect deploy/build gate and verify a reachable signed endpoint before marking active"
+    },
+    {
+      "id": "UNREACHABLE",
+      "label": "Endpoint unavailable",
+      "remedy": "Review authorized status/logs and use a local read-only fallback; retry with bounds"
+    },
+    {
+      "id": "NOT_AUTHENTICATED",
+      "label": "No verified login",
+      "remedy": "Use the provider's official OAuth or consented on-device broker when deployed; never enter secrets here"
+    },
+    {
+      "id": "NOT_GRANTED",
+      "label": "Missing permission",
+      "remedy": "Explain exact requested scope and user-owned revocation path; do not silently expand"
+    },
+    {
+      "id": "QUOTA_BLOCKED",
+      "label": "Provider credits or rate limit",
+      "remedy": "Stop external calls, preserve draft, offer local/open alternative and optional explicit provider billing"
+    },
+    {
+      "id": "JURISDICTION_BLOCKED",
+      "label": "Eligibility prohibits action",
+      "remedy": "Disable restricted venue and offer compliant research, paper mode, or independently eligible alternative"
+    },
+    {
+      "id": "RELEASE_BLOCKED",
+      "label": "Security or test gate failed",
+      "remedy": "Keep current production unchanged; review named failing CI and fix without removing provenance"
+    },
+    {
+      "id": "DEVICE_NOT_LEASED",
+      "label": "Physical access not granted",
+      "remedy": "Read-only planning until owner-approved native permission and bounded STOP-preemptible lease"
+    }
+  ],
+  "agent_runtime_verified": false,
+  "publisher_delivery_verified": false,
+  "five_account_orders_enabled": false,
+  "scheduled_continuous_agents_verified": false
+}
