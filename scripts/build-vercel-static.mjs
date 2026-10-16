@@ -1,5 +1,7 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
+import { renderPublicUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
+
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
@@ -40,6 +42,9 @@ const inject = (path) => {
   writeFileSync(path, html);
 };
 
+// Additional public-safe universal projection. Does not replace Gate 1 or grant private capabilities.
+mkdirSync(`${out}/universal`, {recursive:true});
+writeFileSync(`${out}/universal/index.html`,renderPublicUI());
 cpSync('v50.html', `${out}/index.html`);
 inject(`${out}/index.html`);
 inject(`${out}/v50.html`);
@@ -52,3 +57,4 @@ console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
 console.log('INTERACTION_ESTATE_V53_INJECTED=true');
 console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
 console.log('THREE_GATE_EXPERIENCE_V55_INJECTED=true');
+console.log('UNIVERSAL_ATLAS_SOURCE_PROJECTION_DIST=true');
