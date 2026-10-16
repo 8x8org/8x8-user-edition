@@ -164,7 +164,7 @@ test('original cinematic agent theater is a public-safe read-only MCP resource',
  assert.ok(list.result.resources.some(x=>x.uri===uri));
  const [,read]=await post('resources/read',{uri});
  const html=read.result.contents[0].text;
- assert.match(html,/CINEMATIC/);
+ assert.match(html,/Cinematic Agent Theater/);
  assert.match(html,/SERAPHIM/);
  assert.match(html,/FLASHTM8_ASSISTANT/);
  assert.match(html,/CHATGPT_BRIDGE/);
