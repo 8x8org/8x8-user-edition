@@ -37,9 +37,14 @@ function add(id,content,kind){
   $("transcript").scrollTop=$("transcript").scrollHeight;
 }
 function portrait(p){
-  const figure=$("figure");figure.replaceChildren();
+  const figure=$("figure");
+  // Preserve live announcer node on portrait change: removing it breaks both
+  // scripted dialogue and speech controls after the initial persona selection.
+  const announcer=$("speaker");
+  figure.replaceChildren();
   if(p.portrait){const im=document.createElement("img");im.alt=p.name+" · recovered cinematic concept portrait";im.src=p.portrait;figure.append(im)}
   else{const x=make("div","✦","glyph");x.setAttribute("aria-label","ChatGPT bridge placeholder");figure.append(x)}
+  if(announcer)figure.append(announcer);
   $("agent").textContent=p.name;$("role").textContent=p.role;
   $("agent-id").textContent=p.id;
   status("Source persona · no authenticated model session in this UI");
