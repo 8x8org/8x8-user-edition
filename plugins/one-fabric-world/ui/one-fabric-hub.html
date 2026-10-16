@@ -58,6 +58,7 @@ button:hover{background:#186a99}input[type=url]{width:100%;background:#081627;bo
 <p class="muted">Preview an authorized local audio file, or open an official Spotify Embed for a public supported Spotify share link. Neither creates a Spotify account connection.</p>
 <label for="audio-file">Local audio file</label><input id="audio-file" type="file" accept="audio/*">
 <audio id="audio-player" class="player" controls preload="none" aria-label="Local 8x8 audio preview"></audio>
+<p id="audio-state" class="muted" role="status">No local audio selected.</p>
 <label for="spotify-link">Official Spotify share link</label><input id="spotify-link" type="url" placeholder="https://open.spotify.com/track/…" inputmode="url" autocomplete="off">
 <p><button type="button" id="spotify-load">Open Spotify Embed</button></p>
 <p id="spotify-state" class="muted" role="status">Spotify account connection unverified. Embed playback, availability and rights depend on Spotify.</p>
@@ -78,7 +79,7 @@ function localPreview(fileId,playerId,statusId){const input=document.getElementB
 input.addEventListener('change',()=>{const file=input.files&&input.files[0];if(old){player.pause();player.removeAttribute('src');player.load();URL.revokeObjectURL(old);old=null}if(!file){status.textContent='No local file selected.';return}const expected=fileId==='video-file'?'video/':'audio/';if(!file.type.startsWith(expected)){status.textContent='Unsupported media type.';return}old=URL.createObjectURL(file);player.src=old;status.textContent='Local preview ready; press play. No network upload or publishing.';});
 window.addEventListener('pagehide',()=>{if(old)URL.revokeObjectURL(old)});
 }
-localPreview('video-file','video-player','video-state');localPreview('audio-file','audio-player','spotify-state');
+localPreview('video-file','video-player','video-state');localPreview('audio-file','audio-player','audio-state');
 const button=document.getElementById('spotify-load'),status=document.getElementById('spotify-state'),container=document.getElementById('spotify-container');
 button.addEventListener('click',()=>{const raw=document.getElementById('spotify-link').value.trim();let u;try{u=new URL(raw)}catch{status.textContent='Enter a valid Spotify share URL.';return}
 const parts=u.pathname.split('/').filter(Boolean),kinds=new Set(['track','album','playlist','show','episode','artist']);if(u.origin!=='https://open.spotify.com'||parts.length!==2||!kinds.has(parts[0])||!/^[a-zA-Z0-9]{10,64}$/.test(parts[1])){status.textContent='Only official public open.spotify.com share links are supported.';return}
