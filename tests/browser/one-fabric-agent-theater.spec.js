@@ -5,7 +5,9 @@ test.beforeAll(async()=>{
 });
 test.beforeEach(async({page})=>{
   await page.goto('/stable/index.html');
+  page.on('pageerror',e=>console.log('EIGHTX8_AGENT_STAGE_JS_ERROR',e.message));
   await page.setContent(renderAgentTheaterUI(),{waitUntil:'load'});
+  console.log('EIGHTX8_AGENT_STAGE_INITIAL',JSON.stringify(await page.evaluate(()=>({initialized:document.querySelectorAll('#transcript .entry').length,demo:!!document.getElementById('demo'),speaker:document.getElementById('speaker')?.textContent}))))
 });
 test('restored original cinematic portraits and ChatGPT connector are source-labeled',async({page})=>{
   await expect(page.getByRole('heading',{name:/Agents that look, speak and work/})).toBeVisible();
