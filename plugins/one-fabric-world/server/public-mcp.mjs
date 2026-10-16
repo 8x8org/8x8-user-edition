@@ -20,8 +20,11 @@ const UI=readFileSync(new URL('../ui/one-fabric-hub.html',import.meta.url),'utf8
 
 // Pure source renderer for offline/browser contract testing. This is not a network endpoint.
 export function renderPublicUI(){return UI;}
+const OBSERVATORY_UI=readFileSync(new URL('../ui/one-fabric-observatory.html',import.meta.url),'utf8');
+export function renderObservatoryUI(){return OBSERVATORY_UI;}
 const SCOPE='8x8.public.read';
 const UI_URI='ui://8x8/one-fabric-user-edition-hub.html';
+const OBSERVATORY_URI='ui://8x8/one-fabric-observatory.html';
 const TOOLS=Object.freeze({
  'one_fabric.capability_catalog':'Explore source-backed public capabilities and maturity',
  'one_fabric.world_status':'Inspect World and Three Gates readiness',
@@ -39,7 +42,8 @@ const TOOLS=Object.freeze({
  'one_fabric.market_snapshot_contract':'Inspect the fail-closed local market chart import schema and explicitly unverified provenance',
  'one_fabric.connector_inventory_status':'Inspect time-stamped advertised tool census without claims of installation or account access',
  'one_fabric.access_rescue':'Explore missing-access states and safe reversible connection guidance without collecting secrets',
- 'one_fabric.scenario_catalog':'Explore eight source-classified cross-domain scenarios, agent role templates and acceptance receipts'
+ 'one_fabric.scenario_catalog':'Explore eight source-classified cross-domain scenarios, agent role templates and acceptance receipts',
+ 'one_fabric.observatory_contract':'Explore agent avatar and whole-estate event observation requirements without accessing private telemetry'
 });
 const json=(body,status=200,headers={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store',...headers}});
 const https=x=>{try{return new URL(x).protocol==='https:'}catch{return false}};
@@ -85,10 +89,11 @@ function value(name){
   case 'one_fabric.connector_inventory_status':return {...COMMON,connector_census:DATA.connector_census};
   case 'one_fabric.access_rescue':return {...COMMON,access_states:SCENARIOS.missing_access_states,privacy:SCENARIOS.privacy,external_connection_performed:false};
   case 'one_fabric.scenario_catalog':return {...COMMON,scenarios:SCENARIOS.flows,classification:SCENARIOS.classification,automatic_execution:false};
+  case 'one_fabric.observatory_contract':return {...COMMON,visualization:'PUBLIC_SAFE_ANIMATED_ILLUSTRATION',owner_live_stream_connected:false,verified_live_agents:null,world_domains:24,all_files_covered:false,event_fields:['event_id','source_id','observed_utc','evidence_class','receipt_ref','tenant_scope'],sequence_gap_detection_required:true,transport:'FUTURE_AUTHENTICATED_OWNER_SSE',raw_hidden_model_reasoning_exposed:false,owner_secrets_exposed:false};
   default:throw Error('UNKNOWN_TOOL');
  }
 }
-function toolList(){return Object.entries(TOOLS).map(([name,description])=>({name,description,inputSchema:{type:'object',properties:{},additionalProperties:false},securitySchemes:[{type:'oauth2',scopes:[SCOPE]}],annotations:{readOnlyHint:true,destructiveHint:false,openWorldHint:false},_meta:{'ui/resourceUri':UI_URI}}))}
+function toolList(){return Object.entries(TOOLS).map(([name,description])=>({name,description,inputSchema:{type:'object',properties:{},additionalProperties:false},securitySchemes:[{type:'oauth2',scopes:[SCOPE]}],annotations:{readOnlyHint:true,destructiveHint:false,openWorldHint:false},_meta:{'ui/resourceUri':name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}}))}
 export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
  return async request=>{
   const url=new URL(request.url);
@@ -109,15 +114,16 @@ export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
   if(body.method==='initialize')result={protocolVersion:'2025-06-18',serverInfo:{name:'8x8-one-fabric-user-world',version:'0.2.0'},capabilities:{tools:{listChanged:false},resources:{listChanged:false}},instructions:'Public prelaunch user directory only. No founder/owner resource, broker action, payment, signer, device command or automatic social post.'};
   else if(body.method==='ping')result={};
   else if(body.method==='tools/list')result={tools:toolList()};
-  else if(body.method==='resources/list')result={resources:[{uri:UI_URI,name:'One Fabric User Hub',mimeType:'text/html;profile=mcp-app'}]};
+  else if(body.method==='resources/list')result={resources:[{uri:UI_URI,name:'One Fabric User Hub',mimeType:'text/html;profile=mcp-app'},{uri:OBSERVATORY_URI,name:'One Fabric Observatory (Public Preview)',mimeType:'text/html;profile=mcp-app'}]};
   else if(body.method==='resources/read'){
-    if(body.params?.uri!==UI_URI)return json({jsonrpc:'2.0',id,error:{code:-32602,message:'UNKNOWN_RESOURCE'}});
-    result={contents:[{uri:UI_URI,mimeType:'text/html;profile=mcp-app',text:UI}]};
+    if(body.params?.uri!==UI_URI&&body.params?.uri!==OBSERVATORY_URI)return json({jsonrpc:'2.0',id,error:{code:-32602,message:'UNKNOWN_RESOURCE'}});
+    const obs=body.params.uri===OBSERVATORY_URI;
+    result={contents:[{uri:body.params.uri,mimeType:'text/html;profile=mcp-app',text:obs?OBSERVATORY_UI:UI}]};
   }
   else if(body.method==='tools/call'){
    const name=body.params?.name,args=body.params?.arguments||{};
    if(typeof name!=='string'||!Object.hasOwn(TOOLS,name)||!args||typeof args!=='object'||Array.isArray(args)||Object.keys(args).length)return json({jsonrpc:'2.0',id,error:{code:-32602,message:'INVALID_TOOL_OR_ARGUMENTS'}});
-   const data=value(name);result={content:[{type:'text',text:JSON.stringify(data)}],structuredContent:data,isError:false,_meta:{'ui/resourceUri':UI_URI}};
+   const data=value(name);result={content:[{type:'text',text:JSON.stringify(data)}],structuredContent:data,isError:false,_meta:{'ui/resourceUri':name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}};
   }else return json({jsonrpc:'2.0',id,error:{code:-32601,message:'METHOD_NOT_FOUND'}});
   return json({jsonrpc:'2.0',id,result});
  }
