@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 15 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,15);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 17 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,17);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -101,4 +101,31 @@ test('market renderer is included in the MCP Apps resource, no fabricated live b
  assert.ok(!html.includes('<!-- MARKET_VALIDATOR_JS -->'));
  assert.ok(!html.includes('LIVE_PROVIDER_VERIFIED · ACTIVE'));
  assert.ok(!html.includes('account_fill_count='));
+});
+
+test('source-backed access rescue offers no-secret recovery for eight conditions',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.access_rescue',arguments:{}});
+ const v=x.result.structuredContent;
+ assert.equal(v.effect_count,0);assert.equal(v.external_connection_performed,false);
+ assert.equal(v.access_states.length,8);
+ for(const state of v.access_states)assert.ok(state.id&&state.remedy);
+ assert.ok(v.privacy.never_collect.includes('api key'));
+});
+test('eight scenarios preserve distinct execution and proof gates',async()=>{
+ const [,x]=await post('tools/call',{name:'one_fabric.scenario_catalog',arguments:{}});
+ const v=x.result.structuredContent;
+ assert.equal(v.effect_count,0);assert.equal(v.automatic_execution,false);
+ assert.equal(v.scenarios.length,8);assert.equal(new Set(v.scenarios.map(x=>x.id)).size,8);
+ for(const x of v.scenarios){assert.ok(x.steps.length>1&&x.missing.length>0&&x.receipt.length>0)}
+});
+test('UI includes source-backed assistance dialog and local draft export',async()=>{
+ const [,l]=await post('resources/list',{});const [,r]=await post('resources/read',{uri:l.result.resources[0].uri});
+ const html=r.result.contents[0].text;
+ assert.ok(html.includes('id="access-dialog"'));
+ assert.ok(html.includes('id="access-launch"'));
+ assert.ok(html.includes('id="studio-draft"'));
+ assert.ok(html.includes('LOCAL_DRAFT_NOT_RENDERED'));
+ assert.ok(html.includes('"id":"QUOTA_BLOCKED"'));
+ assert.ok(!html.includes('<!-- SCENARIO_CATALOG_JSON -->'));
+ assert.ok(!html.includes('create live order'));
 });
