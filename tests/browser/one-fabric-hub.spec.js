@@ -86,7 +86,7 @@ test('video credit block can be resolved into safe provider options without paym
  await page.locator('#access-launch').click();
  await expect(page.locator('#access-state')).toContainText('Provider credits or rate limit');
  await expect(page.locator('#access-state')).toContainText('preserve draft');
- await expect(page.locator('#access-receipt')).toContainText('Finished');
+ await expect(page.locator('#access-receipt')).toContainText('finished-video');
  await page.locator('#access-close').click();
 });
 test('Studio creates actual locally editable 8:08 kit with 11 unsent social drafts',async({page})=>{
