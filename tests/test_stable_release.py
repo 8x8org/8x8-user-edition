@@ -59,7 +59,7 @@ class StableReleaseContract(unittest.TestCase):
             '8X8_PUBLIC_DEPLOY_CONTRACT_MISMATCH',
             '8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT',
             'state/public-state.json',
-            'core/owner_model_credential_broker_v1.py',
+            'unexpectedBackendRoots',
         ]
         for marker in required_markers:
             self.assertIn(marker, build)
