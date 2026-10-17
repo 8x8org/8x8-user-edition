@@ -52,6 +52,25 @@ class StableReleaseContract(unittest.TestCase):
         self.assertFalse(self.state['live_trading_enabled'])
         self.assertFalse(self.state['wallet_material_included'])
 
+    def test_public_vercel_builder_guards_source_before_dist_cleanup(self):
+        build = (ROOT / 'scripts/build-vercel-static.mjs').read_text()
+        required_markers = [
+            '8X8_PUBLIC_DEPLOY_SOURCE_MISMATCH',
+            '8X8_PUBLIC_DEPLOY_CONTRACT_MISMATCH',
+            '8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT',
+            'state/public-state.json',
+            'core/owner_model_credential_broker_v1.py',
+        ]
+        for marker in required_markers:
+            self.assertIn(marker, build)
+        # Do not clear a previously functional dist until the guard has
+        # inspected public-only inputs. Arbitrary CLI uploads still need
+        # a separate owner-deployment release entrypoint gate.
+        self.assertLess(build.index('8X8_PUBLIC_DEPLOY_SOURCE_MISMATCH'),
+                        build.index('rmSync(out'))
+        self.assertLess(build.index('8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT'),
+                        build.index('rmSync(out'))
+
     def test_rollback_is_preserved_while_v50_is_root(self):
         self.assertTrue(self.release['rollback']['available'])
         self.assertEqual(self.release['rollback']['projection'], '/r3')
