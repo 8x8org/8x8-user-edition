@@ -71,6 +71,29 @@ class StableReleaseContract(unittest.TestCase):
         self.assertLess(build.index('8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT'),
                         build.index('rmSync(out'))
 
+    def test_public_actor_aliases_preserve_client_capabilities(self):
+        catalog = json.loads((ROOT / 'catalog/one_fabric_unified_user_mcp_v1.json').read_text())
+        archetypes = catalog['protected_defaults']
+        self.assertIn('research-relay', archetypes)
+        self.assertIn('research-relay', (ROOT / 'protected-beta/one_fabric_user_gateway_policy.py').read_text())
+
+        capabilities = (ROOT / 'one-fabric-capability-estate-v52.js').read_text()
+        self.assertIn('agents.research_relay', capabilities)
+        self.assertIn('computer.local_terminal', capabilities)
+        self.assertIn('presence.local_terminal_body', capabilities)
+
+        providers = (ROOT / 'protected-beta/one_fabric_secure_connection_intents_v1.py').read_text()
+        self.assertIn('Provider("local-device-bridge", "devices"', providers)
+        self.assertIn('LOCAL_DEVICE_CONSENT', providers)
+        self.assertIn('terminal.execute', providers)
+        self.assertIn('orders.place', providers)
+
+        theater = (ROOT / 'plugins/one-fabric-world/ui/one-fabric-agent-theater.html').read_text()
+        self.assertIn('"id":"RESEARCH_RELAY"', theater)
+        self.assertIn('Research Relay', theater)
+        self.assertIn('SCRIPTED SCENARIO', theater)
+        self.assertIn('Research Relay 9119', (ROOT / 'v50.html').read_text())
+
     def test_rollback_is_preserved_while_v50_is_root(self):
         self.assertTrue(self.release['rollback']['available'])
         self.assertEqual(self.release['rollback']['projection'], '/r3')
