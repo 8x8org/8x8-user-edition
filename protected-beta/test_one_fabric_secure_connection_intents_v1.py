@@ -54,8 +54,8 @@ class PolicyTests(unittest.TestCase):
  def test_wallet_watch_only(self):self.assertEqual(self.i(provider="wallet-watch",slot=None,scopes=frozenset({"wallet.address.read"})).provider,"wallet-watch")
  def test_wallet_seed_denied(self):
   with self.assertRaises(SecretInChatRejected):self.i(provider="wallet-watch",slot=None,scopes=frozenset({"wallet.address.read"}),submitted_fields={"seed_phrase":"never"})
- def test_direct_termux_shell_denied(self):
-  with self.assertRaises(ConnectionDenied):self.i(provider="termux",slot=None,scopes=frozenset({"terminal.execute"}))
+ def test_direct_local_device_shell_denied(self):
+  with self.assertRaises(ConnectionDenied):self.i(provider="local-device-bridge",slot=None,scopes=frozenset({"terminal.execute"}))
  def test_unknown_provider(self):
   with self.assertRaises(ConnectionDenied):self.i(provider="fake")
  def test_nonce_unique(self):self.assertNotEqual(self.i().nonce_digest,self.i().nonce_digest)
