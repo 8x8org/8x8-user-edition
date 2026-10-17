@@ -16,7 +16,7 @@
 
 `user auth subject → 8x8 ID → tenant membership → workspace → own agent instances and memories → explicit connector grants → action receipt`.
 
-Default Seraphim, FlashTM8 Assistant, Aegis, Jarvis, Hermes and Anvil are **public-safe archetype templates**, NOT replicas of owner-private agent memory, internal prompts, model credentials or founder vault. Users can create custom agent instances within their own tenant. Each instance's memory belongs to that user and must be exportable, deletable, revocable and encrypted. Shared template updates are versioned, signed and audited; no user data is folded back into shared souls/template content without separate permission.
+Default Seraphim, FlashTM8 Assistant, Aegis, Jarvis, Research Relay and Anvil are **public-safe archetype templates**, NOT replicas of owner-private agent memory, internal prompts, model credentials or founder vault. Users can create custom agent instances within their own tenant. Each instance's memory belongs to that user and must be exportable, deletable, revocable and encrypted. Shared template updates are versioned, signed and audited; no user data is folded back into shared souls/template content without separate permission.
 
 Every tool invocation and storage query MUST enforce tenant ownership via authenticated server policy plus database RLS (defense in depth). A user subscription does not upgrade tenant privileges. Collaborative cross-tenant resources require explicit named ACLs; default DENY. OWNER_ROOT is a separate service and remains unavailable in User Edition.
 
