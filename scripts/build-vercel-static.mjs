@@ -30,12 +30,13 @@ if (packageMetadata.name !== '8x8-user-edition-quality-gates' ||
     publicState.live_trading_enabled !== false) {
   throw new Error('8X8_PUBLIC_DEPLOY_CONTRACT_MISMATCH');
 }
-const ownerOnlySource = [
-  'core/owner_model_credential_broker_v1.py',
-  'core/owner_universal_provider_v1.py',
-  'agents/real_agent_worker.py'
+const unexpectedBackendRoots = [
+  'core',
+  'agents',
+  'auth.py',
+  'background_loop.py'
 ];
-if (ownerOnlySource.some(path => existsSync(path))) {
+if (unexpectedBackendRoots.some(path => existsSync(path))) {
   throw new Error('8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT');
 }
 
