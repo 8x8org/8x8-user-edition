@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { checkPublicReleaseInputs, APPROVED_PROJECT, CANONICAL_REPO } from '../scripts/verify-vercel-release-source.mjs';
+import { execFileSync } from 'node:child_process';
+import { checkPublicReleaseInputs, previewOnlyRelease, APPROVED_PROJECT, CANONICAL_REPO } from '../scripts/verify-vercel-release-source.mjs';
 
 const required = [
   'package.json', 'vercel.json', 'state/public-state.json',
@@ -66,4 +67,55 @@ fixtureTest('public tenant state may not claim credentials or trading', root => 
 fixtureTest('Python Vercel build configuration is rejected', root => {
   writeFileSync(join(root,'vercel.json'),JSON.stringify({framework:'python',buildCommand:'uv pip install',outputDirectory:'dist'}));
   assert.throws(() => checkPublicReleaseInputs(valid(root)), /PUBLIC_BUILD_CONTRACT_MISMATCH/);
+});
+
+
+function verifiedLocalGitFixture(root, linkedId = APPROVED_PROJECT) {
+  writeFileSync(join(root, '.gitignore'), '.vercel/\n');
+  const git = (...args) => execFileSync('git', args, { cwd: root, stdio: 'pipe' });
+  git('init', '-q');
+  git('remote', 'add', 'origin', 'https://github.com/8x8org/8x8-user-edition.git');
+  git('add', '.');
+  git('-c', 'user.name=8x8-test', '-c', 'user.email=tests@example.invalid',
+      'commit', '-q', '-m', 'fixture');
+  mkdirSync(join(root, '.vercel'), { recursive: true });
+  writeFileSync(join(root, '.vercel/project.json'), JSON.stringify({ projectId: linkedId }));
+}
+fixtureTest('preview command calls only pinned Vercel preview with valid linked project', root => {
+  verifiedLocalGitFixture(root);
+  const calls = [];
+  const receipt = previewOnlyRelease({
+    root, projectId: APPROVED_PROJECT,
+    spawn: (command, args, options) => { calls.push({command,args,options}); return {status:0}; }
+  });
+  assert.equal(receipt.effect, 'PREVIEW_DEPLOYMENT_COMMAND_SUCCEEDED');
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0].args, ['deploy','--target=preview']);
+  assert.equal(calls[0].command, 'vercel');
+  assert.equal(calls[0].options.shell, false);
+});
+fixtureTest('preview blocked when Vercel link points to another project', root => {
+  verifiedLocalGitFixture(root, 'prj_other');
+  let called = false;
+  assert.throws(() => previewOnlyRelease({
+    root, projectId: APPROVED_PROJECT,
+    spawn: () => { called=true; return {status:0}; }
+  }), /VERCEL_PROJECT_LINK_MISMATCH/);
+  assert.equal(called,false);
+});
+fixtureTest('preview blocked on uncommitted source modifications', root => {
+  verifiedLocalGitFixture(root);
+  writeFileSync(join(root, 'auth.py'), 'untracked');
+  let called = false;
+  assert.throws(() => previewOnlyRelease({
+    root, projectId: APPROVED_PROJECT,
+    spawn: () => { called=true; return {status:0}; }
+  }), /SOURCE_WORKTREE_NOT_CLEAN|BACKEND_SOURCE_IN_PUBLIC_ROOT/);
+  assert.equal(called,false);
+});
+fixtureTest('preview never announces success when CLI returns a failed status', root => {
+  verifiedLocalGitFixture(root);
+  assert.throws(() => previewOnlyRelease({
+    root, projectId: APPROVED_PROJECT, spawn: () => ({status:1})
+  }), /PREVIEW_DEPLOY_COMMAND_FAILED/);
 });
