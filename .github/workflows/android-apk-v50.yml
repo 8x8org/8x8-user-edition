@@ -1,7 +1,7 @@
 name: Android User Edition V50 APK
 on:
   push:
-    branches: [main, 'release/**']
+    branches: [main, 'release/**', 'feat/unified-8x8-id-mcp-user-edition-20261016']
     paths:
       - 'android-app/**'
       - '.github/workflows/android-apk-v50.yml'

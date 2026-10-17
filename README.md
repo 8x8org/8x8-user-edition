@@ -105,6 +105,36 @@ Buttons in the static public mirror demonstrate interface contracts. They do not
 
 No guaranteed profit, rewards, APY, token value, zero gas or zero latency is promised.
 
+## Owner-controlled preview admission
+
+The existing `8x8-user-8888` Vercel carrier is not an authorization to upload a private backend tree. Use **only** the canonical public User Edition checkout and the supported, preview-only entrypoint. This process does not change the production alias.
+
+```bash
+git clone https://github.com/8x8org/8x8-user-edition.git
+cd 8x8-user-edition
+git fetch origin feat/unified-8x8-id-mcp-user-edition-20261016
+git switch --detach FETCH_HEAD
+node --test tests/verify-vercel-release-source.test.mjs
+npm run build:vercel
+
+# Owner sign-in and select the EXISTING Vercel project 8x8-user-8888.
+# Never create a replacement project or paste tokens into chat.
+vercel login
+vercel link
+
+# Inspect linked identity without deploying:
+node scripts/verify-vercel-release-source.mjs --target-project=prj_ouaSkH3EADTdaQ8enpFlEd4D0vUU
+
+# With a verified, clean checkout and deliberate owner consent:
+npm run deploy:vercel:preview:safe
+```
+
+Vercel CLI must already be installed or installed in an adequately provisioned authorized environment; the Samsung is not assumed to have spare disk for another installation. The `vercel link` flow writes `.vercel/project.json`, which this repository excludes from Git. The preview command rejects an unlinked/wrong project, wrong Git origin, private backend source, unsafe public-state flags, and an uncommitted worktree. It invokes `vercel deploy --target=preview` with no production flag.
+
+After an owner-authorized preview, independently inspect the returned deployment URL, HTTP status, response headers, public capabilities, tenant boundary, accessibility, and release receipts **before** proposing promotion. The script cannot prevent a privileged operator from directly invoking Vercel CLI/API outside this checked path. Production admission also requires provider-level deploy permissions, reviewed source identity, rollback, and a separate explicit approval.
+
+**No credential collection, production deployment, trading order, publishing event, or private agent access is established by this preview guide.**
+
 ## Deployment acceptance
 
 The production carrier now passes server-side route and response-header checks for the required public routes. Physical logged-out Android Chromium and mobile Safari visual smoke remain separate client-side certification evidence. See [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md) and [`docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md`](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md).

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark"><title>©8x8 · One Fabric Observatory</title>
+<style>
+:root{color-scheme:dark;font:15px/1.5 system-ui,-apple-system,sans-serif;color:#e8f6ff;background:#07101c}
+*{box-sizing:border-box}body{margin:0;min-width:320px;background:radial-gradient(ellipse 100% 50% at 50% -20%,#185c92 0,transparent 65%),#06111f}
+main{max-width:1300px;margin:auto;padding:20px 16px 70px}
+a{color:#8ce5f9}button,select{font:inherit;color:inherit;background:#173651;border:1px solid #356384;border-radius:10px;padding:9px 13px;cursor:pointer}
+button:hover{border-color:#80ddff;background:#215071}button:focus-visible,select:focus-visible{outline:2px solid #e4bf7e;outline-offset:3px}
+header{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #294660;padding-bottom:16px}
+h1{font-size:clamp(25px,4vw,42px);letter-spacing:-.045em;margin:16px 0 4px}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}
+.kicker{color:#84dcf3;font-size:12px;letter-spacing:.16em;font-weight:800}
+.pill{display:inline-flex;gap:6px;align-items:center;border:1px solid #51718a;border-radius:999px;padding:4px 9px;color:#adcddd;font-size:11px;font-weight:700;letter-spacing:.04em}
+.warn{border-color:#9c8258;color:#f6dcab;background:#2d271d}
+.hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;margin:20px 0}
+.lead{color:#a5c5d9;max-width:730px;margin:8px 0}
+.deck{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.box{background:linear-gradient(150deg,#10273ce9,#0a1b2bed);border:1px solid #30506c;border-radius:18px;padding:16px;min-width:0}
+.col8{grid-column:span 8}.col4{grid-column:span 4}.col6{grid-column:span 6}.col12{grid-column:span 12}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 16px}
+.metric{padding:12px 14px;border:1px solid #31516b;border-radius:13px;background:#10273b}
+.metric b{display:block;font-size:25px;line-height:1.15;letter-spacing:-.03em}.metric small{color:#acc3d9;font-size:11px}
+.scene{position:relative;min-height:260px;overflow:hidden;isolation:isolate;border-radius:15px;background:radial-gradient(circle at 50% 40%,#123f64 0,#092036 36%,#071725 65%);border:1px solid #325674;display:flex;align-items:center;justify-content:center}
+.scene::before{content:"";position:absolute;inset:0;background-image:linear-gradient(#8ab8ce09 1px,transparent 1px),linear-gradient(90deg,#8ab8ce09 1px,transparent 1px);background-size:24px 24px}
+.orbit{position:absolute;width:210px;height:210px;border:1px dashed #59acc164;border-radius:50%;transform:rotateX(53deg) rotateZ(-15deg);box-shadow:0 0 65px #24b7fe22;animation:orbit 18s linear infinite}
+.orbit.big{width:300px;height:300px;animation-duration:30s;animation-direction:reverse}
+.core{position:relative;z-index:3;width:108px;height:108px;display:grid;place-items:center;border-radius:27px;border:2px solid #6dd5f4;box-shadow:0 0 36px #22b9f55d,inset 0 0 28px #1ca6d044;background:linear-gradient(145deg,#173f5d,#102437);font-size:40px;font-weight:900;color:#dcfaff}
+.avatar-ring{position:absolute;z-index:2;display:grid;place-items:center;width:66px;height:80px;gap:2px;animation:floaty 4s ease-in-out infinite}
+.avatar-ring .helmet{width:46px;height:48px;border:2px solid var(--shine);border-radius:25px 25px 16px 16px;background:linear-gradient(120deg,#233e5a,#142c45);display:grid;place-items:center;box-shadow:0 0 18px var(--glow)}
+.helmet .visor{width:30px;height:13px;border:1px solid var(--shine);background:var(--glow);border-radius:20px 20px 8px 8px;box-shadow:0 0 12px var(--glow)}
+.avatar-ring .suit{height:24px;width:60px;border:2px solid var(--shine);background:#153752;border-radius:26px 26px 7px 7px}
+.avatar-ring span{white-space:nowrap;font-size:10px;color:#c9e5f4;text-shadow:0 2px 5px #001;position:absolute;bottom:-21px}
+.a1{top:15px;left:17%;--shine:#82d9f9;--glow:#31b9fa66}
+.a2{top:13px;right:17%;--shine:#cda8ff;--glow:#ab71ef6b;animation-delay:-1s}
+.a3{bottom:26px;left:16%;--shine:#7cebd1;--glow:#0cbf9a64;animation-delay:-2s}
+.a4{bottom:26px;right:16%;--shine:#ffc58b;--glow:#dc96365d;animation-delay:-3s}
+.packet{position:absolute;top:49%;left:5%;width:24px;height:28px;border:1px solid #73dbf2;background:#143b56a8;border-radius:4px;z-index:4;display:none;place-items:center;font-size:11px;box-shadow:0 0 20px #3de5ff6e}
+.scene.playing .packet{display:grid;animation:movefile 4.8s ease-in-out 1 forwards}
+.scene.playing .core{animation:corepulse 1.6s ease-in-out 4}
+.scene-label{position:absolute;bottom:9px;left:12px;z-index:5;color:#a6cddd;font-size:10px}
+@keyframes orbit{to{transform:rotateX(53deg) rotateZ(345deg)}}@keyframes floaty{50%{transform:translateY(-8px)}}
+@keyframes movefile{0%{left:5%;opacity:0}16%{opacity:1}53%{left:46%;opacity:1}81%{left:84%;opacity:1}100%{left:91%;opacity:0}}
+@keyframes corepulse{50%{box-shadow:0 0 65px #43ccfa;transform:scale(1.035)}}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}.primary{background:#146089;border-color:#5fd4f9}
+.note{font-size:12px;color:#acc9da}.legend{display:flex;gap:10px;flex-wrap:wrap;color:#b7cedb;font-size:11px;margin-top:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:#63d6ee;display:inline-block;margin-right:4px}.dot.neutral{background:#a4a5b5}.dot.warn{background:#e6ae68}
+.personas{display:grid;gap:9px}
+.persona{display:grid;grid-template-columns:46px 1fr;gap:9px;align-items:center;padding:9px;border:1px solid #31516b;border-radius:12px;background:#0b1b2b}
+.face{width:44px;height:44px;display:grid;place-items:center;border:2px solid #529aca;border-radius:15px;background:#16324c;font-size:23px}
+.persona small,.event small{display:block;color:#a9c9db;font-size:11px}
+.persona b{font-size:13px}
+.timeline{min-height:220px;max-height:290px;overflow:auto;margin:0;padding:0;list-style:none}
+.event{padding:10px 8px 10px 22px;border-left:2px solid #355575;position:relative;border-bottom:1px solid #213e55}
+.event:before{content:"";position:absolute;left:-5px;top:17px;width:8px;height:8px;border-radius:50%;background:#81c9e3}
+.event strong{font-size:13px}.event .etype{font-size:10px;padding:2px 6px;background:#24455e;border-radius:5px;margin-left:4px}
+.modulegrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-height:360px;overflow:auto}
+.mod{background:#0c2234;border:1px solid #2c4a62;border-radius:10px;padding:9px;min-height:65px;text-align:left;color:#cfe4f4;font-size:12px}
+.mod:hover{border-color:#86cbe5}.mod small{display:block;color:#92b1c5;font-size:10px;margin-top:3px}
+progress{width:100%;height:13px;accent-color:#73d3f0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.route{border:1px solid #335470;border-radius:10px;padding:11px;background:#0a1c2d;font-size:12px}.route b{display:block;font-size:14px}
+.device{border-left:3px solid #c19b66;padding:12px;background:#18252f;color:#e1d2b5;border-radius:0 9px 9px 0}
+.activity{border:1px solid #34536f;border-radius:10px;padding:12px;background:#091b2e;color:#b9d6e7;font-size:12px}
+small{font-size:11px}
+@media(max-width:920px){.col8,.col4,.col6{grid-column:span 12}.metrics{grid-template-columns:repeat(2,1fr)}.modulegrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:490px){.modulegrid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.scene{min-height:260px}.a1{left:5%}.a2{right:5%}.a3{left:4%}.a4{right:4%}.orbit.big{width:260px;height:260px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<header><div><span class="kicker">⚡ ©8X8 · ONE FABRIC</span> <span class="pill warn">PRELAUNCH · PUBLIC DEMO</span></div><span class="pill" id="source-indicator">No live owner event stream</span></header>
+<div class="hero"><div><h1>The Living Observatory</h1><p><a href="/agents/">Meet the restored cinematic 8x8 agent cast →</a> · original visuals, real user-triggered TTS preview, authenticated agent inference still unverified</p><p class="lead">Explore the architecture of agent presence, device status, source provenance, studio production, trading research and work execution. This public-safe screen illustrates the interface; it does not access private agents, assets, cameras, messages, vaults or your local device.</p></div><button id="demo" class="primary">▶ Play workflow illustration</button></div>
+<div class="metrics">
+<div class="metric"><b>24</b><small>Owner source domains · conceptual coverage</small></div>
+<div class="metric"><b>212</b><small>Historical agent identities · not live</small></div>
+<div class="metric"><b>6,105</b><small>Historical advertised MCP actions · not installed grants</small></div>
+<div class="metric"><b>0</b><small>Connected owner live-event streams</small></div>
+</div>
+<div class="deck">
+<section class="box col8" aria-label="Animated agent presence and workflow"><h2>Agent theater · work travels through One Fabric</h2>
+<div class="scene" id="scene"><div class="orbit"></div><div class="orbit big"></div><div class="core">8×8</div>
+<div class="avatar-ring a1"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>FlashTM8</span></div>
+<div class="avatar-ring a2"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Seraphim</span></div>
+<div class="avatar-ring a3"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Research Agent</span></div>
+<div class="avatar-ring a4"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Council</span></div>
+<div class="packet">▣</div><span class="scene-label">Illustrative character animation · not a live model/tool trace</span></div>
+<div class="legend"><span><i class="dot"></i>Animated design</span><span><i class="dot neutral"></i>Agent availability unverified</span><span><i class="dot warn"></i>Execution needs receipts</span></div>
+</section>
+<section class="box col4"><h2>Personas & authorization</h2><div class="personas">
+<div class="persona"><div class="face">⚡</div><div><b>FlashTM8 · Coordination</b><small>Concept persona · live inference unverified</small></div></div>
+<div class="persona"><div class="face">✦</div><div><b>Seraphim · Welcome</b><small>Three Gates · source candidate</small></div></div>
+<div class="persona"><div class="face">⬡</div><div><b>Research Agent · Public persona</b><small>Agent inbox/source observed; model reply blocked</small></div></div>
+<div class="persona"><div class="face">◈</div><div><b>Council · Verification</b><small>Quorum requires authenticated replies</small></div></div>
+<div class="persona"><div class="face">♬</div><div><b>Studio · Film & audio</b><small>Drafts/preview, not unlimited render credits</small></div></div>
+</div></section>
+<section class="box col6"><h2>Work execution · provenance timeline</h2><ol id="events" class="timeline" aria-live="polite">
+<li class="event"><strong>Observatory launched</strong><small>PUBLIC_SOURCE_DEMO · no private feed subscribed</small></li>
+<li class="event"><strong>Awaiting tenant-approved read-only events</strong><small>Future signed source / timestamp / receipt / freshness</small></li>
+</ol><div class="toolbar"><button id="reset">Reset illustration</button><span class="note" id="event-status">No live events collected.</span></div></section>
+<section class="box col6"><h2>Device & storage · owner-private monitoring</h2>
+<div class="device"><b>Owner device sensor · not connected to this public UI</b><div class="note">The private sensor reports a bounded snapshot of disk, memory, approved modules, STOP and OWNER_ACTIVE. It is not forwarded into public or cross-tenant MCP resources.</div></div>
+<p class="note">Device control, installed apps, foreground camera, microphone, notifications, iOS and external robots require independent permission and receipts.</p>
+<div class="split"><div class="route"><b>Android / APK</b>App upgrade not verified</div><div class="route"><b>iPhone / iOS</b>Live bridge not verified</div></div>
+</section>
+<section class="box col12"><h2>Universal whole-estate domains</h2><p class="note">These 24 categories are a discovery index, not a fixed ceiling or a claim that every file/source is active. Select a domain to see its observability requirement.</p>
+<div class="modulegrid" id="domains"></div><div class="activity" id="domain-detail" role="status">Select a category. Nothing here authorizes a private action.</div></section>
+<section class="box col6"><h2>Studio, media, games and worlds</h2>
+<div class="split"><div class="route"><b>Film & 8:08 episodes</b>Original assets, scene QC, render receipts, licensed soundtracks</div><div class="route"><b>Music, radio, TV</b>Authorized player, provider entitlement, user media files</div><div class="route"><b>Games & XR</b>Avatar state, world simulation, leaderboards</div><div class="route"><b>Books & Planet Earth</b>Research provenance, translations, educational media</div></div><p class="note">Playback works only after providing licensed media or approved official provider embeds. No Spotify account session is implied.</p>
+</section>
+<section class="box col6"><h2>Markets, wallets, devices and integrations</h2>
+<div class="split"><div class="route"><b>Markets & trade counts</b>Provider venue, product, timestamp, exact-count semantics, separate account fills</div><div class="route"><b>8x8 Vault & NFTs</b>Read-only holdings first; wallet signing separately gated</div><div class="route"><b>Connectors / MCP</b>Listed ≠ authenticated ≠ granted ≠ productive</div><div class="route"><b>Access Rescue</b>Owner-only login, scope, consent, tests, no secrets in chat</div></div><p class="note">Live trading, direct publishing, chain transactions and device actions remain disabled until separately authorized.</p>
+</section>
+</div>
+<p class="note" style="margin-top:15px">Architecture truth: true owner observability requires authenticated real-time events (for example signed SSE), bounded replay, no-gap sequence reconciliation, clock freshness, tenant isolation, STOP preemption and destination receipts. This page intentionally uses zero network requests and no secretly collected data.</p>
+</main><script>
+(()=>{
+"use strict";
+const domainNames=["World & spatial","Identity & tenancy","Agents & A2A","Memory & knowledge","Models & routing","Studio & cinema","Jarvis & embodiment","Devices & edge","Connectors & communications","Trading & markets","Blockchain","Assets & economy","Business & revenue","Competitions & benchmarks","AGI evaluations","Security & privacy","Recovery & reliability","Developer platform","Data fabric","Games & academy","Communities & support","Law & IP","Evidence & truth","Digital twin"];
+const list=document.getElementById("domains"),details=document.getElementById("domain-detail");
+domainNames.forEach((name,i)=>{
+ const b=document.createElement("button");b.className="mod";b.type="button";
+ const label=document.createElement("strong");label.textContent=String(i+1).padStart(2,"0")+" · "+name;
+ const extra=document.createElement("small");extra.textContent="Evidence and runtime gate required";
+ b.append(label,extra);b.addEventListener("click",()=>{details.textContent=name+": map all historical and new source URIs to a versioned registry, permission-scope each reader, and show verified receipts for runtime claims. No live implementation inferred.";});
+ list.append(b);
+});
+const initial=document.getElementById("events").innerHTML;
+const scene=document.getElementById("scene"),log=document.getElementById("events"),status=document.getElementById("event-status");
+const frames=[
+ ["RESEARCH","Agent gathers an approved source reference","Illustration · source provenance required"],
+ ["PLAN","Council prepares a proposed upgrade","Illustration · not a verified model response"],
+ ["BUILD","A file moves into a sandbox work area","Illustration · no real file modified"],
+ ["TEST","Checks and independent verification run","Illustration · no CI action invoked"],
+ ["REVIEW","Owner/effect gate checks STOP, scope and rights","Illustration · external actions gated"],
+ ["RECEIPT","Result becomes visible only after readback","Illustration · no actual delivery receipt"]
+];
+let timers=[];
+const reset=()=>{for(const id of timers)clearTimeout(id);timers=[];scene.classList.remove("playing");log.innerHTML=initial;status.textContent="No live events collected."};
+document.getElementById("reset").addEventListener("click",reset);
+document.getElementById("demo").addEventListener("click",()=>{
+ reset();scene.classList.add("playing");status.textContent="Illustration running · not telemetry.";
+ frames.forEach((frame,i)=>{timers.push(setTimeout(()=>{
+ const li=document.createElement("li");li.className="event";
+ const strong=document.createElement("strong");strong.textContent=frame[1];
+ const tag=document.createElement("span");tag.className="etype";tag.textContent=frame[0];
+ const small=document.createElement("small");small.textContent=frame[2];
+ li.append(strong,tag,small);log.prepend(li);
+ if(i===frames.length-1){status.textContent="Illustration finished · zero external actions.";scene.classList.remove("playing");}
+ },i*650));});
+});
+})();
+</script></body></html>
