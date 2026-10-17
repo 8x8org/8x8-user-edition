@@ -68,7 +68,7 @@ FREE_TIER_SCOPES = frozenset({
 
 SAFE_DEFAULT_ARCHETYPES = (
     "seraphim-guide", "flash-assistant", "aegis-security",
-    "jarvis-interface", "hermes-research", "anvil-builder",
+    "jarvis-interface", "research-relay", "anvil-builder",
 )
 DENIED_CORE_PREFIXES = ("owner:", "founder:", "core-private:", "vault-root:")
 
@@ -188,6 +188,6 @@ def public_onboarding_steps() -> tuple[str,...]:
         "Grant memory and voice permissions separately; no implicit conversation import.",
         "Connect financial accounts for read-only research, then separately approve any trade.",
         "Review publishing destinations, content rights and each external publication approval.",
-        "Install optional Termux/device bridge with explicit local presence and revocable leases.",
+        "Install optional on-device bridge with explicit local presence and revocable leases.",
         "Review 88-minute free proposal or an actual verified $8.88/month subscription."
     )
