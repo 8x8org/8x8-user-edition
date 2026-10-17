@@ -52,7 +52,7 @@ _PROVIDERS = [
     Provider("stripe", "billing", "HOSTED_STRIPE_CHECKOUT", frozenset({"billing.read"}), "Use hosted checkout and verify signed server-side webhooks; never collect card numbers in 8x8 chat."),
     Provider("crypto-checkout", "billing", "NETWORK_SPECIFIC_INVOICE", frozenset({"invoice.read"}), "Use only supported verified network/asset invoices and confirmations. Do not request a seed phrase."),
     Provider("wallet-watch", "wallet", "SIGNED_ADDRESS_CHALLENGE", frozenset({"wallet.address.read"}), "Start with watch-only addresses and signed ownership challenges, not imported seed phrases."),
-    Provider("termux", "devices", "LOCAL_DEVICE_CONSENT", frozenset({"device.status.read"}), "Use an opt-in local installer; owner-visible stop, revocation and short capability leases."),
+    Provider("local-device-bridge", "devices", "LOCAL_DEVICE_CONSENT", frozenset({"device.status.read"}), "Use an opt-in local installer; owner-visible stop, revocation and short capability leases."),
 ]
 PROVIDERS = {p.id:p for p in _PROVIDERS}
 
