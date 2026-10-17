@@ -56,6 +56,12 @@ class PolicyTests(unittest.TestCase):
   with self.assertRaises(SecretInChatRejected):self.i(provider="wallet-watch",slot=None,scopes=frozenset({"wallet.address.read"}),submitted_fields={"seed_phrase":"never"})
  def test_direct_local_device_shell_denied(self):
   with self.assertRaises(ConnectionDenied):self.i(provider="local-device-bridge",slot=None,scopes=frozenset({"terminal.execute"}))
+ def test_local_device_bridge_alias_is_read_only(self):
+  g=agent_guidance("local-device-bridge")
+  self.assertEqual(g["domain"],"devices")
+  self.assertEqual(g["approved_initial_scopes"],["device.status.read"])
+  self.assertFalse(g["secret_form_required"])
+  self.assertEqual(g["state"],"GUIDE_ONLY_NO_LIVE_VAULT_LINK")
  def test_unknown_provider(self):
   with self.assertRaises(ConnectionDenied):self.i(provider="fake")
  def test_nonce_unique(self):self.assertNotEqual(self.i().nonce_digest,self.i().nonce_digest)
