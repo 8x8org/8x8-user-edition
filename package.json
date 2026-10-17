@@ -4,7 +4,8 @@
   "version": "0.2.0",
   "scripts": {
     "build:vercel": "node scripts/build-vercel-static.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "deploy:vercel:preview:safe": "node scripts/verify-vercel-release-source.mjs --target-project=prj_ouaSkH3EADTdaQ8enpFlEd4D0vUU --deploy-preview"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
