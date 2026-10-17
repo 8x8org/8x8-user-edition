@@ -2,7 +2,7 @@
 // This does not grant Vercel credentials or prevent a privileged user from bypassing this script.
 import { existsSync, lstatSync, readFileSync, realpathSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 export const CANONICAL_REPO = '8x8org/8x8-user-edition';
@@ -78,19 +78,40 @@ export function inspectCurrentRelease({ root = process.cwd(), projectId, sourceO
     root: base, projectId, repository: origin, strictLink: !sourceOnly, linkedProjectId
   });
 }
+// Only the owner's explicit preview command can invoke Vercel.
+// A successful static-source check is not a production promotion approval.
+export function previewOnlyRelease({ root = process.cwd(), projectId, spawn = spawnSync }) {
+  const base = realpathSync(resolve(root));
+  const receipt = inspectCurrentRelease({ root: base, projectId, sourceOnly: false });
+  if (process.env.VERCEL_PROJECT_ID && process.env.VERCEL_PROJECT_ID !== APPROVED_PROJECT) {
+    reject('ENV_PROJECT_MISMATCH');
+  }
+  if (git(base, 'status', '--porcelain')) reject('SOURCE_WORKTREE_NOT_CLEAN');
+  const result = spawn('vercel', ['deploy', '--target=preview'], {
+    cwd: base, stdio: 'inherit', env: process.env, shell: false
+  });
+  if (result.error) reject('VERCEL_CLI_UNAVAILABLE_OR_FAILED');
+  if (result.status !== 0) reject('PREVIEW_DEPLOY_COMMAND_FAILED');
+  return { ...receipt, effect: 'PREVIEW_DEPLOYMENT_COMMAND_SUCCEEDED' };
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try {
     const args = process.argv.slice(2);
     const projectFlag = args.find(x => x.startsWith('--target-project='));
-    if (!projectFlag || args.some(x => !x.startsWith('--target-project=') && x !== '--ci-source-only')) {
-      reject('USAGE_TARGET_PROJECT_REQUIRED');
+    const targets = args.filter(x => x.startsWith('--target-project='));
+    const sourceOnly = args.includes('--ci-source-only');
+    const deployPreview = args.includes('--deploy-preview');
+    if (!projectFlag || targets.length !== 1 || (sourceOnly && deployPreview) ||
+        args.some(x => !x.startsWith('--target-project=') && x !== '--ci-source-only' && x !== '--deploy-preview')) {
+      reject('USAGE_TARGET_PROJECT_REQUIRED_EXACTLY_ONCE');
     }
-    const receipt = inspectCurrentRelease({
-      projectId: projectFlag.slice('--target-project='.length),
-      sourceOnly: args.includes('--ci-source-only')
-    });
+    const projectId = projectFlag.slice('--target-project='.length);
+    const receipt = deployPreview
+      ? previewOnlyRelease({ projectId })
+      : inspectCurrentRelease({ projectId, sourceOnly });
     console.log('8X8_RELEASE_ADMISSION=' + receipt.verdict + ' PROJECT_ALLOWLIST_CONFIRMED=true');
-    console.log('8X8_RELEASE_EFFECT=NONE no_credentials=true no_deployment=true');
+    console.log('8X8_RELEASE_EFFECT=' + (receipt.effect || 'NONE') + ' no_credentials_echoed=true');
   } catch (error) {
     console.error(String(error.message));
     process.exitCode = 1;
