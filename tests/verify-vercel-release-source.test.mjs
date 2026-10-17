@@ -58,7 +58,20 @@ fixtureTest('wrong 636-file source structure without public manifests denied', r
 fixtureTest('symlink public manifest rejected', root => {
   rmSync(join(root,'vercel.json'));
   symlinkSync(join(root,'package.json'),join(root,'vercel.json'));
-  assert.throws(() => checkPublicReleaseInputs(valid(root)), /INVALID_SOURCE_FILE/);
+  assert.throws(() => checkPublicReleaseInputs(valid(root)), /SYMLINK_IN_PUBLIC_SOURCE/);
+});
+fixtureTest('symlinked parent directory cannot escape the public root', root => {
+  const external = mkdtempSync(join(tmpdir(), '8x8-outside-'));
+  try {
+    writeFileSync(join(external, 'public-state.json'), JSON.stringify({
+      promotion_state: 'PROTECTED_BETA', public_beta: true,
+      credentials_included: false, wallet_material_included: false,
+      remote_shell_enabled: false, live_trading_enabled: false
+    }));
+    rmSync(join(root, 'state'), { recursive: true });
+    symlinkSync(external, join(root, 'state'), 'dir');
+    assert.throws(() => checkPublicReleaseInputs(valid(root)), /SYMLINK_IN_PUBLIC_SOURCE/);
+  } finally { rmSync(external, { recursive: true, force: true }); }
 });
 fixtureTest('public tenant state may not claim credentials or trading', root => {
   writeFileSync(join(root,'state/public-state.json'),JSON.stringify({promotion_state:'PROTECTED_BETA',public_beta:true,credentials_included:true,wallet_material_included:false,remote_shell_enabled:false,live_trading_enabled:true}));
