@@ -2,6 +2,43 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 
 import { renderPublicUI, renderObservatoryUI, renderAgentTheaterUI } from '../plugins/one-fabric-world/server/public-mcp.mjs';
 
+// Preserve the public/private boundary before clearing dist or copying files.
+// This preflight runs only when the *existing* User Edition builder is invoked.
+// Direct CLI uploads from the wrong repository require a separate deployment gate.
+const requiredPublicSource = [
+  'package.json',
+  'vercel.json',
+  'state/public-state.json',
+  'v50.html',
+  'plugins/one-fabric-world/server/public-mcp.mjs',
+  'plugins/one-fabric-world/ui/one-fabric-bubble.js'
+];
+const missingPublicSource = requiredPublicSource.filter(path => !existsSync(path));
+if (missingPublicSource.length) {
+  throw new Error(`8X8_PUBLIC_DEPLOY_SOURCE_MISMATCH: missing public files: ${missingPublicSource.join(', ')}`);
+}
+const packageMetadata = JSON.parse(readFileSync('package.json', 'utf8'));
+const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8'));
+const publicState = JSON.parse(readFileSync('state/public-state.json', 'utf8'));
+if (packageMetadata.name !== '8x8-user-edition-quality-gates' ||
+    vercelConfig.buildCommand !== 'npm run build:vercel' ||
+    vercelConfig.outputDirectory !== 'dist' ||
+    publicState.promotion_state !== 'PROTECTED_BETA' ||
+    publicState.credentials_included !== false ||
+    publicState.wallet_material_included !== false ||
+    publicState.remote_shell_enabled !== false ||
+    publicState.live_trading_enabled !== false) {
+  throw new Error('8X8_PUBLIC_DEPLOY_CONTRACT_MISMATCH');
+}
+const ownerOnlySource = [
+  'core/owner_model_credential_broker_v1.py',
+  'core/owner_universal_provider_v1.py',
+  'agents/real_agent_worker.py'
+];
+if (ownerOnlySource.some(path => existsSync(path))) {
+  throw new Error('8X8_PUBLIC_DEPLOY_PRIVATE_SOURCE_PRESENT');
+}
+
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
