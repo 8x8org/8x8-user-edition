@@ -13,8 +13,16 @@ function reject(reason) {
 }
 function regularFile(root, pathname) {
   const path = resolve(root, pathname);
-  if (!path.startsWith(root + '/') || !existsSync(path)) reject('MISSING_PUBLIC_SOURCE:' + pathname);
-  if (!lstatSync(path).isFile() || lstatSync(path).isSymbolicLink()) reject('INVALID_SOURCE_FILE:' + pathname);
+  if (!path.startsWith(root + '/')) reject('INVALID_PUBLIC_PATH:' + pathname);
+  let cursor = root;
+  for (const component of pathname.split('/')) {
+    cursor = resolve(cursor, component);
+    if (!existsSync(cursor)) reject('MISSING_PUBLIC_SOURCE:' + pathname);
+    if (lstatSync(cursor).isSymbolicLink()) reject('SYMLINK_IN_PUBLIC_SOURCE:' + pathname);
+  }
+  if (!lstatSync(path).isFile() || !realpathSync(path).startsWith(root + '/')) {
+    reject('INVALID_SOURCE_FILE:' + pathname);
+  }
   return path;
 }
 function loadJSON(root, pathname) {
