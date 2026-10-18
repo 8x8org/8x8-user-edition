@@ -10,7 +10,7 @@ const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/
 // agent presence or clone a second avatar registry. Embed only four bounded
 // public concept thumbnails into the same MCP Apps resource (no remote fetch).
 const THEATER_SOURCE=readFileSync(new URL('../ui/one-fabric-agent-theater.html',import.meta.url),'utf8');
-const theaterCastMatch=THEATER_SOURCE.match(/const PEOPLE=(\\[[^\\r\\n]*\\]);/);
+const theaterCastMatch=THEATER_SOURCE.match(/const PEOPLE=(\[[^\r\n]*\]);/);
 if(!theaterCastMatch)throw new Error('ORIGINAL_AGENT_THEATER_SOURCE_NOT_FOUND');
 const theaterCast=JSON.parse(theaterCastMatch[1]);
 if(!Array.isArray(theaterCast)||theaterCast.length<4)throw new Error('AGENT_THEATER_CAST_TOO_SMALL');
@@ -19,7 +19,7 @@ const PUBLIC_CONCEPT_AVATARS=theaterCast.slice(0,4).map(person=>{
     typeof person.name!=='string'||person.name.length>80||
     typeof person.role!=='string'||person.role.length>90||
     typeof person.portrait!=='string'||
-    !/^data:image\\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait)||
+    !/^data:image\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait)||
     person.portrait.length>55000)throw new Error('UNTRUSTED_AGENT_CONCEPT_ART');
  return {id:person.id,name:person.name,role:person.role,portrait:person.portrait,
          evidence_state:'ORIGINAL_CONCEPT_NOT_AUTHENTICATED'};
