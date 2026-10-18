@@ -152,7 +152,9 @@
           "missions",
           "five scheduler lanes",
           "owner STOP",
-          "tenant-local memory"
+          "tenant-local memory",
+          "Omni / Omnivore historical intelligence lineage (source only)",
+          "Atlas estate-intelligence graph lineage (source only)"
         ]
       },
       {
@@ -176,7 +178,8 @@
           "research",
           "paper trading",
           "risk controls",
-          "gated orders"
+          "gated orders",
+          "GG BTC analytics interface lineage (quarantined donor, not verified trading signal)"
         ]
       },
       {
@@ -197,7 +200,8 @@
           "asset rights",
           "edit timeline",
           "render queue",
-          "approval and publishing receipts"
+          "approval and publishing receipts",
+          "8:08 cinema and earlier long-form video lineage (assets need independent release acceptance)"
         ]
       },
       {
@@ -327,7 +331,8 @@
           "robotics",
           "drones",
           "sensors",
-          "reversible control leases"
+          "reversible control leases",
+          "SOMA sensing, body and robotics lineage (research donor only)"
         ]
       },
       {
@@ -348,7 +353,8 @@
           "logs",
           "rollback",
           "backups",
-          "sandboxed execution"
+          "sandboxed execution",
+          "Termux, Ubuntu PRoot, historical device files and binary census (not exhaustive)"
         ]
       },
       {
@@ -383,7 +389,8 @@
           "knowledge graph",
           "source citations",
           "benchmarks",
-          "multi-model verification"
+          "multi-model verification",
+          "Historical URL, visual donor, all-PR and repository census (partial, continuously reconciled)"
         ]
       },
       {
@@ -401,7 +408,8 @@
           "languages",
           "civic evidence",
           "law and policy",
-          "diplomatic contacts subject to authorization"
+          "diplomatic contacts subject to authorization",
+          "Planet Earth original project and archival media (provenance and rights review required)"
         ]
       },
       {
@@ -419,7 +427,8 @@
           "partnerships",
           "outreach",
           "live events",
-          "permissions and consent"
+          "permissions and consent",
+          "Consent-bound multilingual A2A, voice requests and council (runtime authentication not established)"
         ]
       },
       {
@@ -455,7 +464,8 @@
           "failed experiments",
           "file lineage",
           "recovery",
-          "content hashes"
+          "content hashes",
+          "Books 1–13 archival and Qur'an project continuity (not a completeness or rights claim)"
         ]
       },
       {
