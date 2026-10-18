@@ -86,7 +86,15 @@ export function createIdentityClient({fetchImpl,storage,cryptoImpl,origin,config
     if(!sessionReady())throw Error("SESSION_EXPIRED_OR_MISSING");
     const path="/functions/v1/"+config.idFunction;
     const r=await jsonRequest(path,create?null:undefined,accessToken);
-    if(r.status===404)return {state:"NOT_ENROLLED"};
+    // Only the authenticated ID backend's exact absence response can mean
+    // NOT_ENROLLED; a proxy 404 or endpoint drift is never account evidence.
+    if(r.status===404){
+      if(create)throw Error("ID_CREATION_NOT_CONFIRMED");
+      if(r.data?.state!=="NOT_ENROLLED"||r.data?.authenticated!==true||
+         r.data?.secret_collection!==false)
+        throw Error("UNVERIFIED_ID_ABSENCE");
+      return {state:"NOT_ENROLLED"};
+    }
     if(r.data?.state!=="8X8_ID_BOOTSTRAP_VERIFIED"||
        typeof r.data?.eightx8_id!=="string"||!/^8x8_[a-f0-9]{32}$/.test(r.data.eightx8_id))
       throw Error("UNVERIFIED_ID_RESPONSE");
