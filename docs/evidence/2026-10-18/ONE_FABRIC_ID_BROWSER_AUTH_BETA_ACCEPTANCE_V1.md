@@ -28,3 +28,11 @@ From authorized Samsung device, a **CORS OPTIONS preflight** to `https://kjvmagn
 - Users must never paste broker/exchange/bot/password private credentials into chat, GitHub, Google Docs, shell logs or MCP tool arguments. Provider consent requires server-held OAuth state and independently verified backend before any credential intake.
 
 Source snapshots are on the existing PR #200 branch. Production promotion, supported OAuth callback, private key custody, tenant-bound provider connection and the larger estate census remain separate gates.
+
+
+## Preview-only deployment and independent HTTP acceptance — 2026-10-18
+- Connected Vercel deployed exact Git commit `c61147cac8c1ea98635cf93c141ebcaff1f6b740`, branch `feat/unified-8x8-id-mcp-user-edition-20261016` into **existing** project `8x8-user-8888` (`prj_ouaSkH3EADTdaQ8enpFlEd4D0vUU`), with no production target/alias promotion. Deployment `dpl_BjeSvvRXU7LJ9nooweLcwbz9GeGb` became **READY**; preview URL: `https://8x8-user-8888-hnxm23cf6-8x8-team-url.vercel.app`.
+- Independent real HTTP requests from Samsung returned HTTP **200** and correct MIME for `/account` (HTML, 6,351 B), `/account/identity-client.mjs` (JavaScript, 5,232 B), `/account/identity-ui.mjs` (JavaScript, 3,368 B), plus existing `/agents`, `/universal`, `/world`. The actual served account page contained `identity-email-form`, `identity-create`, and `identity-ui.mjs`; JS contained `createIdentityClient` and `one-fabric-id`.
+- Independent unauthenticated HTTP call to the deployed `one-fabric-id` Edge Function returned **401**, as expected. A previous preflight OPTIONS returned HTTP 204 and correct CORS headers for the known Vercel origin.
+- **Not verified:** Real sign-in link delivery, Supabase Auth callback allowlist for this new preview URL, 8x8 Auth user creation, browser DOM interaction, JWT issuance and authenticated ID POST; thus no claims of completed user enrollment, Vault setup or trading/social account linking. The public source is beta, and the Vercel deployment is preview only.
+- Source/checkpoint remains recoverable in draft PR #200. The device OS checkout still has the same preexisting uncommitted `scripts/ops/materialize_runtime_agent_evidence_v1.py` and no owner STOP/PAUSE markers were observed at test time; absence of markers does **not** establish a physical OWNER_IDLE signal.
