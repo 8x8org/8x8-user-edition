@@ -24,3 +24,15 @@ Authoritative location: existing Supabase project `8x8-one-fabric` (`kjvmagncyed
 Metadata insertion and readback occurred on 2026-10-18. This receipt records the database state observed at that checkpoint. It does not claim account connection, Vault secret enrollment, OAuth approval, order ability, automatic trading, direct publishing, identity creation, deployed World, installed APK or task scheduler modification.
 
 No raw keys or credential fingerprints are contained in this file.
+
+## Cross-module native intake upgrade — verified 2026-10-18
+The prior legacy intent module recognized only `bitget` for trading and retained a five-slot maximum. The newer provider-readiness module recognized eleven native trading candidates; these now agree for **read-only intent generation**.
+
+- Updated existing `protected-beta/one_fabric_secure_connection_intents_v1.py`: added the same 11 native trading candidate IDs already recognized by `one_fabric_native_provider_readiness_v2.py`; permits independent native slots 1–100 while preserving the historical Bitget-only 1–5 contract.
+- Provider intents remain **PREPARED_NOT_CONNECTED**, never actual OAuth, Vault encryption, API authentication, publishing, transfer, withdrawal, wallet signing or live order authority.
+- Existing `protected-beta/test_one_fabric_secure_connection_intents_v1.py` extended with eight new adversarial test methods, including 8 slots, forged slot values and credential/effect rejection. Historical assertions retained except explicit expected provider registry count increased 16→27.
+- Source commit `7c2cdc7161a044082985dbb11c217a0d02fdf26e`; Git blob `253dfe0584c5cbfff7bc876fac470dc57c7af05e`.
+- Test commit `a6860f6ac3da4e7eb528ef52a4a89191dd5e0b3f`; Git blob `886af720f7a0fb5e3226a18d4bbb0f19c17a050f`. Both independently fetched from GitHub after commit and matched exact staged Samsung source hashes.
+- Device-local isolated joint regression: `python3 -m unittest -q test_one_fabric_secure_connection_intents_v1 test_one_fabric_native_provider_readiness_v2 test_one_fabric_oauth_launch_gate_v3`, **100 tests executed; 100 passed**, exit code 0. Tests ran on Samsung without user foreground interaction in a dedicated scratch directory. This is not production deployment or OAuth connectivity.
+- Existing older files, including User Edition build and original owner private OS checkout, were not replaced; actual 8x8 ID/OAuth server, tenant-scoped Vault entry, provider consent and complete cross-surface release are still blocked on verified implementation and approval.
+- No new scheduler task, trading action, public post, device foreground action, credential access or live provider OAuth was initiated by this implementation.
