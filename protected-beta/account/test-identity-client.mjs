@@ -17,7 +17,7 @@ function harness(overrides={}){
    let status=200,data={};
    if(url.includes("/token?grant_type=pkce")||url.endsWith("/verify"))data=NOW_SESSION;
    if(url.endsWith("/one-fabric-id")){
-     if(config.method==="GET"){status=404;data={state:"NOT_ENROLLED"};}
+     if(config.method==="GET"){status=404;data={state:"NOT_ENROLLED",authenticated:true,secret_collection:false};}
      else data={state:"8X8_ID_BOOTSTRAP_VERIFIED",eightx8_id:UID};
    }
    if(overrides.reply)({status,data}=overrides.reply(url,config,{status,data})||{status,data});
@@ -174,4 +174,30 @@ test("unexpected legacy owner ID from backend does not grant identity",async()=>
  }});
  await h.client.verifyEmailCode("hello@example.com","123456");
  await assert.rejects(h.client.eightx8ID({create:true}),/UNVERIFIED_ID_RESPONSE/);
+});
+
+test("arbitrary 404 cannot impersonate authenticated not-enrolled status",async()=>{
+ const h=harness({reply:(url,config,res)=>url.endsWith("/one-fabric-id")
+  ?{status:404,data:{error:"missing deployment"}}:res});
+ await h.client.verifyEmailCode("hello@example.com","123456");
+ await assert.rejects(h.client.eightx8ID(),/UNVERIFIED_ID_ABSENCE/);
+});
+test("unauthenticated 404 or 404 bearing owner authority cannot become not-enrolled",async()=>{
+ for(const body of [
+  {state:"NOT_ENROLLED",authenticated:false,secret_collection:false},
+  {state:"NOT_ENROLLED",authenticated:true},
+  {state:"NOT_ENROLLED",secret_collection:false},
+  {state:"NOT_ENROLLED",authenticated:true,secret_collection:true}
+ ]){
+ const h=harness({reply:(url,config,res)=>url.endsWith("/one-fabric-id")
+ ?{status:404,data:body}:res});
+ await h.client.verifyEmailCode("hello@example.com","123456");
+ await assert.rejects(h.client.eightx8ID(),/UNVERIFIED_ID_ABSENCE/);
+ }
+});
+test("404 on explicit ID creation is never treated as completed enrollment",async()=>{
+ const h=harness({reply:(url,config,res)=>url.endsWith("/one-fabric-id") && config.method==="POST"
+ ?{status:404,data:{state:"NOT_ENROLLED",authenticated:true,secret_collection:false}}:res});
+ await h.client.verifyEmailCode("hello@example.com","123456");
+ await assert.rejects(h.client.eightx8ID({create:true}),/ID_CREATION_NOT_CONFIRMED/);
 });
