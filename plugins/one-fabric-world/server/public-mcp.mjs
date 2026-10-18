@@ -85,11 +85,11 @@ function discoverPublic(args={}){
  if(keys.some(k=>!['query','max_results'].includes(k)))throw Error('INVALID_DISCOVERY_ARGUMENTS');
  const q=args.query===undefined?'':args.query;
  const max=args.max_results===undefined?20:args.max_results;
- if(typeof q!=='string'||q.length>80||/[\\x00-\\x1f\\x7f@=]/.test(q)||
+ if(typeof q!=='string'||q.length>80||/[\x00-\x1f\x7f@=]/.test(q)||
     /[A-Za-z0-9_-]{32,}/.test(q)||!Number.isInteger(max)||max<1||max>20)
    throw Error('INVALID_DISCOVERY_QUERY');
  const text=q.trim().toLowerCase();
- const words=text.split(/\\s+/).filter(x=>x.length>1&&!['find','show','give','about','what','with','from','please','the','and'].includes(x));
+ const words=text.split(/\s+/).filter(x=>x.length>1&&!['find','show','give','about','what','with','from','please','the','and'].includes(x));
  const matched=DATA.experience_atlas.families.filter(f=>{
    if(!text)return true;
    const hay=[f.title,f.id,f.domain,...f.features].join(' ').toLowerCase();
