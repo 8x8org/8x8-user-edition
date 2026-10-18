@@ -1,0 +1,97 @@
+{
+  "schema": "8x8.public_capability_finder_s22_acceptance.v1",
+  "canonical_root": "fabric://8x8/core",
+  "classification": "PRESENT_PROVEN_SOURCE_AND_ISOLATED_S22_TESTS",
+  "date_utc": "2026-10-18",
+  "repo": "8x8org/8x8-user-edition",
+  "pr": 200,
+  "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+  "release_status": "DRAFT_UNMERGED_NOT_DEPLOYED",
+  "objective": "Reconcile overlooked historical donor names with existing 20-family public Atlas and make capabilities queryable through one OAuth-scoped read-only MCP method; not a replacement estate registry",
+  "coverage": {
+    "public_family_count": 20,
+    "public_feature_entry_count": 243,
+    "user_edition_module_count": 19,
+    "whole_estate_full_binary_census_verified": false,
+    "recognized_source_only_donors": [
+      "SOMA",
+      "Omni",
+      "Atlas",
+      "GG BTC analytics",
+      "8:08 cinematic lineage",
+      "Quran",
+      "Books",
+      "Planet Earth",
+      "Termux and Ubuntu PRoot",
+      "multilingual A2A"
+    ]
+  },
+  "components": [
+    {
+      "path": "plugins/one-fabric-world/data/unified_public_catalog.json",
+      "git_blob": "dab4fb4ee1394159d42f5c3e48a55def10e9569b"
+    },
+    {
+      "path": "plugins/one-fabric-world/server/public-mcp.mjs",
+      "git_blob": "d4892b646b749694a48304d4958860b2283428ee"
+    },
+    {
+      "path": "plugins/one-fabric-world/tests/public-mcp.test.mjs",
+      "git_blob": "73e6c303bfbfb191c544b578b7276ea2e74d6bb2"
+    }
+  ],
+  "integration": {
+    "method": "one_fabric.capability_finder",
+    "authentication": "EXISTING_JWT_RS256_OAUTH_PUBLIC_USER_READ_SCOPE",
+    "input": "Optional bounded query and max_results 1..20",
+    "search_source": "Existing unified_public_catalog.json",
+    "outputs": "Public-source evidence state, family counts, family matches, no secrets or live effect claims",
+    "existing_tool_count_before": 20,
+    "read_only_tool_count_after": 21
+  },
+  "tests": {
+    "device": "Samsung S22 Ultra Termux",
+    "node": "v24.18.0",
+    "method": "node --test tests/public-mcp.test.mjs",
+    "passed": 48,
+    "total": 48,
+    "failed": 0,
+    "exit_code": 0,
+    "output_sha256": "fe925af43f902610be7f1e875569a19d9a0f2f2dbfacb1554e2fe97a6af807ca",
+    "exact_test_source_git_blob_match": true,
+    "independent_git_hash_object_matches": true,
+    "scope": "Isolated public MCP protocol+UI source tests with signed synthetic JWT fixtures; not a live OAuth/ChatGPT install or visual E2E"
+  },
+  "important_gates": {
+    "public_plugin_directory_availability_verified": false,
+    "deployed_public_mcp_updated": false,
+    "owner_private_core_exposed": false,
+    "tenants_end_to_end_verified": false,
+    "secure_vault_enrollment_verified": false,
+    "signed_apk_verified": false,
+    "voice_wakeword_runtime_verified": false,
+    "live_agent_identity_verified": false,
+    "public_post_grant": false,
+    "live_order_grant": false
+  },
+  "owner_device_controls": {
+    "a5b_owner_pause": "PRESENT_ON_READBACK",
+    "hermes_voice_stop": "PRESENT_ON_READBACK",
+    "removed_or_overridden": false,
+    "foreground_actions": 0
+  },
+  "effects": {
+    "credentials_collected": 0,
+    "accounts_modified": 0,
+    "posts": 0,
+    "orders": 0,
+    "funds_transferred": 0,
+    "voice_recordings": 0,
+    "device_foreground_interactions": 0,
+    "services_restarted": 0,
+    "schedulers_created": 0,
+    "deployments": 0
+  },
+  "rollback": "Revert only the three source changes and this receipt using ordinary Git commit(s); preserve preexisting donor records and source catalog",
+  "next_best_safe_action": "Run independent deployed MCP OAuth/Apps visual acceptance and Gate-2 authenticated tenant enrolment with proper owner-scoped trust before publishing a public plugin. Feed verified runtime-specific proof into the existing Atlas; never infer live from source."
+}
