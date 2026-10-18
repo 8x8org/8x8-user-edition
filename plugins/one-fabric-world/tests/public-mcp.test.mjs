@@ -307,3 +307,24 @@ test('World connector catalog prefers official direct APIs, not aggregator execu
  assert.equal(d.live_consent_start_url,null);
  assert.equal(d.effect_count,0);
 });
+
+test('Mission Cinema is an offline evidence viewer with media popup and gated approvals',async()=>{
+ const [,response]=await post('resources/read',{uri:'ui://8x8/one-fabric-observatory.html'});
+ const ui=response.result.contents[0].text;
+ for(const id of ['mission-cinema','mc-replay','mc-halt','mc-live','mc-receipt','mc-video','mc-approval','mc-dialog'])
+  assert.ok(ui.includes('id="'+id+'"'),id);
+ assert.ok(ui.includes('LIVE FEED NOT CONNECTED'));
+ assert.ok(ui.includes('LOCAL_IMPORT_UNVERIFIED'));
+ assert.ok(ui.includes('DRAFT_NOT_SUBMITTED'));
+ assert.ok(ui.includes('No hidden thoughts, credentials'));
+ assert.ok(!ui.includes('<video autoplay'));
+ assert.ok(!/\bEventSource\s*\(|\bWebSocket\s*\(/.test(ui));
+});
+test('Mission Cinema cannot confer live agent, streaming, broker or media authority',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.observatory_contract',arguments:{}});
+ const state=r.result.structuredContent;
+ assert.equal(state.owner_live_stream_connected,false);
+ assert.equal(state.owner_secrets_exposed,false);
+ assert.equal(state.raw_hidden_model_reasoning_exposed,false);
+ assert.equal(state.effect_count,0);
+});
