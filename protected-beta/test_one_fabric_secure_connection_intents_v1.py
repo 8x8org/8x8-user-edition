@@ -5,7 +5,7 @@ NOW=10000
 class PolicyTests(unittest.TestCase):
  def i(self,provider="bitget",slot=1,scopes=frozenset({"account.read"}),**kwargs):
   return propose_connection(A,provider,slot=slot,scopes=scopes,now=NOW,**kwargs)
- def test_all_provider_names_unique(self):self.assertEqual(len(PROVIDERS),16)
+ def test_all_provider_names_unique(self):self.assertEqual(len(PROVIDERS),27)
  def test_bitget_read_only_intent(self):
   x=self.i();self.assertEqual((x.provider,x.slot,x.state),("bitget",1,"PREPARED_NOT_CONNECTED"))
  def test_bitget_five_slots(self):
@@ -123,5 +123,43 @@ class PolicyTests(unittest.TestCase):
  def test_invalid_scope_type_rejected(self):
   with self.assertRaises(ConnectionDenied):propose_connection(A,"bitget",slot=1,scopes={"account.read"},now=NOW)
  def test_generated_id_not_equal(self):self.assertNotEqual(self.i().intent_id,self.i().intent_id)
+
+
+ def test_all_eleven_read_only_native_trading_candidates(self):
+  expected={"alpaca","tradier","tastytrade","tradestation","schwab","coinbase-advanced","kraken","gemini","interactive-brokers","robinhood-crypto","oanda-us"}
+  self.assertEqual({p.id for p in PROVIDERS.values() if p.domain=="trading"} - {"bitget"},expected)
+  for p in expected:
+   with self.subTest(provider=p):
+    self.assertEqual(self.i(provider=p,slot=8).state,"PREPARED_NOT_CONNECTED")
+    self.assertFalse(PROVIDERS[p].secret_form_required)
+ def test_native_slots_one_through_eight(self):
+  for n in range(1,9):
+   with self.subTest(slot=n):self.assertEqual(self.i(provider="alpaca",slot=n).slot,n)
+ def test_native_invalid_slots_denied(self):
+  for slot in [None,0,-1,101,True,False,"1",1.1]:
+   with self.subTest(slot=slot),self.assertRaises(ConnectionDenied):self.i(provider="alpaca",slot=slot)
+ def test_native_missing_consent_or_scope_denied(self):
+  with self.assertRaises(ConnectionDenied):self.i(provider="alpaca",slot=1,scopes=frozenset({"orders.place"}))
+  with self.assertRaises(ConnectionDenied):self.i(provider="kraken",slot=1,scopes=frozenset({"wallet.sign"}))
+ def test_native_no_credentials_or_live_authority_in_intent(self):
+  x=self.i(provider="alpaca",slot=8)
+  data=dataclasses.asdict(x)
+  self.assertEqual(data["state"],"PREPARED_NOT_CONNECTED")
+  self.assertFalse(any(k in data for k in ["api_key","secret_key","client_secret","token","connected","live_order_authorized"]))
+ def test_native_credential_fields_rejected(self):
+  for key in ["api_key","secret_key","password","bot_token"]:
+   with self.subTest(field=key),self.assertRaises(SecretInChatRejected):
+    self.i(provider="alpaca",slot=8,submitted_fields={key:"unsafe-placeholder"})
+ def test_native_guidance_discloses_no_live_vault_link(self):
+  g=agent_guidance("alpaca")
+  self.assertEqual(g["state"],"GUIDE_ONLY_NO_LIVE_VAULT_LINK")
+  self.assertTrue(g["no_secret_in_chat"])
+  self.assertFalse(g["secret_form_required"])
+ def test_all_new_providers_still_preflight_blocked(self):
+  for p in ["alpaca","tradier","tastytrade","tradestation","schwab","coinbase-advanced","kraken","gemini","interactive-brokers","robinhood-crypto","oanda-us"]:
+   with self.subTest(provider=p):
+    x=provider_enrollment_preflight(p,jurisdiction="US",jurisdiction_verified_by_server=True)
+    self.assertFalse(x["credential_intake_allowed"])
+    self.assertFalse(x["authorized_trading"])
 
 if __name__=="__main__":unittest.main()
