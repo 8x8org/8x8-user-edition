@@ -40,7 +40,7 @@ The provider's mandatory wording is broader than the initial requested read-only
 - TradersPost: strategy/alert automation concepts; risk-gate, deduplicate and verify executed fills.
 - SignalStack: event routing concepts; audit permissions and signal provenance.
 - MachineTrader, QuantMage, StockHero, Market Gear, AlgoBulls: evaluate their documented interfaces/terms, but do not install, connect or copy assets merely because they are displayed on Alpaca.
-- Alpaca CLI: official CLI can support paper verification behind the existing Hermes/FlashTM8 permission boundary. It is not a secure replacement for a tenant-aware user authorization flow.
+- Alpaca CLI: official CLI can support paper verification behind the existing authorized local agent/FlashTM8 permission boundary. It is not a secure replacement for a tenant-aware user authorization flow.
 
 ## Whole-estate interface requirement
 This application must be one leaf of existing `fabric://8x8/core` capability/evidence/authority graphs, projected through 8x8 World, 8x8 MCP, User Edition, APK and Telegram Mini App. Preserve owner/private vs public tenant scope; original Agent Theater, GG donor, SOMA/Omni/Atlas, Studio, 24 known repositories, research provenance, five existing lanes and STOP policy. No invented complete census.
