@@ -65,7 +65,7 @@ export function createIdentityClient({fetchImpl,storage,cryptoImpl,origin,config
     }catch(e){storage.removeItem("8x8.id.pkce.verifier");throw e;}
   }
   async function exchangeCode(code){
-    if(typeof code!=="string"||!/[a-f0-9-]{30,64}/i.test(code)||code.length>128)
+    if(typeof code!=="string"||!/^[a-f0-9-]{30,64}$/i.test(code)||code.length>128)
       throw Error("AUTH_CODE_INVALID");
     const verifier=storage.getItem("8x8.id.pkce.verifier");
     if(!verifier||verifier.length<43||verifier.length>128)throw Error("PKCE_VERIFIER_NOT_FOUND");
