@@ -19,6 +19,7 @@ from typing import FrozenSet, Optional
 VERSION = "8x8.secure_connection_intents.v1"
 FABRIC_ROOT = "fabric://8x8/core"
 MAX_ACCOUNT_SLOTS = 5
+MAX_NATIVE_TRADING_SLOTS = 100  # separate from 5 historical Bitget-only slots; read-only intent, not connection
 DEFAULT_LIFETIME_SECONDS = 300
 TRADING_API_PROVIDER = "bitget"
 NO_EXTERNAL_UNLIMITED = "PROVIDER_QUOTAS_AND_TERMS_STILL_APPLY"
@@ -35,6 +36,17 @@ class Provider:
 # No credentials or live endpoint URLs are included. The actual provider OAuth
 # config and callback allowlists belong in a verified private deployment.
 _PROVIDERS = [
+    Provider("alpaca", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("tradier", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("tastytrade", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("tradestation", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("schwab", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("coinbase-advanced", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("kraken", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("gemini", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("interactive-brokers", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("robinhood-crypto", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
+    Provider("oanda-us", "trading", "PROVIDER_OAUTH_OR_PROTECTED_API_READ_ONLY", frozenset({"account.read", "positions.read", "orders.read", "market.read"}), "Complete provider approval and verified 8x8 ID enrollment through the provider's authorized flow; use a paper or read-only account first. Do not paste API keys into chat, a document, or Hermes logs."),
     Provider("bitget", "trading", "LOCAL_CUSTODY_BROKER_PENDING_JURISDICTION_REVIEW", frozenset({"account.read", "positions.read", "orders.read"}),
              "Do not create or submit Bitget credentials to 8x8 yet. Bitget currently prohibits United States access, and its API terms advise against cloud-key storage. A jurisdiction-verified, provider-compliant user-owned local broker must be independently approved first; transfers and withdrawals are never permitted by default.", False),
     Provider("telegram", "publishing", "PROVIDER_BOT_ADMIN_AND_SECURE_VAULT", frozenset({"channel.read", "draft.prepare"}),
@@ -145,10 +157,17 @@ def propose_connection(actor: Actor, provider: str, *, slot: Optional[int],
     if scopes & FORBIDDEN_DELEGATIONS or not scopes.issubset(spec.scopes):
         raise ConnectionDenied("UNAPPROVED_ACTION_SCOPE")
     if provider == TRADING_API_PROVIDER:
+        # Preserve the historical five-slot Bitget intent contract. Enrollment
+        # still fails provider/jurisdiction preflight for US accounts.
         if type(slot) is not int or not 1<=slot<=MAX_ACCOUNT_SLOTS:
             raise ConnectionDenied("BITGET_SLOT_MUST_BE_1_TO_5")
+    elif spec.domain == "trading":
+        # Native read-only candidates may have >=8 distinct slots; a slot is
+        # a metadata identity, never brokerage authentication or order authority.
+        if type(slot) is not int or not 1<=slot<=MAX_NATIVE_TRADING_SLOTS:
+            raise ConnectionDenied("TRADING_SLOT_MUST_BE_1_TO_100")
     elif slot is not None:
-        raise ConnectionDenied("SLOT_IS_ONLY_FOR_EXCHANGE_ACCOUNT")
+        raise ConnectionDenied("SLOT_NOT_ALLOWED_FOR_NON_TRADING_PROVIDER")
     if type(now) is not int or now <= 0:
         raise ConnectionDenied("INVALID_TIME")
     # Distinct opaque nonce provides correlation to the backend, never auth.
