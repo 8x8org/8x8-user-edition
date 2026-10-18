@@ -47,9 +47,16 @@
       "test_js_syntax": "PASS",
       "catalog_json_structure": "PASS",
       "git_blobs_match": true,
-      "full_mcp_protocol_suite": "NOT_EXECUTED",
+      "full_mcp_protocol_suite": "NOT_RUN_TARGETED_3_ONLY",
       "registered_tool_count_source_target": 20,
-      "new_tool": "one_fabric.identity_lineage"
+      "new_tool": "one_fabric.identity_lineage",
+      "targeted_protocol": {
+        "executed": 3,
+        "passed": 3,
+        "failures": 0,
+        "exit_code": 0,
+        "scope": "Three new lineage tests only. Test JWT and synthetic HTML/UI files loaded with exact committed public-mcp.mjs, public-mcp.test.mjs, unified_public_catalog.json; entire MCP suite not run."
+      }
     },
     "repository_review": "DRAFT_UNMERGED",
     "release_and_directory_visibility": "NOT_VERIFIED",
