@@ -149,7 +149,7 @@ function value(name,args={}){
   case 'one_fabric.identity_lineage':return {...COMMON,identity_lineage:DATA.identity_lineage,authenticated_legacy_mapping:false,owner_root_grant:false,credential_intake_enabled:false};
   case 'one_fabric.user_agent_templates':return {...COMMON,templates:DATA.agent_templates,custom_agent_creation:'NOT_DEPLOYED',individual_memory:'USER_TENANT_OWNED_TARGET'};
   case 'one_fabric.usage_plans':return {...COMMON,plans:DATA.plans,billing_status:'NOT_CONNECTED_NO_PAYMENT_AUTHORIZED'};
-  case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false};
+  case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false,direct_provider_api_primary:true,third_party_publishing_aggregators_required:false,third_party_publishing_aggregators_not_execution_backends:['upload-post','metricool'],direct_account_links_live:false,live_consent_start_url:null};
   case 'one_fabric.platform_surfaces':return {...COMMON,surfaces:DATA.surfaces};
   case 'one_fabric.experience_atlas':return {...COMMON,experience_atlas:DATA.experience_atlas,legacy_domains:DATA.domains};
   case 'one_fabric.market_media_readiness':return {...COMMON,market_media_readiness:DATA.market_media_readiness};
