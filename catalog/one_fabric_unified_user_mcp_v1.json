@@ -184,5 +184,30 @@
     "provider_permission_revocation",
     "approved_financial_and_publishing_flows",
     "browser_mobile_telegram_canaries"
-  ]
+  ],
+  "connection_targets": {
+    "minimum_eligible_owner_trading_accounts_target": 8,
+    "candidate_trading_venues_cataloged": 11,
+    "verified_native_trading_account_authorizations": 0,
+    "live_trade_authority": false,
+    "direct_social_destination_candidates_cataloged": 13,
+    "verified_native_social_publishing_grants": 0,
+    "public_publish_authority": false,
+    "credential_documents_allowed": false,
+    "model_visible_api_secrets_allowed": false,
+    "owner_only_verified_https_vault_intake_deployed": false,
+    "owner_private_scope_is_not_public_user_scope": true
+  },
+  "world_feature_intake": {
+    "historical_facets": [
+      "Soma",
+      "Omni",
+      "Atlas",
+      "Jarvis",
+      "FlashTM8",
+      "Seraphim"
+    ],
+    "status": "DESIGN_REFERENCES_NOT_DEPLOYED_FUNCTIONALITY",
+    "all_features_fully_operational": false
+  }
 }
