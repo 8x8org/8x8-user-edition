@@ -147,6 +147,20 @@ small{font-size:11px}
  <p class="mc-warning">Recording is not live monitoring. No background stream, remote file access, account binding, order, publication, biometric control or voice listener is authorized by this view. Imports stay in this browser session and do not establish trusted signatures.</p>
  <dialog id="mc-dialog" aria-label="8x8 local media popup"><div class="mc-head"><b>8x8 Studio · local media preview</b><button type="button" id="mc-close">Close</button></div><p class="mc-note" id="mc-media-note">Choose a local licensed file; never uploaded.</p><video id="mc-player" controls playsinline preload="none" hidden></video><img id="mc-image" alt="Selected local image preview" style="max-height:70vh;max-width:100%;object-fit:contain;display:block;margin:auto" hidden></dialog>
 </section>
+
+<details class="box col12" id="mc-trust-inspector">
+ <summary><strong>🔍 Behind-the-scenes evidence inspector</strong> · source, tool, change, test, authorization and delivery</summary>
+ <p class="note">Mission Cinema mirrors attributable outcomes and sanitized traces, not private model thoughts or raw tool inputs. Each source event needs a trustworthy issuer, tenant-specific read rights, event signature, sequence number, timestamp, hash-chain link and durable receipt before any LIVE badge is allowed.</p>
+ <div class="split" aria-label="Real-time evidence categories">
+  <div class="route"><b>Discover & research</b>Source URI, provenance, permission, fetched status</div>
+  <div class="route"><b>Tool and model actions</b>Safe operation name, status, duration and result receipt; no hidden reasoning</div>
+  <div class="route"><b>Create & upgrade</b>File or render identity, revision, SHA and reproducible result</div>
+  <div class="route"><b>Tests & recovery</b>Passed, failed, rollback, incident and verification evidence</div>
+  <div class="route"><b>Approvals</b>Owner-authorized, denied, expired or revoked state; clicks are requests, not grants</div>
+  <div class="route"><b>External effects</b>Only separately authorized real broker fills, delivered posts or signed device receipts</div>
+ </div>
+ <p class="mc-warning" id="mc-stream-proof">Signed batch verifier: SOURCE-TESTED ONLY · Trusted runtime signer not enrolled · Tenant event transport not connected · No live feed.</p>
+</details>
 </main><script>
 (()=>{
 "use strict";
@@ -197,6 +211,7 @@ const samples=[
  ["Agent Theater","Original public-safe concept personas recovered","SOURCE_SNAPSHOT · no authenticated agent attendance"],
  ["Studio","First Blink 8:08 animatic recovered with SHA-256 provenance","RECORDED_MEDIA · public release not approved"],
  ["Safety","A2A owner STOP interlock source fix remains staged","SOURCE_SNAPSHOT · resident control unchanged"],
+ ["Event verifier","Ed25519 signed event validation added with positive and negative tests","SOURCE_SNAPSHOT · no runtime signer or authenticated event transport"],
  ["Next gate","A signed, tenant-scoped event bridge is required","NOT_CONNECTED · no owner telemetry subscribed"]
 ];
 let timer=null,objectUrl=null;
