@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 19 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,19);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 20 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,20);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -182,4 +182,29 @@ test('agent theater tool reports actual source-only state, not verified real voi
  assert.equal(d.live_model_dialogue,false);
  assert.equal(d.chatgpt_bridge_display_only,true);
  assert.equal(r.result._meta['ui/resourceUri'],'ui://8x8/one-fabric-agent-theater.html');
+});
+
+test('MCP preserves owner/iPhone historical IDs without impersonating either principal',async()=>{
+ const [,res]=await post('tools/call',{name:'one_fabric.identity_lineage',arguments:{}});
+ const p=res.result.structuredContent;
+ assert.equal(p.identity_lineage.owner_public_id,'0000000001');
+ assert.equal(p.identity_lineage.iphone_public_id,'0000000002');
+ assert.equal(p.identity_lineage.protected_beta_legacy_account_mapping_verified,false);
+ assert.equal(p.identity_lineage.tenant_membership_verified,false);
+ assert.equal(p.authenticated_legacy_mapping,false);
+ assert.equal(p.owner_root_grant,false);
+ assert.equal(p.credential_intake_enabled,false);
+ assert.equal(p.effect_count,0);
+});
+test('MCP identity lineage rejects owner grants or secret payloads',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.identity_lineage',
+  arguments:{owner_root:true,api_key:'do-not-log'}});
+ assert.equal(r.error.code,-32602);
+});
+test('lineage projection is read only and has no owner-private MCP capabilities',async()=>{
+ const [,l]=await post('tools/list',{});
+ const t=l.result.tools.find(x=>x.name==='one_fabric.identity_lineage');
+ assert.ok(t);assert.equal(t.annotations.readOnlyHint,true);
+ assert.deepEqual(t.inputSchema.properties,{});
+ assert.deepEqual(t.securitySchemes[0].scopes,['8x8.public.read']);
 });
