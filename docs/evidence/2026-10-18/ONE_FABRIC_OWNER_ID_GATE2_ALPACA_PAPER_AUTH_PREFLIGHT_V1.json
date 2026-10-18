@@ -1,0 +1,98 @@
+{
+  "schema": "8x8.one_fabric.owner_id_gate2_alpaca_paper_auth_preflight.v1",
+  "observed_date_utc": "2026-10-18",
+  "canonical_root": "fabric://8x8/core",
+  "release_state": "PARTIAL_BACKEND_ID_ACTIVE_CLIENT_PATCH_STAGED_NATIVE_ALPACA_BLOCKED",
+  "legacy_public_ids": {
+    "owner_root": "0000000001",
+    "iphone_acceptance": "0000000002",
+    "source": "horbolsi/8x8/docs/architecture/ACCOUNT_AGENT_FLEET_AND_IMPORT_MODEL_V1.md",
+    "verified_owner_auth_binding": false,
+    "verified_iphone_auth_binding": false,
+    "public_id_not_authentication": true
+  },
+  "identity_backend": {
+    "project_ref": "kjvmagncyednwfezbjww",
+    "project_health": "ACTIVE_HEALTHY",
+    "edge_slug": "one-fabric-id",
+    "edge_status": "ACTIVE",
+    "version": 1,
+    "verify_jwt": true,
+    "unauthenticated_get_http": 401,
+    "auth_user_count": 0,
+    "id_table_count": 0,
+    "id_format": "8x8_<32 hex>",
+    "rls_enabled": true,
+    "policy_self_select": true,
+    "policy_self_insert": true,
+    "grants": {
+      "authenticated_select": true,
+      "authenticated_insert_auth_user_id": true,
+      "authenticated_insert_eightx8_id": false,
+      "anon_insert": false
+    },
+    "anonymous_owner_registration": false
+  },
+  "vault": {
+    "vault_secret_count": 0,
+    "verified_owner_only_token_broker": false,
+    "verified_tenant_isolated_encrypted_intake": false
+  },
+  "alpaca": {
+    "source_key": "connection_intent:trading:alpaca",
+    "auth_state": "NOT_AUTHENTICATED",
+    "operational_state": "NOT_CONNECTED_NATIVE",
+    "credential_ref": null,
+    "oauth_connection_id": null,
+    "owner_tenant_auth_binding": false,
+    "client_registration_approval_unverified": true,
+    "exact_redirect_registered": false,
+    "callback_and_one_use_state_verified": false,
+    "paper_only": true,
+    "requested_scopes": [],
+    "order_place_enabled": false,
+    "token_exchange_not_attempted": true,
+    "official_registration": "https://app.alpaca.markets/connect",
+    "official_docs": "https://docs.alpaca.markets/us/docs/using-oauth2-and-trading-api"
+  },
+  "web_account_route": {
+    "url": "https://8x8-user-edition.vercel.app/account",
+    "http": 200,
+    "contains_current_identity_email_form": false,
+    "identity_ui_js_http": 404,
+    "identity_client_js_http": 404,
+    "identity_namespace_js_http": 404,
+    "ready_for_owner_signin": false
+  },
+  "source_patch": {
+    "repository": "8x8org/8x8-user-edition",
+    "pr": 200,
+    "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+    "client_git_blob": "89db9648b391872dd15cae0b3cf42809ee14683d",
+    "test_git_blob": "64c633c43425d2aed4cbf273f2c1574fe997c874",
+    "samsung_isolated_tests": {
+      "passed": 24,
+      "failed": 0
+    },
+    "independent_github_blob_readback": true,
+    "deploy": false
+  },
+  "safety": {
+    "secrets_accessed": false,
+    "raw_keys_received": false,
+    "live_order_attempted": false,
+    "oauth_consent_launched": false,
+    "supabase_db_mutated": false,
+    "phone_foreground_changed": false,
+    "owner_pause_preserved": true,
+    "voice_stop_preserved": true
+  },
+  "next_release_gates": [
+    "Verify stable HTTPS account page with current scripts and Auth redirect allowlist",
+    "Owner signs in privately and verifies session independently; preserve historical public ID separately",
+    "Implement independently reviewed owner-only mapping and tenant membership; never elevate by claimed 10-digit ID",
+    "Verify dedicated encrypted token intake and backend OAuth callback with one-time state replay checks",
+    "Register and obtain Alpaca Connect approval, configure exact redirect, complete env=paper default read-only consent",
+    "Persist restricted revocable token handle and test one read-only account/positions canary with a traceable receipt"
+  ]
+}
