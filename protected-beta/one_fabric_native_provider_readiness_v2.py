@@ -93,3 +93,38 @@ def evaluate(a: Admission) -> Decision:
     if a.provider_canary_verified is not True:
         return Decision("BOUND_PENDING_CANARY", "READ_ONLY_CANARY_REQUIRED")
     return Decision("READ_ONLY_CONNECTION_VERIFIED", "LIVE_EFFECTS_NOT_GRANTED", connected=True)
+
+# Official provider APIs are the 8x8 first-party transport, not third-party
+# social managers. This is a source-only route preview, not a live OAuth URL.
+DIRECT_TRANSPORT = "8X8_FIRST_PARTY_TO_PROVIDER_OFFICIAL_API"
+OPTIONAL_EXTERNAL_AGGREGATORS = frozenset({"upload-post", "metricool"})
+
+@dataclass(frozen=True)
+class DirectRoute:
+    provider: str
+    domain: str
+    transport: str = DIRECT_TRANSPORT
+    oauth_start_url: str | None = None
+    account_connected: bool = False
+    token_custody_verified: bool = False
+    provider_permissions_verified: bool = False
+    trade_authorized: bool = False
+    publish_authorized: bool = False
+    requires_third_party_aggregator: bool = False
+    next_gate: str = "VERIFIED_8X8_ID_PROVIDER_APP_CONSENT_AND_VAULT_REQUIRED"
+
+def direct_route_preview(provider: str, domain: str) -> DirectRoute:
+    """Never invent a consent URL or reuse an aggregator connection.
+
+    This must never accept or infer credentials or consent from the caller.
+    An authenticated backend will initiate OAuth with PKCE and a one-use
+    state only after provider registration, allowed redirect and Vault tests.
+    """
+    if not isinstance(provider, str) or not isinstance(domain, str):
+        raise ValueError("INVALID_DIRECT_ROUTE")
+    if provider.strip().lower() in OPTIONAL_EXTERNAL_AGGREGATORS:
+        raise ValueError("THIRD_PARTY_AGGREGATOR_NOT_A_CORE_ROUTE")
+    permitted = TRADING_CANDIDATES if domain == "trading" else PUBLICATION_CANDIDATES if domain == "publishing" else frozenset()
+    if provider not in permitted:
+        raise ValueError("UNSUPPORTED_DIRECT_PROVIDER")
+    return DirectRoute(provider=provider, domain=domain)
