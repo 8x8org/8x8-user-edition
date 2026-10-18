@@ -9,8 +9,8 @@ async function inspect(){
  const reply=await client.eightx8ID();
  idBox.textContent=reply.state==="8X8_ID_BOOTSTRAP_VERIFIED"?reply.eightx8_id:"Not enrolled yet";
  details.textContent=reply.state==="NOT_ENROLLED"?
-  "A verified session exists. Create your permanent 8x8 ID when you approve.":
-  "Your canonical ID belongs to this authenticated user. It does not activate Vault, provider access, trading, publishing, or wallet signing.";
+  "A verified session exists. Creating a beta sign-in ID does NOT claim legacy 0000000001 (owner) or 0000000002 (iPhone staging).":
+  "Beta ID authenticated for this session; 10-digit legacy ID mapping is NOT verified. No owner powers, Vault, provider access, trading, publishing or wallet signing granted.";
  setStatus(reply.state);
 }
 function report(error){setStatus("Action unavailable: "+String(error?.message||"UNKNOWN").replace(/[^A-Z0-9_]/gi,"").slice(0,70));}
@@ -33,7 +33,7 @@ try{
  });
  $("identity-check").addEventListener("click",async()=>{try{await inspect();}catch(err){report(err)}});
  $("identity-create").addEventListener("click",async()=>{
-   if(!window.confirm("Create a permanent 8x8 ID for your verified user account? This does not connect providers or authorize trades."))return;
+   if(!window.confirm("Create a beta sign-in ID? It does not bind legacy 8x8 public IDs, grant owner powers, connect providers or authorize trades."))return;
    try{await client.eightx8ID({create:true});await inspect();}
    catch(err){report(err)}
  });
