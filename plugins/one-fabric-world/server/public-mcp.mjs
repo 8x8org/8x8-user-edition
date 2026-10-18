@@ -50,6 +50,7 @@ const TOOLS=Object.freeze({
  'one_fabric.access_rescue':'Explore missing-access states and safe reversible connection guidance without collecting secrets',
  'one_fabric.scenario_catalog':'Explore eight source-classified cross-domain scenarios, agent role templates and acceptance receipts',
  'one_fabric.observatory_contract':'Explore agent avatar and whole-estate event observation requirements without accessing private telemetry',
+ 'one_fabric.capability_finder':'Search all publicly classified One Fabric families, including preserved historical donor capabilities (source-only, no account access)',
  'one_fabric.agent_theater':'Explore restored 8x8 character portraits, source-indexed personas and voice-demo boundary without live agent claims'
 });
 const json=(body,status=200,headers={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store',...headers}});
@@ -77,7 +78,42 @@ async function verifyIdentity(req,env,fetcher,now){
  return {subject:claims.sub};
 }
 const COMMON={root:'fabric://8x8/core',access:'OAUTH_PUBLIC_USER_READ_ONLY',status:'PRELAUNCH_SOURCE_ONLY',effect_count:0,live_user_backend_connected:false,owner_private_tools_exposed:false};
-function value(name){
+// Public catalog discovery uses existing Atlas data; it is not a private-estate
+// index, browser agent, remote model or authority channel.
+function discoverPublic(args={}){
+ const keys=Object.keys(args);
+ if(keys.some(k=>!['query','max_results'].includes(k)))throw Error('INVALID_DISCOVERY_ARGUMENTS');
+ const q=args.query===undefined?'':args.query;
+ const max=args.max_results===undefined?20:args.max_results;
+ if(typeof q!=='string'||q.length>80||/[\\x00-\\x1f\\x7f@=]/.test(q)||
+    /[A-Za-z0-9_-]{32,}/.test(q)||!Number.isInteger(max)||max<1||max>20)
+   throw Error('INVALID_DISCOVERY_QUERY');
+ const text=q.trim().toLowerCase();
+ const words=text.split(/\\s+/).filter(x=>x.length>1&&!['find','show','give','about','what','with','from','please','the','and'].includes(x));
+ const matched=DATA.experience_atlas.families.filter(f=>{
+   if(!text)return true;
+   const hay=[f.title,f.id,f.domain,...f.features].join(' ').toLowerCase();
+   return hay.includes(text)||(words.length>0&&words.some(w=>hay.includes(w)));
+ });
+ return {...COMMON,classification:'PUBLIC_SOURCE_DISCOVERY_ONLY',
+   catalog_source:'unified_public_catalog.json',
+   searched_family_denominator:DATA.experience_atlas.families.length,
+   searched_feature_denominator:DATA.experience_atlas.families.reduce((n,f)=>n+f.features.length,0),
+   matched_family_count:matched.length,returned_family_count:Math.min(matched.length,max),
+   next_action:'USE_EXISTING_8X8_ID_ONBOARDING_AND_SEPARATE_PROVIDER_CONSENT',
+   verified_live_capabilities:'NOT_EVALUATED_BY_CATALOG_LOOKUP',
+   finder_grants_no_account_access:true,
+   matches:matched.slice(0,max).map(f=>({
+     id:f.id,title:f.title,domain:f.domain,
+     evidence_state:'CATALOG_OR_HISTORICAL_SOURCE_ONLY',
+     features:f.features.filter(v=>!text||words.length===0||words.some(w=>v.toLowerCase().includes(w))).slice(0,10),
+     catalog_feature_count:f.features.length,
+     live_runtime_verified_by_this_tool:false
+   }))
+ };
+}
+function value(name,args={}){
+
  switch(name){
   case 'one_fabric.capability_catalog':return {...COMMON,capabilities:DATA.capabilities};
   case 'one_fabric.world_status':return {...COMMON,gates:['Seraphim welcome','Verified 8x8 ID / tenant','Authorized 8x8 World'],production_login_verified:false};
@@ -98,11 +134,12 @@ function value(name){
   case 'one_fabric.access_rescue':return {...COMMON,access_states:SCENARIOS.missing_access_states,privacy:SCENARIOS.privacy,external_connection_performed:false};
   case 'one_fabric.scenario_catalog':return {...COMMON,scenarios:SCENARIOS.flows,classification:SCENARIOS.classification,automatic_execution:false};
   case 'one_fabric.observatory_contract':return {...COMMON,visualization:'PUBLIC_SAFE_ANIMATED_ILLUSTRATION',owner_live_stream_connected:false,verified_live_agents:null,world_domains:24,all_files_covered:false,event_fields:['event_id','source_id','observed_utc','evidence_class','receipt_ref','tenant_scope'],sequence_gap_detection_required:true,transport:'FUTURE_AUTHENTICATED_OWNER_SSE',raw_hidden_model_reasoning_exposed:false,owner_secrets_exposed:false};
+  case 'one_fabric.capability_finder':return discoverPublic(args);
   case 'one_fabric.agent_theater':return {...COMMON,cinematic_character_sources:7,chatgpt_bridge_display_only:true,historical_agent_identities:212,verified_simultaneously_active_agent_sessions:0,live_model_dialogue:false,source_art_recovered:true,voice_preview:'USER_GESTURE_BROWSER_TTS_ONLY',mic_preview:'ONE_SHOT_BROWSER_RECOGNIZER_CONSENT',chatgpt_private_reasoning_exposed:false,external_effects:0};
   default:throw Error('UNKNOWN_TOOL');
  }
 }
-function toolList(){return Object.entries(TOOLS).map(([name,description])=>({name,description,inputSchema:{type:'object',properties:{},additionalProperties:false},securitySchemes:[{type:'oauth2',scopes:[SCOPE]}],annotations:{readOnlyHint:true,destructiveHint:false,openWorldHint:false},_meta:{'ui/resourceUri':name==='one_fabric.agent_theater'?AGENT_THEATER_URI:name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}}))}
+function toolList(){return Object.entries(TOOLS).map(([name,description])=>({name,description,inputSchema:name==='one_fabric.capability_finder'?{type:'object',properties:{query:{type:'string',maxLength:80},max_results:{type:'integer',minimum:1,maximum:20}},additionalProperties:false}:{type:'object',properties:{},additionalProperties:false},securitySchemes:[{type:'oauth2',scopes:[SCOPE]}],annotations:{readOnlyHint:true,destructiveHint:false,openWorldHint:false},_meta:{'ui/resourceUri':name==='one_fabric.agent_theater'?AGENT_THEATER_URI:name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}}))}
 export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
  return async request=>{
   const url=new URL(request.url);
@@ -132,8 +169,11 @@ export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
   }
   else if(body.method==='tools/call'){
    const name=body.params?.name,args=body.params?.arguments||{};
-   if(typeof name!=='string'||!Object.hasOwn(TOOLS,name)||!args||typeof args!=='object'||Array.isArray(args)||Object.keys(args).length)return json({jsonrpc:'2.0',id,error:{code:-32602,message:'INVALID_TOOL_OR_ARGUMENTS'}});
-   const data=value(name);result={content:[{type:'text',text:JSON.stringify(data)}],structuredContent:data,isError:false,_meta:{'ui/resourceUri':name==='one_fabric.agent_theater'?AGENT_THEATER_URI:name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}};
+   if(typeof name!=='string'||!Object.hasOwn(TOOLS,name)||!args||typeof args!=='object'||Array.isArray(args)||
+      (name!=='one_fabric.capability_finder'&&Object.keys(args).length))
+       return json({jsonrpc:'2.0',id,error:{code:-32602,message:'INVALID_TOOL_OR_ARGUMENTS'}});
+   let data;try{data=value(name,args)}catch{return json({jsonrpc:'2.0',id,error:{code:-32602,message:'INVALID_TOOL_OR_ARGUMENTS'}})}
+   result={content:[{type:'text',text:JSON.stringify(data)}],structuredContent:data,isError:false,_meta:{'ui/resourceUri':name==='one_fabric.agent_theater'?AGENT_THEATER_URI:name==='one_fabric.observatory_contract'?OBSERVATORY_URI:UI_URI}};
   }else return json({jsonrpc:'2.0',id,error:{code:-32601,message:'METHOD_NOT_FOUND'}});
   return json({jsonrpc:'2.0',id,result});
  }
