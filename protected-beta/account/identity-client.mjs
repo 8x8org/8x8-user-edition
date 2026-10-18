@@ -1,5 +1,6 @@
 // ©️8x8 One Fabric protected-beta browser identity client.
 // Only a public Supabase publishable key is embedded. Never send provider credentials here.
+import {verifiedBetaIdentityProjection} from "./identity-namespace.mjs";
 export const CONFIG=Object.freeze({
   authOrigin:"https://kjvmagncyednwfezbjww.supabase.co",
   publishableKey:"sb_publishable_N1to5h-EWYkMefO3WodBhA_Bkyr0LxH",
@@ -89,7 +90,8 @@ export function createIdentityClient({fetchImpl,storage,cryptoImpl,origin,config
     if(r.data?.state!=="8X8_ID_BOOTSTRAP_VERIFIED"||
        typeof r.data?.eightx8_id!=="string"||!/^8x8_[a-f0-9]{32}$/.test(r.data.eightx8_id))
       throw Error("UNVERIFIED_ID_RESPONSE");
-    return {state:"8X8_ID_BOOTSTRAP_VERIFIED",eightx8_id:r.data.eightx8_id};
+    return {state:"8X8_ID_BOOTSTRAP_VERIFIED",eightx8_id:r.data.eightx8_id,
+      ...verifiedBetaIdentityProjection(r.data.eightx8_id)};
   }
   function logout(){accessToken=null;expiresAt=0;storage.removeItem("8x8.id.pkce.verifier");}
   return {emailLink,exchangeCode,verifyEmailCode,eightx8ID,sessionReady,logout};
