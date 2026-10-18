@@ -9,14 +9,14 @@
 #eightx8-bubble-root{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));right:calc(14px + env(safe-area-inset-right,0px));z-index:2147483000;font:14px/1.45 system-ui,-apple-system,sans-serif;color:#eef7ff}
 #eightx8-bubble-root *{box-sizing:border-box}
 #eightx8-bubble-root button,#eightx8-bubble-root a{font:inherit;touch-action:manipulation}
-#eightx8-bubble-root .eightx8-orb{display:grid;place-items:center;border:1px solid #8ddbf7;color:#f5fcff;background:linear-gradient(130deg,#155375,#26194c);box-shadow:0 5px 25px #021123bb,0 0 16px #5cbfff76;border-radius:50%;width:56px;height:56px;font-size:14px;font-weight:900;cursor:pointer}
-#eightx8-bubble-root .eightx8-panel{width:min(360px,calc(100vw - 28px));max-height:min(520px,calc(100dvh - 110px));display:flex;flex-direction:column;overflow:hidden;border-radius:18px;border:1px solid #477c9e;box-shadow:0 14px 75px #020713dc;background:#071c2df7;color:#e3f5ff;margin-bottom:10px}
+#eightx8-bubble-root .eightx8-orb{display:grid;place-items:center;border:2px solid #e73c4d;color:#fff0f1;background:radial-gradient(circle at 33% 24%,#b71d34 0%,#480916 42%,#08080b 80%);box-shadow:0 5px 25px #020204bb,0 0 18px #e5314259;border-radius:50%;width:56px;height:56px;font-size:14px;font-weight:900;cursor:pointer}
+#eightx8-bubble-root .eightx8-panel{width:min(360px,calc(100vw - 28px));max-height:min(520px,calc(100dvh - 110px));display:flex;flex-direction:column;overflow:hidden;border-radius:18px;border:1px solid #a43847;box-shadow:0 14px 75px #020204dc;background:#100d13f7;color:#fff1f2;margin-bottom:10px}
 #eightx8-bubble-root .eightx8-panel[hidden]{display:none}
-#eightx8-bubble-root .eightx8-head{display:flex;align-items:center;justify-content:space-between;padding:12px;background:#11334e;gap:8px;font-weight:800}
+#eightx8-bubble-root .eightx8-head{display:flex;align-items:center;justify-content:space-between;padding:12px;background:#220d15;gap:8px;font-weight:800;border-bottom:1px solid #9c3444}
 #eightx8-bubble-root .eightx8-close{background:transparent;border:1px solid #47687b;color:#e9f6ff;border-radius:8px;padding:3px 10px;cursor:pointer}
 #eightx8-bubble-root .eightx8-tabs{display:flex;gap:5px;padding:9px;background:#0d263b}
 #eightx8-bubble-root .eightx8-tab{flex:1;background:#153750;color:#d9ecf8;border:1px solid #45617b;border-radius:8px;padding:7px 3px;cursor:pointer;font-size:12px}
-#eightx8-bubble-root .eightx8-tab[aria-selected="true"]{border-color:#a3eeff;background:#276285}
+#eightx8-bubble-root .eightx8-tab[aria-selected="true"]{border-color:#ff7080;background:#792333}
 #eightx8-bubble-root .eightx8-body{overflow:auto;padding:12px;font-size:12px}
 #eightx8-bubble-root .eightx8-body h3{font-size:14px;margin:2px 0 8px;color:#edfaff}
 #eightx8-bubble-root .eightx8-body p{margin:6px 0 10px;color:#b7d1e2}
@@ -27,7 +27,14 @@
 #eightx8-bubble-root .eightx8-voicebtn:disabled{opacity:.46;cursor:not-allowed}
 #eightx8-bubble-root .eightx8-voicefeedback{min-height:28px;border:1px solid #31506b;border-radius:8px;padding:8px;background:#0b2133;color:#dcecf6;margin:7px 0}
 #eightx8-bubble-root .eightx8-action{display:inline-block;margin:7px 8px 2px 0;padding:7px 10px;color:#eef9ff!important;background:#174f73;border:1px solid #5eabd2;border-radius:8px;text-decoration:none}
-#eightx8-bubble-root :focus-visible{outline:2px solid #e3ca7a;outline-offset:3px}
+#eightx8-bubble-root :focus-visible,.eightx8-brand-mark:focus-visible{outline:2px solid #ffb7bd;outline-offset:3px}
+.eightx8-brand-mark,#eightx8-bubble-root .eightx8-brand-mark{display:inline-grid;place-items:center;flex-shrink:0;color:#ff4a58;background:radial-gradient(circle at 38% 30%,#450611,#0a080a 74%);border:2px solid #bd273d;border-radius:50%;width:42px;height:42px;box-shadow:0 0 16px #cb203544;font:1000 12px/1 system-ui,sans-serif;letter-spacing:-.08em}
+#eightx8-bubble-root .eightx8-brand-mark{width:30px;height:30px;font-size:10px}
+#eightx8-bubble-root .eightx8-agent-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:10px 0}
+#eightx8-bubble-root .eightx8-agent-portrait{min-width:0;margin:0;padding:4px;background:#1b1420;border:1px solid #883341;border-radius:10px;text-align:center}
+#eightx8-bubble-root .eightx8-agent-portrait img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;background:#110b11}
+#eightx8-bubble-root .eightx8-agent-portrait figcaption{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f9cad0}
+#eightx8-bubble-root .eightx8-agent-label{font-size:10px;color:#eab2bb;margin:3px 0 8px}
 @media(prefers-reduced-motion:reduce){#eightx8-bubble-root *{animation:none!important}}
 `;
   document.head.append(style);
@@ -37,9 +44,12 @@
   const panel=document.createElement("section");panel.className="eightx8-panel";panel.hidden=true;
   panel.id="eightx8-bubble-panel";panel.setAttribute("aria-label","8x8 read-only source preview");
   const head=document.createElement("div");head.className="eightx8-head";
-  const title=document.createElement("span");title.textContent="⚡ 8x8 · FlashTM8";
+  const title=document.createElement("span");title.textContent="©️8x8 by FlashTM8 · ONE FABRIC";
+  const brandMark=document.createElement("span");brandMark.className="eightx8-brand-mark";
+  brandMark.textContent="8×8";brandMark.setAttribute("role","img");
+  brandMark.setAttribute("aria-label","Red and black 8x8 brand mark");
   const close=document.createElement("button");close.type="button";close.className="eightx8-close";close.textContent="Close";close.setAttribute("aria-label","Close 8x8 panel");
-  head.append(title,close);
+  head.append(brandMark,title,close);
   const tabs=document.createElement("div");tabs.className="eightx8-tabs";tabs.setAttribute("role","tablist");
   const body=document.createElement("div");body.className="eightx8-body";body.id="eightx8-bubble-body";body.setAttribute("role","tabpanel");body.setAttribute("aria-live","polite");
   const launch=document.createElement("button");launch.type="button";launch.className="eightx8-orb";launch.textContent="8×8";launch.setAttribute("aria-expanded","false");launch.setAttribute("aria-controls",panel.id);launch.setAttribute("aria-label","Open 8x8 One Fabric bubble");
@@ -135,11 +145,28 @@
   const append=(parent,tag,value,cl)=>{const el=document.createElement(tag);if(value!==undefined)el.textContent=value;if(cl)el.className=cl;parent.append(el);return el;};
   const line=(k,v)=>{const row=append(body,"div",undefined,"eightx8-row");append(row,"span",k);append(row,"b",v);};
   const link=(label,href)=>{const a=append(body,"a",label,"eightx8-action");a.href=href;a.rel="noopener";};
+  // These are recovered original artworks, explicitly NOT live avatars.
+  function conceptAvatarGallery(){
+    const raw=window.__EIGHTX8_PUBLIC_CONCEPT_AVATARS__;
+    if(!Array.isArray(raw)||raw.length<1)return;
+    const gallery=append(body,"div",undefined,"eightx8-agent-gallery");
+    gallery.setAttribute("aria-label","Original 8x8 concept agent portraits");
+    for(const person of raw.slice(0,4)){
+      if(!person||person.evidence_state!=="ORIGINAL_CONCEPT_NOT_AUTHENTICATED"||
+         typeof person.name!=="string"||!/^data:image\\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait||""))continue;
+      const fig=append(gallery,"figure",undefined,"eightx8-agent-portrait");
+      const img=append(fig,"img");img.src=person.portrait;
+      img.alt=person.name+" · original 8x8 concept portrait";img.loading="lazy";
+      append(fig,"figcaption",person.name);
+    }
+    append(body,"p","Original character concepts only · authenticated model presence not established.","eightx8-agent-label");
+  }
   function render(){
     body.replaceChildren();
     for(const [id,b] of tabButtons)b.setAttribute("aria-selected",String(id===active));
     if(active==="status"){
       append(body,"h3","Observatory connection");
+      conceptAvatarGallery();
       append(body,"p","In-page UI is available. Owner private telemetry, ChatGPT run instrumentation and device mirroring are not connected.");
       line("This page","Interactive preview");line("Owner event stream","Not connected");
       line("Background 24/7","Not established");line("Sync latency","Not measured");
@@ -148,6 +175,7 @@
       link("Open full Observatory","/observatory/");
     }else if(active==="agents"){
       append(body,"h3","Agent personas");
+      conceptAvatarGallery();
       line("FlashTM8","Concept persona");line("Research Agent","Inference reply unverified");
       line("Council","No verified quorum");line("Seraphim","UI guide template");
       append(body,"p","Historical agent identities do not imply running or active instances.");
@@ -203,5 +231,15 @@
   root.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden)setOpen(false);});
   document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelVoice();updateNote("Voice paused when page became hidden.");}});
   window.addEventListener("pagehide",cancelVoice);
+  // Public-safe brand header across Hub, Agent Theater and Observatory.
+  // The graphical canonical logo is tracked separately until original bytes verify.
+  const pageHeader=document.querySelector("main > header");
+  if(pageHeader&&!pageHeader.querySelector("[data-eightx8-brand-mark]")){
+    const mark=document.createElement("span");
+    mark.className="eightx8-brand-mark";mark.dataset.eightx8BrandMark="source-wordmark";
+    mark.textContent="8×8";mark.setAttribute("role","img");
+    mark.setAttribute("aria-label","Red and black 8x8 brand mark");
+    pageHeader.prepend(mark);
+  }
   document.body.append(root);
 })();
