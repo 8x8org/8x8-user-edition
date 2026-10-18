@@ -4,6 +4,7 @@ import {createServer} from 'node:http';
 import {readFileSync} from 'node:fs';
 import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
+const FIRST_BLINK=JSON.parse(readFileSync(new URL('../data/studio_first_blink_private_media_manifest_v1.json',import.meta.url),'utf8'));
 const SCENARIOS=JSON.parse(readFileSync(new URL('../data/access_scenarios_v1.json',import.meta.url),'utf8'));
 const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
 // Reuse the original, source-preserved Agent Theater portraits; never invent live
@@ -141,7 +142,7 @@ function value(name,args={}){
   case 'one_fabric.capability_catalog':return {...COMMON,capabilities:DATA.capabilities};
   case 'one_fabric.world_status':return {...COMMON,gates:['Seraphim welcome','Verified 8x8 ID / tenant','Authorized 8x8 World'],production_login_verified:false};
   case 'one_fabric.agent_catalog':return {...COMMON,agent_templates:DATA.agent_templates,live_model_agents_verified:0,owner_agent_memory_available:false};
-  case 'one_fabric.studio_status':return {...COMMON,studio:'SOURCE_CANDIDATE',published_items_verified:0,approval_required:true};
+  case 'one_fabric.studio_status':return {...COMMON,studio:'SOURCE_CANDIDATE',published_items_verified:0,approval_required:true,offline_animatic:FIRST_BLINK.public_safe_summary};
   case 'one_fabric.release_status':return {...COMMON,public_mcp_deployed_verified:false,authenticated_user_flow_verified:false,signed_apk_verified:false,stripe_webhooks_verified:false};
   case 'one_fabric.unified_modules':return {...COMMON,domains:DATA.domains,protection:'TENANT_ISOLATION_REQUIRED_FOR_ALL_USER_DATA'};
   case 'one_fabric.identity_connection_guide':return {...COMMON,authentication:DATA.authentication,onboarding:DATA.onboarding};
