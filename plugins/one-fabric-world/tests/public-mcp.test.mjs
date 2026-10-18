@@ -20,7 +20,7 @@ test('wrong scopes fails',async()=>assert.equal((await post('tools/list',{},jwt(
 test('tampered signatures fail',async()=>{const other=generateKeyPairSync('rsa',{modulusLength:2048});assert.equal((await post('tools/list',{},jwt({},other.privateKey)))[0].status,401)});
 test('external origins rejected',async()=>assert.equal((await post('tools/list',{},jwt(),env,'https://evil.test'))[0].status,403));
 test('protected resource metadata matches issuer and public scope',async()=>{let r=await makeHandler(env,fakeFetch)(new Request('https://mcp.test/.well-known/oauth-protected-resource'));assert.deepEqual((await r.json()).scopes_supported,['8x8.public.read'])});
-test('all 20 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,20);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
+test('all 20 tools are read only with one scope',async()=>{const [,x]=await post('tools/list',{});assert.equal(x.result.tools.length,21);assert.ok(x.result.tools.every(t=>t.annotations.readOnlyHint===true&&t.securitySchemes[0].scopes[0]==='8x8.public.read'))});
 test('historical tool identifiers retained',async()=>{const [,x]=await post('tools/list',{});for(const n of ['one_fabric.capability_catalog','one_fabric.agent_catalog','one_fabric.world_status','one_fabric.studio_status','one_fabric.release_status'])assert.ok(x.result.tools.some(t=>t.name===n))});
 test('owner shell denied',async()=>{const [,x]=await post('tools/call',{name:'owner.adb.exec',arguments:{}});assert.equal(x.error.code,-32602)});
 test('trading execute denied',async()=>{const [,x]=await post('tools/call',{name:'trading.execute',arguments:{}});assert.equal(x.error.code,-32602)});
@@ -207,4 +207,55 @@ test('lineage projection is read only and has no owner-private MCP capabilities'
  assert.ok(t);assert.equal(t.annotations.readOnlyHint,true);
  assert.deepEqual(t.inputSchema.properties,{});
  assert.deepEqual(t.securitySchemes[0].scopes,['8x8.public.read']);
+});
+
+test('public finder is advertised as read-only and has bounded search schema',async()=>{
+ const [,r]=await post('tools/list',{});
+ const f=r.result.tools.find(x=>x.name==='one_fabric.capability_finder');
+ assert.ok(f);assert.equal(f.annotations.readOnlyHint,true);
+ assert.equal(f.securitySchemes[0].scopes[0],'8x8.public.read');
+ assert.equal(f.inputSchema.properties.max_results.maximum,20);
+});
+test('public finder preserves complete 20-family denominator without manufacturing uptime',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:{}});
+ const v=r.result.structuredContent;
+ assert.equal(v.searched_family_denominator,20);
+ assert.equal(v.matches.length,20);
+ assert.ok(v.searched_feature_denominator>=240);
+ assert.equal(v.finder_grants_no_account_access,true);
+ assert.equal(v.effect_count,0);
+ assert.ok(v.matches.every(f=>!f.live_runtime_verified_by_this_tool));
+});
+test('finder can locate historical SOMA, Omni, Atlas, GG and Quran donors',async()=>{
+ const cases=[['SOMA','devices'],['Omni','intelligence'],['Atlas','intelligence'],
+              ['GG BTC','markets'],['Quran','knowledge'],['Planet Earth','planet']];
+ for(const [q,id] of cases){
+   const [,r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:{query:q}});
+   assert.ok(r.result.structuredContent.matches.some(x=>x.id===id),q);
+ }
+});
+test('finder searches user topics across multiple domains',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:{query:'trading studio',max_results:8}});
+ assert.ok(r.result.structuredContent.matched_family_count>=2);
+ assert.ok(r.result.structuredContent.matches.length<=8);
+ assert.equal(r.result.structuredContent.effect_count,0);
+});
+test('finder cannot accept credential or authority fields',async()=>{
+ for(const args of [{query:'SOMA',api_key:'fake'},{query:'world',owner_root:true},
+                    {query:'world',tenant_id:'private'}]){
+   const [,r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:args});
+   assert.equal(r.error.code,-32602);
+ }
+});
+test('finder rejects credential-like, control-character and unbounded queries',async()=>{
+ for(const args of [{query:'A'.repeat(42)},{query:'test@sample.com'},
+     {query:'abcd=abcd'},{query:'world\\nprivate'},{query:'x'.repeat(81)},
+     {query:10},{query:'world',max_results:21},{query:'world',max_results:0}]){
+   const [,r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:args});
+   assert.equal(r.error.code,-32602);
+ }
+});
+test('public catalog search rejects unauthorized calls before lookup',async()=>{
+ const [r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:{query:'SOMA'}},'');
+ assert.equal(r.status,401);
 });
