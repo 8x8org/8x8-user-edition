@@ -73,3 +73,41 @@ class Gate(unittest.TestCase):
         self.assertEqual(evaluate(dataclasses.replace(A,domain="wallet")).verdict,"BLOCKED")
 
 if __name__ == '__main__':unittest.main()
+
+class DirectProviderRouting(unittest.TestCase):
+    def test_all_eligible_trading_candidates_are_8x8_direct_only(self):
+        for provider in TRADING_CANDIDATES:
+            with self.subTest(provider=provider):
+                route=direct_route_preview(provider,"trading")
+                self.assertEqual(route.transport,DIRECT_TRANSPORT)
+                self.assertFalse(route.requires_third_party_aggregator)
+                self.assertIsNone(route.oauth_start_url)
+                self.assertFalse(route.account_connected)
+                self.assertFalse(route.trade_authorized)
+    def test_all_publishing_candidates_direct_only(self):
+        for provider in PUBLICATION_CANDIDATES:
+            with self.subTest(provider=provider):
+                route=direct_route_preview(provider,"publishing")
+                self.assertFalse(route.publish_authorized)
+                self.assertFalse(route.token_custody_verified)
+                self.assertFalse(route.provider_permissions_verified)
+    def test_aggregators_are_not_core_routes(self):
+        for provider in ("upload-post","metricool","Upload-Post","Metricool"):
+            with self.subTest(provider=provider):
+                with self.assertRaisesRegex(ValueError,"THIRD_PARTY_AGGREGATOR"):
+                    direct_route_preview(provider,"publishing")
+    def test_reject_domain_and_provider_mismatch(self):
+        for provider,domain in (("youtube","trading"),("alpaca","publishing"),("unknown","publishing"),("bitget","trading")):
+            with self.subTest(provider=provider):
+                with self.assertRaises(ValueError):direct_route_preview(provider,domain)
+    def test_all_direct_routes_have_no_grants_or_fake_launch_url(self):
+        from dataclasses import asdict
+        routes=[direct_route_preview(p,"trading") for p in TRADING_CANDIDATES]
+        routes += [direct_route_preview(p,"publishing") for p in PUBLICATION_CANDIDATES]
+        self.assertEqual(len(routes),23)
+        for r in routes:
+            d=asdict(r)
+            self.assertIsNone(d["oauth_start_url"])
+            self.assertFalse(d["account_connected"])
+            self.assertFalse(d["publish_authorized"])
+            self.assertFalse(d["trade_authorized"])
