@@ -6,7 +6,30 @@ import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
 const SCENARIOS=JSON.parse(readFileSync(new URL('../data/access_scenarios_v1.json',import.meta.url),'utf8'));
 const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
-const BUBBLE_SCRIPT=readFileSync(new URL('../ui/one-fabric-bubble.js',import.meta.url),'utf8');
+// Reuse the original, source-preserved Agent Theater portraits; never invent live
+// agent presence or clone a second avatar registry. Embed only four bounded
+// public concept thumbnails into the same MCP Apps resource (no remote fetch).
+const THEATER_SOURCE=readFileSync(new URL('../ui/one-fabric-agent-theater.html',import.meta.url),'utf8');
+const theaterCastMatch=THEATER_SOURCE.match(/const PEOPLE=(\\[[^\\r\\n]*\\]);/);
+if(!theaterCastMatch)throw new Error('ORIGINAL_AGENT_THEATER_SOURCE_NOT_FOUND');
+const theaterCast=JSON.parse(theaterCastMatch[1]);
+if(!Array.isArray(theaterCast)||theaterCast.length<4)throw new Error('AGENT_THEATER_CAST_TOO_SMALL');
+const PUBLIC_CONCEPT_AVATARS=theaterCast.slice(0,4).map(person=>{
+ if(!/^[A-Z0-9_-]{2,40}$/.test(person.id)||
+    typeof person.name!=='string'||person.name.length>80||
+    typeof person.role!=='string'||person.role.length>90||
+    typeof person.portrait!=='string'||
+    !/^data:image\\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait)||
+    person.portrait.length>55000)throw new Error('UNTRUSTED_AGENT_CONCEPT_ART');
+ return {id:person.id,name:person.name,role:person.role,portrait:person.portrait,
+         evidence_state:'ORIGINAL_CONCEPT_NOT_AUTHENTICATED'};
+});
+export function getPublicConceptAvatarSummary(){
+ return PUBLIC_CONCEPT_AVATARS.map(({id,name,role,evidence_state})=>({id,name,role,evidence_state}));
+}
+const AVATAR_BOOTSTRAP='window.__EIGHTX8_PUBLIC_CONCEPT_AVATARS__='+
+ JSON.stringify(PUBLIC_CONCEPT_AVATARS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e')+';\\n';
+const BUBBLE_SCRIPT=AVATAR_BOOTSTRAP+readFileSync(new URL('../ui/one-fabric-bubble.js',import.meta.url),'utf8');
 const withBubble=html=>html.replace('</body>','<script>'+BUBBLE_SCRIPT+'</script></body>');
 // Source-backed atlas projection: render from ONE catalog; no duplicate UI authority.
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
