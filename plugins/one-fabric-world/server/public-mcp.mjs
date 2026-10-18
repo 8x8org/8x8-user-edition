@@ -38,6 +38,7 @@ const TOOLS=Object.freeze({
  'one_fabric.release_status':'Inspect independently accepted release status',
  'one_fabric.unified_modules':'Explore all 19 One Fabric product domains from a single catalog',
  'one_fabric.identity_connection_guide':'How a user safely links 8x8 ID and ChatGPT MCP using OAuth',
+ 'one_fabric.identity_lineage':'Inspect reserved historical 10-digit 8x8 identities versus protected-beta Auth IDs (no owner grants)',
  'one_fabric.user_agent_templates':'Explore default non-owner agent templates and custom agents',
  'one_fabric.usage_plans':'Review proposed 88 free minutes and $8.88/month limits',
  'one_fabric.connector_guidance':'Recommend optional connections, with consent required separately',
@@ -85,6 +86,7 @@ function value(name){
   case 'one_fabric.release_status':return {...COMMON,public_mcp_deployed_verified:false,authenticated_user_flow_verified:false,signed_apk_verified:false,stripe_webhooks_verified:false};
   case 'one_fabric.unified_modules':return {...COMMON,domains:DATA.domains,protection:'TENANT_ISOLATION_REQUIRED_FOR_ALL_USER_DATA'};
   case 'one_fabric.identity_connection_guide':return {...COMMON,authentication:DATA.authentication,onboarding:DATA.onboarding};
+  case 'one_fabric.identity_lineage':return {...COMMON,identity_lineage:DATA.identity_lineage,authenticated_legacy_mapping:false,owner_root_grant:false,credential_intake_enabled:false};
   case 'one_fabric.user_agent_templates':return {...COMMON,templates:DATA.agent_templates,custom_agent_creation:'NOT_DEPLOYED',individual_memory:'USER_TENANT_OWNED_TARGET'};
   case 'one_fabric.usage_plans':return {...COMMON,plans:DATA.plans,billing_status:'NOT_CONNECTED_NO_PAYMENT_AUTHORIZED'};
   case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false};
