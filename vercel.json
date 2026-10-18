@@ -96,6 +96,10 @@
     {
       "source": "/universal",
       "destination": "/universal/index.html"
+    },
+    {
+      "source": "/account",
+      "destination": "/account/index.html"
     }
   ]
 }
