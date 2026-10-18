@@ -1,0 +1,84 @@
+{
+  "schema": "8x8.one_fabric.mission_cinema_observability_source_v1",
+  "canonical_root": "fabric://8x8/core",
+  "date": "2026-10-18",
+  "product": "8x8 One Fabric World — Mission Cinema",
+  "source_branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+  "scope": "PUBLIC_USER_SAFE_SOURCE_PREVIEW_NOT_LIVE_AGENT_FEED",
+  "change": {
+    "observatory_path": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+    "observatory_blob_sha": "b28051f2e8874d7c6d8c551ef5910ea788907a4a",
+    "observatory_commit": "6093c2c9a7cc36fe029fe43568a55ea16d7be988",
+    "test_path": "plugins/one-fabric-world/tests/public-mcp.test.mjs",
+    "test_blob_sha": "0caf3279614cbb78c87131529d162645649c197b",
+    "test_commit": "aba2882c843ba52742da3b30b464a90d00eb0787"
+  },
+  "ui_features": [
+    "Existing three-gate public-preview state labels",
+    "Cinematic spatial hub showing concept only",
+    "Recorded source milestone replay explicitly not telemetry",
+    "Local-only bounded JSON receipt import with text/secret rejection; never signed or authenticated",
+    "Local user-selected video/image pop-up with no autoplay or uploads",
+    "Owner approval review-draft export with no authorization effects",
+    "Explicit LIVE FEED NOT CONNECTED indicator"
+  ],
+  "source_tests": {
+    "public_mcp_tests": 54,
+    "passed": 54,
+    "failed": 0,
+    "standalone_html_inline_scripts_syntax_checked": 2,
+    "inline_script_checks_passed": 2,
+    "device_re_readback_git_hash_match": true
+  },
+  "security": {
+    "private_chain_of_thought_access": false,
+    "raw_credentials_in_ui": false,
+    "raw_owner_routes_exposed": false,
+    "remote_fetching": false,
+    "live_event_feed_connected": false,
+    "authenticated_tool_stream_connected": false,
+    "model_inference_observed": false,
+    "owner_runtime_installed": false,
+    "device_owner_pause_removed": false,
+    "hermes_voice_stop_removed": false,
+    "trades_sent": false,
+    "public_posts_published": false,
+    "actual_video_automatically_opened": false,
+    "plugin_release_updated": false,
+    "backend_deployed": false
+  },
+  "accepted_event_feed_requirements": {
+    "transport": "Authenticated tenant-specific read-only SSE or equivalent scoped MCP resource; NOT YET IMPLEMENTED",
+    "required_public_fields": [
+      "event_id",
+      "source_id",
+      "observed_utc",
+      "sequence",
+      "event_type",
+      "evidence_class",
+      "receipt_ref",
+      "sanitized_summary"
+    ],
+    "integrity": [
+      "Trusted issuer and service identity",
+      "Validate detached signature with enrolled key",
+      "Per-tenant entitlement and no cross-tenant replay",
+      "Monotonic sequence and gap detection",
+      "Clock freshness bounded",
+      "Hash-chained storage-backed receipts",
+      "Revocation and global STOP preemption",
+      "Redact secrets, owner-only routes, private model reasoning and unapproved user content"
+    ],
+    "ui_truth": "Source snapshot != replay != authenticated live event; never fabricate agent activity",
+    "user_click_approval": "A UI click is a request to a protected owner authorization flow, never the authorization itself",
+    "final_evidence": "Reprobe deployed OAuth resource + verified signed event receipt + independent remote browser UI test"
+  },
+  "next_gates": [
+    "Verify real Gate 2 owner sign-in and read-only tenant membership",
+    "Establish protected signed 8x8 event emitter on existing One Fabric event fabric",
+    "Validate event stream trust, revocation, no gaps, privacy redaction and STOP with negative tests",
+    "Connect 8x8 World MCP Apps UI through already registered OAuth, resolve gateway 503 and merge/release source",
+    "Test ChatGPT-hosted MCP UI resource with a real authenticated source event while owner has STOP and PAUSE controls respected"
+  ],
+  "no_unbounded_computation_claim": true
+}
