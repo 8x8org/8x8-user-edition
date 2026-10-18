@@ -24,11 +24,11 @@ test('all three MCP Apps resources contain a recognizable red black 8x8 mark and
 });
 test('MCP rendering contains the actual recovered embedded WebP portraits, no remote image dependency',()=>{
  const html=renderPublicUI();
- const match=html.match(/window\\.__EIGHTX8_PUBLIC_CONCEPT_AVATARS__=(\\[[^\\n]+\\]);/);
+ const match=html.match(/window\.__EIGHTX8_PUBLIC_CONCEPT_AVATARS__=(\[[^\n]+\]);/);
  assert.ok(match,'avatar data bootstrap missing');
  const cast=JSON.parse(match[1]);
  assert.equal(cast.length,4);
- assert.ok(cast.every(x=>/^data:image\\/webp;base64,[A-Za-z0-9+/=]+$/.test(x.portrait)));
+ assert.ok(cast.every(x=>/^data:image\/webp;base64,[A-Za-z0-9+/=]+$/.test(x.portrait)));
  assert.ok(cast.every(x=>x.portrait.length<55000));
 });
 test('UI banner and media functionality still coexist with avatar stage',()=>{
