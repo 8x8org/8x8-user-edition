@@ -58,7 +58,7 @@ function boot(){
  <details><summary>Competitions / challenges (${competitions.length})</summary><div class="grid54">${competitions.map(c=>`<article><span class="state54">${esc(c[1])}</span><h3>${esc(c[0])}</h3><p>${esc(c[2])}</p></article>`).join('')}</div></details>
  <details><summary>Recovered + still-expanding capability universe</summary><div class="grid54">${recovered.map(x=>`<article><p>${esc(x)}</p></article>`).join('')}</div></details>
  <details><summary>External research families (${researchFamilies.length})</summary><div class="grid54">${researchFamilies.map(x=>`<article><p>${esc(x)}</p></article>`).join('')}</div></details>
- <div class="actions54"><a href="${SUGGEST}" target="_blank" rel="noopener">SUGGEST A POWER / REPO / COMPETITION</a><a href="/presale">SUPPORT / JOIN MEMBERSHIP</a><button id="openPowers54" type="button">OPEN ALL POWERS</button></div>
+ <div class="actions54"><a href="${SUGGEST}" target="_blank" rel="noopener">SUGGEST A POWER / REPO / COMPETITION</a><a href="/account">8X8 ID / ACCOUNT</a><a href="/presale">SUPPORT / JOIN MEMBERSHIP</a><button id="openPowers54" type="button">OPEN ALL POWERS</button></div>
  <p class="state54">Truth law: SOURCE_PRESENT ≠ DEPLOYED ≠ PRODUCTIVE ≠ VERIFIED. Community suggestions are intake only and pass source/license/security/dedupe/canary/benchmark gates before promotion.</p>`;
  gate.appendChild(section);
  section.querySelector('#openPowers54')?.addEventListener('click',()=>document.querySelector('#allPowers')?.click());
