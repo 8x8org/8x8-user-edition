@@ -16,7 +16,7 @@ Authoritative location: existing Supabase project `8x8-one-fabric` (`kjvmagncyed
 ## Required protection and next implementation
 1. Reuse existing 8x8 ID/Gate 2 and `protected-beta/one_fabric_native_provider_readiness_v2.py`, `protected-beta/one_fabric_oauth_launch_gate_v3.py`. No replacement identity fabric.
 2. Resolve actual owner authentication and tenant membership; deploy and test a private enrollment interface, authoritative provider-specific OAuth flow or server-only credential entry, Vault storage, secret rotation and revocation.
-3. Allow only authenticated owner/tenant to see their own connection records; agent interfaces must never display, log, or transmit raw keys. Enroll privately, not through chat, git, Hermes logs or the remote shell command line.
+3. Allow only authenticated owner/tenant to see their own connection records; agent interfaces must never display, log, or transmit raw keys. Enroll privately, not through chat, git, authorized local agent logs or the remote shell command line.
 4. Verify the first provider with paper/sandbox/read-only scopes and an attributable receipt; activate trading or publishing as a separate explicitly authorized action, with bounded permissions, STOP and audit.
 5. Preserve existing Upload-Post historical delivery receipts until direct provider publishing achieves authenticated and independently verified delivery.
 
