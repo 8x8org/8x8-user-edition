@@ -259,3 +259,25 @@ test('public catalog search rejects unauthorized calls before lookup',async()=>{
  const [r]=await post('tools/call',{name:'one_fabric.capability_finder',arguments:{query:'SOMA'}},'');
  assert.equal(r.status,401);
 });
+
+test('v0.4.4 server identity consistent across health and initialize',async()=>{
+ const h=await makeHandler(env,fakeFetch,now)(new Request('https://mcp.test/health'));
+ assert.equal(h.status,200);
+ const health=await h.json();
+ assert.equal(health.version,'0.4.4');
+ assert.equal(health.production_ready,false);
+ const [response,payload]=await post('initialize',{});
+ assert.equal(response.status,200);
+ assert.equal(payload.result.serverInfo.version,'0.4.4');
+});
+test('OAuth missing cannot be bypassed by public metadata or initialize',async()=>{
+ const handler=makeHandler({},fakeFetch,now);
+ const discovery=await handler(new Request('https://mcp.test/.well-known/oauth-protected-resource'));
+ assert.equal(discovery.status,503);
+ assert.deepEqual(await discovery.json(),{error:'AUTH_CONFIGURATION_REQUIRED'});
+ const request=new Request('https://mcp.test/mcp',{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify({jsonrpc:'2.0',id:77,method:'initialize',params:{}})});
+ const response=await handler(request);
+ assert.equal(response.status,503);
+ assert.deepEqual(await response.json(),{error:'AUTH_CONFIGURATION_REQUIRED'});
+});
