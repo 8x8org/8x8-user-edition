@@ -92,6 +92,8 @@ writeFileSync(`${out}/agents/index.html`,renderAgentTheaterUI());
 // Public-safe account experience is copied explicitly: NEVER publish protected-beta/admin.
 mkdirSync(`${out}/account`,{recursive:true});
 cpSync('protected-beta/account/index.html',`${out}/account/index.html`);
+cpSync('protected-beta/account/identity-client.mjs',`${out}/account/identity-client.mjs`);
+cpSync('protected-beta/account/identity-ui.mjs',`${out}/account/identity-ui.mjs`);
 // Shared public-safe in-page bubble for Android web carrier and Telegram mini app.
 mkdirSync(`${out}/assets`, {recursive:true});
 cpSync('plugins/one-fabric-world/ui/one-fabric-bubble.js',`${out}/assets/8x8-bubble.js`);
