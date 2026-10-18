@@ -1,0 +1,111 @@
+{
+  "schema": "8x8.one_fabric.world.v044.render_oauth_diagnostic.v1",
+  "observed_utc": "2026-10-18T12:40:08Z",
+  "canonical_root": "fabric://8x8/core",
+  "classification": "AUTH_CONFIGURATION_BLOCKED_FAIL_CLOSED",
+  "plugin": {
+    "id": "plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "name": "8x8-one-fabric-world",
+    "registered_version": "0.4.4",
+    "release_id": "pluginrel_6ad2ac8df60c8191bc14e526beea7343",
+    "packaged_handler_reported_version": "0.4.0",
+    "package_read_only_tools": 19,
+    "live_authenticated": false
+  },
+  "render": {
+    "workspace_id": "tea-d7rjf61o3t8c73d8iri0",
+    "service_id": "srv-db80qaqj9qps73b72390",
+    "service_name": "8x8-one-fabric-public",
+    "public_url": "https://eightx8-one-fabric-public.onrender.com",
+    "deployed_commit": "18cdd81e0b42ebcb5e66cb3355ce09b01692cadd",
+    "deploy_id": "dep-db80qbaj9qps73b724ig",
+    "deploy_status": "live",
+    "autodeploy": false,
+    "reported_gateway_version": "0.1.0",
+    "live_tool_count_from_current_source": 5,
+    "actual_authenticated_tool_discovery": false,
+    "actual_live_probes": [
+      {
+        "method": "GET",
+        "path": "/health",
+        "http": 200,
+        "body": {
+          "service": "8x8-public-world",
+          "configured": false,
+          "production_ready": false,
+          "private_effects": false
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/.well-known/oauth-protected-resource",
+        "http": 503,
+        "body": {
+          "error": "AUTH_CONFIGURATION_REQUIRED"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/mcp",
+        "http": 503,
+        "body": {
+          "error": "AUTH_CONFIGURATION_REQUIRED"
+        }
+      }
+    ]
+  },
+  "configuration_gate": {
+    "source_requires_nonsecret_variable_names": [
+      "PUBLIC_OAUTH_ISSUER",
+      "PUBLIC_OAUTH_AUDIENCE",
+      "PUBLIC_JWKS_URL",
+      "PUBLIC_MCP_RESOURCE_URL"
+    ],
+    "requirement": "Each value must be present and an HTTPS URL; management API does not expose which are absent, and unverified URL values cannot be guessed.",
+    "supabase_oidc_verified_public_endpoints": true,
+    "supabase_public_read_scope_advertised": false,
+    "supabase_token_compatible_with_gateway_proven": false,
+    "public_mcp_oauth_ready": false
+  },
+  "source_repair": {
+    "repository": "8x8org/8x8-user-edition",
+    "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+    "pr": 200,
+    "source_path": "plugins/one-fabric-world/server/public-mcp.mjs",
+    "source_blob_sha": "332cb9e9a96368ffefa5a70ba6bc97185def7fb6",
+    "test_path": "plugins/one-fabric-world/tests/public-mcp.test.mjs",
+    "test_blob_sha": "b37046f925442a2d4d51030ead1b4cbac1e1e644",
+    "implementation_commit": "3657752fb2993bcba028812db130f8b25497d677",
+    "test_commit": "aa68540beab16c53df0bf80bd2c686b368431cf1",
+    "change": "Correct draft World handler version in GET /health and JSON-RPC initialize from 0.2.0 to 0.4.4; add explicit fail-closed 503 and version-parity tests.",
+    "verified_git_readback_matches_samsung_blobs": true,
+    "isolated_node_tests": {
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "read_only_tool_count_in_current_draft_source": 21
+    },
+    "deployed": false,
+    "plugin_release_updated": false
+  },
+  "safety": {
+    "oauth_secrets_read": false,
+    "oauth_credentials_exposed": false,
+    "private_owner_routes_enabled": false,
+    "render_env_modified": false,
+    "render_deployed": false,
+    "public_auth_bypassed": false,
+    "trading_enabled": false,
+    "publishing_enabled": false,
+    "owner_pause_cleared": false,
+    "hermes_voice_stop_cleared": false
+  },
+  "next_gates": [
+    "Establish approved public-only OAuth issuer with token audience and 8x8.public.read scope, JWKS verification, authorization-code PKCE/CIMD compatibility",
+    "Complete independent user sign-in and tenant isolation with bad-token and cross-tenant negative tests; owner credentials and scopes cannot be reused",
+    "Configure verified issuer/JWKS/audience/resource URL in existing Render service via protected configuration, no user-visible raw tokens",
+    "Reconcile World v0.4.4 package source with GitHub draft v0.4.4 and Render deployment; review code/assets and rollback before deployment",
+    "Manually redeploy only after code/test/auth approval; verify protected-resource metadata, 401 challenge, real authenticated initialize and tools/list, and no private routes",
+    "Confirm chat client actual MCP Apps UI resource discovery and tool invocation; do not equate source availability with live tool capability"
+  ]
+}
