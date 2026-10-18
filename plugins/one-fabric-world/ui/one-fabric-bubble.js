@@ -153,7 +153,7 @@
     gallery.setAttribute("aria-label","Original 8x8 concept agent portraits");
     for(const person of raw.slice(0,4)){
       if(!person||person.evidence_state!=="ORIGINAL_CONCEPT_NOT_AUTHENTICATED"||
-         typeof person.name!=="string"||!/^data:image\\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait||""))continue;
+         typeof person.name!=="string"||!/^data:image\/webp;base64,[A-Za-z0-9+/=]+$/.test(person.portrait||""))continue;
       const fig=append(gallery,"figure",undefined,"eightx8-agent-portrait");
       const img=append(fig,"img");img.src=person.portrait;
       img.alt=person.name+" · original 8x8 concept portrait";img.loading="lazy";
