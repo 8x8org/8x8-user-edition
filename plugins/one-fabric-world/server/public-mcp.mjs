@@ -5,6 +5,7 @@ import {readFileSync} from 'node:fs';
 import {createPublicKey,verify} from 'node:crypto';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
 const FIRST_BLINK=JSON.parse(readFileSync(new URL('../data/studio_first_blink_private_media_manifest_v1.json',import.meta.url),'utf8'));
+const DIRECT_EXPANSION=JSON.parse(readFileSync(new URL('../data/direct_provider_expansion_v1.json',import.meta.url),'utf8'));
 const SCENARIOS=JSON.parse(readFileSync(new URL('../data/access_scenarios_v1.json',import.meta.url),'utf8'));
 const SCENARIO_EMBED=JSON.stringify(SCENARIOS).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
 // Reuse the original, source-preserved Agent Theater portraits; never invent live
@@ -149,7 +150,7 @@ function value(name,args={}){
   case 'one_fabric.identity_lineage':return {...COMMON,identity_lineage:DATA.identity_lineage,authenticated_legacy_mapping:false,owner_root_grant:false,credential_intake_enabled:false};
   case 'one_fabric.user_agent_templates':return {...COMMON,templates:DATA.agent_templates,custom_agent_creation:'NOT_DEPLOYED',individual_memory:'USER_TENANT_OWNED_TARGET'};
   case 'one_fabric.usage_plans':return {...COMMON,plans:DATA.plans,billing_status:'NOT_CONNECTED_NO_PAYMENT_AUTHORIZED'};
-  case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false,direct_provider_api_primary:true,third_party_publishing_aggregators_required:false,third_party_publishing_aggregators_not_execution_backends:['upload-post','metricool'],direct_account_links_live:false,live_consent_start_url:null};
+  case 'one_fabric.connector_guidance':return {...COMMON,provider_connections:DATA.connector_guidance,auto_install:false,auto_token_import:false,direct_provider_api_primary:true,third_party_publishing_aggregators_required:false,third_party_publishing_aggregators_not_execution_backends:['upload-post','metricool'],direct_account_links_live:false,live_consent_start_url:null,direct_provider_expansion:{as_of_date:DIRECT_EXPANSION.as_of_date,read_only_discovery:true,source_verified_count:DIRECT_EXPANSION.candidates.filter(x=>x.source_quality==='OFFICIAL_DOC_RETRIEVED_2026_10_18').length,unverified_lead_count:DIRECT_EXPANSION.candidates.filter(x=>x.source_quality==='LEAD_NOT_INDEPENDENTLY_REVALIDATED').length,records:DIRECT_EXPANSION.candidates.map(({id,name,category,priority,source_quality,documentation_url,capability})=>({id,name,category,priority,source_quality,documentation_url,capability})),authenticated_connections:0,aggregation_token_migration_supported:false}};
   case 'one_fabric.platform_surfaces':return {...COMMON,surfaces:DATA.surfaces};
   case 'one_fabric.experience_atlas':return {...COMMON,experience_atlas:DATA.experience_atlas,legacy_domains:DATA.domains};
   case 'one_fabric.market_media_readiness':return {...COMMON,market_media_readiness:DATA.market_media_readiness};
