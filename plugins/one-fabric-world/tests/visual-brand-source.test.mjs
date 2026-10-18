@@ -44,9 +44,9 @@ test('UI banner and media functionality still coexist with avatar stage',()=>{
 test('in-page bubble never fabricates auth, device, model or publishing abilities',()=>{
  const html=renderPublicUI();
  assert.match(html,/No provider-connected LIVE indicator/);
- assert.match(html,/Background 24\\/7/);
+ assert.ok(html.includes('Background 24/7'));
  assert.match(html,/Ambient listening/);
  assert.match(html,/Direct publishing/);
  assert.match(html,/This public preview cannot collect credentials/);
- assert.doesNotMatch(html,/\\<video autoplay/);
+ assert.ok(!html.includes('<video autoplay'));
 });
