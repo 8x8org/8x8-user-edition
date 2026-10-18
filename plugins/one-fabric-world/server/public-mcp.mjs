@@ -166,7 +166,7 @@ function toolList(){return Object.entries(TOOLS).map(([name,description])=>({nam
 export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
  return async request=>{
   const url=new URL(request.url);
-  if(request.method==='GET'&&url.pathname==='/health')return json({service:'8x8-one-fabric-user-world',version:'0.2.0',configured:configured(env),production_ready:false,private_effects:false});
+  if(request.method==='GET'&&url.pathname==='/health')return json({service:'8x8-one-fabric-user-world',version:'0.4.4',configured:configured(env),production_ready:false,private_effects:false});
   if(request.method==='GET'&&url.pathname==='/.well-known/oauth-protected-resource')return configured(env)?json({resource:env.PUBLIC_MCP_RESOURCE_URL,authorization_servers:[env.PUBLIC_OAUTH_ISSUER],scopes_supported:[SCOPE]}):json({error:'AUTH_CONFIGURATION_REQUIRED'},503);
   if(url.pathname!=='/mcp')return json({error:'NOT_FOUND'},404);
   if(request.method!=='POST')return json({error:'METHOD_NOT_ALLOWED'},405);
@@ -180,7 +180,7 @@ export function makeHandler(env=process.env,fetcher=fetch,now=Date.now){
   if(body.method==='notifications/initialized')return new Response(null,{status:202});
   const id=body.id??null;
   let result;
-  if(body.method==='initialize')result={protocolVersion:'2025-06-18',serverInfo:{name:'8x8-one-fabric-user-world',version:'0.2.0'},capabilities:{tools:{listChanged:false},resources:{listChanged:false}},instructions:'Public prelaunch user directory only. No founder/owner resource, broker action, payment, signer, device command or automatic social post.'};
+  if(body.method==='initialize')result={protocolVersion:'2025-06-18',serverInfo:{name:'8x8-one-fabric-user-world',version:'0.4.4'},capabilities:{tools:{listChanged:false},resources:{listChanged:false}},instructions:'Public prelaunch user directory only. No founder/owner resource, broker action, payment, signer, device command or automatic social post.'};
   else if(body.method==='ping')result={};
   else if(body.method==='tools/list')result={tools:toolList()};
   else if(body.method==='resources/list')result={resources:[{uri:UI_URI,name:'One Fabric User Hub',mimeType:'text/html;profile=mcp-app'},{uri:OBSERVATORY_URI,name:'One Fabric Observatory (Public Preview)',mimeType:'text/html;profile=mcp-app'},{uri:AGENT_THEATER_URI,name:'One Fabric Agent Theater (Cinematic Source Preview)',mimeType:'text/html;profile=mcp-app'}]};
