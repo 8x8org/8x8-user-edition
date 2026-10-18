@@ -295,3 +295,15 @@ test('private First Blink manifest appears as safe preview state, never an autho
  assert.equal(studio.offline_animatic.studio_runtime_connected,false);
  assert.equal(studio.effect_count,0);
 });
+
+test('World connector catalog prefers official direct APIs, not aggregator execution',async()=>{
+ const [r,x]=await post('tools/call',{name:'one_fabric.connector_guidance',arguments:{}});
+ assert.equal(r.status,200);
+ const d=x.result.structuredContent;
+ assert.equal(d.direct_provider_api_primary,true);
+ assert.equal(d.third_party_publishing_aggregators_required,false);
+ assert.deepEqual(d.third_party_publishing_aggregators_not_execution_backends,['upload-post','metricool']);
+ assert.equal(d.direct_account_links_live,false);
+ assert.equal(d.live_consent_start_url,null);
+ assert.equal(d.effect_count,0);
+});
