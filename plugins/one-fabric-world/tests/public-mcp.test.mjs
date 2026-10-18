@@ -281,3 +281,17 @@ test('OAuth missing cannot be bypassed by public metadata or initialize',async()
  assert.equal(response.status,503);
  assert.deepEqual(await response.json(),{error:'AUTH_CONFIGURATION_REQUIRED'});
 });
+
+test('private First Blink manifest appears as safe preview state, never an authorized public video',async()=>{
+ const [response,payload]=await post('tools/call',{name:'one_fabric.studio_status',arguments:{}});
+ assert.equal(response.status,200);
+ const studio=payload.result.structuredContent;
+ assert.equal(studio.offline_animatic.preview_state,'RECOVERED_PRIVATE_LIBRARY');
+ assert.equal(studio.offline_animatic.full_duration_seconds,488);
+ assert.equal(studio.offline_animatic.short_preview_seconds,32.375);
+ assert.equal(studio.offline_animatic.public_video_url,null);
+ assert.equal(studio.offline_animatic.publishing_authorized,false);
+ assert.equal(studio.offline_animatic.asset_rights_cleared,false);
+ assert.equal(studio.offline_animatic.studio_runtime_connected,false);
+ assert.equal(studio.effect_count,0);
+});
