@@ -5,7 +5,7 @@ NOW=10000
 class PolicyTests(unittest.TestCase):
  def i(self,provider="bitget",slot=1,scopes=frozenset({"account.read"}),**kwargs):
   return propose_connection(A,provider,slot=slot,scopes=scopes,now=NOW,**kwargs)
- def test_all_provider_names_unique(self):self.assertEqual(len(PROVIDERS),27)
+ def test_all_provider_names_unique(self):self.assertEqual(len(PROVIDERS),28)
  def test_bitget_read_only_intent(self):
   x=self.i();self.assertEqual((x.provider,x.slot,x.state),("bitget",1,"PREPARED_NOT_CONNECTED"))
  def test_bitget_five_slots(self):
@@ -163,3 +163,15 @@ class PolicyTests(unittest.TestCase):
     self.assertFalse(x["authorized_trading"])
 
 if __name__=="__main__":unittest.main()
+
+class FirstPartyPublisherCoverage(unittest.TestCase):
+ def test_google_business_is_a_direct_intent_with_no_secrets(self):
+  provider=PROVIDERS["google-business"]
+  self.assertEqual(provider.domain,"publishing")
+  self.assertFalse(provider.secret_form_required)
+  self.assertNotIn("publisher.post",provider.scopes)
+  intent=propose_connection(A,"google-business",slot=None,scopes=frozenset({"profile.read"}),now=NOW)
+  self.assertEqual(intent.state,"PREPARED_NOT_CONNECTED")
+ def test_all_twelve_publishing_intents_present(self):
+  from one_fabric_native_provider_readiness_v2 import PUBLICATION_CANDIDATES
+  self.assertEqual({p.id for p in PROVIDERS.values() if p.domain=="publishing"},PUBLICATION_CANDIDATES)
