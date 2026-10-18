@@ -328,3 +328,24 @@ test('Mission Cinema cannot confer live agent, streaming, broker or media author
  assert.equal(state.raw_hidden_model_reasoning_exposed,false);
  assert.equal(state.effect_count,0);
 });
+
+test('Mission Cinema source advertises signed verification but not live source access',async()=>{
+ const [,r]=await post('tools/call',{name:'one_fabric.observatory_contract',arguments:{}});
+ const d=r.result.structuredContent;
+ assert.equal(d.signed_event_verifier,'ED25519_LOCAL_SOURCE_TESTED');
+ assert.equal(d.signed_event_feed_connected,false);
+ assert.ok(d.allowed_event_types.includes('SOURCE_COMMIT'));
+ assert.ok(d.allowed_event_types.includes('PROVIDER_CANARY'));
+ assert.equal(d.raw_hidden_model_reasoning_exposed,false);
+ assert.equal(d.owner_live_stream_connected,false);
+});
+test('Mission Cinema popup exposes evidence categories and truthful live gate',async()=>{
+ const [,r]=await post('resources/read',{uri:'ui://8x8/one-fabric-observatory.html'});
+ const ui=r.result.contents[0].text;
+ assert.ok(ui.includes('id="mc-trust-inspector"'));
+ assert.ok(ui.includes('id="mc-stream-proof"'));
+ assert.ok(ui.includes('Trusted runtime signer not enrolled'));
+ assert.ok(ui.includes('not private model thoughts'));
+ assert.ok(ui.includes('No live feed.'));
+ assert.ok(ui.includes('SOURCE_SNAPSHOT · no runtime signer'));
+});
