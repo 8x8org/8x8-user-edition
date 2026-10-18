@@ -61,6 +61,7 @@ _PROVIDERS = [
     Provider("x", "publishing", "OAUTH_USER_CONSENT", frozenset({"profile.read", "draft.prepare"}), "Use X official authorization and applicable API access."),
     Provider("pinterest", "publishing", "OAUTH_USER_CONSENT", frozenset({"profile.read", "draft.prepare"}), "Use Pinterest developer authorization."),
     Provider("linkedin", "publishing", "OAUTH_USER_CONSENT", frozenset({"profile.read", "draft.prepare"}), "Use the LinkedIn approved product scopes and authorization flow."),
+    Provider("google-business", "publishing", "OAUTH_USER_CONSENT", frozenset({"profile.read", "draft.prepare"}), "Use Google Business Profile official OAuth with verified business-location ownership and product API approval; never use a third-party scheduling intermediary."),
     Provider("stripe", "billing", "HOSTED_STRIPE_CHECKOUT", frozenset({"billing.read"}), "Use hosted checkout and verify signed server-side webhooks; never collect card numbers in 8x8 chat."),
     Provider("crypto-checkout", "billing", "NETWORK_SPECIFIC_INVOICE", frozenset({"invoice.read"}), "Use only supported verified network/asset invoices and confirmations. Do not request a seed phrase."),
     Provider("wallet-watch", "wallet", "SIGNED_ADDRESS_CHALLENGE", frozenset({"wallet.address.read"}), "Start with watch-only addresses and signed ownership challenges, not imported seed phrases."),
