@@ -2,6 +2,23 @@
   "root": "fabric://8x8/core",
   "schema": "8x8.public_user_one_fabric_mcp_catalog.v3",
   "release": "PRELAUNCH_SOURCE_ONLY",
+  "identity_lineage": {
+    "classification": "HISTORICAL_CORE_IDS_AND_SEPARATE_BETA_AUTH_NAMESPACE",
+    "authoritative_core_source": "horbolsi/8x8:docs/architecture/ACCOUNT_AGENT_FLEET_AND_IMPORT_MODEL_V1.md",
+    "owner_public_id": "0000000001",
+    "owner_public_id_state": "PAST_PRESERVED_OWNER_ROOT_RESERVED_AUTHENTICATION_NOT_PROVEN_BY_PUBLIC_MCP",
+    "iphone_public_id": "0000000002",
+    "iphone_public_id_state": "PAST_PRESERVED_STAGING_ACCEPTANCE_NOT_LIVE_CUSTOMER_OR_DEVICE_ID_PROOF",
+    "protected_beta_id_pattern": "8x8_<32 lowercase hex>",
+    "protected_beta_legacy_account_mapping_verified": false,
+    "protected_beta_owner_root_authority": false,
+    "tenant_membership_verified": false,
+    "owner_device_authority": false,
+    "credentials_can_be_collected_in_mcp_chat": false,
+    "secure_backend_linking_required": true,
+    "new_legacy_public_id_allocation_permitted_here": false,
+    "migration": "FUTURE_GATED_EXISTING_CORE_IDENTITY_AND_SIGNED_TENANT_RECONCILIATION"
+  },
   "capabilities": [
     {
       "id": "one_fabric",
