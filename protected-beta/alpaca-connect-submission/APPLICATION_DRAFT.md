@@ -21,7 +21,7 @@ The user-shared Alpaca form's prescribed disclosure includes *authorization to p
 ## Scope and security
 - OAuth authorization code flow; `env=paper`; no `trading`, `account:write` or `data` scope initially; read-only default.
 - One-use random OAuth `state` in a server-side expiring transaction bound to authenticated 8x8 user and tenant. Reject missing/mismatch/replay/expired callbacks.
-- Backend-only client secret and token exchange; authenticated 8x8 ID; authorized tenant; vault encrypted token custody with isolated read permissions; revocable grants; no raw credentials through chatbot, Hermes, logs, public MCP tool arguments, or documents.
+- Backend-only client secret and token exchange; authenticated 8x8 ID; authorized tenant; vault encrypted token custody with isolated read permissions; revocable grants; no raw credentials through chatbot, authorized local agent, logs, public MCP tool arguments, or documents.
 - Deployment checks: app approved, exact redirect registered, privacy/terms reachable, OAuth callback ready, auth works, RLS/tenant isolation checked, consent recorded, one read-only paper canary independently received, receipts redact all tokens.
 - Do not infer live trading from a portfolio read. Keep trade execution and post permissions independent.
 
