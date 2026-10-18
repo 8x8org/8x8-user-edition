@@ -1,0 +1,81 @@
+{
+  "schema": "8x8.user_edition.legacy_identity_namespace_gate.v1",
+  "root": "fabric://8x8/core",
+  "observed_date": "2026-10-18",
+  "type": "SOURCE_PLUS_ISOLATED_DEVICE_REGRESSION_NOT_RELEASE",
+  "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+  "pr": 200,
+  "historical_core_sources": [
+    "horbolsi/8x8:docs/architecture/ACCOUNT_AGENT_FLEET_AND_IMPORT_MODEL_V1.md",
+    "horbolsi/8x8:docs/release/ONE_FABRIC_1_0_0_RELEASE_CONTRACT_V1.md"
+  ],
+  "historical_public_ids": {
+    "0000000001": "FLASH_OWNER_ROOT_RESERVED_NOT_PROOF_OF_AUTHORIZATION",
+    "0000000002": "IPHONE_USER2_STAGING_ACCEPTANCE_NOT_LIVE_PROVEN_TENANT"
+  },
+  "mismatch_discovered": "The deployed protected beta uses 8x8_<32 lowercase hex>; the historical core uses ten-digit public 8x8 IDs. No authenticated ownership mapping has been verified.",
+  "changes": [
+    "protected-beta/account/identity-namespace.mjs",
+    "protected-beta/account/identity-client.mjs",
+    "protected-beta/account/identity-ui.mjs",
+    "protected-beta/account/index.html",
+    "protected-beta/account/test-identity-client.mjs",
+    "plugins/one-fabric-world/data/unified_public_catalog.json",
+    "plugins/one-fabric-world/server/public-mcp.mjs",
+    "plugins/one-fabric-world/tests/public-mcp.test.mjs"
+  ],
+  "exact_blobs": {
+    "protected-beta/account/identity-namespace.mjs": "279cc4ad255075a756da19f1f1b4fd7816f110ff",
+    "protected-beta/account/identity-client.mjs": "af6c8278a8c30ed0ba14c3cb7c4706b55049f9e6",
+    "protected-beta/account/test-identity-client.mjs": "7c132491758a7b97bf38b057362b46a71aa81f6c",
+    "plugins/one-fabric-world/data/unified_public_catalog.json": "ec202a8b19817f124b7b31fc6f184197852dc75b",
+    "plugins/one-fabric-world/server/public-mcp.mjs": "8ae01a7006b5acf0242488dc6e1ac066b1d3b66d",
+    "plugins/one-fabric-world/tests/public-mcp.test.mjs": "ada8c68eca396debc4943241edd1c9d3c8f52ba7"
+  },
+  "acceptance": {
+    "environment": "Samsung Galaxy S22 Ultra, Android Termux Node v24.18.0, isolated scratch directory",
+    "owner_pause_marker": "PRESENT_IN_A5B_EXECUTOR; NO_FOREGROUND_OR_CONTROL_ACTION",
+    "identity_regressions": {
+      "total": 21,
+      "passed": 21,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "identity_3_source_blobs_match_git_hash_object": true,
+    "public_mcp": {
+      "js_source_syntax": "PASS",
+      "test_js_syntax": "PASS",
+      "catalog_json_structure": "PASS",
+      "git_blobs_match": true,
+      "full_mcp_protocol_suite": "NOT_EXECUTED",
+      "registered_tool_count_source_target": 20,
+      "new_tool": "one_fabric.identity_lineage"
+    },
+    "repository_review": "DRAFT_UNMERGED",
+    "release_and_directory_visibility": "NOT_VERIFIED",
+    "protected_beta_backend_legacy_mapping": "NOT_VERIFIED",
+    "owner_or_iphone_real_session_authentication": "NOT_TESTED"
+  },
+  "release_gates": {
+    "real_id_alias_migration": false,
+    "two_way_signed_binding": false,
+    "secure_vault_credential_submission": false,
+    "eight_trading_provider_oauth_bindings": false,
+    "native_social_provider_oauth_bindings": false,
+    "live_trading": false,
+    "public_publishing": false,
+    "billing_subscriptions": false
+  },
+  "effect_summary": {
+    "trades": 0,
+    "posts": 0,
+    "external_token_exchanges": 0,
+    "secure_vault_mutations": 0,
+    "production_deploys": 0,
+    "schedulers_modified": 0,
+    "mainnet_mints": 0,
+    "privilege_widenings": 0
+  },
+  "rollback": "Revert only additive draft User Edition commits with normal Git revert; retain this evidence and historical core source",
+  "next": "Run full public MCP protocol test, independently deploy to verified HTTPS OAuth resource, reconcile historical public IDs through signed server-side tenant mapping, confirm 8x8 owner/iPhone authentication before any per-user account linking."
+}
