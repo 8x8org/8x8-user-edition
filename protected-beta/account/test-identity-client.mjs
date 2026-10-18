@@ -2,6 +2,7 @@ import {test} from "node:test";
 import assert from "node:assert/strict";
 import {webcrypto} from "node:crypto";
 import {createIdentityClient,isValidEmail,safeOrigin,base64url} from "./identity-client.mjs";
+import {inspectIdentityNamespace,verifiedBetaIdentityProjection,LEGACY_PUBLIC_ID_CONTRACT} from "./identity-namespace.mjs";
 
 const ORIGIN="https://8x8-user-8888-8x8-team-url.vercel.app";
 const UID="8x8_"+"a".repeat(32);
@@ -132,4 +133,45 @@ test("clearing browser session revokes local ability to make ID calls",async()=>
 test("no wallet, trade or publishing tool exists on identity client",()=>{
  const names=Object.keys(harness().client);
  for(const forbidden of ["trade","post","withdraw","seed","sign","vault","apikey"])assert.ok(!names.includes(forbidden));
+});
+
+test("historical ten-digit identifiers remain distinct and non-authenticating",()=>{
+ assert.equal(LEGACY_PUBLIC_ID_CONTRACT.root,"fabric://8x8/core");
+ assert.equal(inspectIdentityNamespace("0000000001").classification,"LEGACY_OWNER_RESERVED");
+ assert.equal(inspectIdentityNamespace("0000000002").classification,"LEGACY_IPHONE_STAGING_RESERVED");
+ for(const id of ["0000000001","0000000002","0000000003"]){
+   const v=inspectIdentityNamespace(id);assert.equal(v.grant_authority,false);
+   assert.equal(v.authentication,"NOT_PROVEN");
+ }
+});
+test("beta sign-in ID cannot authenticate an OWNER_ROOT, iPhone, or any tenant binding",()=>{
+ const r=verifiedBetaIdentityProjection(UID);
+ assert.equal(r.id_namespace,"BETA_AUTH_USER_ID_NOT_LEGACY_PUBLIC_ID");
+ assert.equal(r.legacy_public_id,null);assert.equal(r.legacy_binding_verified,false);
+ assert.equal(r.owner_root_authorized,false);assert.equal(r.user_tenant_membership_verified,false);
+ assert.equal(r.provider_connections_authorized,false);assert.equal(r.wallet_signing_authorized,false);
+ assert.equal(r.live_trading_authorized,false);assert.equal(r.publishing_authorized,false);
+});
+test("reserved legacy ID submitted as a beta identity is denied, not migrated",()=>{
+ for(const id of ["0000000001","0000000002","0000000003","8x8_invalid"]){
+   assert.throws(()=>verifiedBetaIdentityProjection(id),/LEGACY_ID_BRIDGE_NOT_VERIFIED/);
+ }
+});
+test("login and identity creation produce only the non-authoritative beta projection",async()=>{
+ const h=harness();await h.client.verifyEmailCode("hello@example.com","123456");
+ const r=await h.client.eightx8ID({create:true});
+ assert.equal(r.eightx8_id,UID);
+ assert.equal(r.legacy_public_id,null);
+ assert.equal(r.owner_root_authorized,false);
+ assert.equal(r.live_trading_authorized,false);
+});
+test("unexpected legacy owner ID from backend does not grant identity",async()=>{
+ const h=harness({reply:(url,config,res)=>{
+   if(url.endsWith("/one-fabric-id"))return {status:200,data:{
+      state:"8X8_ID_BOOTSTRAP_VERIFIED",eightx8_id:"0000000001",
+      owner_root_authorized:true}};
+   return res;
+ }});
+ await h.client.verifyEmailCode("hello@example.com","123456");
+ await assert.rejects(h.client.eightx8ID({create:true}),/UNVERIFIED_ID_RESPONSE/);
 });
