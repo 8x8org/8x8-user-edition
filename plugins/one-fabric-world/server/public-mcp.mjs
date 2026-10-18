@@ -3,6 +3,7 @@
 import {createServer} from 'node:http';
 import {readFileSync} from 'node:fs';
 import {createPublicKey,verify} from 'node:crypto';
+import {EVENT_TYPES} from './mission-cinema-event-trust-v1.mjs';
 const DATA=JSON.parse(readFileSync(new URL('../data/unified_public_catalog.json',import.meta.url),'utf8'));
 const FIRST_BLINK=JSON.parse(readFileSync(new URL('../data/studio_first_blink_private_media_manifest_v1.json',import.meta.url),'utf8'));
 const DIRECT_EXPANSION=JSON.parse(readFileSync(new URL('../data/direct_provider_expansion_v1.json',import.meta.url),'utf8'));
@@ -158,7 +159,7 @@ function value(name,args={}){
   case 'one_fabric.connector_inventory_status':return {...COMMON,connector_census:DATA.connector_census};
   case 'one_fabric.access_rescue':return {...COMMON,access_states:SCENARIOS.missing_access_states,privacy:SCENARIOS.privacy,external_connection_performed:false};
   case 'one_fabric.scenario_catalog':return {...COMMON,scenarios:SCENARIOS.flows,classification:SCENARIOS.classification,automatic_execution:false};
-  case 'one_fabric.observatory_contract':return {...COMMON,visualization:'PUBLIC_SAFE_ANIMATED_ILLUSTRATION',owner_live_stream_connected:false,verified_live_agents:null,world_domains:24,all_files_covered:false,event_fields:['event_id','source_id','observed_utc','evidence_class','receipt_ref','tenant_scope'],sequence_gap_detection_required:true,transport:'FUTURE_AUTHENTICATED_OWNER_SSE',raw_hidden_model_reasoning_exposed:false,owner_secrets_exposed:false};
+  case 'one_fabric.observatory_contract':return {...COMMON,visualization:'PUBLIC_SAFE_ANIMATED_ILLUSTRATION',owner_live_stream_connected:false,verified_live_agents:null,world_domains:24,all_files_covered:false,event_fields:['event_id','source_id','observed_utc','evidence_class','receipt_ref','tenant_scope'],sequence_gap_detection_required:true,transport:'FUTURE_AUTHENTICATED_OWNER_SSE',signed_event_verifier:'ED25519_LOCAL_SOURCE_TESTED',signed_event_feed_connected:false,allowed_event_types:EVENT_TYPES,raw_hidden_model_reasoning_exposed:false,owner_secrets_exposed:false};
   case 'one_fabric.capability_finder':return discoverPublic(args);
   case 'one_fabric.agent_theater':return {...COMMON,cinematic_character_sources:7,chatgpt_bridge_display_only:true,historical_agent_identities:212,verified_simultaneously_active_agent_sessions:0,live_model_dialogue:false,source_art_recovered:true,voice_preview:'USER_GESTURE_BROWSER_TTS_ONLY',mic_preview:'ONE_SHOT_BROWSER_RECOGNIZER_CONSENT',chatgpt_private_reasoning_exposed:false,external_effects:0};
   default:throw Error('UNKNOWN_TOOL');
