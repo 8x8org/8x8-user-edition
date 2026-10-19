@@ -16,7 +16,7 @@ public final class VerifiedApkProvider extends ContentProvider {
   private File verified(Uri uri) throws FileNotFoundException {
     if (getContext()==null || uri==null
       || !("content".equals(uri.getScheme()))
-      || !uri.getAuthority().equals(getContext().getPackageName()+".updater")
+      || !((getContext().getPackageName()+".updater").equals(uri.getAuthority()))
       || !("/"+FILE).equals(uri.getPath())
       || uri.getQuery()!=null || uri.getFragment()!=null)
       throw new FileNotFoundException("Not an authorized update");
