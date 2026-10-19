@@ -43,3 +43,8 @@ test('all inline JavaScript parses under Node VM',()=>{
  for(const [i,s]of scripts.entries())
   assert.doesNotThrow(()=>new Script(s,{filename:'observatory-inline-'+i+'.js'}));
 });
+
+test('browser rejects cross-tenant frames even when a stream is configured',()=>{
+ assert.match(html,/frame\.tenant_id!==cfg\.tenant_id/);
+ assert.match(html,/!safe\(cfg\.tenant_id,80\)/);
+});
