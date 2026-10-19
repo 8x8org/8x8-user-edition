@@ -8,7 +8,7 @@ export const EVENT_TYPES=Object.freeze([
   'DEPLOYMENT_RESULT','PROVIDER_CANARY','MEDIA_RENDER',
   'DEVICE_CONTROL_STATUS','APPROVAL_STATUS','INCIDENT',
   // Signed lifecycle events report only sanitized milestones, never hidden thoughts.
-  'OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'
+  'OPERATION_STARTED','OPERATION_PROGRESS','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'
 ]);
 const hex64=/^[a-f0-9]{64}$/;
 const ident=/^[a-zA-Z0-9_.:-]{2,100}$/;
@@ -54,6 +54,9 @@ export function verifyMissionCinemaBatch(batch,options={}){
    assert(str(e.event_id,80)&&str(e.source_id,80)&&ident.test(e.source_id),'INVALID_EVENT_IDENTITIES');
    assert(str(e.sanitized_summary,240),'UNSAFE_SUMMARY');
    assert(EVENT_TYPES.includes(e.event_type),'UNKNOWN_EVENT_TYPE');
+   // A stage update is evidence of work, not a calculated completion percentage.
+   if(e.event_type==='OPERATION_PROGRESS')
+     assert(!/\b\d+(?:\.\d+)?\s*%/.test(e.sanitized_summary),'UNATTESTED_PROGRESS_PERCENTAGE');
    assert(['SOURCE_VERIFIED','RUNTIME_RECEIPT'].includes(e.evidence_class),'BAD_EVIDENCE_CLASS');
    assert(typeof e.receipt_ref==='string'&&
      (e.receipt_ref===''||(/^https:\/\/github\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(commit|pull|blob)\/[A-Za-z0-9._\/-]+$/.test(e.receipt_ref)
