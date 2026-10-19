@@ -25,6 +25,6 @@ test('script syntax and no automatic voice playback',()=>{
  const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
  assert.ok(script);
  assert.doesNotThrow(()=>new vm.Script(script));
- assert.match(script,/getElementById\('play'\)\.addEventListener\('click'/);
- assert.ok(script.indexOf('speak(0,epoch)')>script.indexOf("getElementById('play')"));
+ assert.match(script,/byId\('play'\)\.addEventListener\('click'/);
+ assert.ok(script.indexOf('speak(0,epoch)')>script.indexOf("byId('play')"));
 });
