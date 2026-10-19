@@ -81,6 +81,27 @@ small{font-size:11px}
 .mc-controls button:disabled{cursor:not-allowed;opacity:.5}.mc-note{font-size:12px;color:#b8cddc}.mc-warning{font-size:12px;color:#ffbbbb}
 #mc-dialog{border:1px solid #5084aa;border-radius:14px;background:#061320;color:#e8f7ff;padding:18px;width:min(940px,94vw);max-height:93vh}#mc-dialog::backdrop{background:#020510eb}#mc-dialog video{width:100%;max-height:68vh;background:#000;border-radius:8px}#mc-dialog button{background:#193b54;color:white;padding:8px 14px;border:1px solid #7590a6;border-radius:8px;cursor:pointer}
 @media(max-width:720px){.mc-view{grid-template-columns:1fr}.mc-gates{grid-template-columns:1fr}.mc-gate{min-height:auto}.mc-space{min-height:190px}}
+
+/* Evidence director: one read-only lens across micro actions and mission scenes. */
+.mc-director{margin:13px 0;padding:13px;border:1px solid #507b93;background:#071929;border-radius:12px}
+.mc-director-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.mc-director-controls button,.mc-director-controls select{font:inherit;font-size:12px;padding:7px 10px;border-radius:7px;background:#102b44;color:#e6f8ff;border:1px solid #4c7691;cursor:pointer}
+.mc-director-controls button[aria-pressed="true"]{border-color:#4ee3e6;background:#1a455b}
+.mc-director-controls button:focus-visible,.mc-director-controls select:focus-visible{outline:2px solid #7cf0ef}
+.mc-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mc-fact{border:1px solid #244c63;padding:10px;border-radius:8px;min-height:73px}
+.mc-fact strong,.mc-fact small{display:block}.mc-fact strong{font-size:14px;word-break:break-word}.mc-fact small{font-size:10px;color:#a3c7d8}
+.mc-director .mc-detail{border-top:1px solid #28516a;margin-top:10px;padding-top:10px}
+.mc-director dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 12px;margin:8px 0;font-size:12px}
+.mc-director dt{color:#9dc2d6}.mc-director dd{margin:0;overflow-wrap:anywhere}
+.mc-director a{color:#90e9ff}
+.mc-steps li[data-hidden="true"]{display:none}
+.mc-steps li[aria-current="true"]{border-left:3px solid #4ef0ed;padding-left:7px}
+.mc-steps li[tabindex]{cursor:pointer}
+.mc-cinema-stage{margin-top:8px;min-height:42px;padding:10px;border:1px solid #2b6481;border-radius:8px;font-size:14px}
+.mc-cinema-stage small{display:block;font-size:11px;color:#b9d2df;margin-top:3px}
+#mission-cinema[data-director-mode="cinema"] .mc-space{box-shadow:inset 0 0 60px #177ba233}
+@media(max-width:620px){.mc-facts{grid-template-columns:1fr}.mc-director dl{grid-template-columns:1fr;gap:3px}}
 </style></head><body><main>
 <header><div><span class="kicker">⚡ ©8X8 · ONE FABRIC</span> <span class="pill warn">PRELAUNCH · PUBLIC DEMO</span></div><span class="pill" id="source-indicator">No live owner event stream</span></header>
 <div class="hero"><div><h1>The Living Observatory</h1><p><a href="/agents/">Meet the restored cinematic 8x8 agent cast →</a> · original visuals, real user-triggered TTS preview, authenticated agent inference still unverified</p><p class="lead">Explore the architecture of agent presence, device status, source provenance, studio production, trading research and work execution. This public-safe screen illustrates the interface; it does not access private agents, assets, cameras, messages, vaults or your local device.</p></div><button id="demo" class="primary">▶ Play workflow illustration</button></div>
@@ -138,6 +159,39 @@ small{font-size:11px}
   <div class="mc-space" role="img" aria-label="Animated concept of the 8x8 World; not real agents"><div class="mc-beam"></div><div class="mc-core">8×8<small>FABRIC://CORE</small></div></div>
   <div><h3>Workstream replay</h3><ol id="mc-events" class="mc-steps" aria-live="polite"><li><strong>No authenticated event feed</strong><small>Choose Replay source milestones or import a local receipt for unverified inspection.</small></li></ol><p class="mc-note" id="mc-note" role="status">Idle · no live agent or tool activity observed by this viewer.</p></div>
  </div>
+
+ <section class="mc-director" id="mc-director" aria-label="8x8 evidence director">
+  <div class="mc-director-controls" aria-label="Evidence view options">
+   <button type="button" id="mc-mode-micro" aria-pressed="true">◉ Small actions</button>
+   <button type="button" id="mc-mode-cinema" aria-pressed="false">◈ Big mission scenes</button>
+   <label for="mc-evidence-filter">Show:</label>
+   <select id="mc-evidence-filter" aria-label="Filter evidence by workstream">
+    <option value="ALL">All recorded actions</option>
+    <option value="RESEARCH">Research & tools</option>
+    <option value="BUILD">Files, tests & deployment</option>
+    <option value="MEDIA">Studio & media</option>
+    <option value="SAFETY">Safety & approvals</option>
+    <option value="PROVIDER">Provider receipts</option>
+   </select>
+  </div>
+  <div class="mc-facts" aria-label="Activity counters">
+   <div class="mc-fact"><strong id="mc-visible-count">0</strong><small>Visible recorded actions; not agent heartbeat</small></div>
+   <div class="mc-fact"><strong id="mc-evidence-type">REPLAY / NONE</strong><small>Evidence provenance</small></div>
+   <div class="mc-fact"><strong id="mc-confirmed-effects">0 verified effects</strong><small>Never inferred from animation</small></div>
+  </div>
+  <div class="mc-cinema-stage" aria-live="polite"><strong id="mc-scene-title">No mission scene selected</strong><small id="mc-scene-caption">Select a recorded event to inspect its source and receipt.</small></div>
+  <div class="mc-detail" aria-live="polite">
+   <strong>Event evidence inspector</strong>
+   <dl><dt>Event</dt><dd id="mc-detail-event">None selected</dd>
+       <dt>Source</dt><dd id="mc-detail-source">Not authenticated</dd>
+       <dt>Time (UTC)</dt><dd id="mc-detail-time">Not available</dd>
+       <dt>Provenance</dt><dd id="mc-detail-proof">No verified live event</dd>
+       <dt>Sequence</dt><dd id="mc-detail-sequence">Not available</dd>
+       <dt>Hash</dt><dd id="mc-detail-hash">Not available</dd></dl>
+   <a id="mc-detail-receipt" rel="noopener noreferrer" target="_blank" hidden>Open source receipt</a>
+  </div>
+  <p class="mc-note">A live scene requires the authenticated Gate 2 SSE service, enrolled signer, verified receipt and STOP-aware source. This UI has no access to private model reasoning, raw credentials or unrestricted agent telemetry.</p>
+ </section>
  <div class="mc-controls">
   <button type="button" id="mc-live-connect">◉ Connect verified live feed</button><button type="button" id="mc-live-disconnect">■ Disconnect live feed</button><button type="button" id="mc-replay">▶ Replay source milestones</button><button type="button" id="mc-halt">■ Stop replay</button>
   <label for="mc-receipt" tabindex="0">Import local receipt (unverified)<input type="file" id="mc-receipt" accept=".json,application/json"></label>
@@ -220,7 +274,7 @@ function show(rows,label){
  log.replaceChildren();
  for(const [title,detail,provenance] of rows){
   const li=document.createElement("li"),a=document.createElement("strong"),b=document.createElement("small");
-  a.textContent=title+" · "+detail;b.textContent=provenance;li.append(a,b);log.append(li);
+  a.textContent=title+" · "+detail;b.textContent=provenance;li.dataset.sourceId=title;li.dataset.evidenceClass="RECORDED_REPLAY_NOT_LIVE";li.dataset.eventType="REPLAY";li.append(a,b);log.append(li);
  }
  note.textContent=label;
 }
@@ -333,6 +387,7 @@ connect.addEventListener("click",()=>{
     const li=document.createElement("li"),name=document.createElement("strong"),meta=document.createElement("small");
     name.textContent=e.event_type+" · "+e.summary;
     meta.textContent=e.source_id+" · "+e.evidence_class+" · sequence "+e.sequence;
+    li.dataset.sourceId=e.source_id;li.dataset.evidenceClass=e.evidence_class;li.dataset.eventType=e.event_type;li.dataset.sequence=String(e.sequence);li.dataset.observedUtc=typeof e.observed_utc==="string"?e.observed_utc:"";li.dataset.eventHash=e.hash;li.dataset.receiptRef=typeof e.receipt_ref==="string"?e.receipt_ref:"";
     li.append(name,meta);additions.push(li);
    }
    if(frame.lastSequence!==next||frame.lastHash!==previous)throw Error("INVALID_CHECKPOINT");
@@ -350,5 +405,88 @@ connect.addEventListener("click",()=>{
 });
 disconnectButton.addEventListener("click",()=>close("Viewer disconnected · no model, app or provider action was triggered."));
 window.addEventListener("pagehide",()=>close());
+})();
+</script><script>
+/* ©8x8 Evidence Director v1: visualizes rendered receipts; DOES NOT subscribe,
+   grant authority, capture prompts, or claim that historical replay is live. */
+(()=>{
+"use strict";
+const get=id=>document.getElementById(id);
+const panel=get("mission-cinema"),feed=get("mc-events"),filter=get("mc-evidence-filter");
+if(!panel||!feed||!filter||typeof MutationObserver!=="function")return;
+const micro=get("mc-mode-micro"),cinema=get("mc-mode-cinema"),link=get("mc-detail-receipt");
+const groups={
+ RESEARCH:["RESEARCH_SOURCE","TOOL_RESULT"],
+ BUILD:["SOURCE_COMMIT","TEST_RESULT","DEPLOYMENT_RESULT"],
+ MEDIA:["MEDIA_RENDER"],
+ SAFETY:["DEVICE_CONTROL_STATUS","APPROVAL_STATUS","INCIDENT"],
+ PROVIDER:["PROVIDER_CANARY"]
+};
+const receiptPattern=/^https:\/\/github\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(commit|pull|blob)\/[A-Za-z0-9._/-]+$/;
+let selected=null,mode="micro";
+const asText=(v,max=240)=>typeof v==="string"?v.slice(0,max):"";
+function inspect(el){
+ if(!el||el.dataset.hidden==="true"){selected=null;return;}
+ if(selected)selected.removeAttribute("aria-current");
+ selected=el;el.setAttribute("aria-current","true");
+ const d=el.dataset,head=el.querySelector("strong");
+ const title=asText(head?.textContent||"Recorded event");
+ get("mc-detail-event").textContent=title;
+ get("mc-detail-source").textContent=asText(d.sourceId||"REPLAY_SOURCE_UNVERIFIED",80);
+ get("mc-detail-time").textContent=asText(d.observedUtc||"Not available",32);
+ get("mc-detail-proof").textContent=asText(d.evidenceClass||"RECORDED_REPLAY_NOT_LIVE",55);
+ get("mc-detail-sequence").textContent=asText(d.sequence||"Not available",20);
+ get("mc-detail-hash").textContent=asText(d.eventHash||"Not available",64);
+ const ref=d.receiptRef||"";
+ link.hidden=!receiptPattern.test(ref);
+ if(link.hidden)link.removeAttribute("href");else link.href=ref;
+ get("mc-scene-title").textContent=mode==="cinema"?"MISSION SCENE · "+asText(d.eventType||"Recorded replay",45):"ACTION · "+asText(d.eventType||"Recorded replay",45);
+ get("mc-scene-caption").textContent=title+" · "+asText(d.evidenceClass||"UNVERIFIED REPLAY",55);
+}
+function refresh(){
+ const all=Array.from(feed.querySelectorAll("li"));
+ let visible=0,signed=0,runtime=0,first=null;
+ for(const el of all){
+  const k=el.dataset.eventType||"REPLAY";
+  const allowed=filter.value==="ALL"||(groups[filter.value]||[]).includes(k);
+  el.dataset.hidden=allowed?"false":"true";
+  if(allowed){visible++;if(!first)first=el;}
+  if(el.dataset.evidenceClass==="SOURCE_VERIFIED")signed++;
+  if(el.dataset.evidenceClass==="RUNTIME_RECEIPT")runtime++;
+  el.tabIndex=allowed?0:-1;
+ }
+ get("mc-visible-count").textContent=String(visible);
+ get("mc-evidence-type").textContent=runtime>0?"SIGNED RUNTIME RECORDS":signed>0?"SIGNED SOURCE RECORDS":"REPLAY / UNVERIFIED";
+ // A runtime receipt alone does not establish a trade fill or published item.
+ get("mc-confirmed-effects").textContent="0 effect attestations";
+ if(selected&&!feed.contains(selected))selected=null;
+ if(selected&&selected.dataset.hidden==="true")selected=null;
+ if(first){if(!selected)inspect(first);}
+ else{
+  if(selected){selected.removeAttribute("aria-current");selected=null;}
+  get("mc-scene-title").textContent="No evidence matches this view";
+  get("mc-scene-caption").textContent="No scene was invented; change the filter or wait for a verified record.";
+  get("mc-detail-event").textContent="None selected";
+  get("mc-detail-source").textContent="Not authenticated";
+  get("mc-detail-time").textContent="Not available";
+  get("mc-detail-proof").textContent="No event available";
+  get("mc-detail-sequence").textContent="Not available";
+  get("mc-detail-hash").textContent="Not available";
+  link.hidden=true;link.removeAttribute("href");
+ }
+}
+const setMode=next=>{
+ mode=next;panel.dataset.directorMode=next;
+ micro.setAttribute("aria-pressed",String(next==="micro"));
+ cinema.setAttribute("aria-pressed",String(next==="cinema"));
+ if(selected)inspect(selected);
+};
+micro.addEventListener("click",()=>setMode("micro"));
+cinema.addEventListener("click",()=>setMode("cinema"));
+filter.addEventListener("change",refresh);
+feed.addEventListener("click",e=>{const el=e.target.closest("li");if(el&&feed.contains(el))inspect(el);});
+feed.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const el=e.target.closest("li");if(el&&feed.contains(el)){e.preventDefault();inspect(el);}}});
+new MutationObserver(refresh).observe(feed,{childList:true,subtree:false});
+refresh();
 })();
 </script></body></html>
