@@ -1,0 +1,99 @@
+{
+  "schema": "8x8.alpaca.paper_readonly_live_preflight.v2",
+  "root": "fabric://8x8/core",
+  "observed_utc": "2026-10-19T02:29:43Z",
+  "mode": "READ_ONLY_NO_AUTH_ATTEMPT",
+  "verdict": "BLOCKED_AUTHENTICATION_AND_PROVIDER_REGISTRATION_NOT_VERIFIED",
+  "existing_backend": {
+    "name": "8x8-one-fabric",
+    "supabase_health": "ACTIVE_HEALTHY",
+    "auth_users_count": 0,
+    "eightx8_id_bindings_count": 0,
+    "one_fabric_id_function": "ACTIVE_JWT_REQUIRED",
+    "unauthenticated_id_api_http": 401,
+    "provider_intent_records": 23,
+    "alpaca_source_record": {
+      "source_key": "connection_intent:trading:alpaca",
+      "auth_state": "NOT_AUTHENTICATED",
+      "operational_state": "NOT_CONNECTED_NATIVE"
+    },
+    "supabase_oauth_clients_count": 0,
+    "supabase_oauth_client_states_count": 0,
+    "auth_flow_states_count": 0,
+    "vault_secrets_count": 0,
+    "caveat": "These counts do not establish absence of external Alpaca developer apps or independent secret stores"
+  },
+  "gate2_hosted_account": {
+    "checked_url": "https://8x8-user-edition.vercel.app/account",
+    "http": 200,
+    "observed_title": "8x8 OS · Fabric Mirror · 0.0.1 Beta",
+    "identity_client_js_detected": false,
+    "verified_login": false,
+    "verified_alpaca_callback": false,
+    "vercel_authenticated_inspection": "403_FORBIDDEN",
+    "caveat": "HTTP 200 is not proof of login implementation or allowlisted redirect"
+  },
+  "alpaca_developer_app": {
+    "registered_exact_app": "NOT_VERIFIED",
+    "alpaca_approval": "NOT_VERIFIED",
+    "client_id_configured_in_trusted_8x8_backend": "NOT_VERIFIED",
+    "exact_redirect_whitelisted": "NOT_VERIFIED",
+    "one_use_oauth_state_durable_and_consumed": "NOT_VERIFIED",
+    "source_policy_only": true
+  },
+  "vault": {
+    "verified_alpaca_token_handle": false,
+    "backend_oauth_code_exchange": false,
+    "tenant_scoped_encryption_acceptance": false
+  },
+  "device": {
+    "a5b_owner_pause": "PRESENT",
+    "hermes_voice_stop": "PRESENT",
+    "owner_lease_verified": false,
+    "markers_modified": false,
+    "foreground_action": false
+  },
+  "mcp": {
+    "url": "https://eightx8-one-fabric-public.onrender.com/mcp",
+    "oauth_metadata_http": 503,
+    "error": "AUTH_CONFIGURATION_REQUIRED",
+    "authenticated_initialize": false,
+    "tools_list_authenticated": false
+  },
+  "policy": {
+    "existing_source": "protected-beta/one_fabric_oauth_launch_gate_v3.py",
+    "source_sha": "e69333c66d996b18061050f4d9f7abb97d57a07d",
+    "offline_test_suite": "107/107_PASSED",
+    "read_only_check": {
+      "verdict": "BLOCKED",
+      "first_reason": "ADMISSION_JURISDICTION_NOT_VERIFIED",
+      "authorization_url_created": false,
+      "connection_claimed": false,
+      "live_order_authorized": false,
+      "public_post_authorized": false
+    }
+  },
+  "official_alpaca_documents": {
+    "dashboard": "https://app.alpaca.markets",
+    "app_registration": "https://docs.alpaca.markets/us/docs/registering-your-app",
+    "oauth_integration": "https://docs.alpaca.markets/us/docs/using-oauth2-and-trading-api"
+  },
+  "verified_click_sequence": [
+    "Sign in at official Alpaca dashboard using provider-controlled login; do not send credentials to 8x8 chat",
+    "Open Alpaca Connect → My Developed Apps and inspect whether an 8x8 app exists and its review status",
+    "Inspect the exact registered redirect URI only inside the Alpaca dashboard; do not create or share an OAuth link in chat",
+    "Stop before Connect until 8x8 Gate 2 authenticated tenant, matching deployed callback, durable one-use state and encrypted token custody are independently accepted",
+    "First authorized OAuth request must explicitly select env=paper and omit elevated trading and account:write scopes; backend must validate returning state and exchange code without exposing tokens to LLM",
+    "Only after a read-only provider canary and signed attributable receipt may 8x8 label account connected"
+  ],
+  "security": {
+    "raw_secrets_read": false,
+    "raw_secrets_recorded": false,
+    "authorization_request_started": false,
+    "oauth_code_received": false,
+    "trade_placed": false,
+    "public_post_published": false,
+    "owner_pause_cleared": false,
+    "owner_stop_cleared": false
+  }
+}
