@@ -40,6 +40,6 @@ test('Temporary update file accessible via read-only non-exported URI provider',
  assert.match(android,/android:grantUriPermissions="true"/);
  assert.match(provider,/MODE_READ_ONLY/);
  assert.match(provider,/verified-update\.apk/);
- assert.match(provider,/!\("r"\.equals\(mode\)\)/);
+ assert.match(provider,/!"r"\.equals\(mode\)/);
  assert.match(android,/REQUEST_INSTALL_PACKAGES/);
 });
