@@ -154,7 +154,7 @@ public final class VerifiedUpdateManager {
     if (!path.matches("/updates/android/[A-Za-z0-9_.-]+\\.apk") || path.contains("..")
       || apk.getQuery() != null || !host.equalsIgnoreCase(apk.getHost()))
       throw new SecurityException("Invalid package path");
-    File tmp = new File(a.getCacheDir(), "verified-update.part");
+    File tmp = new File(a.getCacheDir(), "verified-update.part.apk");
     File verified = new File(a.getCacheDir(), "verified-update.apk");
     if (tmp.exists() && !tmp.delete()) throw new SecurityException("Cannot reset staging");
     HttpURLConnection dl = connect(apk, host);
