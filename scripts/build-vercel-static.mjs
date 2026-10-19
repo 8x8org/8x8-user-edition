@@ -14,6 +14,7 @@ const items = [
   'app.js',
   'state',
   'studio',
+  'agents',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
   'one-fabric-public-transparency-v54.js',
@@ -47,6 +48,7 @@ const inject = (path) => {
   if (!html.includes('data-eightx8-studio-launcher')) {
     html=html.replace('</body>', '<a data-eightx8-studio-launcher href="/studio" aria-label="Open local 8x8 Studio media inspector" style="position:fixed;right:12px;bottom:80px;z-index:150;background:#102d46;color:#ffffff;padding:11px 14px;border:1px solid #74d7ec;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">8x8 Studio ↗</a></body>');
   }
+  if (!html.includes('data-eightx8-agent-room')) html=html.replace('</body>', '<a data-eightx8-agent-room href="/agents" aria-label="Open 8x8 Agent Room character stage" style="position:fixed;right:12px;bottom:132px;z-index:150;background:#241c4e;color:#ffffff;padding:10px 14px;border:1px solid #9d86ff;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">Agent Room ↗</a></body>');
   writeFileSync(path, html);
 };
 
