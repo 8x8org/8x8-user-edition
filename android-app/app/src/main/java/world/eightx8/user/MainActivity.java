@@ -2,6 +2,10 @@ package world.eightx8.user;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.view.Gravity;
+import android.util.TypedValue;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +26,23 @@ public final class MainActivity extends Activity {
   @Override public void onCreate(Bundle state) {
     super.onCreate(state);
     web = new WebView(this);
-    setContentView(web);
+    FrameLayout carrier = new FrameLayout(this);
+    carrier.addView(web, new FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+    Button updates = new Button(this);
+    updates.setText("8x8 Updates");
+    updates.setTextSize(11);
+    updates.setContentDescription("Check verified 8x8 Android updates");
+    FrameLayout.LayoutParams updatePosition = new FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+    updatePosition.gravity = Gravity.TOP | Gravity.END;
+    updatePosition.topMargin = (int) TypedValue.applyDimension(
+      TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
+    updatePosition.rightMargin = (int) TypedValue.applyDimension(
+      TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+    updates.setOnClickListener(v -> VerifiedUpdateManager.check(this));
+    carrier.addView(updates, updatePosition);
+    setContentView(carrier);
     WebSettings s = web.getSettings();
     s.setJavaScriptEnabled(true);
     s.setDomStorageEnabled(true);
