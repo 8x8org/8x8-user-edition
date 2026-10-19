@@ -58,6 +58,10 @@
       "destination": "/studio/index.html"
     },
     {
+      "source": "/agents",
+      "destination": "/agents/index.html"
+    },
+    {
       "source": "/presale",
       "destination": "/presale/index.html"
     },
