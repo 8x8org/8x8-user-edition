@@ -12,7 +12,7 @@ test('public agent room is a user-initiated concept, not authenticated execution
  assert.match(html,/pagehide/);
 });
 test('all five characters retain honest source classification',()=>{
- for(const name of ['JARVIS','HERMES','AEGIS','ANVIL','FLASHTM8_ASSISTANT']) assert.ok(html.includes(name));
+ for(const name of ['JARVIS','RESEARCH_AGENT','AEGIS','ANVIL','FLASHTM8_ASSISTANT']) assert.ok(html.includes(name));
  assert.ok(!html.includes('OWNER_ROOT'));
  assert.ok(!html.includes('auth_token'));
  assert.ok(!html.includes('127.0.0.1'));
