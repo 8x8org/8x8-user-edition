@@ -1,5 +1,18 @@
 plugins { id 'com.android.application' }
 
+def ownerSignerFields = [
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEYSTORE_FILE'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_STORE_PASSWORD'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEY_ALIAS'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEY_PASSWORD')
+]
+def anyOwnerSigner = ownerSignerFields.any { it != null && !it.trim().isEmpty() }
+def completeOwnerSigner = ownerSignerFields.every { it != null && !it.trim().isEmpty() }
+if (anyOwnerSigner && !completeOwnerSigner)
+    throw new GradleException('8x8 signing configuration incomplete (fail closed)')
+if ('true'.equals(System.getenv('EIGHTX8_REQUIRE_STABLE_SIGNING')) && !completeOwnerSigner)
+    throw new GradleException('Stable signing required but not configured')
+
 android {
     namespace 'world.eightx8.user'
     compileSdk 35
@@ -12,6 +25,16 @@ android {
         manifestPlaceholders = [eightx8AppLabel: '8x8 OS']
         def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-os-ecosystem.vercel.app'
         buildConfigField 'String', 'HOME_URL', '"' + home + '"'
+    }
+    signingConfigs {
+        ownerPromoted {
+            if (completeOwnerSigner) {
+                storeFile file(ownerSignerFields[0])
+                storePassword ownerSignerFields[1]
+                keyAlias ownerSignerFields[2]
+                keyPassword ownerSignerFields[3]
+            }
+        }
     }
     buildFeatures { buildConfig true }
     buildTypes {
@@ -26,6 +49,11 @@ android {
             matchingFallbacks = ['debug']
             manifestPlaceholders = [eightx8AppLabel: '8x8 Preview']
         }
-        release { minifyEnabled false }
+        release {
+            minifyEnabled false
+            // No owner signing credentials: preserve existing unsigned CI artifact.
+            // A promoted official release requires protected external signing secrets.
+            if (completeOwnerSigner) signingConfig signingConfigs.ownerPromoted
+        }
     }
 }
