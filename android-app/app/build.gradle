@@ -78,7 +78,7 @@ dependencies {
 tasks.register('verifyEightx8PublicBundle') {
     doLast {
         def bundle = rootProject.file('../dist')
-        def expected = ['index.html', 'studio/index.html', 'agents/index.html', 'atlas/index.html',
+        def expected = ['index.html', 'studio/index.html', 'agents/index.html', 'atlas/index.html', 'atlas/one-fabric-public-catalog-v1.js',
                         'studio/media-core.mjs', 'icon.svg', 'sw.js', 'manifest.webmanifest']
         expected.each { name ->
             if (!new File(bundle, name).isFile())
