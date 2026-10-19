@@ -1,0 +1,60 @@
+{
+  "schema": "8x8.mission_cinema.signed_progress_v6.acceptance",
+  "root": "fabric://8x8/core",
+  "local_date": "2026-10-18 America/New_York",
+  "classification": "SOURCE_PATCHED_ISOLATED_TESTS_PASSED_NOT_DEPLOYED",
+  "objective": "Sanitized attributable progress during work and cinematic operation evidence; no private model chain of thought",
+  "new_event_type": "OPERATION_PROGRESS",
+  "states": [
+    "OPERATION_STARTED",
+    "OPERATION_PROGRESS",
+    "OPERATION_SUCCEEDED",
+    "OPERATION_FAILED",
+    "OPERATION_BLOCKED"
+  ],
+  "safety_rules": [
+    "Only the existing Ed25519-trusted signer can attest progress",
+    "Progress summary is redacted, schema-bound and cannot claim an unverified percentage",
+    "Tenant scope and hash-chain checks apply to every record",
+    "Micro/Cinema view shows in progress without asserting completion",
+    "A signed progress record does not grant tool execution, posting, device control, or trading",
+    "Existing owner STOP and Hermes voice STOP remain in place"
+  ],
+  "updated_source_blobs": {
+    "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs": "b37de0be8645ee5065db32f2c6e4f3ac1a7f8314",
+    "plugins/one-fabric-world/tests/mission-cinema-event-trust-v1.test.mjs": "def115d6d05520c51ba292ed5069dde9a503330a",
+    "plugins/one-fabric-world/ui/one-fabric-observatory.html": "c1d3be0f6e03606c7ffecd964ab2a4daf4c93411",
+    "plugins/one-fabric-world/tests/mission-cinema-live-viewer-v1.test.mjs": "59d9c4090cc124412fb03f6c7886535fac3cced9"
+  },
+  "github_readback_matched": 4,
+  "isolated_regression": {
+    "passed": 38,
+    "failed": 0,
+    "source": "authorized Samsung Termux scratch",
+    "node_suite": "mission-cinema-event-trust-v1 and mission-cinema-live-viewer-v1"
+  },
+  "backup": {
+    "google_drive_url": "https://drive.google.com/file/d/1Afjf23HsubexSLYI2M4nY6SUiwQ9ibMR/view?usp=drivesdk",
+    "filename": "8x8_mission_cinema_progress_replay_20261018.zip",
+    "sha256": "efd7877d3449af6558a62ecb2cfeb97d7a8e18686f4eb65ef6275d7b7895b87d",
+    "contents": [
+      "README.txt",
+      "index.html",
+      "observatory_import.json"
+    ],
+    "classification": "OFFLINE_INTERACTIVE_RECORDED_REPLAY_NOT_LIVE"
+  },
+  "deployed_private_plugin_version": "0.4.4",
+  "new_release_installed": false,
+  "authenticated_sse_connected": false,
+  "runtime_signer_enrolled": false,
+  "external_live_effects": 0,
+  "remaining_gates": [
+    "Verified 8x8 Gate 2 subject and tenant",
+    "Server-side enrolled signer and event producer with durable receipt store",
+    "Read-only owner-preemptible event transport via tested OAuth scope",
+    "End-to-end received frame validation in original 8x8 Observatory",
+    "Private plugin package upgrade with rollback and reviewed assets",
+    "Actual browser and signed Android app acceptance independently verified"
+  ]
+}
