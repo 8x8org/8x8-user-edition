@@ -1,4 +1,5 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
@@ -17,6 +18,7 @@ const items = [
   'updates',
   'agents',
   'atlas',
+  'mcp',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
   'one-fabric-public-transparency-v54.js',
@@ -59,6 +61,15 @@ cpSync('v50.html', `${out}/index.html`);
 inject(`${out}/index.html`);
 inject(`${out}/v50.html`);
 
+// Emit one machine-readable public metadata projection from the SAME Atlas catalog.
+// No owner credentials or callable tool grants are included; this is not a live MCP API.
+const catalogContext = {};
+runInNewContext(readFileSync('atlas/one-fabric-public-catalog-v1.js','utf8'), catalogContext, { timeout: 1500 });
+const publicCatalog = catalogContext.EIGHTX8_PUBLIC_CATALOG;
+if (!publicCatalog || publicCatalog.canonicalRoot !== 'fabric://8x8/core') throw new Error('Invalid One Fabric public catalog');
+mkdirSync(out + '/mcp', { recursive: true });
+writeFileSync(out + '/mcp/one-fabric-capability-catalog-v1.json', JSON.stringify(publicCatalog,null,2) + '\n');
+console.log('ONE_FABRIC_PUBLIC_CATALOG_META=PASS modules=' + publicCatalog.modules.length + ' skills=' + publicCatalog.skills.length);
 console.log('8X8_USER_EDITION_STATIC_BUILD=PASS');
 console.log('CANONICAL_ROOT=fabric://8x8/core');
 console.log('OUTPUT_DIRECTORY=dist');
