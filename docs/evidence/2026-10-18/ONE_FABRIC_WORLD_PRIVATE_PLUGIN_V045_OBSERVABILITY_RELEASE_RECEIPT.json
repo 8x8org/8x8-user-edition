@@ -1,0 +1,87 @@
+{
+  "schema": "8x8.one_fabric.world_private_plugin_v045_observability_release_receipt.v1",
+  "canonical_root": "fabric://8x8/core",
+  "timestamp_utc": "2026-10-19T01:23:22Z",
+  "user_intent": "Use existing 8x8 plugin to visually observe live work in micro/macro Mission Cinema views",
+  "actual_plugin_release": {
+    "plugin_id": "plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "name": "8x8-one-fabric-world",
+    "old_version": "0.4.4",
+    "old_release_id": "pluginrel_6ad2ac8df60c8191bc14e526beea7343",
+    "new_version": "0.4.5",
+    "new_release_id": "pluginrel_6ad5707b0ab88191b099974522159393",
+    "plugin_url": "https://chatgpt.com/plugins/plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "current_release_readback_verified": true,
+    "updated_files": [
+      "plugin.json",
+      ".codex-plugin/plugin.json",
+      "skills/one-fabric-start/SKILL.md"
+    ],
+    "added_files": [
+      "skills/one-fabric-observatory/SKILL.md",
+      "docs/MISSION_CINEMA_LIVE_ACCEPTANCE.md"
+    ],
+    "retained_files": [
+      ".mcp.json",
+      "mcp.json",
+      "server/public-mcp.mjs",
+      "ui/one-fabric-hub.html",
+      "assets/logo.png",
+      "assets/composer-icon.png"
+    ],
+    "original_mcp_url_unchanged": true,
+    "original_brand_assets_preserved": true,
+    "remote_deployment_changed": false
+  },
+  "archive": {
+    "name": "8x8-one-fabric-world-v0.4.5-observatory-overlay.zip",
+    "sha256": "31e680056d6dd1f674858c57b8c4fdb62d752c2f45c2bc655e12e99174a84859",
+    "archive_zip_integrity": "PASS",
+    "file_count": 5,
+    "content": "OVERLAY_NOT_FULL_BACKUP",
+    "drive_path": "/Google Drive/8x8 Interface Evidence/8x8-one-fabric-world-v0.4.5-observatory-overlay.zip",
+    "drive_file_id": "1TOjPd90HgkS3GShhUEHbutk1dkHFh1CB",
+    "drive_upload_verified": true
+  },
+  "observability_source": {
+    "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+    "pr": 200,
+    "paths": [
+      "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+      "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs",
+      "plugins/one-fabric-world/server/mission-cinema-observation-channel-v1.mjs"
+    ],
+    "statuses": [
+      "SOURCE_PRESENT",
+      "UNIT_TESTED_HISTORICALLY",
+      "NOT_DEPLOYED_AS_AUTHENTICATED_EVENT_STREAM"
+    ]
+  },
+  "runtime_status": {
+    "authenticated_producer": false,
+    "trusted_signer_enrolled": false,
+    "verified_event_sse_subscription": false,
+    "private_plugin_manifest_updated": true,
+    "private_plugin_browser_ui_upgraded_or_render_verified": false,
+    "current_live_mcp_initialize_result": "TIMEOUT_FROM_AUTHORIZED_DEVICE_2026-10-19T01:23Z",
+    "last_successful_response": "HTTP_503_AUTH_CONFIGURATION_REQUIRED",
+    "real_trade_or_post_receipt": false
+  },
+  "safety": {
+    "owner_pause_present": true,
+    "hermes_voice_stop_present": true,
+    "device_markers_modified": false,
+    "model_hidden_reasoning_exposed": false,
+    "raw_account_tokens_exposed": false,
+    "owner_private_mcp_routes_exposed": false,
+    "broker_order_or_post_created": false,
+    "additional_scheduler_task_created": false
+  },
+  "next_required": [
+    "Repair deployed public MCP OAuth issuer/audience/JWKS while preserving owner/public separation, complete Gate 2 and tenant scopes",
+    "Enroll real authorized event producer signer with owner-preemptible STOP and durable event sequence/receipt persistence",
+    "Deploy read-only same-origin HTTPS SSE and prove actual authorized signed event frames under replay, expiry and cross-tenant negative tests",
+    "Serve and verify original Observatory as MCP Apps UI resource in updated private plugin, test actual browser live subscription",
+    "Present real operation started/in progress/blocked/succeeded receipts; no hidden model reasoning, no fabricated agent states, no secret-bearing actions"
+  ]
+}
