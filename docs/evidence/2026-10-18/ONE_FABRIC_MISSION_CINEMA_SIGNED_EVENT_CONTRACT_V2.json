@@ -1,0 +1,98 @@
+{
+  "schema": "8x8.one_fabric.mission_cinema.signed_event_contract_acceptance.v2",
+  "canonical_root": "fabric://8x8/core",
+  "observed_utc": "2026-10-18T14:48:53Z",
+  "scope": "PRIVATE_DRAFT_SOURCE_ONLY_NO_DEPLOYMENT",
+  "source_repo": "8x8org/8x8-user-edition",
+  "source_branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+  "source_integrity": {
+    "files": [
+      {
+        "path": "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs",
+        "blob": "89b70dd805b94ad616936c8d49a6d55f00124a90",
+        "code_tested": true
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/mission-cinema-event-trust-v1.test.mjs",
+        "blob": "f716171f884ade50f768916c91b7461bbc80b1e6",
+        "code_tested": true
+      },
+      {
+        "path": "plugins/one-fabric-world/server/public-mcp.mjs",
+        "blob": "d6f6bce5e65b5ee5570a26a2e94fe3d8e12da0bb",
+        "code_tested": true
+      },
+      {
+        "path": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+        "blob": "735211bdfce042d5b647c2dfa32c5e925b94c479",
+        "code_tested": true
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/public-mcp.test.mjs",
+        "blob": "948caeec58e443f21051c57dc6d89345eef518da",
+        "code_tested": true
+      }
+    ],
+    "device_git_blob_matches": true
+  },
+  "tests": {
+    "combined_node_tests": 73,
+    "passed": 73,
+    "failed": 0,
+    "includes_event_verifier_tests": 17
+  },
+  "viewer": {
+    "source": "EXISTING_ONE_FABRIC_OBSERVATORY",
+    "interactive_evidence_inspector": true,
+    "recorded_source_milestone_replay": true,
+    "local_media_popup": true,
+    "tenant_live_event_feed_connected": false,
+    "backchannel_access": false,
+    "hidden_reasoning_exposed": false,
+    "credential_read": false
+  },
+  "verification": {
+    "signer_keys_enrolled": false,
+    "signed_event_verification_module_tested": true,
+    "signed_live_events_received": 0,
+    "tenant_claim_runtime_verified": false,
+    "stream_transport_operational": false,
+    "stop_markers": {
+      "a5b_owner_pause": "PRESENT",
+      "hermes_voice_stop": "PRESENT"
+    }
+  },
+  "fresh_deployed_mcp": {
+    "url": "https://eightx8-one-fabric-public.onrender.com/mcp",
+    "post_initialize_status": 503,
+    "post_initialize_body": {
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    },
+    "protected_resource_status": 503,
+    "protected_resource_body": {
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    },
+    "health_status": "TIMEOUT_NOT_REVERIFIED",
+    "verified_at": "2026-10-18T14:48:53Z"
+  },
+  "limits": {
+    "no_covert_screen_captures": true,
+    "no_private_chain_of_thought": true,
+    "no_model_internal_hidden_states": true,
+    "no_raw_tool_arguments": true,
+    "no_credential_exposure": true,
+    "no_autonomous_foreground_execution": true,
+    "no_public_post": true,
+    "no_broker_order": true,
+    "no_live_agent_implied": true,
+    "no_synthetic_runtime_heartbeat": true
+  },
+  "next_release_gates": [
+    "Restore Gate 2 tenant identity and public OAuth with true grant and signed canary; no owner credentials inherited",
+    "Enroll runtime signer keys and isolate per-tenant event topics",
+    "Use durable append-only signed receipt producer, monotonic sequence and hash-chaining for actual run events, not simulated model activity",
+    "Expose protected read-only bounded SSE or MCP resource, enforce auth scopes and STOP at source",
+    "Validate via browser-hosted MCP resource signed event, gap/replay/cross-tenant negative tests, user approval requests",
+    "Then update private plugin and verified deployment with rollback and end-to-end UI test"
+  ]
+}

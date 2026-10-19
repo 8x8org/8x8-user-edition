@@ -1,0 +1,96 @@
+{
+  "schema": "8x8.mcp_redblack_brand_and_original_avatar_acceptance.v1",
+  "root": "fabric://8x8/core",
+  "date": "2026-10-18",
+  "scope": "User Edition existing draft PR #200, public-safe MCP Apps source, no deploy",
+  "state": "PRESENT_PROVEN_SOURCE_AND_ISOLATED_RUNTIME_TESTS",
+  "original_brand": {
+    "colors": [
+      "red",
+      "black"
+    ],
+    "expected_original": "Owner-supplied red-and-black 8x8 graphic; historical red circular identity-core donor indexed",
+    "historical_donor_sha256": "3e6575b7bd51d9d891ff5779fa05f2ec80377cc4834e69a7946e39c1ebf052d3",
+    "donor_binding_verified_live": false,
+    "source_fallback": "Accessible red-and-black 8x8 wordmark, not falsely called a byte-identical owner-supplied logo",
+    "final_graphic_integration_state": "FUTURE_GATED_EXACT_ORIGINAL_IMAGE_MATCH"
+  },
+  "original_agent_reuse": {
+    "donor": "plugins/one-fabric-world/ui/one-fabric-agent-theater.html",
+    "source_blob_sha1": "bc382b19d33b58b6074a269ffc103e2a9f273784",
+    "matched_agents": [
+      {
+        "id": "SERAPHIM",
+        "name": "Seraphim",
+        "role": "World / guidance"
+      },
+      {
+        "id": "AEGIS",
+        "name": "Aegis",
+        "role": "Cybersecurity / verification"
+      },
+      {
+        "id": "RESEARCH_RELAY",
+        "name": "Research Relay",
+        "role": "Research / tool routing"
+      },
+      {
+        "id": "JARVIS",
+        "name": "Jarvis",
+        "role": "Interface / mission orchestration"
+      }
+    ],
+    "asset_source": "Original inlined source WebP portraits recovered from Theater. No generative replacement or new identity registry",
+    "live_agent_authentication_proven": false
+  },
+  "integration": {
+    "mcp_ui_resources": [
+      "One Fabric User Hub",
+      "One Fabric Observatory",
+      "One Fabric Agent Theater"
+    ],
+    "source_paths": [
+      {
+        "path": "plugins/one-fabric-world/server/public-mcp.mjs",
+        "git_blob_sha1": "1c6c663d00f17cc46ade446277bda5690cad2798"
+      },
+      {
+        "path": "plugins/one-fabric-world/ui/one-fabric-bubble.js",
+        "git_blob_sha1": "f4b919fa0a76f49cbc59964244c6d48a10d64540"
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/visual-brand-source.test.mjs",
+        "git_blob_sha1": "1a1c01e2f91d56c363ac34d29c095644e85e5ab4"
+      }
+    ],
+    "behavior": "Shared source-derived four-portrait gallery in status and agents tabs, red-and-black wordmark in header/launcher and three host page headers. Explicit original concept status; accessible alt labels; no automatic microphone, credential access, agent calls or provider permissions"
+  },
+  "verification": {
+    "environment": "Existing authorized Samsung S22 Ultra Termux Node.js v24.18.0 isolated scratch, no app foreground interaction",
+    "source_integrity": "All three changed GitHub blobs exactly equal local git hash-object results",
+    "commands": [
+      "node --check server/public-mcp.mjs",
+      "node --check ui/one-fabric-bubble.js",
+      "node --test tests/public-mcp.test.mjs tests/visual-brand-source.test.mjs"
+    ],
+    "tests_executed": 53,
+    "tests_passed": 53,
+    "exit_code": 0,
+    "prior_failures_repaired": "Two intermediate regex escaping issues in freshly-added source/test were corrected and retested; final combined suite passes",
+    "full_visual_browser_qa": false,
+    "live_chatgpt_mcp_render_verified": false,
+    "released_or_deployed": false
+  },
+  "effects": {
+    "trades": 0,
+    "posts": 0,
+    "secret_values_accessed": 0,
+    "wallet_signatures": 0,
+    "phone_foreground_actions": 0,
+    "service_restarts": 0,
+    "scheduler_changes": 0,
+    "production_deployments": 0
+  },
+  "rollback": "Revert new source and test commits on existing draft PR #200; original Theater artwork and prior MCP resource files remain unchanged",
+  "next_safe_action": "Verify exact byte-matched original owner red-and-black logo asset and release as hashed UI asset, then browser/MCP host render acceptance and reviewed OAuth deployment; replicate verified brand artifact through World/APK/Mini App without exposing owner-private resources"
+}

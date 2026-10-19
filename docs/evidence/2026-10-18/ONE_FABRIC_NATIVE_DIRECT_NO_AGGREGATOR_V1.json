@@ -1,0 +1,105 @@
+{
+  "schema": "8x8.native_direct_provider_no_intermediary_acceptance.v1",
+  "canonical_root": "fabric://8x8/core",
+  "as_of_utc": "2026-10-18",
+  "project": "8x8 One Fabric World User Edition",
+  "policy": "DIRECT_OFFICIAL_PROVIDER_API_ONLY_FOR_FIRST_PARTY_EXECUTION",
+  "third_party_aggregators_not_required": [
+    "upload-post",
+    "metricool"
+  ],
+  "historical_receipts_preserved": true,
+  "connection_authority": "ONLY_OWNER_VERIFIED_8X8_ID_TENANT_AND_PROVIDER_DIRECT_CONSENT",
+  "historical_intents": "23 METADATA-ONLY Supabase fabric_sources entries, not authenticated accounts",
+  "source_registry": {
+    "eligible_trading_candidates": [
+      "alpaca",
+      "tradier",
+      "tastytrade",
+      "tradestation",
+      "schwab",
+      "coinbase-advanced",
+      "kraken",
+      "gemini",
+      "interactive-brokers",
+      "robinhood-crypto",
+      "oanda-us"
+    ],
+    "publishing_candidates": [
+      "tiktok",
+      "youtube",
+      "instagram",
+      "facebook",
+      "threads",
+      "x",
+      "telegram",
+      "discord",
+      "pinterest",
+      "bluesky",
+      "linkedin",
+      "google-business"
+    ],
+    "other_vendor_notes": {
+      "bitget": "U.S. access restricted; not an eligible U.S. connection; no workaround",
+      "liquid": "separate authenticated connector evidence does not equal native 8x8 link",
+      "telegram": "requires bot/channel permissions; bot token only entered at independently verified protected Vault origin",
+      "bluesky": "supported authorization must be verified; no keys in chat"
+    }
+  },
+  "existing_reused_modules": [
+    "protected-beta/one_fabric_secure_connection_intents_v1.py",
+    "protected-beta/one_fabric_native_provider_readiness_v2.py",
+    "protected-beta/one_fabric_oauth_launch_gate_v3.py",
+    "plugins/one-fabric-world/server/public-mcp.mjs"
+  ],
+  "source_upgrade": {
+    "change": "added Google Business Profile to secure intents for 12-publication alignment; direct_route_preview 23 eligible provider source routes with no aggregator fallback, no OAuth links, no live effects; connector_guidance now declares direct-first/no intermediary execution",
+    "github_blob_shas": {
+      "protected-beta/one_fabric_secure_connection_intents_v1.py": "d550327f1c549626997a7f063673393a220a71d8",
+      "protected-beta/test_one_fabric_secure_connection_intents_v1.py": "39f37f6297fd275867e862d60a2772f6b5d28499",
+      "protected-beta/one_fabric_native_provider_readiness_v2.py": "a75a944fc105f1c8ae8d16791f877048ee9554ba",
+      "protected-beta/test_one_fabric_native_provider_readiness_v2.py": "3f30694f2a704c0408275708779f766831ae7e00",
+      "plugins/one-fabric-world/server/public-mcp.mjs": "a3d4da11be241742a5ce4e3642e0696c064e2387",
+      "plugins/one-fabric-world/tests/public-mcp.test.mjs": "79c4c0d5c9509f3b0b6480fab742c83052243eb1"
+    },
+    "readback_verified": true,
+    "device_isolated_test_summary": {
+      "provider_policy": "107/107 PASS including secure intents, native readiness and Alpaca OAuth gates",
+      "world_mcp": "52/52 PASS",
+      "actual_social_publish": false,
+      "actual_trade": false,
+      "provider_oauth_completed": false,
+      "actual_web_deploy": false,
+      "actual_plugin_package_updated": false,
+      "actual_vault_deployed": false
+    }
+  },
+  "implementation_gates": [
+    "Auth for 8x8 Gate 2 must be verified and tenant-bound",
+    "existing OAuth/PKCE and secure Vault with revocable handles; Bitget U.S. restriction observed",
+    "One owner-consented direct provider link at a time, no raw credentials in ChatGPT or LLM-facing tools",
+    "Read-only provider API canary and provider-verified account identity before marking connected",
+    "Media rights, provider scope, rate quota and user approval before any real publishing",
+    "Separate risk envelope, broker eligibility, paper testing and explicit trade consent before live orders",
+    "Return signed provider receipts for effective scoped calls and support revocation"
+  ],
+  "official_developer_references": {
+    "youtube": "https://developers.google.com/youtube/data/reference/rest/v3/videos/insert",
+    "tiktok": "https://developers.tiktok.com/docs/en/content-posting-api-get-started",
+    "google_business": "https://developers.google.com/my-business/content/posts-data",
+    "linkedin": "https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api?view=li-lms-2026-07",
+    "bitget": "https://www.bitget.com/docs/uta/quick-start"
+  },
+  "acceptance": {
+    "source_only": true,
+    "registered_plugin_private_version": "0.4.4",
+    "registered_plugin_live_native_links_verified": false,
+    "live_public_mcp_http_status_last_checked": 503,
+    "reason": "AUTH_CONFIGURATION_REQUIRED",
+    "samsung_owner_pause_preserved": true,
+    "hermes_voice_stop_preserved": true,
+    "new_scheduler_created": false,
+    "public_post_published": false,
+    "real_order_executed": false
+  }
+}

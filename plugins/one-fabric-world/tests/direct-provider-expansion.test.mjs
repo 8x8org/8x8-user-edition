@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const DATA=JSON.parse(readFileSync(new URL('../data/direct_provider_expansion_v1.json',import.meta.url),'utf8'));
+test('one canonical root, no intermediary execution',()=>{assert.equal(DATA.canonical_root,'fabric://8x8/core');assert.deepEqual(DATA.excludes_intermediary_execution,['upload-post','metricool']);});
+test('legacy connectors cannot export OAuth credentials or sign in to 8x8',()=>{assert.equal(DATA.legacy_bridge.credential_extraction,false);assert.equal(DATA.legacy_bridge.requires_first_party_provider_consent,true);assert.equal(DATA.legacy_bridge.private_owner_profile_metadata_in_public_catalog,false);});
+test('all candidates are unique and read-only discovery',()=>{let ids=DATA.candidates.map(x=>x.id);assert.equal(new Set(ids).size,ids.length);assert.ok(DATA.candidates.length>=35);for(const v of DATA.candidates){assert.equal(v.integration_owner,'8x8_FIRST_PARTY');assert.equal(v.connection_state,'NOT_CONNECTED_TO_8X8');assert.equal(v.account_identity_verified,false);assert.equal(v.authorized_oauth_url,null);assert.equal(v.credential_export_required,false);assert.equal(v.token_reuse_from_aggregator_allowed,false);assert.equal(v.write_effect_authorized,false);assert.equal(v.provider_eligibility_verified,false);assert.ok(['OFFICIAL_DOC_RETRIEVED_2026_10_18','LEAD_NOT_INDEPENDENTLY_REVALIDATED'].includes(v.source_quality));if(v.source_quality==='OFFICIAL_DOC_RETRIEVED_2026_10_18'){assert.ok(v.documentation_url.startsWith('https://'));}else assert.equal(v.documentation_url,null);}});
+test('reddit is not generic user OAuth and Spotify cannot upload music',()=>{assert.equal(DATA.candidates.find(x=>x.id==='reddit-devvit').auth_pattern,'PLATFORM_HOSTED_NOT_GENERIC_OAUTH');assert.match(DATA.candidates.find(x=>x.id==='spotify').capability,/NO music-file upload/);});
+test('new trading, social, streaming, model and commerce expansion represented',()=>{for(const c of ['trading','social_publishing','media_publishing','streaming','commerce','messaging','models','web3','infrastructure','studio_production'])assert.ok(DATA.candidates.some(x=>x.category===c),c);});
+test('no bare credential values or private tenant metadata in public registry',()=>{let src=JSON.stringify(DATA);for(const s of ['PRIVATE_KEY','BEGIN RSA','Bearer ','sk-proj-','flashtm8@gmail.com','horbolsi@gmail.com','metricool_brand_id','uploadpost_user_id'])assert.equal(src.includes(s),false);});
+test('source-only release gate does not grant execution',()=>{assert.equal(DATA.release.any_trade_or_post_enabled,false);assert.equal(DATA.release.session_count_verified,0);assert.equal(DATA.release.token_vault_live,false);assert.equal(DATA.release.oauth_callback_live,false);});
+
+test('authenticated mock world connector guidance exposes source candidates, not tokens or live routes',async()=>{
+  const {generateKeyPairSync,sign}=await import('node:crypto');
+  const {makeHandler}=await import('../server/public-mcp.mjs');
+  const {privateKey,publicKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+  const jwk=publicKey.export({format:'jwk'});jwk.kid='test';jwk.alg='RS256';
+  const b=o=>Buffer.from(JSON.stringify(o)).toString('base64url');
+  const now=1730000000000;
+  const h=b({alg:'RS256',kid:'test'});
+  const body=b({iss:'https://identity.test',aud:'https://mcp.test/mcp',sub:'test_subject',iat:1729999900,exp:1730001000,scope:'8x8.public.read'});
+  const token=h+'.'+body+'.'+sign('RSA-SHA256',Buffer.from(h+'.'+body),privateKey).toString('base64url');
+  const env={PUBLIC_OAUTH_ISSUER:'https://identity.test',PUBLIC_OAUTH_AUDIENCE:'https://mcp.test/mcp',PUBLIC_JWKS_URL:'https://identity.test/keys',PUBLIC_MCP_RESOURCE_URL:'https://mcp.test/mcp'};
+  const handler=makeHandler(env,async()=>new Response(JSON.stringify({keys:[jwk]})),()=>now);
+  const req=new Request('https://mcp.test/mcp',{method:'POST',headers:{authorization:'Bearer '+token},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'one_fabric.connector_guidance',arguments:{}}})});
+  const response=await handler(req);
+  assert.equal(response.status,200);
+  const j=await response.json();
+  const guidance=j.result.structuredContent;
+  assert.equal(guidance.direct_provider_expansion.records.length,DATA.candidates.length);
+  assert.equal(guidance.direct_provider_expansion.source_verified_count,13);
+  assert.equal(guidance.direct_provider_expansion.unverified_lead_count,28);
+  assert.equal(guidance.direct_provider_expansion.authenticated_connections,0);
+  assert.equal(guidance.direct_provider_expansion.aggregation_token_migration_supported,false);
+  assert.equal(guidance.effect_count,0);
+  assert.ok(guidance.direct_provider_expansion.records.every(x=>!('token' in x)&&!('account_id' in x)));
+});

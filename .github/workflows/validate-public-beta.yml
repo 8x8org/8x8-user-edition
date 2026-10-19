@@ -20,6 +20,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Deny wrong public Vercel project or source root (source-only, no deployment)
+        run: |
+          node --test tests/verify-vercel-release-source.test.mjs
+          node scripts/verify-vercel-release-source.mjs --target-project=prj_ouaSkH3EADTdaQ8enpFlEd4D0vUU --ci-source-only
+
       - name: Validate required files and protected-beta public state
         run: |
           python3 - <<'PY'

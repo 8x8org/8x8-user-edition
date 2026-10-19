@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "one-fabric-world": {
+      "type": "streamable-http",
+      "url": "https://eightx8-one-fabric-public.onrender.com/mcp",
+      "headers": {},
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "cimd"
+            },
+            "baseScopes": [
+              "8x8.public.read"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

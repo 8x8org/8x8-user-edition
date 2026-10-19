@@ -1,0 +1,9 @@
+# 8x8 User Edition: never commit local Vercel links, credentials or generated output.
+.vercel/
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+*.log

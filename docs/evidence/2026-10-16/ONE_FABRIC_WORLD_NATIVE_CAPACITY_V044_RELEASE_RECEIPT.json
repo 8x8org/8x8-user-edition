@@ -1,0 +1,77 @@
+{
+  "schema": "8x8.world.plugin.native_capacity_upgrade.v044",
+  "observed_at_utc": "2026-10-16",
+  "root": "fabric://8x8/core",
+  "update_target": {
+    "plugin_id": "plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "name": "8x8-one-fabric-world",
+    "version_before": "0.4.3",
+    "version_after": "0.4.4",
+    "release_before": "pluginrel_6ad2aa6490a0819189a326ab074040ac",
+    "release_after": "pluginrel_6ad2ac8df60c8191bc14e526beea7343",
+    "plugin_url": "https://chatgpt.com/plugins/plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "source_overlay_sha256": "6e0814cc900690a3fc4455d0be37955f02fd26d77a35aa76b9ae8c66ffd87c1f",
+    "files_unchanged_from_prior": 28,
+    "source_file": "server/native-capacity-evidence-v1.mjs",
+    "tests_file": "tests/native-capacity-evidence.test.mjs",
+    "source_docs": "docs/NATIVE_DIRECT_CAPACITY_V1.md"
+  },
+  "verification": {
+    "original_plugin_files": 34,
+    "readback_plugin_files": 34,
+    "readback_version": "0.4.4",
+    "readback_new_exports": true,
+    "node_tests_passed": 34,
+    "node_tests_failed": 0,
+    "new_regression_cases": 16,
+    "syntax_check": "PASS",
+    "zip_crc": "PASS",
+    "reversible_overlay": true
+  },
+  "accounting": {
+    "trading_slots": [
+      "coinbase",
+      "alpaca",
+      "kraken",
+      "bitget",
+      "liquid-co-invest"
+    ],
+    "publishing_slots": [
+      "youtube",
+      "tiktok",
+      "instagram",
+      "facebook",
+      "threads",
+      "telegram",
+      "discord",
+      "bluesky",
+      "x",
+      "pinterest",
+      "linkedin"
+    ],
+    "provider_link_policy": "official API/OAuth only; per-tenant encrypted credential broker/opaque vault handle required; no chat/audio secret exchange",
+    "capacity_estimate": "min(fresh provider-account request remaining, owner request risk budget, open-order slots, position slots, fee-reserved account resource slots); publishing adds verified cleared assets, account scope, queue slots",
+    "owner_stop_enforced_in_planner": true,
+    "live_trade_authorized": false,
+    "publication_authorized": false,
+    "provider_capacity_proven": false,
+    "account_authentication_inherited_from_other_plugins": false,
+    "co_invest_native_8x8_mcp_connected": false,
+    "native_8x8_mcp_real_tools": "30 Coinbase-specific actions in ChatGPT run; not upgraded by plugin source release"
+  },
+  "next_gates": [
+    "Verify approved tenant and owner identity + deployed HTTPS secrets manager before asking for any provider credentials",
+    "Use read-only per-account provider canaries in the actual 8x8 MCP, not merely source plugin slots",
+    "Measure current authenticated provider rate limits, network/financial budgets, long/short entitlements, remaining account resources and per-asset effects",
+    "Bridge direct first-party publisher through provider OAuth and platform receipts; third-party quota remains mandatory",
+    "Do not perform live order/fund/public post without exact owner effect scope and eligibility"
+  ],
+  "effects": {
+    "executed_orders": 0,
+    "public_posts": 0,
+    "keys_accessed": false,
+    "app_deployed": false,
+    "device_mutation": false,
+    "sixth_lane": false
+  }
+}

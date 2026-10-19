@@ -1,0 +1,104 @@
+{
+  "schema": "8x8.mission_cinema.operation_lifecycle.v5",
+  "canonical_root": "fabric://8x8/core",
+  "captured_utc": "2026-10-19T00:52:36Z",
+  "scope": "Existing Observatory pop-up source and signed event contract; source-only change on draft PR #200",
+  "intent": "Visualize small tool actions and large missions as attributable evidence while protecting internal reasoning, raw credentials, owner routes and STOP",
+  "source_progress": {
+    "reused": [
+      "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+      "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs",
+      "plugins/one-fabric-world/server/mission-cinema-observation-channel-v1.mjs"
+    ],
+    "added_lifecycle_events": [
+      "OPERATION_STARTED",
+      "OPERATION_SUCCEEDED",
+      "OPERATION_FAILED",
+      "OPERATION_BLOCKED"
+    ],
+    "ui_additions": [
+      "Existing mission cinema filter for four signed lifecycle phases",
+      "Milestone count for provenance-classified lifecycle events",
+      "Evidence inspector phase explanation",
+      "Recorded replay and video popup retained"
+    ],
+    "limitations": [
+      "No operation producer registered in actual runtime",
+      "No account authorization or funds movement",
+      "OPERATION_SUCCEEDED is a signed event claim; no verified broker fill or published item implied",
+      "No raw model reasoning ever exposed",
+      "No owner agent or device control delegated",
+      "No iframe or live plugin publication implied"
+    ]
+  },
+  "tests": {
+    "execution": "Isolated authorized Samsung Termux scratch copy",
+    "node_suites": 3,
+    "passed": 56,
+    "failed": 0,
+    "git_sha_verification": true,
+    "files": [
+      {
+        "path": "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs",
+        "sha": "2d4eaaad1b7d8e6c5a6d70e7f0b36c7d5281afd6",
+        "commit": "11e211feb20491ad083ac74596740dfb3cc716e5"
+      },
+      {
+        "path": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+        "sha": "e52c74c1b7cf748de4eaf073136fd6f8778354eb",
+        "commit": "8cac7b9f4508954334c87167d711def55df1be70"
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/mission-cinema-event-trust-v1.test.mjs",
+        "sha": "50bd8bd3e0c37b8050d4464c1f85ecbc83cb25f6",
+        "commit": "59d19e87d17745afdcb58d7c37de3f42d1d87dd5"
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/mission-cinema-observation-channel-v1.test.mjs",
+        "sha": "1496e2cd941a9297c929d54c245dfc582a1662dc",
+        "commit": "214f175518db22779f077ece4ccb2765c12c77e9"
+      },
+      {
+        "path": "plugins/one-fabric-world/tests/mission-cinema-live-viewer-v1.test.mjs",
+        "sha": "769915173eb00d58b71f8e304a4b4140c913423c",
+        "commit": "e8fc93e84b29e76107674c85f64e658e65d4a96d"
+      }
+    ]
+  },
+  "live_probe": {
+    "at_utc": "2026-10-19T00:52:36Z",
+    "GET_health": {
+      "http": 200,
+      "configured": false,
+      "production_ready": false
+    },
+    "GET_oauth_metadata": {
+      "http": 503,
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    },
+    "POST_mcp_initialize": {
+      "http": 503,
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    }
+  },
+  "runtime": {
+    "private_plugin_release": "0.4.4",
+    "plugin_updated_in_this_run": false,
+    "signed_runtime_issuer_enrolled": false,
+    "event_listener_active": false,
+    "authenticated_events_streaming": false,
+    "owner_pause_present": true,
+    "hermes_voice_stop_present": true,
+    "owner_device_controls_changed": false,
+    "android_apk_modified_or_installed": false,
+    "trade_or_public_post_performed": false
+  },
+  "next_gates": [
+    "Bring Gate 2 and public MCP auth issuer JWKS client PKCE and tenant authorization into accepted deployed status",
+    "Enroll authorized event issuer and privilege-separate backend adapter with original outcome receipts and sanitize/verify pipeline",
+    "Implement same-origin stop-aware HTTPS SSE route preserving sequence and last hash plus subscription revocation",
+    "Install latest private World plugin only after signature and compatibility review; test actual MCP Apps resource rendering and signed streaming",
+    "Maintain micro/cinema separation and provenance labels for recorded replay vs live, and per-provider confirmation for effects"
+  ],
+  "status": "TESTED_COMMITTED_SOURCE_NOT_LIVE"
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "8x8.one_fabric_world_connection_diagnostic.v1",
+  "root": "fabric://8x8/core",
+  "observed_at": "2026-10-18",
+  "canonical_owner_identity_history": [
+    "0000000001",
+    "0000000002"
+  ],
+  "plugin": {
+    "backend_id": "plugins_6ad009bcc58c81919a3343a0d4d47070",
+    "name": "8x8-one-fabric-world",
+    "version": "0.4.4",
+    "scope": "USER",
+    "discoverability": "PRIVATE",
+    "installed_state": "ALREADY_INSTALLED_REPORTED_BY_CHATGPT_PLUGIN_MANAGER",
+    "current_release_id": "pluginrel_6ad2ac8df60c8191bc14e526beea7343",
+    "current_manifest_capabilities": [
+      "Read"
+    ],
+    "source_exposes_19_public_readonly_tools": true,
+    "host_chatgpt_callable_current_conversation": false,
+    "reason": "Public OAuth MCP endpoint returned 503 when asked to initialize without credentials; current conversation tool catalog has not exposed one_fabric.* methods"
+  },
+  "deployed_public_mcp": {
+    "render_service_id": "srv-db80qaqj9qps73b72390",
+    "service_name": "8x8-one-fabric-public",
+    "deployed_repo": "horbolsi/8x8",
+    "deployed_branch": "work/nft-vault-launch-readiness-20261013",
+    "deployed_commit": "18cdd81e0b42ebcb5e66cb3355ce09b01692cadd",
+    "deployment_status_reported": "live",
+    "endpoint": "https://eightx8-one-fabric-public.onrender.com/mcp",
+    "initial_probe": "first health and MCP checks each timed out after 10 seconds; later succeeded after Render automatic cold start",
+    "warmed_health_http": 200,
+    "warmed_mcp_get_http": 405,
+    "unauthenticated_initialize_post_http": 503,
+    "warmed_health_body": {
+      "service": "8x8-public-world",
+      "configured": false,
+      "production_ready": false,
+      "private_effects": false
+    },
+    "oauth_authenticated_tools_list": "NOT_VERIFIED",
+    "release_configuration_gap": "Missing protected public OAuth issuer, audience, JWKS, registration and tenant-binding acceptance. Do not bypass this by unauthenticated tools or owner-token reuse.",
+    "redeployed_in_this_run": false
+  },
+  "existing_other_connected_8x8_mcp": {
+    "advertised_namespace": "8x8_One_Fabric",
+    "capability": "Coinbase read-only market/product lookup separately available",
+    "btc_usd_product_get_status": "SUCCESS",
+    "user_or_owner_8x8_world_catalog_proven": false,
+    "financial_effects": 0
+  },
+  "samsung_readonly": {
+    "remote_commander_status": "ONLINE",
+    "hermes_http_9119": 200,
+    "flashtm8_assistant_http_8892": 200,
+    "model_router_http_21777": 200,
+    "a5b_owner_pause_present": true,
+    "hermes_voice_stop_present": true,
+    "verified_owner_control_lease": false,
+    "authenticated_live_a2a_exchange_in_this_run": false,
+    "device_foreground_interactions": 0
+  },
+  "release_gates": {
+    "owner_private_core_not_shared": true,
+    "public_oauth_configured": false,
+    "oauth_cimd_pkce_verified": false,
+    "plugin_authenticated_in_chat": false,
+    "signed_agent_identity_verified": false,
+    "agent_stage_live_displayed": false,
+    "vault_enrollment_accepted": false,
+    "trading_orders_and_public_posts_issued": false
+  },
+  "effects": {
+    "plugin_reinstalled": false,
+    "plugin_updated": false,
+    "render_deploy_triggered": false,
+    "public_permissions_changed": false,
+    "device_stop_pause_changed": false,
+    "secrets_collected": false,
+    "trades": 0,
+    "public_posts": 0
+  },
+  "rollback": "No live modifications in this observation; GitHub evidence file is additive/revertible.",
+  "next_safe_action": "Configure and validate public user-scoped OAuth issuer/audience/JWKS/CIMD, exercise negative/positive MCP initialize and tools/list canaries with non-owner test account, verify tenant isolation, then use already-installed private plugin in ChatGPT without granting owner-private permissions."
+}

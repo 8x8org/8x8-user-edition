@@ -1,0 +1,36 @@
+name: Validate One Fabric Public MCP Atlas
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-public-mcp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout exact submitted head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Validate Vercel source and project admission before public build
+        run: |
+          node --test tests/verify-vercel-release-source.test.mjs
+          node scripts/verify-vercel-release-source.mjs --target-project=prj_ouaSkH3EADTdaQ8enpFlEd4D0vUU --ci-source-only
+      - name: Check MCP syntax
+        run: node --check plugins/one-fabric-world/server/public-mcp.mjs
+          node --check plugins/one-fabric-world/ui/market-evidence.mjs
+      - name: Run isolated public MCP contract tests
+        run: node --test plugins/one-fabric-world/tests/*.test.mjs
+      - name: Build and verify standalone Universal World web projection
+        run: |
+          node scripts/build-vercel-static.mjs
+          node --input-type=module -e "import fs from 'node:fs'; const html=fs.readFileSync('dist/universal/index.html','utf8'); if (!html.includes('Universal One Fabric Atlas') || !html.includes('function validateLocalMarketSnapshot') || !html.includes('Spotify Embed') || html.includes('<!-- EXPERIENCE_ATLAS_ITEMS -->')) process.exit(1);"
+

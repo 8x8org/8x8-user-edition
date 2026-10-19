@@ -1,0 +1,213 @@
+{
+  "schema": "8x8.user_edition.unified_mcp_capability_matrix.v1",
+  "canonical_root": "fabric://8x8/core",
+  "product_state": "SOURCE_CANDIDATE_PRELAUNCH_NOT_DEPLOYED",
+  "mcp": {
+    "endpoint": "https://eightx8-one-fabric-public.onrender.com/mcp",
+    "endpoint_live_verified": false,
+    "auth": "OAuth 2.1 + S256 PKCE + RFC 8707 resource",
+    "cimd_required": true,
+    "zero_trust_middleware_required": true
+  },
+  "surfaces": [
+    "chatgpt_plugin",
+    "world_web_pwa",
+    "android_apk",
+    "telegram_mini_app",
+    "future_ios"
+  ],
+  "plans": {
+    "free": {
+      "minutes_proposed": 88,
+      "grant_period": "NOT_FINALIZED",
+      "active": false
+    },
+    "plus": {
+      "usd_cents_month": 888,
+      "billing_verified": false,
+      "active": false
+    }
+  },
+  "protected_defaults": [
+    "seraphim-guide",
+    "flash-assistant",
+    "aegis-security",
+    "jarvis-interface",
+    "research-relay",
+    "anvil-builder"
+  ],
+  "owner_private_agent_data_shared": false,
+  "customer_agent_memory_tenant_owned": true,
+  "domains": [
+    {
+      "id": "agents",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "models",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "memory",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "world",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "studio",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "publishing",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "finance",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "trading",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "wallet",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "blockchain",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "games",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "radio",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "books",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "research",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "planet",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "security",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "devices",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "community",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    },
+    {
+      "id": "settings",
+      "status": "CATALOG_ONLY",
+      "user_owned_resources_require_oauth": true,
+      "no_automatic_effect_authority": true
+    }
+  ],
+  "adapters": {
+    "chatgpt": {
+      "can_auto_connect_plugins": false,
+      "can_import_chat_history_without_grant": false
+    },
+    "telegram": {
+      "init_data_signature_verification_required": true
+    },
+    "android": {
+      "system_browser_pkce_and_revocable_local_device_leases": true
+    },
+    "trading": {
+      "broker_oauth_separate": true,
+      "live_order_authority": false
+    },
+    "publishing": {
+      "platform_oauth_separate": true,
+      "public_delivery_authority": false
+    }
+  },
+  "release_gates": [
+    "oauth_metadata",
+    "token_signature_issuer_audience_scope",
+    "user_tenant_rls",
+    "idp_consent",
+    "billing_webhook_verified",
+    "workspace_agent_memory_isolation",
+    "provider_permission_revocation",
+    "approved_financial_and_publishing_flows",
+    "browser_mobile_telegram_canaries"
+  ],
+  "connection_targets": {
+    "minimum_eligible_owner_trading_accounts_target": 8,
+    "candidate_trading_venues_cataloged": 11,
+    "verified_native_trading_account_authorizations": 0,
+    "live_trade_authority": false,
+    "direct_social_destination_candidates_cataloged": 13,
+    "verified_native_social_publishing_grants": 0,
+    "public_publish_authority": false,
+    "credential_documents_allowed": false,
+    "model_visible_api_secrets_allowed": false,
+    "owner_only_verified_https_vault_intake_deployed": false,
+    "owner_private_scope_is_not_public_user_scope": true
+  },
+  "world_feature_intake": {
+    "historical_facets": [
+      "Soma",
+      "Omni",
+      "Atlas",
+      "Jarvis",
+      "FlashTM8",
+      "Seraphim"
+    ],
+    "status": "DESIGN_REFERENCES_NOT_DEPLOYED_FUNCTIONALITY",
+    "all_features_fully_operational": false
+  }
+}

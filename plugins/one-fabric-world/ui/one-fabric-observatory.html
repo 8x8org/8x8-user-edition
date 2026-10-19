@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark"><title>©8x8 · One Fabric Observatory</title>
+<style>
+:root{color-scheme:dark;font:15px/1.5 system-ui,-apple-system,sans-serif;color:#e8f6ff;background:#07101c}
+*{box-sizing:border-box}body{margin:0;min-width:320px;background:radial-gradient(ellipse 100% 50% at 50% -20%,#185c92 0,transparent 65%),#06111f}
+main{max-width:1300px;margin:auto;padding:20px 16px 70px}
+a{color:#8ce5f9}button,select{font:inherit;color:inherit;background:#173651;border:1px solid #356384;border-radius:10px;padding:9px 13px;cursor:pointer}
+button:hover{border-color:#80ddff;background:#215071}button:focus-visible,select:focus-visible{outline:2px solid #e4bf7e;outline-offset:3px}
+header{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #294660;padding-bottom:16px}
+h1{font-size:clamp(25px,4vw,42px);letter-spacing:-.045em;margin:16px 0 4px}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}
+.kicker{color:#84dcf3;font-size:12px;letter-spacing:.16em;font-weight:800}
+.pill{display:inline-flex;gap:6px;align-items:center;border:1px solid #51718a;border-radius:999px;padding:4px 9px;color:#adcddd;font-size:11px;font-weight:700;letter-spacing:.04em}
+.warn{border-color:#9c8258;color:#f6dcab;background:#2d271d}
+.hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;margin:20px 0}
+.lead{color:#a5c5d9;max-width:730px;margin:8px 0}
+.deck{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.box{background:linear-gradient(150deg,#10273ce9,#0a1b2bed);border:1px solid #30506c;border-radius:18px;padding:16px;min-width:0}
+.col8{grid-column:span 8}.col4{grid-column:span 4}.col6{grid-column:span 6}.col12{grid-column:span 12}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 16px}
+.metric{padding:12px 14px;border:1px solid #31516b;border-radius:13px;background:#10273b}
+.metric b{display:block;font-size:25px;line-height:1.15;letter-spacing:-.03em}.metric small{color:#acc3d9;font-size:11px}
+.scene{position:relative;min-height:260px;overflow:hidden;isolation:isolate;border-radius:15px;background:radial-gradient(circle at 50% 40%,#123f64 0,#092036 36%,#071725 65%);border:1px solid #325674;display:flex;align-items:center;justify-content:center}
+.scene::before{content:"";position:absolute;inset:0;background-image:linear-gradient(#8ab8ce09 1px,transparent 1px),linear-gradient(90deg,#8ab8ce09 1px,transparent 1px);background-size:24px 24px}
+.orbit{position:absolute;width:210px;height:210px;border:1px dashed #59acc164;border-radius:50%;transform:rotateX(53deg) rotateZ(-15deg);box-shadow:0 0 65px #24b7fe22;animation:orbit 18s linear infinite}
+.orbit.big{width:300px;height:300px;animation-duration:30s;animation-direction:reverse}
+.core{position:relative;z-index:3;width:108px;height:108px;display:grid;place-items:center;border-radius:27px;border:2px solid #6dd5f4;box-shadow:0 0 36px #22b9f55d,inset 0 0 28px #1ca6d044;background:linear-gradient(145deg,#173f5d,#102437);font-size:40px;font-weight:900;color:#dcfaff}
+.avatar-ring{position:absolute;z-index:2;display:grid;place-items:center;width:66px;height:80px;gap:2px;animation:floaty 4s ease-in-out infinite}
+.avatar-ring .helmet{width:46px;height:48px;border:2px solid var(--shine);border-radius:25px 25px 16px 16px;background:linear-gradient(120deg,#233e5a,#142c45);display:grid;place-items:center;box-shadow:0 0 18px var(--glow)}
+.helmet .visor{width:30px;height:13px;border:1px solid var(--shine);background:var(--glow);border-radius:20px 20px 8px 8px;box-shadow:0 0 12px var(--glow)}
+.avatar-ring .suit{height:24px;width:60px;border:2px solid var(--shine);background:#153752;border-radius:26px 26px 7px 7px}
+.avatar-ring span{white-space:nowrap;font-size:10px;color:#c9e5f4;text-shadow:0 2px 5px #001;position:absolute;bottom:-21px}
+.a1{top:15px;left:17%;--shine:#82d9f9;--glow:#31b9fa66}
+.a2{top:13px;right:17%;--shine:#cda8ff;--glow:#ab71ef6b;animation-delay:-1s}
+.a3{bottom:26px;left:16%;--shine:#7cebd1;--glow:#0cbf9a64;animation-delay:-2s}
+.a4{bottom:26px;right:16%;--shine:#ffc58b;--glow:#dc96365d;animation-delay:-3s}
+.packet{position:absolute;top:49%;left:5%;width:24px;height:28px;border:1px solid #73dbf2;background:#143b56a8;border-radius:4px;z-index:4;display:none;place-items:center;font-size:11px;box-shadow:0 0 20px #3de5ff6e}
+.scene.playing .packet{display:grid;animation:movefile 4.8s ease-in-out 1 forwards}
+.scene.playing .core{animation:corepulse 1.6s ease-in-out 4}
+.scene-label{position:absolute;bottom:9px;left:12px;z-index:5;color:#a6cddd;font-size:10px}
+@keyframes orbit{to{transform:rotateX(53deg) rotateZ(345deg)}}@keyframes floaty{50%{transform:translateY(-8px)}}
+@keyframes movefile{0%{left:5%;opacity:0}16%{opacity:1}53%{left:46%;opacity:1}81%{left:84%;opacity:1}100%{left:91%;opacity:0}}
+@keyframes corepulse{50%{box-shadow:0 0 65px #43ccfa;transform:scale(1.035)}}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}.primary{background:#146089;border-color:#5fd4f9}
+.note{font-size:12px;color:#acc9da}.legend{display:flex;gap:10px;flex-wrap:wrap;color:#b7cedb;font-size:11px;margin-top:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:#63d6ee;display:inline-block;margin-right:4px}.dot.neutral{background:#a4a5b5}.dot.warn{background:#e6ae68}
+.personas{display:grid;gap:9px}
+.persona{display:grid;grid-template-columns:46px 1fr;gap:9px;align-items:center;padding:9px;border:1px solid #31516b;border-radius:12px;background:#0b1b2b}
+.face{width:44px;height:44px;display:grid;place-items:center;border:2px solid #529aca;border-radius:15px;background:#16324c;font-size:23px}
+.persona small,.event small{display:block;color:#a9c9db;font-size:11px}
+.persona b{font-size:13px}
+.timeline{min-height:220px;max-height:290px;overflow:auto;margin:0;padding:0;list-style:none}
+.event{padding:10px 8px 10px 22px;border-left:2px solid #355575;position:relative;border-bottom:1px solid #213e55}
+.event:before{content:"";position:absolute;left:-5px;top:17px;width:8px;height:8px;border-radius:50%;background:#81c9e3}
+.event strong{font-size:13px}.event .etype{font-size:10px;padding:2px 6px;background:#24455e;border-radius:5px;margin-left:4px}
+.modulegrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-height:360px;overflow:auto}
+.mod{background:#0c2234;border:1px solid #2c4a62;border-radius:10px;padding:9px;min-height:65px;text-align:left;color:#cfe4f4;font-size:12px}
+.mod:hover{border-color:#86cbe5}.mod small{display:block;color:#92b1c5;font-size:10px;margin-top:3px}
+progress{width:100%;height:13px;accent-color:#73d3f0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.route{border:1px solid #335470;border-radius:10px;padding:11px;background:#0a1c2d;font-size:12px}.route b{display:block;font-size:14px}
+.device{border-left:3px solid #c19b66;padding:12px;background:#18252f;color:#e1d2b5;border-radius:0 9px 9px 0}
+.activity{border:1px solid #34536f;border-radius:10px;padding:12px;background:#091b2e;color:#b9d6e7;font-size:12px}
+small{font-size:11px}
+@media(max-width:920px){.col8,.col4,.col6{grid-column:span 12}.metrics{grid-template-columns:repeat(2,1fr)}.modulegrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:490px){.modulegrid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.scene{min-height:260px}.a1{left:5%}.a2{right:5%}.a3{left:4%}.a4{right:4%}.orbit.big{width:260px;height:260px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* Mission Cinema v1 — metadata-only viewer; no remote telemetry */
+#mission-cinema{position:relative;overflow:hidden;border:1px solid #437d96;background:radial-gradient(circle at 70% 0,#19385b,transparent 46%),linear-gradient(150deg,#081627,#07111d)}
+.mc-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.mc-status{display:flex;gap:7px;flex-wrap:wrap}.mc-pill{border:1px solid #49677a;border-radius:18px;padding:3px 9px;font-size:11px;color:#b3d5e9}.mc-pill.stop{border-color:#a95860;color:#ffb0af}
+.mc-gates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.mc-gate{background:#0a2134;border:1px solid #42627c;padding:13px;border-radius:10px;min-height:100px}.mc-gate b,.mc-gate small{display:block}.mc-gate b{font-size:15px}.mc-gate small{color:#afc8d9;font-size:12px}.mc-gate .flag{color:#89d1f7;text-transform:uppercase;font-size:10px;letter-spacing:.13em}
+.mc-view{display:grid;grid-template-columns: minmax(230px,1fr) minmax(280px,1.3fr);gap:16px}
+.mc-space{min-height:240px;position:relative;display:grid;place-items:center;background:radial-gradient(circle at center,#173e61 0,#0a2138 45%,#071522 70%);border:1px solid #345471;border-radius:14px;overflow:hidden}
+.mc-space:before,.mc-space:after{content:"";position:absolute;border:1px solid #4a83977d;width:215px;height:215px;border-radius:50%;transform:rotate(-25deg) scaleY(.42);pointer-events:none}.mc-space:after{transform:rotate(48deg) scaleY(.52);width:265px;height:265px}.mc-core{z-index:1;width:118px;height:118px;background:radial-gradient(circle,#1d87a0 0%,#18395a 55%,#07182c 75%);border:2px solid #74d6eb;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:900;font-size:25px;box-shadow:0 0 50px #2dd2ec58}.mc-core small{font-weight:500;font-size:9px;display:block;color:#d6e7f4}
+.mc-beam{height:2px;position:absolute;left:4%;right:4%;top:50%;background:linear-gradient(90deg,transparent,#85def4,transparent);opacity:.55}
+.mc-steps{max-height:245px;overflow:auto;margin:0;padding-left:22px}.mc-steps li{padding:7px 4px;border-bottom:1px solid #29435a}.mc-steps strong,.mc-steps small{display:block}.mc-steps small{color:#a6c2d2;font-size:11px}
+.mc-controls{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}.mc-controls button,.mc-controls label{border-radius:8px;border:1px solid #537e99;padding:8px 12px;background:#102a40;color:#e6f8ff;cursor:pointer;font:inherit;font-size:12px}.mc-controls button:focus-visible,.mc-controls label:focus-visible{outline:2px solid #5ae4ed}.mc-controls input{display:none}
+.mc-controls button:disabled{cursor:not-allowed;opacity:.5}.mc-note{font-size:12px;color:#b8cddc}.mc-warning{font-size:12px;color:#ffbbbb}
+#mc-dialog{border:1px solid #5084aa;border-radius:14px;background:#061320;color:#e8f7ff;padding:18px;width:min(940px,94vw);max-height:93vh}#mc-dialog::backdrop{background:#020510eb}#mc-dialog video{width:100%;max-height:68vh;background:#000;border-radius:8px}#mc-dialog button{background:#193b54;color:white;padding:8px 14px;border:1px solid #7590a6;border-radius:8px;cursor:pointer}
+@media(max-width:720px){.mc-view{grid-template-columns:1fr}.mc-gates{grid-template-columns:1fr}.mc-gate{min-height:auto}.mc-space{min-height:190px}}
+
+/* Evidence director: one read-only lens across micro actions and mission scenes. */
+.mc-director{margin:13px 0;padding:13px;border:1px solid #507b93;background:#071929;border-radius:12px}
+.mc-director-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.mc-director-controls button,.mc-director-controls select{font:inherit;font-size:12px;padding:7px 10px;border-radius:7px;background:#102b44;color:#e6f8ff;border:1px solid #4c7691;cursor:pointer}
+.mc-director-controls button[aria-pressed="true"]{border-color:#4ee3e6;background:#1a455b}
+.mc-director-controls button:focus-visible,.mc-director-controls select:focus-visible{outline:2px solid #7cf0ef}
+.mc-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mc-fact{border:1px solid #244c63;padding:10px;border-radius:8px;min-height:73px}
+.mc-fact strong,.mc-fact small{display:block}.mc-fact strong{font-size:14px;word-break:break-word}.mc-fact small{font-size:10px;color:#a3c7d8}
+.mc-director .mc-detail{border-top:1px solid #28516a;margin-top:10px;padding-top:10px}
+.mc-director dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 12px;margin:8px 0;font-size:12px}
+.mc-director dt{color:#9dc2d6}.mc-director dd{margin:0;overflow-wrap:anywhere}
+.mc-director a{color:#90e9ff}
+.mc-steps li[data-hidden="true"]{display:none}
+.mc-steps li[aria-current="true"]{border-left:3px solid #4ef0ed;padding-left:7px}
+.mc-steps li[tabindex]{cursor:pointer}
+.mc-cinema-stage{margin-top:8px;min-height:42px;padding:10px;border:1px solid #2b6481;border-radius:8px;font-size:14px}
+.mc-cinema-stage small{display:block;font-size:11px;color:#b9d2df;margin-top:3px}
+#mission-cinema[data-director-mode="cinema"] .mc-space{box-shadow:inset 0 0 60px #177ba233}
+@media(max-width:620px){.mc-facts{grid-template-columns:1fr}.mc-director dl{grid-template-columns:1fr;gap:3px}}
+</style></head><body><main>
+<header><div><span class="kicker">⚡ ©8X8 · ONE FABRIC</span> <span class="pill warn">PRELAUNCH · PUBLIC DEMO</span></div><span class="pill" id="source-indicator">No live owner event stream</span></header>
+<div class="hero"><div><h1>The Living Observatory</h1><p><a href="/agents/">Meet the restored cinematic 8x8 agent cast →</a> · original visuals, real user-triggered TTS preview, authenticated agent inference still unverified</p><p class="lead">Explore the architecture of agent presence, device status, source provenance, studio production, trading research and work execution. This public-safe screen illustrates the interface; it does not access private agents, assets, cameras, messages, vaults or your local device.</p></div><button id="demo" class="primary">▶ Play workflow illustration</button></div>
+<div class="metrics">
+<div class="metric"><b>24</b><small>Owner source domains · conceptual coverage</small></div>
+<div class="metric"><b>212</b><small>Historical agent identities · not live</small></div>
+<div class="metric"><b>6,105</b><small>Historical advertised MCP actions · not installed grants</small></div>
+<div class="metric"><b>0</b><small>Connected owner live-event streams</small></div>
+</div>
+<div class="deck">
+<section class="box col8" aria-label="Animated agent presence and workflow"><h2>Agent theater · work travels through One Fabric</h2>
+<div class="scene" id="scene"><div class="orbit"></div><div class="orbit big"></div><div class="core">8×8</div>
+<div class="avatar-ring a1"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>FlashTM8</span></div>
+<div class="avatar-ring a2"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Seraphim</span></div>
+<div class="avatar-ring a3"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Research Agent</span></div>
+<div class="avatar-ring a4"><div class="helmet"><div class="visor"></div></div><div class="suit"></div><span>Council</span></div>
+<div class="packet">▣</div><span class="scene-label">Illustrative character animation · not a live model/tool trace</span></div>
+<div class="legend"><span><i class="dot"></i>Animated design</span><span><i class="dot neutral"></i>Agent availability unverified</span><span><i class="dot warn"></i>Execution needs receipts</span></div>
+</section>
+<section class="box col4"><h2>Personas & authorization</h2><div class="personas">
+<div class="persona"><div class="face">⚡</div><div><b>FlashTM8 · Coordination</b><small>Concept persona · live inference unverified</small></div></div>
+<div class="persona"><div class="face">✦</div><div><b>Seraphim · Welcome</b><small>Three Gates · source candidate</small></div></div>
+<div class="persona"><div class="face">⬡</div><div><b>Research Agent · Public persona</b><small>Agent inbox/source observed; model reply blocked</small></div></div>
+<div class="persona"><div class="face">◈</div><div><b>Council · Verification</b><small>Quorum requires authenticated replies</small></div></div>
+<div class="persona"><div class="face">♬</div><div><b>Studio · Film & audio</b><small>Drafts/preview, not unlimited render credits</small></div></div>
+</div></section>
+<section class="box col6"><h2>Work execution · provenance timeline</h2><ol id="events" class="timeline" aria-live="polite">
+<li class="event"><strong>Observatory launched</strong><small>PUBLIC_SOURCE_DEMO · no private feed subscribed</small></li>
+<li class="event"><strong>Awaiting tenant-approved read-only events</strong><small>Future signed source / timestamp / receipt / freshness</small></li>
+</ol><div class="toolbar"><button id="reset">Reset illustration</button><span class="note" id="event-status">No live events collected.</span></div></section>
+<section class="box col6"><h2>Device & storage · owner-private monitoring</h2>
+<div class="device"><b>Owner device sensor · not connected to this public UI</b><div class="note">The private sensor reports a bounded snapshot of disk, memory, approved modules, STOP and OWNER_ACTIVE. It is not forwarded into public or cross-tenant MCP resources.</div></div>
+<p class="note">Device control, installed apps, foreground camera, microphone, notifications, iOS and external robots require independent permission and receipts.</p>
+<div class="split"><div class="route"><b>Android / APK</b>App upgrade not verified</div><div class="route"><b>iPhone / iOS</b>Live bridge not verified</div></div>
+</section>
+<section class="box col12"><h2>Universal whole-estate domains</h2><p class="note">These 24 categories are a discovery index, not a fixed ceiling or a claim that every file/source is active. Select a domain to see its observability requirement.</p>
+<div class="modulegrid" id="domains"></div><div class="activity" id="domain-detail" role="status">Select a category. Nothing here authorizes a private action.</div></section>
+<section class="box col6"><h2>Studio, media, games and worlds</h2>
+<div class="split"><div class="route"><b>Film & 8:08 episodes</b>Original assets, scene QC, render receipts, licensed soundtracks</div><div class="route"><b>Music, radio, TV</b>Authorized player, provider entitlement, user media files</div><div class="route"><b>Games & XR</b>Avatar state, world simulation, leaderboards</div><div class="route"><b>Books & Planet Earth</b>Research provenance, translations, educational media</div></div><p class="note">Playback works only after providing licensed media or approved official provider embeds. No Spotify account session is implied.</p>
+</section>
+<section class="box col6"><h2>Markets, wallets, devices and integrations</h2>
+<div class="split"><div class="route"><b>Markets & trade counts</b>Provider venue, product, timestamp, exact-count semantics, separate account fills</div><div class="route"><b>8x8 Vault & NFTs</b>Read-only holdings first; wallet signing separately gated</div><div class="route"><b>Connectors / MCP</b>Listed ≠ authenticated ≠ granted ≠ productive</div><div class="route"><b>Access Rescue</b>Owner-only login, scope, consent, tests, no secrets in chat</div></div><p class="note">Live trading, direct publishing, chain transactions and device actions remain disabled until separately authorized.</p>
+</section>
+</div>
+<p class="note" style="margin-top:15px">Architecture truth: true owner observability requires authenticated real-time events (for example signed SSE), bounded replay, no-gap sequence reconciliation, clock freshness, tenant isolation, STOP preemption and destination receipts. This page intentionally uses zero network requests and no secretly collected data.</p>
+
+<section class="box col12" id="mission-cinema" aria-label="Mission Cinema evidence observatory">
+ <div class="mc-head"><div><h2>Mission Cinema · see the evidence trail</h2><p class="note">Three Gates, agents, Studio and projects as a cinematic view. It mirrors only explicit, public-safe events. No hidden thoughts, credentials, account or device telemetry.</p></div><div class="mc-status"><span class="mc-pill">RECORDED EVIDENCE</span><span class="mc-pill stop" id="mc-live">LIVE FEED NOT CONNECTED</span></div></div>
+ <div class="mc-gates" aria-label="Three Gates">
+  <div class="mc-gate"><span class="flag">Gate 1</span><b>World welcome</b><small>Preview · open locally</small></div>
+  <div class="mc-gate"><span class="flag">Gate 2</span><b>8x8 identity</b><small>Owner / tenant sign-in not verified</small></div>
+  <div class="mc-gate"><span class="flag">Gate 3</span><b>Authorized tools</b><small>Trading, posting and device control gated</small></div>
+ </div>
+ <div class="mc-view">
+  <div class="mc-space" role="img" aria-label="Animated concept of the 8x8 World; not real agents"><div class="mc-beam"></div><div class="mc-core">8×8<small>FABRIC://CORE</small></div></div>
+  <div><h3>Workstream replay</h3><ol id="mc-events" class="mc-steps" aria-live="polite"><li><strong>No authenticated event feed</strong><small>Choose Replay source milestones or import a local receipt for unverified inspection.</small></li></ol><p class="mc-note" id="mc-note" role="status">Idle · no live agent or tool activity observed by this viewer.</p></div>
+ </div>
+
+ <section class="mc-director" id="mc-director" aria-label="8x8 evidence director">
+  <div class="mc-director-controls" aria-label="Evidence view options">
+   <button type="button" id="mc-mode-micro" aria-pressed="true">◉ Small actions</button>
+   <button type="button" id="mc-mode-cinema" aria-pressed="false">◈ Big mission scenes</button>
+   <label for="mc-evidence-filter">Show:</label>
+   <select id="mc-evidence-filter" aria-label="Filter evidence by workstream">
+    <option value="ALL">All recorded actions</option>
+    <option value="RESEARCH">Research & tools</option>
+    <option value="LIFECYCLE">Started · progress · succeeded · failed · blocked</option>
+    <option value="BUILD">Files, tests & deployment</option>
+    <option value="MEDIA">Studio & media</option>
+    <option value="SAFETY">Safety & approvals</option>
+    <option value="PROVIDER">Provider receipts</option>
+   </select>
+  </div>
+  <div class="mc-facts" aria-label="Activity counters">
+   <div class="mc-fact"><strong id="mc-visible-count">0</strong><small>Visible recorded actions; not agent heartbeat</small></div>
+   <div class="mc-fact"><strong id="mc-evidence-type">REPLAY / NONE</strong><small>Evidence provenance</small></div>
+   <div class="mc-fact"><strong id="mc-confirmed-effects">0 verified effects</strong><small>Never inferred from animation</small></div>
+    <div class="mc-fact"><strong id="mc-lifecycle-count">0 milestones</strong><small>Signed operation lifecycle · not model thoughts</small></div>
+  </div>
+  <div class="mc-cinema-stage" aria-live="polite"><strong id="mc-scene-title">No mission scene selected</strong><small id="mc-scene-caption">Select a recorded event to inspect its source and receipt.</small></div>
+  <div class="mc-detail" aria-live="polite">
+   <strong>Event evidence inspector</strong>
+   <dl><dt>Event</dt><dd id="mc-detail-event">None selected</dd>
+       <dt>Source</dt><dd id="mc-detail-source">Not authenticated</dd>
+       <dt>Time (UTC)</dt><dd id="mc-detail-time">Not available</dd>
+       <dt>Provenance</dt><dd id="mc-detail-proof">No verified live event</dd>
+        <dt>Operation phase</dt><dd id="mc-detail-phase">No runtime phase attested</dd>
+       <dt>Sequence</dt><dd id="mc-detail-sequence">Not available</dd>
+       <dt>Hash</dt><dd id="mc-detail-hash">Not available</dd></dl>
+   <a id="mc-detail-receipt" rel="noopener noreferrer" target="_blank" hidden>Open source receipt</a>
+  </div>
+  <p class="mc-note">A live scene requires the authenticated Gate 2 SSE service, enrolled signer, verified receipt and STOP-aware source. This UI has no access to private model reasoning, raw credentials or unrestricted agent telemetry.</p>
+ </section>
+ <div class="mc-controls">
+  <button type="button" id="mc-live-connect">◉ Connect verified live feed</button><button type="button" id="mc-live-disconnect">■ Disconnect live feed</button><button type="button" id="mc-replay">▶ Replay source milestones</button><button type="button" id="mc-halt">■ Stop replay</button>
+  <label for="mc-receipt" tabindex="0">Import local receipt (unverified)<input type="file" id="mc-receipt" accept=".json,application/json"></label>
+  <label for="mc-video" tabindex="0">🎬 Open local film / image<input type="file" id="mc-video" accept="video/*,image/*"></label>
+  <button type="button" id="mc-approval">Prepare approval review (no execution)</button>
+ </div>
+ <p class="mc-warning">Recording is not live monitoring. No background stream, remote file access, account binding, order, publication, biometric control or voice listener is authorized by this view. Imports stay in this browser session and do not establish trusted signatures.</p>
+ <dialog id="mc-dialog" aria-label="8x8 local media popup"><div class="mc-head"><b>8x8 Studio · local media preview</b><button type="button" id="mc-close">Close</button></div><p class="mc-note" id="mc-media-note">Choose a local licensed file; never uploaded.</p><video id="mc-player" controls playsinline preload="none" hidden></video><img id="mc-image" alt="Selected local image preview" style="max-height:70vh;max-width:100%;object-fit:contain;display:block;margin:auto" hidden></dialog>
+</section>
+
+<details class="box col12" id="mc-trust-inspector">
+ <summary><strong>🔍 Behind-the-scenes evidence inspector</strong> · source, tool, change, test, authorization and delivery</summary>
+ <p class="note">Mission Cinema mirrors attributable outcomes and sanitized traces, not private model thoughts or raw tool inputs. Each source event needs a trustworthy issuer, tenant-specific read rights, event signature, sequence number, timestamp, hash-chain link and durable receipt before any LIVE badge is allowed.</p>
+ <div class="split" aria-label="Real-time evidence categories">
+  <div class="route"><b>Discover & research</b>Source URI, provenance, permission, fetched status</div>
+  <div class="route"><b>Tool and model actions</b>Safe operation name, status, duration and result receipt; no hidden reasoning</div>
+  <div class="route"><b>Create & upgrade</b>File or render identity, revision, SHA and reproducible result</div>
+  <div class="route"><b>Tests & recovery</b>Passed, failed, rollback, incident and verification evidence</div>
+  <div class="route"><b>Approvals</b>Owner-authorized, denied, expired or revoked state; clicks are requests, not grants</div>
+  <div class="route"><b>External effects</b>Only separately authorized real broker fills, delivered posts or signed device receipts</div>
+ </div>
+ <p class="mc-warning" id="mc-stream-proof">Signed batch verifier: SOURCE-TESTED ONLY · Trusted runtime signer not enrolled · Tenant event transport not connected · No live feed.</p>
+</details>
+</main><script>
+(()=>{
+"use strict";
+const domainNames=["World & spatial","Identity & tenancy","Agents & A2A","Memory & knowledge","Models & routing","Studio & cinema","Jarvis & embodiment","Devices & edge","Connectors & communications","Trading & markets","Blockchain","Assets & economy","Business & revenue","Competitions & benchmarks","AGI evaluations","Security & privacy","Recovery & reliability","Developer platform","Data fabric","Games & academy","Communities & support","Law & IP","Evidence & truth","Digital twin"];
+const list=document.getElementById("domains"),details=document.getElementById("domain-detail");
+domainNames.forEach((name,i)=>{
+ const b=document.createElement("button");b.className="mod";b.type="button";
+ const label=document.createElement("strong");label.textContent=String(i+1).padStart(2,"0")+" · "+name;
+ const extra=document.createElement("small");extra.textContent="Evidence and runtime gate required";
+ b.append(label,extra);b.addEventListener("click",()=>{details.textContent=name+": map all historical and new source URIs to a versioned registry, permission-scope each reader, and show verified receipts for runtime claims. No live implementation inferred.";});
+ list.append(b);
+});
+const initial=document.getElementById("events").innerHTML;
+const scene=document.getElementById("scene"),log=document.getElementById("events"),status=document.getElementById("event-status");
+const frames=[
+ ["RESEARCH","Agent gathers an approved source reference","Illustration · source provenance required"],
+ ["PLAN","Council prepares a proposed upgrade","Illustration · not a verified model response"],
+ ["BUILD","A file moves into a sandbox work area","Illustration · no real file modified"],
+ ["TEST","Checks and independent verification run","Illustration · no CI action invoked"],
+ ["REVIEW","Owner/effect gate checks STOP, scope and rights","Illustration · external actions gated"],
+ ["RECEIPT","Result becomes visible only after readback","Illustration · no actual delivery receipt"]
+];
+let timers=[];
+const reset=()=>{for(const id of timers)clearTimeout(id);timers=[];scene.classList.remove("playing");log.innerHTML=initial;status.textContent="No live events collected."};
+document.getElementById("reset").addEventListener("click",reset);
+document.getElementById("demo").addEventListener("click",()=>{
+ reset();scene.classList.add("playing");status.textContent="Illustration running · not telemetry.";
+ frames.forEach((frame,i)=>{timers.push(setTimeout(()=>{
+ const li=document.createElement("li");li.className="event";
+ const strong=document.createElement("strong");strong.textContent=frame[1];
+ const tag=document.createElement("span");tag.className="etype";tag.textContent=frame[0];
+ const small=document.createElement("small");small.textContent=frame[2];
+ li.append(strong,tag,small);log.prepend(li);
+ if(i===frames.length-1){status.textContent="Illustration finished · zero external actions.";scene.classList.remove("playing");}
+ },i*650));});
+});
+})();
+</script><script>
+
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const log=$("mc-events"), note=$("mc-note");
+if(!log||!note)return;
+const samples=[
+ ["World MCP","Existing source package and 19-domain preview inspected","SOURCE_SNAPSHOT · not deployed"],
+ ["OAuth","Public gateway returns AUTH_CONFIGURATION_REQUIRED","SOURCE_SNAPSHOT · HTTP 503 · no signed user session"],
+ ["Agent Theater","Original public-safe concept personas recovered","SOURCE_SNAPSHOT · no authenticated agent attendance"],
+ ["Studio","First Blink 8:08 animatic recovered with SHA-256 provenance","RECORDED_MEDIA · public release not approved"],
+ ["Safety","A2A owner STOP interlock source fix remains staged","SOURCE_SNAPSHOT · resident control unchanged"],
+ ["Event verifier","Ed25519 signed event validation added with positive and negative tests","SOURCE_SNAPSHOT · no runtime signer or authenticated event transport"],
+ ["Next gate","A signed, tenant-scoped event bridge is required","NOT_CONNECTED · no owner telemetry subscribed"]
+];
+let timer=null,objectUrl=null;
+const clear=()=>{if(timer!==null){clearInterval(timer);timer=null}};
+function show(rows,label){
+ log.replaceChildren();
+ for(const [title,detail,provenance] of rows){
+  const li=document.createElement("li"),a=document.createElement("strong"),b=document.createElement("small");
+  a.textContent=title+" · "+detail;b.textContent=provenance;li.dataset.sourceId=title;li.dataset.evidenceClass="RECORDED_REPLAY_NOT_LIVE";li.dataset.eventType="REPLAY";li.append(a,b);log.append(li);
+ }
+ note.textContent=label;
+}
+$("mc-replay").addEventListener("click",()=>{
+ clear();let n=0;show([],"Recorded source milestones only · NOT live");
+ timer=setInterval(()=>{n++;show(samples.slice(0,n),"Replay "+n+" / "+samples.length+" · source snapshots, not streaming");
+ if(n>=samples.length)clear();
+ },500);
+});
+$("mc-halt").addEventListener("click",()=>{clear();note.textContent="Replay paused · no external action";});
+const rejected=/bearer|api[_ -]?key|secret|password|passphrase|private[_ -]?key|seed phrase|mnemonic|access[_ -]?token|authorization:/i;
+const safe=(v,max)=>typeof v==="string"&&v.length<=max&&!/[\x00-\x1f\x7f<>]/.test(v)&&!rejected.test(v);
+$("mc-receipt").addEventListener("change",async event=>{
+ clear();const file=event.target.files&&event.target.files[0];if(!file)return;
+ if(file.size>131072){note.textContent="Rejected: receipt exceeds 128 KiB";return;}
+ try{
+  const payload=JSON.parse(await file.text());
+  if(!payload||!Array.isArray(payload.events)||payload.events.length>80)throw Error("INVALID_SHAPE");
+  const rows=payload.events.map(x=>{
+   if(!x||typeof x!=="object"||!safe(x.event_id,80)||!safe(x.source_id,80)||!safe(x.summary,160))throw Error("UNSAFE_FIELD");
+   const state=x.evidence_class||"UNVERIFIED_IMPORT";
+   if(!safe(state,48))throw Error("UNSAFE_CLASS");
+   return [x.source_id,x.summary,"LOCAL_IMPORT_UNVERIFIED · "+x.event_id+" · "+state];
+  });
+  show(rows,"Imported "+rows.length+" sanitized events locally. Signatures, issuer, freshness and tenant permission NOT validated.");
+ }catch{note.textContent="Receipt rejected; use {events:[{event_id,source_id,summary,evidence_class}]} with nonsecret fields.";}
+ event.target.value="";
+});
+const modal=$("mc-dialog"),video=$("mc-player"),img=$("mc-image"),mediaNote=$("mc-media-note");
+function release(){video.pause();video.removeAttribute("src");img.removeAttribute("src");video.hidden=true;img.hidden=true;video.load();if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null;}}
+$("mc-video").addEventListener("change",event=>{
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ release();
+ if(!/^(video|image)\//.test(file.type)){mediaNote.textContent="Media rejected; select video or image.";return;}
+ objectUrl=URL.createObjectURL(file);
+ if(file.type.startsWith("video/")){video.src=objectUrl;video.hidden=false;}
+ else{img.src=objectUrl;img.hidden=false;}
+ mediaNote.textContent="Local file selected · no upload, publication or automatic playback.";
+ if(typeof modal.showModal==="function")modal.showModal();
+ event.target.value="";
+});
+$("mc-close").addEventListener("click",()=>{modal.close();release();});
+modal.addEventListener("close",release);
+$("mc-approval").addEventListener("click",()=>{
+ const request={schema:"8x8.owner_review_draft.v1",root:"fabric://8x8/core",state:"DRAFT_NOT_SUBMITTED",purpose:"Review one mission visualization or resource change",granted:false,controls:["Owner identity","Purpose-bound lease","STOP preemption","Rights","Provider scope","Receipt"]};
+ const blob=new Blob([JSON.stringify(request,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="8x8-mission-review-draft.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ note.textContent="Local approval REVIEW DRAFT exported · no approval sent or permission granted.";
+});
+window.addEventListener("pagehide",()=>{clear();release();});
+})();
+</script>
+<script>
+/* ©8x8 Mission Cinema — optional read-only signed-event viewer.
+   The current public plugin does not inject an authorized stream configuration.
+   A future server must provide Gate2 auth, tenant isolation, signer verification,
+   STOP interlock and the actual same-origin SSE service; the browser does not.
+   This client never shows private model reasoning, tool arguments or secrets. */
+(()=>{
+"use strict";
+const byId=id=>document.getElementById(id);
+const connect=byId("mc-live-connect"),disconnectButton=byId("mc-live-disconnect");
+const note=byId("mc-note"),tag=byId("mc-live"),log=byId("mc-events");
+if(!connect||!disconnectButton||!note||!tag||!log)return;
+let stream=null,sequence=0,lastHash="GENESIS";
+const reject=/bearer|api[_ -]?key|secret|password|passphrase|private[_ -]?key|seed phrase|mnemonic|access[_ -]?token|authorization:|hidden reasoning|chain[_ -]?of[_ -]?thought/i;
+const safe=(v,max)=>typeof v==="string"&&v.length<=max&&!/[\x00-\x1f\x7f<>]/.test(v)&&!reject.test(v);
+function close(message){
+ if(stream){stream.close();stream=null;}
+ tag.textContent="LIVE FEED NOT CONNECTED";
+ if(message)note.textContent=message;
+}
+connect.addEventListener("click",()=>{
+ close();
+ const cfg=window.__EIGHTX8_AUTHORIZED_OBSERVATORY__;
+ if(!cfg||cfg.enabled!==true||cfg.path!=="/v1/observatory/events"||!safe(cfg.tenant_id,80)||typeof EventSource!=="function"){
+  note.textContent="Live feed blocked: authenticated 8x8 Gate 2, owner approval, trusted signer and HTTPS event transport not deployed.";
+  return;
+ }
+ let target;
+ try{target=new URL(cfg.path,location.href);}catch{note.textContent="Invalid observation route.";return;}
+ if(target.origin!==location.origin||target.protocol!=="https:"){
+  note.textContent="Rejected: only approved same-origin HTTPS transport is permitted.";return;
+ }
+ // EventSource cannot grant permissions: server authenticates existing session
+ // and checks tenant, scope, signer, sequence, freshness and STOP on EVERY batch.
+ sequence=0;lastHash="GENESIS";
+ stream=new EventSource(target.href);
+ note.textContent="Attempting verified read-only event subscription; no agent actions authorized.";
+ stream.addEventListener("eightx8.verified_record",event=>{
+  try{
+   if(typeof event.data!=="string"||event.data.length>65536)throw Error("SIZE");
+   const frame=JSON.parse(event.data);
+   if(frame.tenant_id!==cfg.tenant_id||frame.schema!=="8x8.mission_cinema.verified_observation_frame.v1"
+      ||frame.classification!=="SIGNED_EVENTS_VERIFIED_TRANSPORT_NOT_PROVEN"
+      ||frame.live_stream_connected!==false||frame.execution_authorized!==false
+      ||!Array.isArray(frame.events)||frame.events.length<1||frame.events.length>80)
+     throw Error("UNVERIFIED_FRAME");
+   let next=sequence,previous=lastHash;
+   const additions=[];
+   for(const e of frame.events){
+    if(!e||e.sequence!==next+1||!safe(e.event_id,80)||!safe(e.source_id,80)
+       ||!safe(e.summary,240)||!safe(e.event_type,40)
+       ||!["SOURCE_VERIFIED","RUNTIME_RECEIPT"].includes(e.evidence_class)
+       ||!safe(e.hash,64)||!/^([a-f0-9]{64})$/.test(e.hash))
+      throw Error("UNSAFE_OR_GAPPED_EVENT");
+    // Server verified the Ed25519 chain; the client also enforces monotonic
+    // order, never grants permissions and renders text without HTML injection.
+    next=e.sequence;previous=e.hash;
+    const li=document.createElement("li"),name=document.createElement("strong"),meta=document.createElement("small");
+    name.textContent=e.event_type+" · "+e.summary;
+    meta.textContent=e.source_id+" · "+e.evidence_class+" · sequence "+e.sequence;
+    li.dataset.sourceId=e.source_id;li.dataset.evidenceClass=e.evidence_class;li.dataset.eventType=e.event_type;li.dataset.sequence=String(e.sequence);li.dataset.observedUtc=typeof e.observed_utc==="string"?e.observed_utc:"";li.dataset.eventHash=e.hash;li.dataset.receiptRef=typeof e.receipt_ref==="string"?e.receipt_ref:"";
+    li.append(name,meta);additions.push(li);
+   }
+   if(frame.lastSequence!==next||frame.lastHash!==previous)throw Error("INVALID_CHECKPOINT");
+   sequence=next;lastHash=previous;
+   if(sequence===frame.events.length)log.replaceChildren();
+   for(const element of additions)log.prepend(element);
+   while(log.children.length>80)log.lastElementChild.remove();
+   tag.textContent="SIGNED RECORDS RECEIVED · LIVE AUTH NOT ATTESTED";
+   note.textContent="Received "+sequence+" ordered signed-source observations. Streaming receipt and operating authority not independently verified.";
+  }catch{
+   close("Rejected event: invalid source, chain checkpoint or unsafe content. Transport closed.");
+  }
+ });
+ stream.onerror=()=>close("Authenticated observation feed unavailable or disconnected; no live session certified.");
+});
+disconnectButton.addEventListener("click",()=>close("Viewer disconnected · no model, app or provider action was triggered."));
+window.addEventListener("pagehide",()=>close());
+})();
+</script><script>
+/* ©8x8 Evidence Director v1: visualizes rendered receipts; DOES NOT subscribe,
+   grant authority, capture prompts, or claim that historical replay is live. */
+(()=>{
+"use strict";
+const get=id=>document.getElementById(id);
+const panel=get("mission-cinema"),feed=get("mc-events"),filter=get("mc-evidence-filter");
+if(!panel||!feed||!filter||typeof MutationObserver!=="function")return;
+const micro=get("mc-mode-micro"),cinema=get("mc-mode-cinema"),link=get("mc-detail-receipt");
+const lifecyclePhases=Object.freeze({
+ OPERATION_STARTED:"STARTED · no outcome yet",
+  OPERATION_PROGRESS:"IN PROGRESS · signed intermediate work milestone; completion not attested",
+ OPERATION_SUCCEEDED:"RESULT REPORTED · external effect must be confirmed separately",
+ OPERATION_FAILED:"FAILED · investigate cited evidence",
+ OPERATION_BLOCKED:"BLOCKED · no execution authority inferred"
+});
+const lifecycleTypes=Object.keys(lifecyclePhases);
+const groups={
+ LIFECYCLE:lifecycleTypes,
+ RESEARCH:["RESEARCH_SOURCE","TOOL_RESULT"],
+ BUILD:["SOURCE_COMMIT","TEST_RESULT","DEPLOYMENT_RESULT"],
+ MEDIA:["MEDIA_RENDER"],
+ SAFETY:["DEVICE_CONTROL_STATUS","APPROVAL_STATUS","INCIDENT"],
+ PROVIDER:["PROVIDER_CANARY"]
+};
+const receiptPattern=/^https:\/\/github\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(commit|pull|blob)\/[A-Za-z0-9._/-]+$/;
+let selected=null,mode="micro";
+const asText=(v,max=240)=>typeof v==="string"?v.slice(0,max):"";
+function inspect(el){
+ if(!el||el.dataset.hidden==="true"){selected=null;return;}
+ if(selected)selected.removeAttribute("aria-current");
+ selected=el;el.setAttribute("aria-current","true");
+ const d=el.dataset,head=el.querySelector("strong");
+ const title=asText(head?.textContent||"Recorded event");
+ get("mc-detail-event").textContent=title;
+ get("mc-detail-source").textContent=asText(d.sourceId||"REPLAY_SOURCE_UNVERIFIED",80);
+ get("mc-detail-time").textContent=asText(d.observedUtc||"Not available",32);
+ get("mc-detail-proof").textContent=asText(d.evidenceClass||"RECORDED_REPLAY_NOT_LIVE",55);
+ const phase=get("mc-detail-phase");
+ if(phase)phase.textContent=lifecyclePhases[d.eventType]||"Not a signed operation lifecycle milestone";
+ get("mc-detail-sequence").textContent=asText(d.sequence||"Not available",20);
+ get("mc-detail-hash").textContent=asText(d.eventHash||"Not available",64);
+ const ref=d.receiptRef||"";
+ link.hidden=!receiptPattern.test(ref);
+ if(link.hidden)link.removeAttribute("href");else link.href=ref;
+ get("mc-scene-title").textContent=mode==="cinema"?"MISSION SCENE · "+asText(d.eventType||"Recorded replay",45):"ACTION · "+asText(d.eventType||"Recorded replay",45);
+ get("mc-scene-caption").textContent=title+" · "+asText(d.evidenceClass||"UNVERIFIED REPLAY",55);
+}
+function refresh(){
+ const all=Array.from(feed.querySelectorAll("li"));
+ let visible=0,signed=0,runtime=0,milestones=0,first=null;
+ for(const el of all){
+  const k=el.dataset.eventType||"REPLAY";
+  const allowed=filter.value==="ALL"||(groups[filter.value]||[]).includes(k);
+  el.dataset.hidden=allowed?"false":"true";
+  if(allowed){visible++;if(!first)first=el;}
+  if(el.dataset.evidenceClass==="SOURCE_VERIFIED")signed++;
+  if(el.dataset.evidenceClass==="RUNTIME_RECEIPT")runtime++;
+  if(lifecycleTypes.includes(k)&&["SOURCE_VERIFIED","RUNTIME_RECEIPT"].includes(el.dataset.evidenceClass))milestones++;
+  el.tabIndex=allowed?0:-1;
+ }
+ get("mc-visible-count").textContent=String(visible);
+ const lc=get("mc-lifecycle-count");if(lc)lc.textContent=String(milestones)+" signed milestones";
+ get("mc-evidence-type").textContent=runtime>0?"SIGNED RUNTIME RECORDS":signed>0?"SIGNED SOURCE RECORDS":"REPLAY / UNVERIFIED";
+ // A runtime receipt alone does not establish a trade fill or published item.
+ get("mc-confirmed-effects").textContent="0 effect attestations";
+ if(selected&&!feed.contains(selected))selected=null;
+ if(selected&&selected.dataset.hidden==="true")selected=null;
+ if(first){if(!selected)inspect(first);}
+ else{
+  if(selected){selected.removeAttribute("aria-current");selected=null;}
+  get("mc-scene-title").textContent="No evidence matches this view";
+  get("mc-scene-caption").textContent="No scene was invented; change the filter or wait for a verified record.";
+  get("mc-detail-event").textContent="None selected";
+  get("mc-detail-source").textContent="Not authenticated";
+  get("mc-detail-time").textContent="Not available";
+  get("mc-detail-proof").textContent="No event available";
+  const phase=get("mc-detail-phase");if(phase)phase.textContent="No operation milestone selected";
+  get("mc-detail-sequence").textContent="Not available";
+  get("mc-detail-hash").textContent="Not available";
+  link.hidden=true;link.removeAttribute("href");
+ }
+}
+const setMode=next=>{
+ mode=next;panel.dataset.directorMode=next;
+ micro.setAttribute("aria-pressed",String(next==="micro"));
+ cinema.setAttribute("aria-pressed",String(next==="cinema"));
+ if(selected)inspect(selected);
+};
+micro.addEventListener("click",()=>setMode("micro"));
+cinema.addEventListener("click",()=>setMode("cinema"));
+filter.addEventListener("change",refresh);
+feed.addEventListener("click",e=>{const el=e.target.closest("li");if(el&&feed.contains(el))inspect(el);});
+feed.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const el=e.target.closest("li");if(el&&feed.contains(el)){e.preventDefault();inspect(el);}}});
+new MutationObserver(refresh).observe(feed,{childList:true,subtree:false});
+refresh();
+})();
+</script></body></html>

@@ -1,0 +1,667 @@
+{
+  "root": "fabric://8x8/core",
+  "schema": "8x8.public_user_one_fabric_mcp_catalog.v3",
+  "release": "PRELAUNCH_SOURCE_ONLY",
+  "identity_lineage": {
+    "classification": "HISTORICAL_CORE_IDS_AND_SEPARATE_BETA_AUTH_NAMESPACE",
+    "authoritative_core_source": "horbolsi/8x8:docs/architecture/ACCOUNT_AGENT_FLEET_AND_IMPORT_MODEL_V1.md",
+    "owner_public_id": "0000000001",
+    "owner_public_id_state": "PAST_PRESERVED_OWNER_ROOT_RESERVED_AUTHENTICATION_NOT_PROVEN_BY_PUBLIC_MCP",
+    "iphone_public_id": "0000000002",
+    "iphone_public_id_state": "PAST_PRESERVED_STAGING_ACCEPTANCE_NOT_LIVE_CUSTOMER_OR_DEVICE_ID_PROOF",
+    "protected_beta_id_pattern": "8x8_<32 lowercase hex>",
+    "protected_beta_legacy_account_mapping_verified": false,
+    "protected_beta_owner_root_authority": false,
+    "tenant_membership_verified": false,
+    "owner_device_authority": false,
+    "credentials_can_be_collected_in_mcp_chat": false,
+    "secure_backend_linking_required": true,
+    "new_legacy_public_id_allocation_permitted_here": false,
+    "migration": "FUTURE_GATED_EXISTING_CORE_IDENTITY_AND_SIGNED_TENANT_RECONCILIATION"
+  },
+  "capabilities": [
+    {
+      "id": "one_fabric",
+      "status": "READ_ONLY_CATALOG"
+    },
+    {
+      "id": "owner_runtime",
+      "status": "NEVER_EXPOSED_TO_PUBLIC_USERS"
+    }
+  ],
+  "domains": [
+    "agents",
+    "models",
+    "memory",
+    "world",
+    "studio",
+    "publishing",
+    "finance",
+    "trading",
+    "wallet",
+    "blockchain",
+    "games",
+    "radio",
+    "books",
+    "research",
+    "planet",
+    "security",
+    "devices",
+    "community",
+    "settings"
+  ],
+  "agent_templates": [
+    "seraphim-guide",
+    "flash-assistant",
+    "aegis-security",
+    "jarvis-interface",
+    "research-guide",
+    "anvil-builder"
+  ],
+  "authentication": {
+    "method": "8x8 ID / OAuth 2.1 authorization code + S256 PKCE",
+    "oauth_deployed": false,
+    "sign_in_with_chatgpt_eligible": false,
+    "chatgpt_history_or_memory_import": false,
+    "cross_tenant_access": false,
+    "user_memory_owner": "each user owns their tenant memory"
+  },
+  "onboarding": [
+    "Sign in to 8x8 ID only through verified 8x8 identity provider",
+    "Connect 8x8 MCP and approve requested read scopes",
+    "Choose protected user-default agent templates",
+    "Connect each external plugin/provider separately with consent",
+    "Optionally connect a local device using local consent, scope and revocation",
+    "Enable trading research and Studio; separate grants needed for live posts and orders"
+  ],
+  "plans": {
+    "free": {
+      "target_minutes": 88,
+      "active": false,
+      "period": "UNDECIDED"
+    },
+    "plus": {
+      "usd_cents_month": 888,
+      "active": false,
+      "requires_verified_subscription_webhook": true
+    }
+  },
+  "connector_guidance": {
+    "mode": "RECOMMEND_ONLY",
+    "requires_explicit_chatgpt_plugin_install": true,
+    "requires_each_provider_consent": true,
+    "no_cross_app_token_sharing": true,
+    "device_mounts": "CONSENTED_LOCAL_PERMISSIONS_REQUIRED"
+  },
+  "surfaces": [
+    {
+      "id": "chatgpt_mcp",
+      "state": "NOT_DEPLOYED"
+    },
+    {
+      "id": "world_pwa",
+      "state": "SOURCE_PRESENT_NOT_FULLY_ACCEPTED"
+    },
+    {
+      "id": "android_apk",
+      "state": "RELEASE_NOT_VERIFIED"
+    },
+    {
+      "id": "telegram_mini_app",
+      "state": "AUTH_FLOW_NOT_ACCEPTED"
+    },
+    {
+      "id": "future_ios",
+      "state": "FUTURE_LAB"
+    }
+  ],
+  "experience_atlas": {
+    "classification": "SOURCE_CANDIDATE_NOT_RUNTIME_PROOF",
+    "expandable": true,
+    "source_of_authority": "fabric://8x8/core; projection only, not a parallel registry",
+    "families": [
+      {
+        "id": "world",
+        "title": "8x8 World & Spatial Experience",
+        "domain": "world",
+        "features": [
+          "Three Gates",
+          "infinite-world navigation",
+          "responsive web/PWA",
+          "3D/XR/AR",
+          "avatars",
+          "accessibility",
+          "multi-language",
+          "personalization",
+          "holographic donor graph"
+        ]
+      },
+      {
+        "id": "intelligence",
+        "title": "FlashTM8 Agent & Intelligence",
+        "domain": "agents",
+        "features": [
+          "FlashTM8 orchestration",
+          "Seraphim",
+          "Jarvis",
+          "research guide",
+          "councils",
+          "skills",
+          "models",
+          "agent-to-agent receipts",
+          "missions",
+          "five scheduler lanes",
+          "owner STOP",
+          "tenant-local memory",
+          "Omni / Omnivore historical intelligence lineage (source only)",
+          "Atlas estate-intelligence graph lineage (source only)"
+        ]
+      },
+      {
+        "id": "markets",
+        "title": "Market Intelligence & Trading",
+        "domain": "trading",
+        "features": [
+          "stocks",
+          "ETFs",
+          "crypto",
+          "FX",
+          "commodities",
+          "derivatives",
+          "five independently eligible account slots",
+          "candlestick/volume charts",
+          "order books",
+          "market trades count",
+          "account fills count",
+          "portfolio P&L",
+          "latency and freshness badges",
+          "research",
+          "paper trading",
+          "risk controls",
+          "gated orders",
+          "GG BTC analytics interface lineage (quarantined donor, not verified trading signal)"
+        ]
+      },
+      {
+        "id": "media",
+        "title": "Studio, Film & Animation",
+        "domain": "studio",
+        "features": [
+          "8:08 episodes",
+          "cinematic films",
+          "storyboards",
+          "scripts",
+          "characters",
+          "animation",
+          "generative video",
+          "VFX",
+          "voiceovers",
+          "subtitles",
+          "asset rights",
+          "edit timeline",
+          "render queue",
+          "approval and publishing receipts",
+          "8:08 cinema and earlier long-form video lineage (assets need independent release acceptance)"
+        ]
+      },
+      {
+        "id": "audio",
+        "title": "Music, Spotify, Radio & Podcasts",
+        "domain": "radio",
+        "features": [
+          "Spotify official embed candidates",
+          "authorized audio player",
+          "8x8-owned music",
+          "licensed catalogs",
+          "internet radio",
+          "podcasts",
+          "playlists",
+          "live show directories",
+          "audio visualization",
+          "rights-aware publishing"
+        ]
+      },
+      {
+        "id": "video",
+        "title": "Video, Live TV & Streaming",
+        "domain": "studio",
+        "features": [
+          "video player",
+          "8x8 video catalog",
+          "live streams",
+          "TV directories",
+          "creator channels",
+          "event broadcasts",
+          "VOD",
+          "adaptive playback",
+          "CDN health",
+          "moderation and content rights"
+        ]
+      },
+      {
+        "id": "publishing",
+        "title": "Creators, Social & Distribution",
+        "domain": "publishing",
+        "features": [
+          "TikTok",
+          "YouTube",
+          "Instagram",
+          "Facebook",
+          "Threads",
+          "X",
+          "Bluesky",
+          "Pinterest",
+          "LinkedIn",
+          "Discord",
+          "Telegram",
+          "direct adapters",
+          "scheduled posts",
+          "quota-aware retries",
+          "verified delivery"
+        ]
+      },
+      {
+        "id": "chains",
+        "title": "8x8 Chain, Coin, NFTs & Vault",
+        "domain": "blockchain",
+        "features": [
+          "8x8 Coin candidate",
+          "token design",
+          "NFT registry",
+          "8x8 NFT Vault",
+          "wallet viewer",
+          "multi-chain explorers",
+          "marketplace candidates",
+          "metadata provenance",
+          "digital collectibles",
+          "signing gates",
+          "mainnet gates"
+        ]
+      },
+      {
+        "id": "defi",
+        "title": "Mining, Staking & Digital Economy",
+        "domain": "finance",
+        "features": [
+          "mining feasibility",
+          "staking research",
+          "validator monitoring",
+          "pool comparisons",
+          "reward accounting",
+          "protocol risk",
+          "treasury planning",
+          "payments",
+          "commerce",
+          "invoicing",
+          "no assumed yield or live settlement"
+        ]
+      },
+      {
+        "id": "games",
+        "title": "Games & Interactive Universes",
+        "domain": "games",
+        "features": [
+          "8x8 games",
+          "multiplayer",
+          "leaderboards",
+          "competitions",
+          "achievements",
+          "avatars",
+          "3D worlds",
+          "simulations",
+          "physics",
+          "XR integration",
+          "anti-cheat"
+        ]
+      },
+      {
+        "id": "devices",
+        "title": "Devices, Robotics & Hardware",
+        "domain": "devices",
+        "features": [
+          "Android S22",
+          "iPhone/iSH",
+          "local developer environments",
+          "PC",
+          "notifications",
+          "permissions",
+          "screen inspection",
+          "accessibility",
+          "IoT",
+          "robotics",
+          "drones",
+          "sensors",
+          "reversible control leases",
+          "SOMA sensing, body and robotics lineage (research donor only)"
+        ]
+      },
+      {
+        "id": "build",
+        "title": "Terminal, Software & Infrastructure",
+        "domain": "settings",
+        "features": [
+          "terminal workspace",
+          "software factory",
+          "GitHub",
+          "CI/CD",
+          "databases",
+          "Vercel",
+          "Supabase",
+          "Render",
+          "observability",
+          "health",
+          "logs",
+          "rollback",
+          "backups",
+          "sandboxed execution",
+          "Termux, Ubuntu PRoot, historical device files and binary census (not exhaustive)"
+        ]
+      },
+      {
+        "id": "sources",
+        "title": "Connectors, MCP & Tool Federation",
+        "domain": "models",
+        "features": [
+          "source census",
+          "plugin directory",
+          "MCP tool index",
+          "skills",
+          "capability adapters",
+          "authentication state",
+          "grant and lease status",
+          "provenance",
+          "provider quota visibility",
+          "runtime probes",
+          "cross-surface routing"
+        ]
+      },
+      {
+        "id": "research",
+        "title": "Research, Science & Learning",
+        "domain": "research",
+        "features": [
+          "scientific papers",
+          "learning programs",
+          "code research",
+          "cybersecurity",
+          "cryptography",
+          "mathematics",
+          "knowledge graph",
+          "source citations",
+          "benchmarks",
+          "multi-model verification",
+          "Historical URL, visual donor, all-PR and repository census (partial, continuously reconciled)"
+        ]
+      },
+      {
+        "id": "planet",
+        "title": "Planet Earth & Civic Knowledge",
+        "domain": "planet",
+        "features": [
+          "maps",
+          "jurisdictions",
+          "institutions",
+          "public-interest research",
+          "environment",
+          "space",
+          "history",
+          "languages",
+          "civic evidence",
+          "law and policy",
+          "diplomatic contacts subject to authorization",
+          "Planet Earth original project and archival media (provenance and rights review required)"
+        ]
+      },
+      {
+        "id": "community",
+        "title": "Communications & Communities",
+        "domain": "community",
+        "features": [
+          "messaging",
+          "voice conversations",
+          "video calls",
+          "rooms",
+          "creator communities",
+          "contacts",
+          "calendar",
+          "partnerships",
+          "outreach",
+          "live events",
+          "permissions and consent",
+          "Consent-bound multilingual A2A, voice requests and council (runtime authentication not established)"
+        ]
+      },
+      {
+        "id": "identity",
+        "title": "8x8 ID, Privacy & Security",
+        "domain": "security",
+        "features": [
+          "owner root",
+          "isolated user tenants",
+          "OAuth 2.1",
+          "local credential broker",
+          "Vault capability handles",
+          "role scopes",
+          "auditing",
+          "revocation",
+          "STOP",
+          "session leases",
+          "device presence",
+          "secret redaction"
+        ]
+      },
+      {
+        "id": "knowledge",
+        "title": "Books, Memory & Archive",
+        "domain": "books",
+        "features": [
+          "8x8 books",
+          "historical releases",
+          "Quran work as private authorized source",
+          "personal libraries",
+          "cross-agent context",
+          "evidence archive",
+          "failed experiments",
+          "file lineage",
+          "recovery",
+          "content hashes",
+          "Books 1–13 archival and Qur'an project continuity (not a completeness or rights claim)"
+        ]
+      },
+      {
+        "id": "commerce",
+        "title": "Marketplace, Services & Finance",
+        "domain": "finance",
+        "features": [
+          "subscriptions",
+          "digital goods",
+          "marketplaces",
+          "business reports",
+          "analytics dashboards",
+          "consumer services",
+          "authorized payments",
+          "creator earnings",
+          "support and refunds"
+        ]
+      },
+      {
+        "id": "truth",
+        "title": "System Evidence & Continuous Improvement",
+        "domain": "settings",
+        "features": [
+          "current runtime truth",
+          "historical preservation",
+          "future gates",
+          "health status",
+          "telemetry provenance",
+          "data quality",
+          "tests",
+          "benchmarks",
+          "CI outcomes",
+          "recovery",
+          "safe upgrades",
+          "five-lane continuity"
+        ]
+      }
+    ]
+  },
+  "market_media_readiness": {
+    "classification": "SOURCE_DEFINED_UI_ROADMAP_ONLY",
+    "market_feed": {
+      "authenticated": false,
+      "licensed": false,
+      "connected": false,
+      "last_event_at": null,
+      "market_trades_count": null,
+      "account_fills_count": null,
+      "chart_candles": null,
+      "rate_per_second": null,
+      "orders_enabled": false,
+      "requirements": [
+        "source and instrument ID",
+        "market or account scope",
+        "exchange timestamp and ingest timestamp",
+        "timezone and units",
+        "live/delayed/replay flag",
+        "licensing and rate limits",
+        "deduplication cursor",
+        "subscriber isolation"
+      ]
+    },
+    "chart_widget": {
+      "state": "SOURCE_RENDERER_FOR_EXPLICIT_LOCAL_MARKET_SNAPSHOT",
+      "no_live_claim": true,
+      "live_feed_connected": false,
+      "untested_browser_interaction": true
+    },
+    "spotify": {
+      "connection_state": "NOT_VERIFIED",
+      "preferred_public_route": "OFFICIAL_EMBED_WHEN_ELIGIBLE",
+      "premium_playback_sdk_enabled": false,
+      "commercial_streaming_permission": false,
+      "content_sync_to_video_allowed": false,
+      "radio_rebroadcast_allowed": false
+    },
+    "video": {
+      "source_state": "LOCAL_USER_PROVIDED_PREVIEW_CANDIDATE",
+      "catalog_stream_verified": false,
+      "live_tv_licensed": false,
+      "autoplay": false
+    },
+    "music": {
+      "source_state": "LOCAL_USER_PROVIDED_PREVIEW_CANDIDATE",
+      "catalog_stream_verified": false,
+      "autoplay": false
+    },
+    "user_actions": {
+      "secrets_collected": false,
+      "trades_placed": false,
+      "external_posts_published": false,
+      "payments_started": false
+    },
+    "snapshots": {
+      "connector_census": "2026-10-15_POINT_IN_TIME_6105_ADVERTISED_MCP_ACTIONS_NOT_CONNECTED_TOOL_COUNT",
+      "active_tool_total_verified": false
+    },
+    "platform_surfaces": [
+      "chatgpt_mcp",
+      "world_pwa",
+      "android_apk",
+      "telegram_mini_app",
+      "future_ios"
+    ],
+    "quality_gates": [
+      "live provider permission and market data license",
+      "real timestamps and freshness",
+      "strict tenant boundaries",
+      "responsive media playback acceptance per platform",
+      "official Spotify embed test and terms review",
+      "paper trade independent risk and replay",
+      "per-platform release and rollback receipt"
+    ],
+    "local_market_snapshot_contract": {
+      "schema": "8x8.public.market.snapshot.v1",
+      "classification": "LOCAL_IMPORT_UNVERIFIED",
+      "scope": "PUBLIC_MARKET_ONLY",
+      "allowed_top_level_fields": [
+        "schema",
+        "classification",
+        "scope",
+        "source_label",
+        "venue",
+        "instrument",
+        "interval",
+        "window_start",
+        "window_end",
+        "observed_at",
+        "market_trade_count",
+        "bars"
+      ],
+      "bar_fields": [
+        "timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "1d"
+      ],
+      "max_bars": 1024,
+      "max_file_bytes": 262144,
+      "trade_count": "optional null or exact decimal integer string up to 80 digits, never a JS floating-point count",
+      "window": "UTC RFC3339 timestamps, max 31 days",
+      "separate_denominators": [
+        "market_trade_count represents venue-defined market events in the supplied window",
+        "account_fill_count never allowed in public import",
+        "paper_trades separately tracked outside public chart"
+      ],
+      "live_status": "NEVER_LIVE_FROM_FILE_IMPORT",
+      "server_feed_gate": "FUTURE_GATED_LICENSED_AUTHENTICATED_PROVIDER_ADAPTER_TIMESTAMPED_RECEIPT",
+      "privacy": "LOCAL_BROWSER_ONLY_NO_STORAGE_NO_UPLOAD_NO_ACCOUNT_FIELDS"
+    }
+  },
+  "connector_census": {
+    "source": "docs/evidence/whole-estate/2026-10-15/ONE_FABRIC_MASTER_COVERAGE_DELTA_V1.json",
+    "observed_at_date": "2026-10-15",
+    "advertised_mcp_actions_at_snapshot": 6105,
+    "advertised_tools_total_at_snapshot": 6116,
+    "advertised_namespaces_at_snapshot": 197,
+    "source_classification": "PAST_PRESERVED_SINGLE_SESSION_CENSUS_NOT_GLOBAL_DIRECTORY",
+    "global_provider_catalog_exhaustive": false,
+    "installed_plugins_denominator_verified": false,
+    "authenticated_connections_verified": false,
+    "runtime_qualified_actions_verified": false,
+    "public_user_tools_obtainable_by_8x8_automatically": false,
+    "public_exposes_private_source_names": false,
+    "provider_statuses": [
+      "DISCOVERED",
+      "INSTALLED",
+      "REACHABLE",
+      "HEALTHY",
+      "AUTHENTICATED",
+      "GRANTED",
+      "LEASED",
+      "STARTED",
+      "PRODUCTIVE",
+      "VERIFIED"
+    ],
+    "index_model": "Canonical source-index -> hash/provenance dedup -> tenant policy filter -> versioned paginated projection -> per-service connection -> independent receipt",
+    "read_only_tool_discovery": "SOURCE_METADATA_ONLY_UNTIL_PROVIDER_GRANT",
+    "future_page_api": "FUTURE_GATED_PAGE_TOKEN_AND_SOURCE_VERSION_REQUIRED_FOR_STABLE_PAGINATION",
+    "session_refresh": "ON_DEMAND_SOURCE_RECHECK_AND_VERSIONED_RECEIPT",
+    "unbounded_catalog": "EXTENSIBLE_REGISTRY_NOT_INFINITE_RUNTIME_CAPABILITY",
+    "five_scheduler_lanes": [
+      "Execute",
+      "Research",
+      "Verify",
+      "Create",
+      "Improve"
+    ]
+  }
+}

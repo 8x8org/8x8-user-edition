@@ -1,0 +1,84 @@
+{
+  "schema": "8x8.user_edition.secure_connection_vault_prelaunch_acceptance.v1",
+  "captured_utc": "2026-10-16",
+  "root": "fabric://8x8/core",
+  "repo": "8x8org/8x8-user-edition",
+  "pr_number": 200,
+  "classification": "SOURCE_IMPLEMENTED_LOCALLY_TESTED_NOT_LIVE",
+  "user_edition": {
+    "product_domains": 19,
+    "owner_ledger_access": "DENY_DEFAULT",
+    "existing_public_mcp_plugin": "8x8-one-fabric-world",
+    "plugin_version": "0.3.1",
+    "plugin_release_id": "pluginrel_6ad1b63b8f148191be50ba5ae3b9befa",
+    "private_to_plugin_owner": true,
+    "plugin_contains_secure_onboarding_skill": true,
+    "plugin_original_read_only_server_preserved": true
+  },
+  "connection_protocol": {
+    "provider_guides": 16,
+    "five_bitget_account_slots": true,
+    "canonical_social_destinations": 11,
+    "separate_stripe_crypto_invoice_wallet_termux_guides": true,
+    "credential_collection_in_chat": "DENIED",
+    "insecure_freetext_secret_submission": "DENIED",
+    "secure_vault_live": false,
+    "no_hardcoded_unverified_vault_login_url": true,
+    "connection_intent_ttl_seconds": 300,
+    "agent_credential_material_access": "NOT_GRANTED",
+    "bitget_read_only_initial": true,
+    "bitget_withdrawal_transfer_rights": "NOT_GRANTED",
+    "trading_and_publishing_effects": "SEPARATELY_AUTHORIZED_ONLY",
+    "user_vault_isolation": "POLICY_ONLY_NOT_RUNTIME_ATTESTED"
+  },
+  "test_receipt": {
+    "tests_passed": 41,
+    "total_tests": 41,
+    "environment": "Isolated local Python 3 unit tests",
+    "file_paths": [
+      "protected-beta/one_fabric_secure_connection_intents_v1.py",
+      "protected-beta/test_one_fabric_secure_connection_intents_v1.py"
+    ],
+    "code_git_blob": "0a6b7cf8e6dacd7debdb854e0dba3bc6fa933534",
+    "tests_git_blob": "5dbb9dbcaa5777f4eebd1703cdb6467ebee4242b",
+    "architecture_git_blob": "54e0e17918fe035482b2ebc6acb34c9fa632a50d",
+    "matched_readback": true,
+    "live_integration_tests": 0
+  },
+  "commerce": {
+    "stripe_business_account_session_present": true,
+    "hosted_checkout_for_new_user_edition": "NOT_DEPLOYED_AND_NOT_TESTED",
+    "free_target_daily_minutes": 88,
+    "free_daily_grant_live": false,
+    "plus_target_usd_month": "8.88",
+    "plus_billing_active": false,
+    "unlimited_external_api_posting_guaranteed": false,
+    "network_fees_and_provider_quotas_apply": true,
+    "crypto_checkout_verified": false,
+    "mainnet_token_checkouts": false,
+    "canonical_owner_tokenomics_private_source": "config/policy/ONE_FABRIC_OWNER_TOKENOMICS_NFT_VAULT_CANONICAL_V1.json",
+    "canonical_owner_tokenomics_git_blob": "cafbed4a1f86784f1e552c6debff6ee3832529ac",
+    "owner_tokenomics_truth_state": "SOURCE_OWNER_POLICY_CANDIDATE_HIGH_IMPACT_GATED",
+    "automated_tokenomics_disbursement_live": false,
+    "paid_software_subscription_is_not_genesis_token_delivery": true
+  },
+  "actions": {
+    "bitget_keys_collected": 0,
+    "live_trades": 0,
+    "public_posts": 0,
+    "crypto_payments": 0,
+    "new_subscriptions_charged": 0,
+    "private_owner_code_exposed": 0,
+    "production_deployments": 0
+  },
+  "release_blockers": [
+    "Verified HTTPS 8x8 ID OAuth 2.1/JWKS resource server",
+    "Session-to-tenant verified membership and database RLS",
+    "Independent HTTPS Secure Vault with managed KMS, atomic single-use intent and secure ingress",
+    "User-consented OAuth and exchange API credential provider canaries",
+    "Separate signed trading/publishing approvals with receipts",
+    "Stripe-hosted Checkout, webhook billing and tenant usage accounting",
+    "Supported chain-specific crypto invoice and refunds/compliance",
+    "Cross-surface live MCP/World/APK/Telegram acceptance"
+  ]
+}

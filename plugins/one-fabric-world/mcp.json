@@ -1,0 +1,22 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "one-fabric-world": {
+      "type": "streamable-http",
+      "url": "https://eightx8-one-fabric-public.onrender.com/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "cimd"
+            },
+            "baseScopes": [
+              "8x8.public.read"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

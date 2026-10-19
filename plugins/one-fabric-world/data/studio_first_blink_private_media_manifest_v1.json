@@ -1,0 +1,44 @@
+{
+  "schema": "8x8.studio_first_blink_private_media_manifest.v1",
+  "canonical_root": "fabric://8x8/core",
+  "provenance": "RECOVERED_LIBRARY_MEDIA_SHA256_VERIFIED_2026-10-18",
+  "state": "SOURCE_MANIFEST_ONLY_NOT_AUTHENTICATED_MCP_MEDIA",
+  "assets": {
+    "full_animatic": {
+      "filename": "8x8_first_blink_8m08s_animatic_v1.mp4",
+      "sha256": "fef4a4eb76c12f26ef3a7948499262e91dafd567cb28a9b09d91a6c07b3cfc65",
+      "duration_seconds": 488,
+      "size_bytes": 6595353
+    },
+    "preview": {
+      "filename": "8x8_first_blink_32s_preview_v1.mp4",
+      "sha256": "217d7e61251380ce1ae9342ae2fd9bdd9567cbabef129a987eed791efb5a1274",
+      "duration_seconds": 32.375,
+      "size_bytes": 770645
+    },
+    "poster": {
+      "filename": "8x8_first_blink_poster.png",
+      "sha256": "1af6412f0c4d6ad769fb242b460edf41bc6f5b722697c13d2b73a56147ee822a",
+      "size_bytes": 96352
+    }
+  },
+  "public_safe_summary": {
+    "preview_state": "RECOVERED_PRIVATE_LIBRARY",
+    "full_duration_seconds": 488,
+    "short_preview_seconds": 32.375,
+    "public_video_url": null,
+    "publishing_authorized": false,
+    "asset_rights_cleared": false,
+    "web_playback_authorized": false,
+    "studio_runtime_connected": false,
+    "owner_review_required": true
+  },
+  "constraints": {
+    "no_owner_image_impersonation": true,
+    "no_real_agents_claimed": true,
+    "no_public_mp4_url_without_authorized_media_host": true,
+    "no_auto_upload": true,
+    "no_trading": true,
+    "no_wallet_signing": true
+  }
+}
