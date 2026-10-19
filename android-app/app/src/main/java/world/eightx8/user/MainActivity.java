@@ -58,8 +58,12 @@ public final class MainActivity extends Activity {
     if (requestCode != SELECT_MEDIA || pendingSelection == null) return;
     ValueCallback<Uri[]> callback = pendingSelection;
     pendingSelection = null;
-    callback.onReceiveValue(resultCode == RESULT_OK && data != null && data.getData() != null
-      ? new Uri[]{data.getData()} : null);
+    Uri selected = resultCode == RESULT_OK && data != null ? data.getData() : null;
+    // A picker can return an arbitrary URI. Accept only scoped content: media.
+    String mime = selected != null && "content".equals(selected.getScheme())
+      ? getContentResolver().getType(selected) : null;
+    boolean permitted = mime != null && (mime.startsWith("image/") || mime.startsWith("video/") || mime.startsWith("audio/"));
+    callback.onReceiveValue(permitted ? new Uri[]{selected} : null);
   }
 
   @Override public void onBackPressed() {
