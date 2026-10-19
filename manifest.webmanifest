@@ -25,6 +25,11 @@
   ],
   "shortcuts": [
     {
+      "name": "One Fabric System Atlas",
+      "url": "/atlas",
+      "description": "Browse verified and planned capability families"
+    },
+    {
       "name": "8x8 Studio local media",
       "url": "/studio",
       "description": "Local image, audio and video inspector"
