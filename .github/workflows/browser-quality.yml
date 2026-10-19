@@ -19,6 +19,8 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install
+      - name: Test local Studio media and public PWA cache boundaries
+        run: node --test tests/media-core.test.mjs tests/service-worker.test.mjs
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser and accessibility gates
