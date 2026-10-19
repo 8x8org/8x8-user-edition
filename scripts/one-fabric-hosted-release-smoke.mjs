@@ -7,8 +7,8 @@ const profiles=[
   ['/studio','text/html',/8x8 Studio.*Media Inspector/i],
   ['/agents','text/html',/Agent Room.*Public Preview|8x8.*Agent Room/i],
   ['/icon.svg','image/svg+xml',/<svg\b/i],
-  ['/manifest.webmanifest','application/(?:manifest\+json|json)', null],
-  ['/sw.js','(?:application|text)/javascript',/addEventListener|self\./]
+  ['/manifest.webmanifest','application/manifest+json', null],
+  ['/sw.js','application/javascript',/addEventListener|self\./]
 ];
 export async function smoke(base, request=fetch) {
   const origin=new URL(base);
@@ -21,7 +21,9 @@ export async function smoke(base, request=fetch) {
     const resolved=new URL(res.url||target.href);
     if(resolved.origin!==origin.origin) throw Error('CROSS_ORIGIN_REDIRECT_'+path);
     const mime=res.headers.get('content-type')||'';
-    if(!(new RegExp('^'+expectedType,'i')).test(mime)) throw Error('WRONG_MEDIA_TYPE_'+path+'_'+mime);
+    const normalizedMime=mime.split(';',1)[0].trim().toLowerCase();
+    const acceptedTypes=path==='/manifest.webmanifest' ? ['application/manifest+json','application/json'] : path==='/sw.js' ? ['application/javascript','text/javascript'] : [expectedType];
+    if(!acceptedTypes.includes(normalizedMime)) throw Error('WRONG_MEDIA_TYPE_'+path+'_'+mime);
     if(Number(res.headers.get('content-length')||'0')>1048576) throw Error('OVERSIZED_'+path);
     const bytes=Buffer.from(await res.arrayBuffer());
     if(!bytes.length||bytes.length>1048576) throw Error('EMPTY_OR_OVERSIZED_'+path);
