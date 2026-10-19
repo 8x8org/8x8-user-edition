@@ -33,3 +33,12 @@ test('debug carrier build must fail closed without complete static site',()=>{
  assert.match(build,/dependsOn tasks.named\('verifyEightx8PublicBundle'\)/);
  assert.match(build,/Studio and Agent Room must not be the same fallback document/);
 });
+
+// Signing rotation across CI builds cannot override Android's package identity rules.
+test('isolated offline acceptance never replaces existing dev or preview packages',()=>{
+ assert.match(build,/offline\s*\{/);
+ assert.match(build,/applicationIdSuffix '\.offline'/);
+ assert.match(build,/manifestPlaceholders = \[eightx8AppLabel: '8x8 Offline'\]/);
+ assert.match(build,/applicationIdSuffix '\.preview'/);
+ assert.match(build,/applicationIdSuffix '\.dev'/);
+});
