@@ -318,7 +318,13 @@ test('Mission Cinema is an offline evidence viewer with media popup and gated ap
  assert.ok(ui.includes('DRAFT_NOT_SUBMITTED'));
  assert.ok(ui.includes('No hidden thoughts, credentials'));
  assert.ok(!ui.includes('<video autoplay'));
- assert.ok(!/\bEventSource\s*\(|\bWebSocket\s*\(/.test(ui));
+ assert.ok(ui.includes('window.__EIGHTX8_AUTHORIZED_OBSERVATORY__'));
+ assert.ok(ui.includes('cfg.enabled!==true'));
+ assert.ok(ui.includes('cfg.path!=="/v1/observatory/events"'));
+ assert.ok(ui.includes('target.origin!==location.origin'));
+ assert.ok(ui.includes('target.protocol!=="https:"'));
+ assert.ok(ui.includes('connect.addEventListener("click"'));
+ assert.ok(!/\bWebSocket\s*\(/.test(ui));
 });
 test('Mission Cinema cannot confer live agent, streaming, broker or media authority',async()=>{
  const [,r]=await post('tools/call',{name:'one_fabric.observatory_contract',arguments:{}});
@@ -348,4 +354,41 @@ test('Mission Cinema popup exposes evidence categories and truthful live gate',a
  assert.ok(ui.includes('not private model thoughts'));
  assert.ok(ui.includes('No live feed.'));
  assert.ok(ui.includes('SOURCE_SNAPSHOT · no runtime signer'));
+});
+
+const {privateKey:ecPrivate,publicKey:ecPublic}=generateKeyPairSync('ec',{namedCurve:'P-256'});
+const ecJwk=ecPublic.export({format:'jwk'});ecJwk.kid='supabase-ec';ecJwk.alg='ES256';
+const jwtEs=(claims={},keyToUse=ecPrivate,header={})=>{
+  const h=b({alg:'ES256',kid:'supabase-ec',...header});
+  const p=b({iss:env.PUBLIC_OAUTH_ISSUER,aud:env.PUBLIC_OAUTH_AUDIENCE,sub:'user1',iat:1729999900,exp:1730000100,scope:'8x8.public.read',...claims});
+  return h+'.'+p+'.'+sign('sha256',Buffer.from(h+'.'+p),{key:keyToUse,dsaEncoding:'ieee-p1363'}).toString('base64url');
+};
+async function postEc(token,jwks={keys:[ecJwk]}){
+ const request=new Request('https://mcp.test/mcp',{method:'POST',headers:{authorization:'Bearer '+token},body:JSON.stringify({jsonrpc:'2.0',id:2,method:'tools/list',params:{}})});
+ return makeHandler(env,async()=>new Response(JSON.stringify(jwks)),now)(request);
+}
+test('Supabase-like ES256 P-256 JWKS grants public scope only with valid signature',async()=>{
+ const r=await postEc(jwtEs());
+ assert.equal(r.status,200);
+ const b=await r.json();
+ assert.equal(b.result.tools.length,21);
+ assert.ok(b.result.tools.every(x=>x.annotations.readOnlyHint===true));
+});
+test('ES256 rejects tampering, wrong audience, issuer, and scope',async()=>{
+ const forged=generateKeyPairSync('ec',{namedCurve:'P-256'});
+ for(const token of [jwtEs({},forged.privateKey),jwtEs({aud:'https://evil.test'}),jwtEs({iss:'https://evil.test'}),jwtEs({scope:'8x8.owner.read'})]){
+  const r=await postEc(token);
+  assert.equal(r.status,401);
+ }
+});
+test('ES256 rejects mismatched JWK kid, curve, key type and algorithm',async()=>{
+ for(const changes of [{kid:'other'},{crv:'P-384'},{kty:'RSA'},{alg:'RS256'}]){
+  const r=await postEc(jwtEs(),{keys:[{...ecJwk,...changes}]});
+  assert.equal(r.status,401);
+ }
+});
+test('RS256 existing JWTs remain accepted and HS256 remains rejected',async()=>{
+ assert.equal((await post('tools/list',{}))[0].status,200);
+ const header={alg:'HS256',kid:'supabase-ec'};
+ assert.equal((await postEc(jwtEs({},ecPrivate,header))).status,401);
 });
