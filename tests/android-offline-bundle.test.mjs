@@ -15,7 +15,7 @@ test('preview loads a local trusted HTTPS asset origin, not stale external home'
  assert.doesNotMatch(activity,/web.loadUrl\(BuildConfig.HOME_URL/);
 });
 test('real routes and MIME types are present for offline Studio and Agent Room',()=>{
- for(const route of ['studio/index.html','agents/index.html','stable/index.html'])assert.ok(handler.includes(route),route);
+ for(const route of ['studio/index.html','agents/index.html','atlas/index.html','stable/index.html'])assert.ok(handler.includes(route),route);
  for(const mime of ['text/html','application/javascript','image/svg+xml','application/manifest+json'])assert.ok(handler.includes(mime),mime);
  for(const file of ["'studio'", "'agents'", "'sw.js'", "'icon.svg'"])assert.ok(webBuild.includes(file),file);
 });
