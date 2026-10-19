@@ -4,6 +4,18 @@ on:
     branches: [main, 'release/**']
     paths:
       - 'android-app/**'
+      - 'studio/**'
+      - 'tests/media-core.test.mjs'
+      - 'scripts/build-vercel-static.mjs'
+      - 'vercel.json'
+      - 'manifest.webmanifest'
+      - 'sw.js'
+      - 'icon.svg'
+      - 'v50.html'
+      - 'one-fabric-capability-estate-v52.js'
+      - 'one-fabric-interaction-estate-v53.js'
+      - 'one-fabric-public-transparency-v54.js'
+      - 'one-fabric-three-gate-experience-v55.js'
       - '.github/workflows/android-apk-v50.yml'
   workflow_dispatch:
 
