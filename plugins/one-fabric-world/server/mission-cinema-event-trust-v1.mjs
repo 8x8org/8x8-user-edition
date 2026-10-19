@@ -6,7 +6,9 @@ export const SCHEMA='8x8.mission_cinema.signed_event_batch.v1';
 export const EVENT_TYPES=Object.freeze([
   'RESEARCH_SOURCE','TOOL_RESULT','SOURCE_COMMIT','TEST_RESULT',
   'DEPLOYMENT_RESULT','PROVIDER_CANARY','MEDIA_RENDER',
-  'DEVICE_CONTROL_STATUS','APPROVAL_STATUS','INCIDENT'
+  'DEVICE_CONTROL_STATUS','APPROVAL_STATUS','INCIDENT',
+  // Signed lifecycle events report only sanitized milestones, never hidden thoughts.
+  'OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'
 ]);
 const hex64=/^[a-f0-9]{64}$/;
 const ident=/^[a-zA-Z0-9_.:-]{2,100}$/;
