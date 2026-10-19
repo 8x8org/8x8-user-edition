@@ -20,3 +20,11 @@ test('wrong agent page still HTTP 200 is rejected',async()=>await assert.rejects
 test('HTML-as-SVG is rejected',async()=>await assert.rejects(smoke('https://8x8.example/',fake({'/icon.svg':['text/html','<html>fallback</html>']})),/WRONG_MEDIA_TYPE/));
 test('manifest missing Agent Room shortcut is rejected',async()=>await assert.rejects(smoke('https://8x8.example/',fake({'/manifest.webmanifest':['application/json','{"shortcuts":[{"url":"/studio"}]}']})),/MANIFEST_SHORTCUT_MISSING/));
 test('redirect and URL credentials are rejected',async()=>{await assert.rejects(smoke('https://user:pw@8x8.example/',fake()),/EXPECTED_BASE_ORIGIN/); await assert.rejects(smoke('https://8x8.example/',async()=>new Response('',{status:302})),/UNEXPECTED_HTTP/)});
+
+test('accepts exact asset MIME with optional charset without interpreting plus as regex',async()=>{
+ const r=await smoke('https://8x8.example/',fake({'/icon.svg':['image/svg+xml; charset=utf-8',routes['/icon.svg'][1]]}));
+ assert.equal(r.state,'PRESENT_PROVEN');
+});
+test('rejects SVG lookalike MIME even when bytes contain SVG',async()=>{
+ await assert.rejects(smoke('https://8x8.example/',fake({'/icon.svg':['image/svgx+xml',routes['/icon.svg'][1]]})),/WRONG_MEDIA_TYPE/);
+});
