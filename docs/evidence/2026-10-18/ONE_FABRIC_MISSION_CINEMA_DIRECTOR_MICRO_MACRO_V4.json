@@ -1,0 +1,114 @@
+{
+  "schema": "8x8.one_fabric.mission_cinema.director_micro_macro.v4",
+  "canonical_root": "fabric://8x8/core",
+  "date": "2026-10-18",
+  "classification": "SOURCE_TESTED_COMMITTED_NOT_LIVE_CONNECTED",
+  "feature": "Read-only evidence director inside existing 8x8 World Observatory",
+  "source": {
+    "path": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+    "blob_sha": "01d0fb360811ac0b7d00ae0334c5f94b6a7759d6",
+    "commit_sha": "81d5679c59cc2f4dd6da4d24cde07df2960ad792"
+  },
+  "tests": {
+    "path": "plugins/one-fabric-world/tests/mission-cinema-live-viewer-v1.test.mjs",
+    "blob_sha": "a7ccb2abfca04b87723341a7bce14006b2b93f3a",
+    "commit_sha": "796ca83ec3ffc14a33625b633abdf72d4c9f2c97",
+    "isolated_node_suite": "52/52 PASS",
+    "includes": [
+      "17 signed event trust tests",
+      "20 tenant scoped observation projection tests",
+      "15 viewer UI syntax/filter/receipt link negative tests"
+    ],
+    "actual_browser_e2e": false,
+    "committed_source_readback": true
+  },
+  "viewer": {
+    "modes": [
+      "MICRO_ACTIONS",
+      "CINEMATIC_MISSION_SCENES"
+    ],
+    "filters": [
+      "ALL",
+      "RESEARCH",
+      "BUILD",
+      "MEDIA",
+      "SAFETY",
+      "PROVIDER"
+    ],
+    "details": [
+      "source_id",
+      "observed_utc",
+      "evidence_class",
+      "sequence",
+      "hash",
+      "allowlisted_github_receipt"
+    ],
+    "safe_untrusted_content": "textContent_only",
+    "live_event_subscription": "SOURCE_PRESENT_DISABLED_BY_DEFAULT",
+    "live_connected": false,
+    "live_signed_runtime_events_verified_in_this_turn": 0,
+    "broker_fills_attested": 0,
+    "published_posts_attested": 0,
+    "hidden_reasoning_access": false,
+    "credential_access": false,
+    "source_event_import_signature_verification": false
+  },
+  "device": {
+    "owner_pause_present": true,
+    "hermes_voice_stop_present": true,
+    "resident_runtime_replaced": false,
+    "no_foreground_activation": true
+  },
+  "plugin": {
+    "private_name": "8x8-one-fabric-world",
+    "previously_verified_registered_version": "0.4.4",
+    "new_plugin_release_installed": false,
+    "public_mcp_https_auth": "MOST_RECENT_KNOWN_AUTH_CONFIGURATION_REQUIRED_HTTP_503_NOT_PROBED_THIS_RUN"
+  },
+  "events": [
+    {
+      "event_id": "mission-v4-01",
+      "source_id": "github-source",
+      "summary": "Existing signed verifier and Observatory sources inspected",
+      "evidence_class": "SOURCE_VERIFIED"
+    },
+    {
+      "event_id": "mission-v4-02",
+      "source_id": "samsung-safety",
+      "summary": "Owner pause and Hermes voice stop found active",
+      "evidence_class": "SOURCE_VERIFIED"
+    },
+    {
+      "event_id": "mission-v4-03",
+      "source_id": "isolated-ui",
+      "summary": "Micro actions, cinema scenes, filters and proof inspector added",
+      "evidence_class": "SOURCE_VERIFIED"
+    },
+    {
+      "event_id": "mission-v4-04",
+      "source_id": "test-runner",
+      "summary": "All 52 event trust and Observatory regression tests passed",
+      "evidence_class": "SOURCE_VERIFIED"
+    },
+    {
+      "event_id": "mission-v4-05",
+      "source_id": "github-commit",
+      "summary": "Observatory and tests committed to existing User Edition draft",
+      "evidence_class": "SOURCE_VERIFIED"
+    },
+    {
+      "event_id": "mission-v4-06",
+      "source_id": "github-readback",
+      "summary": "Both committed source blobs matched the isolated tested files",
+      "evidence_class": "SOURCE_VERIFIED"
+    }
+  ],
+  "note": "events[] are importable as UNVERIFIED_LOCAL_IMPORT replay only. GitHub source readbacks and node tests support the summary separately; signed batch verifier was not used to attest this replay. Never describe replay as live.",
+  "acceptance_gates": [
+    "Enroll trusted event producer Ed25519 signing keys under correct tenant scope",
+    "Deploy authenticated 8x8 Gate2 and secure same-origin SSE stream with STOP interception",
+    "Prove signed ordered and tamper-resistant runtime receipts, browser replay recovery and revocation",
+    "Update original private 8x8 World plugin with guarded artifact and independently verify MCP Apps UI event subscription",
+    "Keep real broker fills, social post delivery and owner approvals separately authenticated and attested"
+  ]
+}
