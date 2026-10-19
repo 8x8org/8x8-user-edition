@@ -52,14 +52,19 @@ jobs:
           grep -Fq 'media-src' vercel.json
       - name: Build installable development APK and release-unsigned APK
         run: |
-          gradle -p android-app --no-daemon clean assembleDebug assembleRelease
+          gradle -p android-app --no-daemon clean assembleDebug assemblePreview assembleRelease
+          # Preflight: candidate must not reuse existing world.eightx8.user.dev identity.
+          AAPT="$(find "${ANDROID_HOME:?}/build-tools" -maxdepth 2 -type f -name aapt | sort -V | tail -n1)"
+          test -x "$AAPT"
+          "$AAPT" dump badging android-app/app/build/outputs/apk/preview/app-preview.apk | grep -F "package: name='world.eightx8.user.preview'"
       - name: Record artifact truth
         run: |
           mkdir -p android-dist
           cp android-app/app/build/outputs/apk/debug/app-debug.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-dev-signed.apk
+          cp android-app/app/build/outputs/apk/preview/app-preview.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-side-by-side-preview.apk
           cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-release-unsigned.apk
           sha256sum android-dist/*.apk | tee android-dist/SHA256SUMS.txt
-          printf '%s\n' 'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED' 'PRODUCTION_APK=NOT_SIGNED_NOT_PUBLISHED_AS_PRODUCTION' > android-dist/RELEASE_TRUTH.txt
+          printf '%s\n' 'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED_PACKAGE_WORLD_EIGHTX8_USER_DEV' 'SIDE_BY_SIDE_PREVIEW=DEBUG_SIGNED_PACKAGE_WORLD_EIGHTX8_USER_PREVIEW' 'PREVIEW_PRESERVES_INSTALLED_DEV_PACKAGE=TRUE' 'PRODUCTION_APK=NOT_SIGNED_NOT_PUBLISHED_AS_PRODUCTION' > android-dist/RELEASE_TRUTH.txt
       - uses: actions/upload-artifact@v4
         with:
           name: 8x8-user-edition-v50-0.2.1-rc1-apk
