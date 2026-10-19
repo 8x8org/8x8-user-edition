@@ -104,6 +104,10 @@
     {
       "source": "/atlas",
       "destination": "/atlas/index.html"
+    },
+    {
+      "source": "/mcp/catalog",
+      "destination": "/mcp/one-fabric-capability-catalog-v1.json"
     }
   ]
 }
