@@ -296,7 +296,7 @@ function close(message){
 connect.addEventListener("click",()=>{
  close();
  const cfg=window.__EIGHTX8_AUTHORIZED_OBSERVATORY__;
- if(!cfg||cfg.enabled!==true||cfg.path!=="/v1/observatory/events"||typeof EventSource!=="function"){
+ if(!cfg||cfg.enabled!==true||cfg.path!=="/v1/observatory/events"||!safe(cfg.tenant_id,80)||typeof EventSource!=="function"){
   note.textContent="Live feed blocked: authenticated 8x8 Gate 2, owner approval, trusted signer and HTTPS event transport not deployed.";
   return;
  }
@@ -314,7 +314,7 @@ connect.addEventListener("click",()=>{
   try{
    if(typeof event.data!=="string"||event.data.length>65536)throw Error("SIZE");
    const frame=JSON.parse(event.data);
-   if(frame.schema!=="8x8.mission_cinema.verified_observation_frame.v1"
+   if(frame.tenant_id!==cfg.tenant_id||frame.schema!=="8x8.mission_cinema.verified_observation_frame.v1"
       ||frame.classification!=="SIGNED_EVENTS_VERIFIED_TRANSPORT_NOT_PROVEN"
       ||frame.live_stream_connected!==false||frame.execution_authorized!==false
       ||!Array.isArray(frame.events)||frame.events.length<1||frame.events.length>80)
