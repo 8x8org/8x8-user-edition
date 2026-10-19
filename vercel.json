@@ -50,6 +50,10 @@
   ],
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/v50.html"
+    },
+    {
       "source": "/studio",
       "destination": "/studio/index.html"
     },
