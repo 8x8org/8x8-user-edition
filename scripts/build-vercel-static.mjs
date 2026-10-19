@@ -14,6 +14,7 @@ const items = [
   'app.js',
   'state',
   'studio',
+  'updates',
   'agents',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
