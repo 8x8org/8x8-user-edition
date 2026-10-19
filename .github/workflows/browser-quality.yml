@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Test local Studio media and public PWA cache boundaries
-        run: node --test tests/system-atlas.test.mjs tests/media-core.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/hosted-release-smoke.test.mjs tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs
+        run: node --test tests/one-fabric-consolidation.test.mjs tests/system-atlas.test.mjs tests/media-core.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/hosted-release-smoke.test.mjs tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser and accessibility gates
