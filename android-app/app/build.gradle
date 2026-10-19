@@ -7,9 +7,9 @@ android {
         applicationId 'world.eightx8.user'
         minSdk 26
         targetSdk 35
-        versionCode 20050
-        versionName '0.2.0-v50'
-        def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-user-8888-8x8-team-url.vercel.app'
+        versionCode 20051
+        versionName '0.2.1-v50-media-rc1'
+        def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-os-ecosystem.vercel.app'
         buildConfigField 'String', 'HOME_URL', '"' + home + '"'
     }
     buildFeatures { buildConfig true }
