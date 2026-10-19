@@ -53,6 +53,7 @@ jobs:
           test -s dist/updates/android/latest.json
           test -s dist/atlas/index.html
           test -s dist/atlas/one-fabric-public-catalog-v1.js
+          test -s dist/mcp/one-fabric-capability-catalog-v1.json
           grep -Fq 'data-eightx8-atlas-link' dist/index.html
           test -s dist/agents/index.html
           grep -Fq 'data-eightx8-agent-room' dist/index.html
@@ -74,9 +75,10 @@ jobs:
           jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/agents/index.html'
           jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/atlas/index.html'
           jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/atlas/one-fabric-public-catalog-v1.js'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/mcp/one-fabric-capability-catalog-v1.json'
           jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/studio/media-core.mjs'
           jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/icon.svg'
-          for p in assets/index.html assets/studio/index.html assets/agents/index.html assets/atlas/index.html assets/atlas/one-fabric-public-catalog-v1.js assets/studio/media-core.mjs assets/icon.svg; do
+          for p in assets/index.html assets/studio/index.html assets/agents/index.html assets/atlas/index.html assets/atlas/one-fabric-public-catalog-v1.js assets/mcp/one-fabric-capability-catalog-v1.json assets/studio/media-core.mjs assets/icon.svg; do
             jar tf android-app/app/build/outputs/apk/offline/app-offline.apk | grep -Fxq "$p"
           done
       - name: Record artifact truth
