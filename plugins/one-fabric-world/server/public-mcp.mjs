@@ -88,7 +88,7 @@ async function verifyIdentity(req,env,fetcher,now){
  if(!/^Bearer [\w.-]+$/.test(auth)||auth.length>8192)throw Error('UNAUTHORIZED');
  const parts=auth.slice(7).split('.');if(parts.length!==3)throw Error('INVALID_TOKEN');
  let hd,claims;try{hd=JSON.parse(decode(parts[0]));claims=JSON.parse(decode(parts[1]));}catch{throw Error('FORMAT')}
- if(hd.alg!=='RS256'||typeof hd.kid!=='string'||!hd.kid||hd.kid.length>200)throw Error('ALGORITHM');
+ if(!['RS256','ES256'].includes(hd.alg)||typeof hd.kid!=='string'||!hd.kid||hd.kid.length>200)throw Error('ALGORITHM');
  if(claims.iss!==env.PUBLIC_OAUTH_ISSUER||!(claims.aud===env.PUBLIC_OAUTH_AUDIENCE||Array.isArray(claims.aud)&&claims.aud.includes(env.PUBLIC_OAUTH_AUDIENCE)))throw Error('ISSUER_AUDIENCE');
  const nowSec=Math.floor(now()/1000);
  if(!Number.isSafeInteger(claims.exp)||claims.exp<=nowSec||!Number.isSafeInteger(claims.iat)||claims.iat>nowSec+30||claims.nbf!==undefined&&claims.nbf>nowSec+30)throw Error('EXPIRED');
@@ -97,8 +97,15 @@ async function verifyIdentity(req,env,fetcher,now){
  if(!scopes.has(SCOPE))throw Error('SCOPE');
  const rsp=await fetcher(env.PUBLIC_JWKS_URL,{redirect:'error',headers:{accept:'application/json'},signal:AbortSignal.timeout(3500)});
  if(!rsp.ok)throw Error('JWKS');const keyset=await rsp.json();
- const jwk=Array.isArray(keyset.keys)?keyset.keys.find(k=>k.kid===hd.kid&&k.kty==='RSA'&&(!k.alg||k.alg==='RS256')&&(!k.use||k.use==='sig')):null;
- if(!jwk||!verify('RSA-SHA256',Buffer.from(parts[0]+'.'+parts[1]),createPublicKey({key:jwk,format:'jwk'}),decode(parts[2])))throw Error('SIGNATURE');
+ const jwk=Array.isArray(keyset.keys)?keyset.keys.find(k=>
+  k.kid===hd.kid&&(!k.use||k.use==='sig')&&(!k.alg||k.alg===hd.alg)&&
+  (hd.alg==='RS256'?k.kty==='RSA':k.kty==='EC'&&k.crv==='P-256')):null;
+ if(!jwk)throw Error('SIGNATURE');
+ const pub=createPublicKey({key:jwk,format:'jwk'});
+ const valid=hd.alg==='RS256'
+  ?verify('RSA-SHA256',Buffer.from(parts[0]+'.'+parts[1]),pub,decode(parts[2]))
+  :verify('sha256',Buffer.from(parts[0]+'.'+parts[1]),{key:pub,dsaEncoding:'ieee-p1363'},decode(parts[2]));
+ if(!valid)throw Error('SIGNATURE');
  // JWT signature validates public catalog access only. Tenant membership must be verified
  // separately against 8x8 account data before any user-owned resource action is added.
  return {subject:claims.sub};
