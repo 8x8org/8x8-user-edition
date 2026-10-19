@@ -6,6 +6,7 @@ on:
       - 'android-app/**'
       - 'studio/**'
       - 'tests/media-core.test.mjs'
+      - 'tests/service-worker.test.mjs'
       - 'scripts/build-vercel-static.mjs'
       - 'vercel.json'
       - 'manifest.webmanifest'
@@ -37,7 +38,7 @@ jobs:
           gradle-version: '8.10.2'
       - name: Verify public Studio safety and cross-platform static build
         run: |
-          node --test tests/media-core.test.mjs
+          node --test tests/media-core.test.mjs tests/service-worker.test.mjs
           npm run build:vercel
           test -s dist/icon.svg
           test -s dist/sw.js
