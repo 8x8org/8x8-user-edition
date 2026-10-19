@@ -114,9 +114,16 @@ public final class VerifiedUpdateManager {
   }
 
   private static String signer(PackageInfo info) throws Exception {
-    if (info == null || info.signingInfo == null
-      || info.signingInfo.getApkContentsSigners().length != 1) throw new SecurityException("Invalid signer set");
-    return certDigest(info.signingInfo.getApkContentsSigners()[0]);
+    if (info == null) throw new SecurityException("No package identity");
+    if (Build.VERSION.SDK_INT >= 28) {
+      if (info.signingInfo == null || info.signingInfo.getApkContentsSigners().length != 1)
+        throw new SecurityException("Invalid signer set");
+      return certDigest(info.signingInfo.getApkContentsSigners()[0]);
+    }
+    // Android 8.0 and 8.1: older public package-signature API.
+    if (info.signatures == null || info.signatures.length != 1)
+      throw new SecurityException("Invalid signer set");
+    return certDigest(info.signatures[0]);
   }
 
   private static UpdateCandidate downloadAndVerify(Activity a) throws Exception {
@@ -133,7 +140,9 @@ public final class VerifiedUpdateManager {
     if (!a.getPackageName().equals(packageId)) throw new SecurityException("Wrong package");
     long version = m.getLong("versionCode");
     PackageManager pm = a.getPackageManager();
-    PackageInfo installed = pm.getPackageInfo(a.getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
+    int signatureFlag = Build.VERSION.SDK_INT >= 28
+      ? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES;
+    PackageInfo installed = pm.getPackageInfo(a.getPackageName(), signatureFlag);
     if (version <= installed.getLongVersionCode()) throw new NotReleasedException();
     String sha = m.getString("sha256");
     String cert = m.getString("signerSha256");
@@ -164,7 +173,7 @@ public final class VerifiedUpdateManager {
         out.getFD().sync();
       }
       if (total==0 || !sha.equals(hex(md.digest()))) throw new SecurityException("Checksum mismatch");
-      PackageInfo archive = pm.getPackageArchiveInfo(tmp.getAbsolutePath(),PackageManager.GET_SIGNING_CERTIFICATES);
+      PackageInfo archive = pm.getPackageArchiveInfo(tmp.getAbsolutePath(),signatureFlag);
       if (archive==null || !packageId.equals(archive.packageName)
         || archive.getLongVersionCode()!=version || !cert.equals(signer(archive)))
         throw new SecurityException("APK identity mismatch");
