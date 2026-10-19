@@ -139,7 +139,7 @@ small{font-size:11px}
   <div><h3>Workstream replay</h3><ol id="mc-events" class="mc-steps" aria-live="polite"><li><strong>No authenticated event feed</strong><small>Choose Replay source milestones or import a local receipt for unverified inspection.</small></li></ol><p class="mc-note" id="mc-note" role="status">Idle · no live agent or tool activity observed by this viewer.</p></div>
  </div>
  <div class="mc-controls">
-  <button type="button" id="mc-replay">▶ Replay source milestones</button><button type="button" id="mc-halt">■ Stop replay</button>
+  <button type="button" id="mc-live-connect">◉ Connect verified live feed</button><button type="button" id="mc-live-disconnect">■ Disconnect live feed</button><button type="button" id="mc-replay">▶ Replay source milestones</button><button type="button" id="mc-halt">■ Stop replay</button>
   <label for="mc-receipt" tabindex="0">Import local receipt (unverified)<input type="file" id="mc-receipt" accept=".json,application/json"></label>
   <label for="mc-video" tabindex="0">🎬 Open local film / image<input type="file" id="mc-video" accept="video/*,image/*"></label>
   <button type="button" id="mc-approval">Prepare approval review (no execution)</button>
@@ -271,5 +271,84 @@ $("mc-approval").addEventListener("click",()=>{
  note.textContent="Local approval REVIEW DRAFT exported · no approval sent or permission granted.";
 });
 window.addEventListener("pagehide",()=>{clear();release();});
+})();
+</script>
+<script>
+/* ©8x8 Mission Cinema — optional read-only signed-event viewer.
+   The current public plugin does not inject an authorized stream configuration.
+   A future server must provide Gate2 auth, tenant isolation, signer verification,
+   STOP interlock and the actual same-origin SSE service; the browser does not.
+   This client never shows private model reasoning, tool arguments or secrets. */
+(()=>{
+"use strict";
+const byId=id=>document.getElementById(id);
+const connect=byId("mc-live-connect"),disconnectButton=byId("mc-live-disconnect");
+const note=byId("mc-note"),tag=byId("mc-live"),log=byId("mc-events");
+if(!connect||!disconnectButton||!note||!tag||!log)return;
+let stream=null,sequence=0,lastHash="GENESIS";
+const reject=/bearer|api[_ -]?key|secret|password|passphrase|private[_ -]?key|seed phrase|mnemonic|access[_ -]?token|authorization:|hidden reasoning|chain[_ -]?of[_ -]?thought/i;
+const safe=(v,max)=>typeof v==="string"&&v.length<=max&&!/[\x00-\x1f\x7f<>]/.test(v)&&!reject.test(v);
+function close(message){
+ if(stream){stream.close();stream=null;}
+ tag.textContent="LIVE FEED NOT CONNECTED";
+ if(message)note.textContent=message;
+}
+connect.addEventListener("click",()=>{
+ close();
+ const cfg=window.__EIGHTX8_AUTHORIZED_OBSERVATORY__;
+ if(!cfg||cfg.enabled!==true||cfg.path!=="/v1/observatory/events"||typeof EventSource!=="function"){
+  note.textContent="Live feed blocked: authenticated 8x8 Gate 2, owner approval, trusted signer and HTTPS event transport not deployed.";
+  return;
+ }
+ let target;
+ try{target=new URL(cfg.path,location.href);}catch{note.textContent="Invalid observation route.";return;}
+ if(target.origin!==location.origin||target.protocol!=="https:"){
+  note.textContent="Rejected: only approved same-origin HTTPS transport is permitted.";return;
+ }
+ // EventSource cannot grant permissions: server authenticates existing session
+ // and checks tenant, scope, signer, sequence, freshness and STOP on EVERY batch.
+ sequence=0;lastHash="GENESIS";
+ stream=new EventSource(target.href);
+ note.textContent="Attempting verified read-only event subscription; no agent actions authorized.";
+ stream.addEventListener("eightx8.verified_record",event=>{
+  try{
+   if(typeof event.data!=="string"||event.data.length>65536)throw Error("SIZE");
+   const frame=JSON.parse(event.data);
+   if(frame.schema!=="8x8.mission_cinema.verified_observation_frame.v1"
+      ||frame.classification!=="SIGNED_EVENTS_VERIFIED_TRANSPORT_NOT_PROVEN"
+      ||frame.live_stream_connected!==false||frame.execution_authorized!==false
+      ||!Array.isArray(frame.events)||frame.events.length<1||frame.events.length>80)
+     throw Error("UNVERIFIED_FRAME");
+   let next=sequence,previous=lastHash;
+   const additions=[];
+   for(const e of frame.events){
+    if(!e||e.sequence!==next+1||!safe(e.event_id,80)||!safe(e.source_id,80)
+       ||!safe(e.summary,240)||!safe(e.event_type,40)
+       ||!["SOURCE_VERIFIED","RUNTIME_RECEIPT"].includes(e.evidence_class)
+       ||!safe(e.hash,64)||!/^([a-f0-9]{64})$/.test(e.hash))
+      throw Error("UNSAFE_OR_GAPPED_EVENT");
+    // Server verified the Ed25519 chain; the client also enforces monotonic
+    // order, never grants permissions and renders text without HTML injection.
+    next=e.sequence;previous=e.hash;
+    const li=document.createElement("li"),name=document.createElement("strong"),meta=document.createElement("small");
+    name.textContent=e.event_type+" · "+e.summary;
+    meta.textContent=e.source_id+" · "+e.evidence_class+" · sequence "+e.sequence;
+    li.append(name,meta);additions.push(li);
+   }
+   if(frame.lastSequence!==next||frame.lastHash!==previous)throw Error("INVALID_CHECKPOINT");
+   sequence=next;lastHash=previous;
+   if(sequence===frame.events.length)log.replaceChildren();
+   for(const element of additions)log.prepend(element);
+   while(log.children.length>80)log.lastElementChild.remove();
+   tag.textContent="SIGNED RECORDS RECEIVED · LIVE AUTH NOT ATTESTED";
+   note.textContent="Received "+sequence+" ordered signed-source observations. Streaming receipt and operating authority not independently verified.";
+  }catch{
+   close("Rejected event: invalid source, chain checkpoint or unsafe content. Transport closed.");
+  }
+ });
+ stream.onerror=()=>close("Authenticated observation feed unavailable or disconnected; no live session certified.");
+});
+disconnectButton.addEventListener("click",()=>close("Viewer disconnected · no model, app or provider action was triggered."));
+window.addEventListener("pagehide",()=>close());
 })();
 </script></body></html>
