@@ -23,18 +23,28 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
+      - name: Verify public Studio safety and cross-platform static build
+        run: |
+          node --test tests/media-core.test.mjs
+          npm run build:vercel
+          test -s dist/icon.svg
+          test -s dist/sw.js
+          test -s dist/studio/index.html
+          test -s dist/studio/media-core.mjs
+          grep -Fq 'data-eightx8-studio-launcher' dist/index.html
+          grep -Fq 'media-src' vercel.json
       - name: Build installable development APK and release-unsigned APK
         run: |
           gradle -p android-app --no-daemon clean assembleDebug assembleRelease
       - name: Record artifact truth
         run: |
           mkdir -p android-dist
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk android-dist/8x8-user-edition-v50-0.2.0-dev-signed.apk
-          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk android-dist/8x8-user-edition-v50-0.2.0-release-unsigned.apk
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-dev-signed.apk
+          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-release-unsigned.apk
           sha256sum android-dist/*.apk | tee android-dist/SHA256SUMS.txt
           printf '%s\n' 'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED' 'PRODUCTION_APK=NOT_SIGNED_NOT_PUBLISHED_AS_PRODUCTION' > android-dist/RELEASE_TRUTH.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: 8x8-user-edition-v50-apk
+          name: 8x8-user-edition-v50-0.2.1-rc1-apk
           path: android-dist/
           if-no-files-found: error
