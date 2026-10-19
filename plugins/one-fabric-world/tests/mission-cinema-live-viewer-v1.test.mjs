@@ -117,3 +117,15 @@ test('director interaction filters source results and opens only allowlisted evi
  assert.equal(byId['mc-detail-receipt'].href,undefined);
  assert.equal(typeof observer,'function');
 });
+
+test('operation lifecycle includes four phases but cannot attest a real-world effect',()=>{
+ assert.match(html,/value="LIFECYCLE"/);
+ for(const t of ['OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'])assert.match(html,new RegExp(t));
+ assert.match(html,/id="mc-lifecycle-count"/);
+ assert.match(html,/id="mc-detail-phase"/);
+ assert.match(html,/external effect must be confirmed separately/);
+ assert.match(html,/0 effect attestations/);
+ assert.doesNotMatch(html,/innerHTML\s*=\s*e\.summary/);
+ const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
+ for(const code of scripts)assert.doesNotThrow(()=>new Script(code));
+});
