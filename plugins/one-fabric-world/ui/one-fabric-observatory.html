@@ -168,7 +168,7 @@ small{font-size:11px}
    <select id="mc-evidence-filter" aria-label="Filter evidence by workstream">
     <option value="ALL">All recorded actions</option>
     <option value="RESEARCH">Research & tools</option>
-    <option value="LIFECYCLE">Started · succeeded · failed · blocked</option>
+    <option value="LIFECYCLE">Started · progress · succeeded · failed · blocked</option>
     <option value="BUILD">Files, tests & deployment</option>
     <option value="MEDIA">Studio & media</option>
     <option value="SAFETY">Safety & approvals</option>
@@ -420,6 +420,7 @@ if(!panel||!feed||!filter||typeof MutationObserver!=="function")return;
 const micro=get("mc-mode-micro"),cinema=get("mc-mode-cinema"),link=get("mc-detail-receipt");
 const lifecyclePhases=Object.freeze({
  OPERATION_STARTED:"STARTED · no outcome yet",
+  OPERATION_PROGRESS:"IN PROGRESS · signed intermediate work milestone; completion not attested",
  OPERATION_SUCCEEDED:"RESULT REPORTED · external effect must be confirmed separately",
  OPERATION_FAILED:"FAILED · investigate cited evidence",
  OPERATION_BLOCKED:"BLOCKED · no execution authority inferred"
