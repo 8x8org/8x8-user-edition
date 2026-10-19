@@ -72,7 +72,7 @@ test('verified checkpoint enforces monotonic continuation',()=>{
 });
 
 test('signed operation lifecycle milestones accepted but do not grant execution',()=>{
- for(const phase of ['OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED']){
+ for(const phase of ['OPERATION_STARTED','OPERATION_PROGRESS','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED']){
   const v=verify(mkBatch([mkEvent({event_type:phase})]));
   assert.equal(v.events[0].event_type,phase);
   assert.equal(v.actions_authorized,false);
@@ -83,4 +83,18 @@ test('operation result cannot include hidden reasoning or credentials',()=>{
  for(const summary of ['hidden reasoning transcript','Bearer abc.def.ghi','api_key pasted']){
   denied(mkBatch([mkEvent({event_type:'OPERATION_SUCCEEDED',sanitized_summary:summary})]),'UNSAFE_SUMMARY');
  }
+});
+
+test('signed in-progress work is visible without indicating completion or a provider effect',()=>{
+ const v=verify(mkBatch([mkEvent({event_type:'OPERATION_PROGRESS',
+   sanitized_summary:'Source files reviewed; isolated regression checks running'})]));
+ assert.equal(v.verified,true);
+ assert.equal(v.events[0].event_type,'OPERATION_PROGRESS');
+ assert.equal(v.actions_authorized,false);
+ assert.equal(v.live_stream_connected,false);
+});
+test('in-progress percentage is denied without an independently validated denominator',()=>{
+ const e=mkEvent({event_type:'OPERATION_PROGRESS',
+  sanitized_summary:'Project 100% complete'});
+ denied(mkBatch([e]),'UNATTESTED_PROGRESS_PERCENTAGE');
 });
