@@ -8,6 +8,12 @@ const items = [
   'v50.html',
   'index.html',
   'manifest.webmanifest',
+  'icon.svg',
+  'sw.js',
+  'styles.css',
+  'app.js',
+  'state',
+  'studio',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
   'one-fabric-public-transparency-v54.js',
@@ -37,6 +43,10 @@ const inject = (path) => {
     const src = tag.match(/src="([^"]+)/)?.[1] || '';
     if (src && !html.includes(src)) html = html.replace('</body>', `${tag}</body>`);
   }
+  // A visible entry point on the existing V50 Web/PWA/Telegram/Android web carrier.
+  if (!html.includes('data-eightx8-studio-launcher')) {
+    html=html.replace('</body>', '<a data-eightx8-studio-launcher href="/studio" aria-label="Open local 8x8 Studio media inspector" style="position:fixed;right:12px;bottom:80px;z-index:150;background:#102d46;color:#ffffff;padding:11px 14px;border:1px solid #74d7ec;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">8x8 Studio ↗</a></body>');
+  }
   writeFileSync(path, html);
 };
 
@@ -52,3 +62,4 @@ console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
 console.log('INTERACTION_ESTATE_V53_INJECTED=true');
 console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
 console.log('THREE_GATE_EXPERIENCE_V55_INJECTED=true');
+console.log('PUBLIC_STUDIO_ROUTE_AND_ICON_PACKAGED=true');
