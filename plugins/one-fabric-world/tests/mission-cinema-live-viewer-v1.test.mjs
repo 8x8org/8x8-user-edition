@@ -120,7 +120,7 @@ test('director interaction filters source results and opens only allowlisted evi
 
 test('operation lifecycle includes four phases but cannot attest a real-world effect',()=>{
  assert.match(html,/value="LIFECYCLE"/);
- for(const t of ['OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'])assert.match(html,new RegExp(t));
+ for(const t of ['OPERATION_STARTED','OPERATION_PROGRESS','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED'])assert.match(html,new RegExp(t));
  assert.match(html,/id="mc-lifecycle-count"/);
  assert.match(html,/id="mc-detail-phase"/);
  assert.match(html,/external effect must be confirmed separately/);
@@ -128,4 +128,12 @@ test('operation lifecycle includes four phases but cannot attest a real-world ef
  assert.doesNotMatch(html,/innerHTML\s*=\s*e\.summary/);
  const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
  for(const code of scripts)assert.doesNotThrow(()=>new Script(code));
+});
+
+test('progress phase appears in micro/cinema inspector without false completion',()=>{
+ assert.match(html,/OPERATION_PROGRESS:"IN PROGRESS/);
+ assert.match(html,/completion not attested/);
+ assert.match(html,/Started · progress · succeeded/);
+ assert.match(html,/0 effect attestations/);
+ assert.doesNotMatch(html,/__EIGHTX8_AUTHORIZED_OBSERVATORY__\s*=/);
 });
