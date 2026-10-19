@@ -110,3 +110,11 @@ test('no external listener or signing material comes from module',()=>{
  assert.equal(typeof SignedCinemaObservationChannel,'function');
  assert.equal(Object.getOwnPropertyNames(SignedCinemaObservationChannel.prototype).includes('listen'),false);
 });
+
+test('signed operation milestone projects only a read-only source record',()=>{
+ const c=makeChannel();
+ const f=c.accept(mkBatch([mkEvent(1,'GENESIS',{event_type:'OPERATION_STARTED',sanitized_summary:'GitHub source fetch started'})]));
+ assert.equal(f.events[0].event_type,'OPERATION_STARTED');
+ assert.equal(f.execution_authorized,false);
+ assert.equal(f.live_stream_connected,false);
+});
