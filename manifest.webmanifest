@@ -30,6 +30,11 @@
       "description": "Local image, audio and video inspector"
     },
     {
+      "name": "8x8 Agent Room",
+      "url": "/agents",
+      "description": "Concept agent figures and user-initiated browser voice preview"
+    },
+    {
       "name": "Telegram Mini App",
       "url": "/telegram"
     },
