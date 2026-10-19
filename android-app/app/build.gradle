@@ -9,12 +9,23 @@ android {
         targetSdk 35
         versionCode 20051
         versionName '0.2.1-v50-media-rc1'
+        manifestPlaceholders = [eightx8AppLabel: '8x8 OS']
         def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-os-ecosystem.vercel.app'
         buildConfigField 'String', 'HOME_URL', '"' + home + '"'
     }
     buildFeatures { buildConfig true }
     buildTypes {
         debug { applicationIdSuffix '.dev'; versionNameSuffix '-dev' }
+        // Distinct preview identity: installs alongside older .dev builds whose
+        // signing key can differ between GitHub Actions and physical devices.
+        // Never substitute a different key for a production in-place update.
+        preview {
+            initWith debug
+            applicationIdSuffix '.preview'
+            versionNameSuffix '-preview'
+            matchingFallbacks = ['debug']
+            manifestPlaceholders = [eightx8AppLabel: '8x8 Preview']
+        }
         release { minifyEnabled false }
     }
 }
