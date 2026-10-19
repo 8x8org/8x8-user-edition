@@ -1,0 +1,131 @@
+{
+  "schema": "8x8.one_fabric.mission_cinema.verified_observation_channel.v3",
+  "canonical_root": "fabric://8x8/core",
+  "observed_utc": "2026-10-19T00:20:16Z",
+  "phase": "SOURCE_COMMITTED_TESTED_NOT_DEPLOYED",
+  "experience": "8x8 One Fabric World MCP Observatory popup — live-work visibility with provenance",
+  "user_requirements": [
+    "Visualize small/large actions, verifiable source changes and tool outcomes",
+    "Render scenes for media and projects, one-click reviews and control-room activities",
+    "No credentials, private internal reasoning, forged agent activity or cross-tenant data",
+    "Respect existing Android owner STOP/PAUSE and Gate 2 authorization"
+  ],
+  "reuse": {
+    "existing_ui": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+    "prior_verifier": "plugins/one-fabric-world/server/mission-cinema-event-trust-v1.mjs",
+    "prior_receipt": "docs/evidence/2026-10-18/ONE_FABRIC_MISSION_CINEMA_SIGNED_EVENT_CONTRACT_V2.json",
+    "separate_agent_stack_created": false
+  },
+  "new_files": [
+    {
+      "path": "plugins/one-fabric-world/server/mission-cinema-observation-channel-v1.mjs",
+      "sha": "aa0e7c1ffcda8e430fa7f38f8f3d5214b6344687",
+      "commit": "5a8b703eac6842522eafa838b1659ea5989bb9a8"
+    },
+    {
+      "path": "plugins/one-fabric-world/tests/mission-cinema-observation-channel-v1.test.mjs",
+      "sha": "c91ba8d9d02f0f3b7b82589e2bdb0bff4c480974",
+      "commit": "692ad3f9621a1eda5aa01a3aabf5a69ffc9ff46c"
+    },
+    {
+      "path": "plugins/one-fabric-world/ui/one-fabric-observatory.html",
+      "sha": "f55488c25f73b79f73e88a2d5c8d79e40a03e166",
+      "commit": "dfa1953d8f99fc89f2323c663c9e4b051216d1f7"
+    },
+    {
+      "path": "plugins/one-fabric-world/tests/mission-cinema-live-viewer-v1.test.mjs",
+      "sha": "599aaa75bbc163a5ce5d17c7c41bd9ee40015b26",
+      "commit": "92f920a58fa3dd54ce08bb15d41c0119c29143c6"
+    }
+  ],
+  "independent_git_readback_all_match": true,
+  "tests": {
+    "prior_ed25519_verifier": 17,
+    "new_projection": 20,
+    "new_html_viewer": 9,
+    "total": 46,
+    "passed": 46,
+    "failed": 0,
+    "device": "Authorized Samsung isolated Termux scratch source, no resident service replacement"
+  },
+  "observability_contract": {
+    "event_classes": [
+      "RESEARCH_SOURCE",
+      "TOOL_RESULT",
+      "SOURCE_COMMIT",
+      "TEST_RESULT",
+      "DEPLOYMENT_RESULT",
+      "PROVIDER_CANARY",
+      "MEDIA_RENDER",
+      "DEVICE_CONTROL_STATUS",
+      "APPROVAL_STATUS",
+      "INCIDENT"
+    ],
+    "read_only": true,
+    "server_side_trusted_auth_callback_required": true,
+    "tenant_scope": "8x8.events.read",
+    "stop_or_unknown_fails_closed": true,
+    "signer_enrollment_required": true,
+    "ed25519_batch_check": true,
+    "hash_chain_monotonic": true,
+    "privacy_filter": true,
+    "sequence_replay_deny": true,
+    "atomic_checkpoint": true,
+    "sse_frame_serialization_source_tested": true,
+    "connected_sse_listener": false,
+    "live_trusted_signer_enrolled": false,
+    "actual_signed_runtime_events_received": 0,
+    "browser_authenticated_e2e_test": false,
+    "viewer_default": "LIVE_FEED_NOT_CONNECTED",
+    "no_effect_permissions": true,
+    "ui_offline_replay_and_media_preserved": true
+  },
+  "neon": {
+    "observed_personal_project_name": "8x8-hub",
+    "connected_neon_account_metadata_read": true,
+    "screen": "NEON_OAUTH_CONSENT_THIRD_PARTY_LOCALHOST_MOBILE_ERROR",
+    "client_identity_verified": false,
+    "callback_app_registered_https_verified": false,
+    "consent_given": false,
+    "oauth_captured": false,
+    "release_gate": "Do not authorize the ambiguous mobile localhost callback; verify app identity and registered HTTPS redirect before authenticating"
+  },
+  "gateway_live_probe": {
+    "at_utc": "2026-10-19T00:20:16Z",
+    "GET_health": "TIMEOUT",
+    "GET_oauth_protected_resource": {
+      "status": 503,
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    },
+    "POST_mcp_initialize": {
+      "status": 503,
+      "error": "AUTH_CONFIGURATION_REQUIRED"
+    }
+  },
+  "android_controls": {
+    "a5b_owner_pause_present": true,
+    "hermes_voice_stop_present": true,
+    "voice_or_model_inference_started": false,
+    "owner_resume_issued": false,
+    "device_foreground_interference": false
+  },
+  "deployment": {
+    "repo_pr": "https://github.com/8x8org/8x8-user-edition/pull/200",
+    "branch": "feat/unified-8x8-id-mcp-user-edition-20261016",
+    "merged": false,
+    "remote_public_mcp_updated": false,
+    "private_plugin_release_updated": false,
+    "authenticated_live_feed": false,
+    "production_user_auth_verified": false,
+    "trades_or_posts": false
+  },
+  "remaining_acceptance": [
+    "Deploy independently authenticated Gate 2 and tenant scope checks for events.read",
+    "Establish authorized signer identity and signed receipt producer",
+    "Deploy HTTPS same-origin read-only SSE endpoint only after server identity, tenant and replay negative tests",
+    "Use signed observed user-visible events rather than model thought logs",
+    "Prove browser MCP Apps resource use with working tenant session, STOP/revocation and gap recovery",
+    "Update existing private plugin release with guarded rollback after connected end-to-end canary"
+  ],
+  "no_secrets_written": true
+}
