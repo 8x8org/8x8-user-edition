@@ -14,11 +14,23 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import androidx.webkit.WebViewAssetLoader;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public final class MainActivity extends Activity {
   private static final int SELECT_MEDIA = 808;
+  private static final String LOCAL_ORIGIN = "https://" + PublicAssetHandler.HOST;
+
+  private static boolean permittedOrigin(Uri uri) {
+    if (!"https".equals(uri.getScheme())) return false;
+    if (uri.getPort() != -1 && uri.getPort() != 443) return false;
+    String host = uri.getHost();
+    String remote = Uri.parse(BuildConfig.HOME_URL).getHost();
+    return host != null && (PublicAssetHandler.HOST.equalsIgnoreCase(host)
+      || (remote != null && remote.equalsIgnoreCase(host)));
+  }
   private WebView web;
   private ValueCallback<Uri[]> pendingSelection;
 
@@ -51,24 +63,24 @@ public final class MainActivity extends Activity {
     s.setAllowContentAccess(true);
     s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
     s.setMediaPlaybackRequiresUserGesture(true);
+    final WebViewAssetLoader bundled = new WebViewAssetLoader.Builder()
+      .setDomain(PublicAssetHandler.HOST)
+      .addPathHandler("/", new PublicAssetHandler(this)).build();
     web.setWebViewClient(new WebViewClient() {
+      @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        return bundled.shouldInterceptRequest(request.getUrl());
+      }
       @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         if (!request.isForMainFrame()) return false;
-        Uri target = request.getUrl();
-        Uri base = Uri.parse(BuildConfig.HOME_URL);
-        // Never navigate the privileged WebView to a different origin.
-        return !("https".equals(target.getScheme()) && "https".equals(base.getScheme())
-          && base.getHost() != null && base.getHost().equalsIgnoreCase(target.getHost())
-          && (target.getPort() == -1 || target.getPort() == 443));
+        // Local public projection or previously approved remote site only.
+        return !permittedOrigin(request.getUrl());
       }
     });
     web.setWebChromeClient(new WebChromeClient() {
       @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
         Uri page = Uri.parse(view.getUrl() == null ? "" : view.getUrl());
-        Uri base = Uri.parse(BuildConfig.HOME_URL);
         String path = page.getPath();
-        boolean trusted = "https".equals(page.getScheme()) && base.getHost() != null
-          && base.getHost().equalsIgnoreCase(page.getHost())
+        boolean trusted = permittedOrigin(page)
           && ("/studio".equals(path) || "/studio/".equals(path) || "/studio/index.html".equals(path));
         if (!trusted) { callback.onReceiveValue(null); return true; }
         if (pendingSelection != null) pendingSelection.onReceiveValue(null);
@@ -88,7 +100,8 @@ public final class MainActivity extends Activity {
         return true;
       }
     });
-    web.loadUrl(BuildConfig.HOME_URL + "/?carrier=android");
+    // Serve real Studio and Agent Room without depending on the older remote fallback site.
+    web.loadUrl(LOCAL_ORIGIN + "/index.html?carrier=android");
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
