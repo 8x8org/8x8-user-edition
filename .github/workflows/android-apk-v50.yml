@@ -7,7 +7,8 @@ on:
       - 'studio/**'
       - 'agents/**'
       - 'tests/agent-room.test.mjs'
-      - 'tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs'
+      - 'tests/android-update-contract.test.mjs'
+      - 'tests/android-offline-bundle.test.mjs'
       - 'updates/**'
       - 'tests/media-core.test.mjs'
       - 'tests/service-worker.test.mjs'
@@ -42,7 +43,7 @@ jobs:
           gradle-version: '8.10.2'
       - name: Verify public Studio safety and cross-platform static build
         run: |
-          node --test tests/media-core.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/android-update-contract.test.mjs
+          node --test tests/media-core.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs
           npm run build:vercel
           test -s dist/icon.svg
           test -s dist/sw.js
