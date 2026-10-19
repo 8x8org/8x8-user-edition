@@ -61,6 +61,7 @@ public final class PublicAssetHandler implements WebViewAssetLoader.PathHandler 
       case "": case "index.html": case "r3": case "first-blink": return "index.html";
       case "studio": case "studio/": return "studio/index.html";
       case "agents": case "agents/": return "agents/index.html";
+      case "atlas": case "atlas/": return "atlas/index.html";
       case "world": case "world/": case "stable": case "stable/":
       case "art-board": return "stable/index.html";
       case "telegram": case "telegram/": return "telegram/index.html";
