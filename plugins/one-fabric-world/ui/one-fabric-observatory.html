@@ -168,6 +168,7 @@ small{font-size:11px}
    <select id="mc-evidence-filter" aria-label="Filter evidence by workstream">
     <option value="ALL">All recorded actions</option>
     <option value="RESEARCH">Research & tools</option>
+    <option value="LIFECYCLE">Started · succeeded · failed · blocked</option>
     <option value="BUILD">Files, tests & deployment</option>
     <option value="MEDIA">Studio & media</option>
     <option value="SAFETY">Safety & approvals</option>
@@ -178,6 +179,7 @@ small{font-size:11px}
    <div class="mc-fact"><strong id="mc-visible-count">0</strong><small>Visible recorded actions; not agent heartbeat</small></div>
    <div class="mc-fact"><strong id="mc-evidence-type">REPLAY / NONE</strong><small>Evidence provenance</small></div>
    <div class="mc-fact"><strong id="mc-confirmed-effects">0 verified effects</strong><small>Never inferred from animation</small></div>
+    <div class="mc-fact"><strong id="mc-lifecycle-count">0 milestones</strong><small>Signed operation lifecycle · not model thoughts</small></div>
   </div>
   <div class="mc-cinema-stage" aria-live="polite"><strong id="mc-scene-title">No mission scene selected</strong><small id="mc-scene-caption">Select a recorded event to inspect its source and receipt.</small></div>
   <div class="mc-detail" aria-live="polite">
@@ -186,6 +188,7 @@ small{font-size:11px}
        <dt>Source</dt><dd id="mc-detail-source">Not authenticated</dd>
        <dt>Time (UTC)</dt><dd id="mc-detail-time">Not available</dd>
        <dt>Provenance</dt><dd id="mc-detail-proof">No verified live event</dd>
+        <dt>Operation phase</dt><dd id="mc-detail-phase">No runtime phase attested</dd>
        <dt>Sequence</dt><dd id="mc-detail-sequence">Not available</dd>
        <dt>Hash</dt><dd id="mc-detail-hash">Not available</dd></dl>
    <a id="mc-detail-receipt" rel="noopener noreferrer" target="_blank" hidden>Open source receipt</a>
@@ -415,7 +418,15 @@ const get=id=>document.getElementById(id);
 const panel=get("mission-cinema"),feed=get("mc-events"),filter=get("mc-evidence-filter");
 if(!panel||!feed||!filter||typeof MutationObserver!=="function")return;
 const micro=get("mc-mode-micro"),cinema=get("mc-mode-cinema"),link=get("mc-detail-receipt");
+const lifecyclePhases=Object.freeze({
+ OPERATION_STARTED:"STARTED · no outcome yet",
+ OPERATION_SUCCEEDED:"RESULT REPORTED · external effect must be confirmed separately",
+ OPERATION_FAILED:"FAILED · investigate cited evidence",
+ OPERATION_BLOCKED:"BLOCKED · no execution authority inferred"
+});
+const lifecycleTypes=Object.keys(lifecyclePhases);
 const groups={
+ LIFECYCLE:lifecycleTypes,
  RESEARCH:["RESEARCH_SOURCE","TOOL_RESULT"],
  BUILD:["SOURCE_COMMIT","TEST_RESULT","DEPLOYMENT_RESULT"],
  MEDIA:["MEDIA_RENDER"],
@@ -435,6 +446,8 @@ function inspect(el){
  get("mc-detail-source").textContent=asText(d.sourceId||"REPLAY_SOURCE_UNVERIFIED",80);
  get("mc-detail-time").textContent=asText(d.observedUtc||"Not available",32);
  get("mc-detail-proof").textContent=asText(d.evidenceClass||"RECORDED_REPLAY_NOT_LIVE",55);
+ const phase=get("mc-detail-phase");
+ if(phase)phase.textContent=lifecyclePhases[d.eventType]||"Not a signed operation lifecycle milestone";
  get("mc-detail-sequence").textContent=asText(d.sequence||"Not available",20);
  get("mc-detail-hash").textContent=asText(d.eventHash||"Not available",64);
  const ref=d.receiptRef||"";
@@ -445,7 +458,7 @@ function inspect(el){
 }
 function refresh(){
  const all=Array.from(feed.querySelectorAll("li"));
- let visible=0,signed=0,runtime=0,first=null;
+ let visible=0,signed=0,runtime=0,milestones=0,first=null;
  for(const el of all){
   const k=el.dataset.eventType||"REPLAY";
   const allowed=filter.value==="ALL"||(groups[filter.value]||[]).includes(k);
@@ -453,9 +466,11 @@ function refresh(){
   if(allowed){visible++;if(!first)first=el;}
   if(el.dataset.evidenceClass==="SOURCE_VERIFIED")signed++;
   if(el.dataset.evidenceClass==="RUNTIME_RECEIPT")runtime++;
+  if(lifecycleTypes.includes(k)&&["SOURCE_VERIFIED","RUNTIME_RECEIPT"].includes(el.dataset.evidenceClass))milestones++;
   el.tabIndex=allowed?0:-1;
  }
  get("mc-visible-count").textContent=String(visible);
+ const lc=get("mc-lifecycle-count");if(lc)lc.textContent=String(milestones)+" signed milestones";
  get("mc-evidence-type").textContent=runtime>0?"SIGNED RUNTIME RECORDS":signed>0?"SIGNED SOURCE RECORDS":"REPLAY / UNVERIFIED";
  // A runtime receipt alone does not establish a trade fill or published item.
  get("mc-confirmed-effects").textContent="0 effect attestations";
@@ -470,6 +485,7 @@ function refresh(){
   get("mc-detail-source").textContent="Not authenticated";
   get("mc-detail-time").textContent="Not available";
   get("mc-detail-proof").textContent="No event available";
+  const phase=get("mc-detail-phase");if(phase)phase.textContent="No operation milestone selected";
   get("mc-detail-sequence").textContent="Not available";
   get("mc-detail-hash").textContent="Not available";
   link.hidden=true;link.removeAttribute("href");
