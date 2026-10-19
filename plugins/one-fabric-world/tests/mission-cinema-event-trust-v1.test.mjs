@@ -70,3 +70,17 @@ test('verified checkpoint enforces monotonic continuation',()=>{
  const a=mkEvent({event_id:'e003',sequence:3,previous_hash:'a'.repeat(64)});
  assert.equal(verify(mkBatch([a]),{lastSequence:2,lastHash:'a'.repeat(64)}).lastSequence,3);
 });
+
+test('signed operation lifecycle milestones accepted but do not grant execution',()=>{
+ for(const phase of ['OPERATION_STARTED','OPERATION_SUCCEEDED','OPERATION_FAILED','OPERATION_BLOCKED']){
+  const v=verify(mkBatch([mkEvent({event_type:phase})]));
+  assert.equal(v.events[0].event_type,phase);
+  assert.equal(v.actions_authorized,false);
+  assert.equal(v.live_stream_connected,false);
+ }
+});
+test('operation result cannot include hidden reasoning or credentials',()=>{
+ for(const summary of ['hidden reasoning transcript','Bearer abc.def.ghi','api_key pasted']){
+  denied(mkBatch([mkEvent({event_type:'OPERATION_SUCCEEDED',sanitized_summary:summary})]),'UNSAFE_SUMMARY');
+ }
+});
