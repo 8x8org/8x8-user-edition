@@ -7,7 +7,7 @@ on:
       - 'studio/**'
       - 'agents/**'
       - 'tests/agent-room.test.mjs'
-      - 'tests/android-update-contract.test.mjs'
+      - 'tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs'
       - 'updates/**'
       - 'tests/media-core.test.mjs'
       - 'tests/service-worker.test.mjs'
@@ -60,6 +60,12 @@ jobs:
           AAPT="$(find "${ANDROID_HOME:?}/build-tools" -maxdepth 2 -type f -name aapt | sort -V | tail -n1)"
           test -x "$AAPT"
           "$AAPT" dump badging android-app/app/build/outputs/apk/preview/app-preview.apk | grep -F "package: name='world.eightx8.user.preview'"
+          # Prove on-device routes are APK contents, not merely a separately-built dist.
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/studio/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/agents/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/studio/media-core.mjs'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/icon.svg'
       - name: Record artifact truth
         run: |
           mkdir -p android-dist
