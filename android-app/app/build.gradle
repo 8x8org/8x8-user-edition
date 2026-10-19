@@ -51,6 +51,16 @@ android {
             matchingFallbacks = ['debug']
             manifestPlaceholders = [eightx8AppLabel: '8x8 Preview']
         }
+        // One-time isolated acceptance app: both previously installed preview/dev
+        // certificates differ from CI-generated debug signers. Preserve their data.
+        // This build type is NOT the long-term update identity.
+        offline {
+            initWith debug
+            applicationIdSuffix '.offline'
+            versionNameSuffix '-offline'
+            matchingFallbacks = ['debug']
+            manifestPlaceholders = [eightx8AppLabel: '8x8 Offline']
+        }
         release {
             minifyEnabled false
             // No owner signing credentials: preserve existing unsigned CI artifact.
