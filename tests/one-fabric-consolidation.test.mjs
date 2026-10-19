@@ -50,3 +50,14 @@ test('offline Android assets ship one unified catalog',()=>{
  assert.match(m,/case "atlas"/);
  assert.match(m,/application\/javascript/);
 });
+
+test('the public MCP metadata is derived from the same source and is not callable authority',()=>{
+ const build=text('scripts/build-vercel-static.mjs');
+ const routes=text('vercel.json');
+ const handler=text('android-app/app/src/main/java/world/eightx8/user/PublicAssetHandler.java');
+ assert.match(build,/mcp\/one-fabric-capability-catalog-v1.json/);
+ assert.match(build,/runInNewContext/);
+ assert.match(routes,/\"source\": \"\/mcp\/catalog\"/);
+ assert.match(handler,/case \"mcp\/catalog\"/);
+ assert.equal(catalog.classification,'PUBLIC_PROJECTION_NOT_LIVE_INTEGRATION');
+});
