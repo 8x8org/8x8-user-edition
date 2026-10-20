@@ -11,7 +11,8 @@ test('preview loads a local trusted HTTPS asset origin, not stale external home'
  assert.match(activity,/WebViewAssetLoader.Builder/);
  assert.match(activity,/PublicAssetHandler.HOST/);
  assert.match(activity,/shouldInterceptRequest/);
- assert.match(activity,/web.loadUrl\(LOCAL_ORIGIN \+ "\/index.html\?carrier=android"\)/);
+ assert.match(activity,/private static final String OFFLINE_ENTRY = LOCAL_ORIGIN \+ "\/index.html\?carrier=android"/);
+ assert.match(activity,/web.loadUrl\(OFFLINE_ENTRY\)/);
  assert.doesNotMatch(activity,/web.loadUrl\(BuildConfig.HOME_URL/);
 });
 test('real routes and MIME types are present for offline Studio and Agent Room',()=>{
@@ -41,4 +42,18 @@ test('isolated offline acceptance never replaces existing dev or preview package
  assert.match(build,/manifestPlaceholders = \[eightx8AppLabel: '8x8 Offline'\]/);
  assert.match(build,/applicationIdSuffix '\.preview'/);
  assert.match(build,/applicationIdSuffix '\.dev'/);
+});
+
+test('main frame failure is visible with a native, local-only recovery path',()=>{
+ assert.match(activity,/private void showPageFailure\(\)/);
+ assert.match(activity,/onReceivedError\(WebView view, WebResourceRequest request, WebResourceError error\)/);
+ assert.match(activity,/onReceivedHttpError\(WebView view, WebResourceRequest request, WebResourceResponse errorResponse\)/);
+ assert.match(activity,/request\.isForMainFrame\(\)/);
+ assert.match(activity,/errorResponse\.getStatusCode\(\) >= 400/);
+ assert.match(activity,/Retry offline 8x8/);
+ assert.match(activity,/pageFailure\.setVisibility\(View\.VISIBLE\)/);
+ assert.match(activity,/retry\.setOnClickListener\(v ->/);
+ assert.match(activity,/web\.loadUrl\(OFFLINE_ENTRY\)/);
+ assert.doesNotMatch(activity,/web\.loadUrl\(BuildConfig\.HOME_URL/);
+ assert.match(activity,/No agent session has started/);
 });
