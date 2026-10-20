@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.view.View;
 import android.view.Gravity;
 import android.util.TypedValue;
 import android.content.ActivityNotFoundException;
@@ -14,6 +17,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceResponse;
 import androidx.webkit.WebViewAssetLoader;
 import android.webkit.WebView;
@@ -32,6 +36,12 @@ public final class MainActivity extends Activity {
       || (remote != null && remote.equalsIgnoreCase(host)));
   }
   private WebView web;
+  private LinearLayout pageFailure;
+  private static final String OFFLINE_ENTRY = LOCAL_ORIGIN + "/index.html?carrier=android";
+
+  private void showPageFailure() {
+    if (pageFailure != null) pageFailure.setVisibility(View.VISIBLE);
+  }
   private ValueCallback<Uri[]> pendingSelection;
 
   @SuppressLint("SetJavaScriptEnabled")
@@ -40,6 +50,29 @@ public final class MainActivity extends Activity {
     web = new WebView(this);
     FrameLayout carrier = new FrameLayout(this);
     carrier.addView(web, new FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+    // Genuine native recovery surface: WebView failures must not be confused with a live agent.
+    pageFailure = new LinearLayout(this);
+    pageFailure.setOrientation(LinearLayout.VERTICAL);
+    pageFailure.setGravity(Gravity.CENTER);
+    pageFailure.setPadding(32, 32, 32, 32);
+    pageFailure.setBackgroundColor(0xFF071421);
+    TextView errorText = new TextView(this);
+    errorText.setText("8x8 offline interface unavailable. The app could not load its local page. No agent session has started.");
+    errorText.setTextColor(0xFFF0F6FF);
+    errorText.setTextSize(16);
+    errorText.setGravity(Gravity.CENTER);
+    pageFailure.addView(errorText);
+    Button retry = new Button(this);
+    retry.setText("Retry offline 8x8");
+    retry.setContentDescription("Retry the bundled offline 8x8 interface");
+    retry.setOnClickListener(v -> {
+      pageFailure.setVisibility(View.GONE);
+      web.loadUrl(OFFLINE_ENTRY);
+    });
+    pageFailure.addView(retry);
+    pageFailure.setVisibility(View.GONE);
+    carrier.addView(pageFailure, new FrameLayout.LayoutParams(
       FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     Button updates = new Button(this);
     updates.setText("8x8 Updates");
@@ -67,6 +100,15 @@ public final class MainActivity extends Activity {
       .setDomain(PublicAssetHandler.HOST)
       .addPathHandler("/", new PublicAssetHandler(this)).build();
     web.setWebViewClient(new WebViewClient() {
+      @Override public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+        if (pageFailure != null) pageFailure.setVisibility(View.GONE);
+      }
+      @Override public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        if (request.isForMainFrame()) showPageFailure();
+      }
+      @Override public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        if (request.isForMainFrame() && errorResponse.getStatusCode() >= 400) showPageFailure();
+      }
       @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
         return bundled.shouldInterceptRequest(request.getUrl());
       }
@@ -101,7 +143,7 @@ public final class MainActivity extends Activity {
       }
     });
     // Serve real Studio and Agent Room without depending on the older remote fallback site.
-    web.loadUrl(LOCAL_ORIGIN + "/index.html?carrier=android");
+    web.loadUrl(OFFLINE_ENTRY);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
