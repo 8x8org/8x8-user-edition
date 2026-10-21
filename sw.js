@@ -7,6 +7,7 @@ const MIME = new Map([
   ['/icon.svg', /^image\/svg\+xml(?:;|$)/i],
   ['/manifest.webmanifest', /^application\/(?:manifest\+json|json)(?:;|$)/i],
   ['/studio/index.html', /^text\/html(?:;|$)/i],
+  ['/observatory/index.html', /^text\/html(?:;|$)/i],
   ['/studio/media-core.mjs', /^(?:text|application)\/(?:javascript|ecmascript)(?:;|$)/i],
 ]);
 const OFFLINE_NAV = new Map([
@@ -15,6 +16,9 @@ const OFFLINE_NAV = new Map([
   ['/studio', '/studio/index.html'],
   ['/studio/', '/studio/index.html'],
   ['/studio/index.html', '/studio/index.html'],
+  ['/observatory', '/observatory/index.html'],
+  ['/observatory/', '/observatory/index.html'],
+  ['/observatory/index.html', '/observatory/index.html'],
 ]);
 function cacheable(path, response) {
   return !!response && response.ok && response.type === 'basic' &&
