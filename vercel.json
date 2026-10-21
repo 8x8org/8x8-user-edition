@@ -58,6 +58,10 @@
       "destination": "/studio/index.html"
     },
     {
+      "source": "/observatory",
+      "destination": "/observatory/index.html"
+    },
+    {
       "source": "/agents",
       "destination": "/agents/index.html"
     },
