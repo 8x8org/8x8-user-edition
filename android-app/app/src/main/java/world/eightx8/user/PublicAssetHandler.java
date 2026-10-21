@@ -60,6 +60,7 @@ public final class PublicAssetHandler implements WebViewAssetLoader.PathHandler 
     switch (p) {
       case "": case "index.html": case "r3": case "first-blink": return "index.html";
       case "studio": case "studio/": return "studio/index.html";
+      case "observatory": case "observatory/": return "observatory/index.html";
       case "agents": case "agents/": return "agents/index.html";
       case "atlas": case "atlas/": return "atlas/index.html";
       case "mcp/catalog": return "mcp/one-fabric-capability-catalog-v1.json";
