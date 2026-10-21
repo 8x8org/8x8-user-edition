@@ -15,6 +15,7 @@ const items = [
   'app.js',
   'state',
   'studio',
+  'observatory',
   'updates',
   'agents',
   'atlas',
@@ -53,6 +54,7 @@ const inject = (path) => {
     html=html.replace('</body>', '<a data-eightx8-studio-launcher href="/studio" aria-label="Open local 8x8 Studio media inspector" style="position:fixed;right:12px;bottom:80px;z-index:150;background:#102d46;color:#ffffff;padding:11px 14px;border:1px solid #74d7ec;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">8x8 Studio ↗</a></body>');
   }
   if (!html.includes('data-eightx8-agent-room')) html=html.replace('</body>', '<a data-eightx8-agent-room href="/agents" aria-label="Open 8x8 Agent Room character stage" style="position:fixed;right:12px;bottom:132px;z-index:150;background:#241c4e;color:#ffffff;padding:10px 14px;border:1px solid #9d86ff;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">Agent Room ↗</a></body>');
+  if (!html.includes('data-eightx8-observatory-link')) html=html.replace('</body>', '<a data-eightx8-observatory-link href="/observatory" aria-label="Open read-only One Fabric Observatory preview" style="position:fixed;right:12px;bottom:235px;z-index:150;background:#252f39;color:#fff;padding:10px 14px;border:1px solid #e2b776;border-radius:999px;font:700 12px system-ui;text-decoration:none">Observatory ↗</a></body>');
   if (!html.includes('data-eightx8-atlas-link')) html=html.replace('</body>', '<a data-eightx8-atlas-link href="/atlas" aria-label="Explore the 8x8 One Fabric System Atlas" style="position:fixed;right:12px;bottom:184px;z-index:150;background:#163523;color:white;padding:10px 14px;border:1px solid #72d9b1;border-radius:999px;font:700 12px system-ui;text-decoration:none">System Atlas ↗</a></body>');
   writeFileSync(path, html);
 };
