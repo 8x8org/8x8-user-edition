@@ -16,7 +16,7 @@ test('unified catalog has one root and unique module identities',()=>{
   assert.equal(new Set(catalog.skills.map(x => x.id)).size,catalog.skills.length);
 });
 test('real source routes have corresponding public pages, no invented provider endpoints',()=>{
- const existing = new Map([['/','v50.html'],['/atlas','atlas/index.html'],['/studio','studio/index.html'],['/agents','agents/index.html'],['/world','stable/index.html'],['/telegram','telegram/index.html'],['/android','android/index.html'],['/presale','presale/index.html'],['/projects','projects/index.html']]);
+ const existing = new Map([['/','v50.html'],['/atlas','atlas/index.html'],['/studio','studio/index.html'],['/observatory','observatory/index.html'],['/agents','agents/index.html'],['/world','stable/index.html'],['/telegram','telegram/index.html'],['/android','android/index.html'],['/presale','presale/index.html'],['/projects','projects/index.html']]);
  for(const m of catalog.modules){
    if(m.route){assert.ok(existing.has(m.route),m.route);assert.ok(existsSync(new URL('../'+existing.get(m.route),import.meta.url)),m.route)}
    else assert.ok(m.state !== 'LIVE',m.id);
