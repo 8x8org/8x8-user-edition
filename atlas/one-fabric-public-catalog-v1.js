@@ -7,6 +7,7 @@
     {id:'entry',name:'One Fabric Portal',family:'Experience',icon:'◈',route:'/',state:'SOURCE_PREVIEW',summary:'Gate 1 entry and access to the unified public experience'},
     {id:'world',name:'8x8 World',family:'Experience',icon:'◉',route:'/world',state:'SOURCE_PREVIEW',summary:'Gate 3 scenes, public spatial interface and mission entry'},
     {id:'atlas',name:'Capability Atlas',family:'Experience',icon:'▦',route:'/atlas',state:'SOURCE_PREVIEW',summary:'One searchable map of services, readiness, products and skills'},
+    {id:'observatory',name:'One Fabric Observatory',family:'Experience',icon:'◫',route:'/observatory',state:'SOURCE_PREVIEW',summary:'Five-lane read-only preview; owner telemetry requires Gate 2, verified receipt stream and access grants'},
     {id:'studio',name:'8x8 Studio',family:'Creation',icon:'▶',route:'/studio',state:'LOCAL_SOURCE_PREVIEW',summary:'User-selected images, video, audio preview and evidence receipts'},
     {id:'agents',name:'Agent Room',family:'Intelligence',icon:'♧',route:'/agents',state:'CONCEPT_PREVIEW',summary:'Illustrative talking figures; live agent replies require the authenticated gateway'},
     {id:'updates',name:'Verified Updates',family:'Platforms',icon:'↻',route:null,state:'DEVICE_ACCEPTANCE_PENDING',summary:'Native package-aware signed updates; platform approval is separate'},
