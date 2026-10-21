@@ -4,6 +4,29 @@ on:
     branches: [main, 'release/**']
     paths:
       - 'android-app/**'
+      - 'studio/**'
+      - 'observatory/**'
+      - 'agents/**'
+      - 'atlas/**'
+      - 'tests/one-fabric-consolidation.test.mjs'
+      - 'tests/system-atlas.test.mjs'
+      - 'tests/agent-room.test.mjs'
+      - 'tests/android-update-contract.test.mjs'
+      - 'tests/android-offline-bundle.test.mjs'
+      - 'updates/**'
+      - 'tests/media-core.test.mjs'
+      - 'tests/service-worker.test.mjs'
+      - 'tests/observatory-public.test.mjs'
+      - 'scripts/build-vercel-static.mjs'
+      - 'vercel.json'
+      - 'manifest.webmanifest'
+      - 'sw.js'
+      - 'icon.svg'
+      - 'v50.html'
+      - 'one-fabric-capability-estate-v52.js'
+      - 'one-fabric-interaction-estate-v53.js'
+      - 'one-fabric-public-transparency-v54.js'
+      - 'one-fabric-three-gate-experience-v55.js'
       - '.github/workflows/android-apk-v50.yml'
   workflow_dispatch:
 
@@ -23,18 +46,56 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
+      - name: Verify public Studio safety and cross-platform static build
+        run: |
+          node --test tests/one-fabric-consolidation.test.mjs tests/system-atlas.test.mjs tests/media-core.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/android-update-contract.test.mjs tests/android-offline-bundle.test.mjs tests/observatory-public.test.mjs
+          npm run build:vercel
+          test -s dist/icon.svg
+          test -s dist/sw.js
+          test -s dist/updates/android/latest.json
+          test -s dist/atlas/index.html
+          test -s dist/atlas/one-fabric-public-catalog-v1.js
+          test -s dist/mcp/one-fabric-capability-catalog-v1.json
+          grep -Fq 'data-eightx8-atlas-link' dist/index.html
+          test -s dist/agents/index.html
+          grep -Fq 'data-eightx8-agent-room' dist/index.html
+          test -s dist/studio/index.html
+          test -s dist/observatory/index.html
+          test -s dist/studio/media-core.mjs
+          grep -Fq 'data-eightx8-studio-launcher' dist/index.html
+          grep -Fq 'media-src' vercel.json
       - name: Build installable development APK and release-unsigned APK
         run: |
-          gradle -p android-app --no-daemon clean assembleDebug assembleRelease
+          gradle -p android-app --no-daemon clean assembleDebug assemblePreview assembleOffline assembleRelease
+          # Preflight: candidate must not reuse existing world.eightx8.user.dev identity.
+          AAPT="$(find "${ANDROID_HOME:?}/build-tools" -maxdepth 2 -type f -name aapt | sort -V | tail -n1)"
+          test -x "$AAPT"
+          "$AAPT" dump badging android-app/app/build/outputs/apk/preview/app-preview.apk | grep -F "package: name='world.eightx8.user.preview'"
+          "$AAPT" dump badging android-app/app/build/outputs/apk/offline/app-offline.apk | grep -F "package: name='world.eightx8.user.offline'"
+          # Prove on-device routes are APK contents, not merely a separately-built dist.
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/studio/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/observatory/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/agents/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/atlas/index.html'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/atlas/one-fabric-public-catalog-v1.js'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/mcp/one-fabric-capability-catalog-v1.json'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/studio/media-core.mjs'
+          jar tf android-app/app/build/outputs/apk/preview/app-preview.apk | grep -Fxq 'assets/icon.svg'
+          for p in assets/index.html assets/studio/index.html assets/observatory/index.html assets/agents/index.html assets/atlas/index.html assets/atlas/one-fabric-public-catalog-v1.js assets/mcp/one-fabric-capability-catalog-v1.json assets/studio/media-core.mjs assets/icon.svg; do
+            jar tf android-app/app/build/outputs/apk/offline/app-offline.apk | grep -Fxq "$p"
+          done
       - name: Record artifact truth
         run: |
           mkdir -p android-dist
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk android-dist/8x8-user-edition-v50-0.2.0-dev-signed.apk
-          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk android-dist/8x8-user-edition-v50-0.2.0-release-unsigned.apk
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-dev-signed.apk
+          cp android-app/app/build/outputs/apk/preview/app-preview.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-side-by-side-preview.apk
+          cp android-app/app/build/outputs/apk/offline/app-offline.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-offline-acceptance.apk
+          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk android-dist/8x8-user-edition-v50-0.2.1-rc1-release-unsigned.apk
           sha256sum android-dist/*.apk | tee android-dist/SHA256SUMS.txt
-          printf '%s\n' 'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED' 'PRODUCTION_APK=NOT_SIGNED_NOT_PUBLISHED_AS_PRODUCTION' > android-dist/RELEASE_TRUTH.txt
+          printf '%s\n' 'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED_PACKAGE_WORLD_EIGHTX8_USER_DEV' 'SIDE_BY_SIDE_PREVIEW=DEBUG_SIGNED_PACKAGE_WORLD_EIGHTX8_USER_PREVIEW' 'PREVIEW_PRESERVES_INSTALLED_DEV_PACKAGE=TRUE' 'OFFLINE_ACCEPTANCE=EPHEMERAL_DEBUG_SIGNER_UNIQUE_WORLD_EIGHTX8_USER_OFFLINE' 'OFFLINE_ACCEPTANCE_IS_NOT_STABLE_IN_PLACE_UPDATE=TRUE' 'PRODUCTION_APK=NOT_SIGNED_NOT_PUBLISHED_AS_PRODUCTION' > android-dist/RELEASE_TRUTH.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: 8x8-user-edition-v50-apk
+          name: 8x8-user-edition-v50-0.2.1-rc1-apk
           path: android-dist/
           if-no-files-found: error
