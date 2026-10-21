@@ -1,4 +1,5 @@
 // © 8x8 User Edition: public, local-only media inspector. No upload or network access.
+import {assessEightOEightAsset} from './film-808-release-gate.mjs';
 export const MAX_BYTES = 256 * 1024 * 1024;
 export const HASH_LIMIT = 32 * 1024 * 1024;
 const TYPES = Object.freeze({
@@ -47,18 +48,24 @@ if (typeof document !== 'undefined') {
     const kind = classifyMedia(file.name, file.type, file.size);
     if (!kind) { report('Unsupported media type, empty file or file exceeds 256 MiB. No upload occurred.'); return; }
     objectUrl = URL.createObjectURL(file);
+    const proof = receiptFields(file, kind);
+    proof.sha256 = 'NOT_HASHED_SIZE_GATED';
     const element = document.createElement(kind.kind === 'image' ? 'img' : kind.kind);
     element.src = objectUrl;
     element.setAttribute('aria-label', 'Preview of selected local media');
     if (kind.kind !== 'image') {element.controls = true; element.preload = 'metadata'; element.playsInline = true;}
     if (kind.kind === 'video') {
       currentVideo = element;
-      element.addEventListener('loadedmetadata', () => {capture.hidden = false;});
+      element.addEventListener('loadedmetadata', () => {
+        if (currentVideo !== element || !element.isConnected) return;
+        capture.hidden = false;
+        proof.film808_asset_truth = assessEightOEightAsset({kind:'video', durationSeconds:element.duration});
+        receipt.textContent = JSON.stringify(proof, null, 2);
+        report('Local video metadata inspected. Duration does NOT certify a finished 8:08 film, rights, or publication permission.');
+      });
     }
     element.addEventListener('error', () => report('Media decoder could not open this file. No upload occurred.'));
     preview.append(element);
-    const proof = receiptFields(file, kind);
-    proof.sha256 = 'NOT_HASHED_SIZE_GATED';
     if (file.size <= HASH_LIMIT && globalThis.crypto?.subtle) {
       try {
         const buffer = await file.arrayBuffer();
