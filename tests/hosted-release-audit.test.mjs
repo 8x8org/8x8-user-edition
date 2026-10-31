@@ -78,7 +78,7 @@ test('a wrapper that follows redirects despite manual mode fails closed',async()
 test('bad attachment disposition is rejected for route content',async()=>{
  const r=await audit('https://example.com/',async url=>{
   const p=new URL(url).pathname;
-  if(p==='/studio')return new Response(data[p][1],{status:200,headers:{'content-type':data[p][0],'content-disposition':'attachment; filename="bad.html"' }});
+  if(p==='/studio')return new Response(data[p][1],{status:200,headers:{'content-type':data[p][0],'content-disposition':'attachment; filename="bad.html"'}});
   return fake()(url);
  });
  assert.equal(r.checks.find(x=>x.path==='/studio').code,'ATTACHMENT_DISPOSITION_/studio');
