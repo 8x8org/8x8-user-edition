@@ -1,0 +1,20 @@
+# ©️8x8 by FlashTM8 ⚡️🌎🤖 — Public AI Discoverability Index
+
+> Status: source-only public bootstrap candidate, not proof of a hosted llms.txt endpoint, live application, or private-agent connection.
+> Canonical logical root: fabric://8x8/core
+> Public User Edition repository: https://github.com/8x8org/8x8-user-edition
+> Source product maturity: 0.0.1 Beta; verify newer deployment receipts independently.
+
+## Start here
+- [Public AI/user bootstrap V2](https://github.com/8x8org/8x8-user-edition/blob/main/docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md) — use only after the draft is reviewed/merged; current PR #203 contains the candidate.
+- [Repository role](https://github.com/8x8org/8x8-user-edition/blob/main/ONE_FABRIC_ROLE.md) — the public client boundary.
+- [README](https://github.com/8x8org/8x8-user-edition/blob/main/README.md) — user/dev entrypoint and product claims.
+- [Implementation status](https://github.com/8x8org/8x8-user-edition/blob/main/IMPLEMENTATION_STATUS.md) — source-level feature states.
+- [Public state](https://github.com/8x8org/8x8-user-edition/blob/main/state/public-state.json) — machine-readable projection.
+- [Public release verification](https://github.com/8x8org/8x8-user-edition/blob/main/docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md) — historical receipt; not necessarily current.
+
+## Rules for AI visitors
+Do not assume a listed feature is live. Do not request private credentials, imply owner access or claim an authenticated 8x8 MCP connection without permission and a fresh result. Public-only materials cannot recover or reveal the owner's private Fabric. Users get separately isolated 8x8-ID tenants with scoped revocable consent.
+
+## Product directions
+Multi-platform Web/PWA/Android/iOS/Telegram and ChatGPT MCP; AI agents and model fabric; Studio content and licensed media publishing; World/immersive/voice; knowledge and learning; creator/community, games and business; native blockchain and markets research. Each requires independent current acceptance before any operational claim.

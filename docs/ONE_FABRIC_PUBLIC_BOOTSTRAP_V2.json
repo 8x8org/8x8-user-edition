@@ -1,0 +1,88 @@
+{
+  "schema": "8x8.public_bootstrap.v2",
+  "canonical_root": "fabric://8x8/core",
+  "audience": "PUBLIC_SAFE",
+  "repository": "8x8org/8x8-user-edition",
+  "source_state": "DRAFT_REVIEW_NOT_RELEASED",
+  "product_maturity": "0.0.1 BETA_AS_RECORDED_IN_REPOSITORY_SOURCE",
+  "public_purpose": "Public discovery, inclusive development, bounded user/client onboarding and verified release status",
+  "identity": {
+    "user_tenants": "ISOLATED_8X8_IDS",
+    "permissions": "DENY_BY_DEFAULT",
+    "private_owner_core": "NOT_PUBLIC",
+    "credential_handling": "NEVER_ASK_FOR_RAW_SECRETS"
+  },
+  "truth_states": [
+    "PAST_PRESERVED",
+    "PRESENT_PROVEN",
+    "FUTURE_GATED",
+    "UNKNOWN"
+  ],
+  "lifecycle_states": [
+    "DOCUMENTED",
+    "SOURCE_PRESENT",
+    "TESTED",
+    "DEPLOYED",
+    "AUTHENTICATED",
+    "GRANTED",
+    "PRODUCTIVE",
+    "INDEPENDENTLY_VERIFIED"
+  ],
+  "ui_public_surfaces": [
+    "public_home",
+    "world",
+    "studio",
+    "agents",
+    "knowledge",
+    "creator_tools",
+    "publishing",
+    "education",
+    "community",
+    "games",
+    "markets_research",
+    "native_network_research",
+    "device_onboarding",
+    "developer_mcp"
+  ],
+  "public_release_scope": {
+    "v1_required_gates": [
+      "web_pwa",
+      "artifact_provenance",
+      "android_artifact",
+      "user_identity_mcp",
+      "studio_world",
+      "agent_owner_control"
+    ],
+    "acceptance": "REQUIRES_EXACT_SOURCE_AND_PUBLIC_READBACK",
+    "minimum_promotion": "APPROVED_PUBLIC_RELEASE_RECEIPT",
+    "note": "Source branches, CI pass, screenshots and HTTP 200 never prove a complete product"
+  },
+  "read_order": [
+    "ONE_FABRIC_ROLE.md",
+    "README.md",
+    "IMPLEMENTATION_STATUS.md",
+    "state/public-state.json",
+    "public/reality-snapshot.json",
+    "docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md",
+    "approved release-specific tests and receipts"
+  ],
+  "ai_agent_guidance": {
+    "public_clients": "Use only visible, approved, versioned public materials",
+    "user_actions": "OAuth or supported provider authorization required at action time",
+    "no_owner_claim": "No access to private OWNER_ROOT, private files, credentials, wallets or hidden runtimes",
+    "no_false_activation": "Public registration or UI preview is not active agent/tool connection",
+    "no_liveness_promises": "Verify every public URL, release, provider and scope before claiming it works",
+    "cite_and_disclose": "Separate release truth from roadmap and proposals"
+  },
+  "roadmap_product_targets": {
+    "proposed_daily_allowance_minutes": 88,
+    "proposed_monthly_price_usd": "8.88",
+    "billing_status": "NOT_ESTABLISHED",
+    "live_trading": "NOT_AUTHORIZED_BY_PUBLIC_BOOTSTRAP",
+    "mainnet": "NOT_ESTABLISHED",
+    "apk_distribution": "NOT_ESTABLISHED",
+    "wide_platforms": "WEB_PWA_ANDROID_IOS_TELEGRAM_CHATGPT_MCP_AS_SEPARATELY_ACCEPTED"
+  },
+  "no_secrets": true,
+  "public_bootstrap_is_not_authorization": true
+}

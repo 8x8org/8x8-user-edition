@@ -1,0 +1,28 @@
+name: Validate Public 8x8 World Subject Atlas V1
+on:
+  pull_request:
+    paths:
+      - 'projects/world-atlas/**'
+      - 'projects/index.html'
+      - 'README.md'
+      - 'tests/test_public_world_atlas_v1.mjs'
+      - '.github/workflows/validate-public-world-atlas-v1.yml'
+permissions:
+  contents: read
+jobs:
+  static-atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate semantic topic registry and honest states
+        run: node --test tests/test_public_world_atlas_v1.mjs
+      - name: Build actual public static distribution
+        run: npm run build:vercel
+      - name: Confirm atlas in output directory
+        run: |
+          test -s dist/projects/world-atlas/index.html
+          test -s dist/projects/world-atlas/subject-atlas.v1.json

@@ -1,5 +1,9 @@
 # 8x8 User Edition
 
+> **Public AI/user bootstrap V2 (review-only):** [Read the public-safe orientation](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md) · [machine-readable bootstrap](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.json). This document is a source candidate, not a newly accepted release or a connection to the owner's private systems. Historical public deployment receipts below must be checked against current immutable source/deployment evidence.
+
+> **NEW REVIEW-ONLY WORLD DIRECTORY:** [Explore 64 public research subjects across 8 realms](projects/world-atlas/index.html) · [machine-readable subject atlas](projects/world-atlas/subject-atlas.v1.json). This is a searchable public 2D directory for future Gate 3 integration. Topics such as climate, solar power, nuclear-energy research, finance, animals and AI are *subject coverage*, not a claim of running professional services or live planetary data. No public production route or authenticated capability is newly accepted by this branch.
+
 [![Version](https://img.shields.io/badge/8x8%20OS-0.0.1%20Beta-7b61ff)](VERSION.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Contributing](https://img.shields.io/badge/Contributing-guide-brightgreen.svg)](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md)
@@ -138,3 +142,7 @@ The public 8x8 User Edition repository is licensed under the [Apache License 2.0
 ## Security
 
 Do not submit credentials, wallet keys, private messages, biometric templates, protected repository inventory or private-system logs to public issues. See [SECURITY.md](SECURITY.md).
+
+## Multi-carrier access, installations and transparent launch
+
+The public-safe multi-carrier access contract is [Public access and installation guide](docs/ONE_FABRIC_PUBLIC_ACCESS_INSTALL_AND_CARRIER_ACCEPTANCE_V1.md), backed by the [per-carrier evidence manifest](docs/data/ONE_FABRIC_PUBLIC_DISTRIBUTION_STATE_V1.json). Browser/Vercel, Wix discovery, Telegram, Discord, Android, ChatGPT MCP, skills, advanced local device companion and iOS are tracked **separately**; source or screenshots do not establish public availability. Basic users do not need a terminal, ADB, repository cloning or owner-private code. No public signed install command is advertised until a verified release exists. Proposed 88 free minutes and $8.88/month remain release-gated, not charged services. The [global discovery campaign draft](docs/ONE_FABRIC_PUBLIC_LAUNCH_VISIBILITY_CAMPAIGN_V1.md) is opt-in and approval-held; it has not published or scheduled any messages.

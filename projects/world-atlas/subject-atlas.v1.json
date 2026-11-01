@@ -1,0 +1,863 @@
+{
+  "schema": "8x8.public.subject-atlas.v1",
+  "brand": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "canonical_root": "fabric://8x8/core",
+  "declared_at": "2026-11-01",
+  "visibility": "PUBLIC_SAFE",
+  "truth": "SUBJECT_SCOPE_IS_NOT_OPERATIONAL_CAPABILITY",
+  "product_release": "0.0.1 Beta source review only",
+  "scope": "Curated seed ontology; not all world knowledge, all dictionaries or a complete world model",
+  "intended_projection": "Gate 3 World / responsive 2D research directory, not a live 3D/planetary world",
+  "denominator": {
+    "realms": 8,
+    "seed_topics": 64,
+    "unbounded_extensions": "FUTURE_GATED"
+  },
+  "entity_types": [
+    "subject",
+    "research_source",
+    "candidate_capability",
+    "verified_tool",
+    "agent",
+    "person",
+    "animal",
+    "place",
+    "project",
+    "artifact",
+    "device",
+    "receipt"
+  ],
+  "promotion_contract": [
+    "source_provenance",
+    "privacy_and_rights",
+    "domain_expert_review_when_high_stakes",
+    "actual_authorized_runtime",
+    "independent_acceptance_receipt"
+  ],
+  "realms": [
+    {
+      "id": "intelligence",
+      "title": "AI & Digital Systems",
+      "order": 1,
+      "topics": [
+        {
+          "id": "intelligence.artificial-intelligence",
+          "slug": "artificial-intelligence",
+          "name": "Artificial intelligence",
+          "terms": "AI machine learning reasoning",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.agents-automation",
+          "slug": "agents-automation",
+          "name": "AI agents & automation",
+          "terms": "autonomous agents workflows delegation",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.models-inference",
+          "slug": "models-inference",
+          "name": "Models & local inference",
+          "terms": "LLMs model routing quota native fallback",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.computer-science",
+          "slug": "computer-science",
+          "name": "Computer science & software",
+          "terms": "coding development programming engineering",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.cybersecurity",
+          "slug": "cybersecurity",
+          "name": "Cybersecurity & privacy",
+          "terms": "security authentication encryption cyber defense",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.data-knowledge",
+          "slug": "data-knowledge",
+          "name": "Data knowledge & memory",
+          "terms": "databases knowledge graphs provenance semantic search",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.robotics",
+          "slug": "robotics",
+          "name": "Robotics & embodied AI",
+          "terms": "robots sensors safe control embodied agents",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "intelligence.internet-connectivity",
+          "slug": "internet-connectivity",
+          "name": "Internet & connectivity",
+          "terms": "websites internet networking social applications",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "planet",
+      "title": "Planet Earth & Living Systems",
+      "order": 2,
+      "topics": [
+        {
+          "id": "planet.climate",
+          "slug": "climate",
+          "name": "Climate & weather",
+          "terms": "climate change adaptation forecasts emissions",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.forests",
+          "slug": "forests",
+          "name": "Forests & ecosystems",
+          "terms": "trees forest restoration wildfires habitats",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.oceans",
+          "slug": "oceans",
+          "name": "Oceans & fresh water",
+          "terms": "ocean rivers lakes water health",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.animals",
+          "slug": "animals",
+          "name": "Animals & animal welfare",
+          "terms": "wildlife pets rescue animal shelters veterinary research",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.biodiversity",
+          "slug": "biodiversity",
+          "name": "Biodiversity & conservation",
+          "terms": "species habitats ecology conservation",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.agriculture",
+          "slug": "agriculture",
+          "name": "Agriculture & food",
+          "terms": "farms food systems soil sustainable farming",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.earth-observation",
+          "slug": "earth-observation",
+          "name": "Earth observation & maps",
+          "terms": "satellites geospatial maps land data",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "planet.environmental-justice",
+          "slug": "environmental-justice",
+          "name": "Environmental protection",
+          "terms": "pollution environmental justice habitat",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "science",
+      "title": "Science & Discovery",
+      "order": 3,
+      "topics": [
+        {
+          "id": "science.physics",
+          "slug": "physics",
+          "name": "Physics",
+          "terms": "quantum mechanics classical physics physical research",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.chemistry",
+          "slug": "chemistry",
+          "name": "Chemistry",
+          "terms": "materials molecules reactions safety",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.biology",
+          "slug": "biology",
+          "name": "Biology & genetics",
+          "terms": "life science genomics microbiology bioinformatics",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.mathematics",
+          "slug": "mathematics",
+          "name": "Mathematics & statistics",
+          "terms": "math computation statistics proof",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.astronomy",
+          "slug": "astronomy",
+          "name": "Astronomy",
+          "terms": "stars galaxies telescopes astronomy",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.space",
+          "slug": "space",
+          "name": "Space exploration",
+          "terms": "spacecraft planets missions planetary science",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.scientific-methods",
+          "slug": "scientific-methods",
+          "name": "Scientific methods",
+          "terms": "papers citations experiments reproducibility",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "science.materials",
+          "slug": "materials",
+          "name": "Materials & nanoscience",
+          "terms": "material science nanotechnology composites",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energy & Infrastructure",
+      "order": 4,
+      "topics": [
+        {
+          "id": "energy.solar",
+          "slug": "solar",
+          "name": "Solar energy",
+          "terms": "photovoltaics sunlight panels solar research",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.wind",
+          "slug": "wind",
+          "name": "Wind & renewables",
+          "terms": "wind power turbines renewable energy",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.nuclear",
+          "slug": "nuclear",
+          "name": "Nuclear energy research",
+          "terms": "nuclear safety electricity fusion fission research",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.batteries",
+          "slug": "batteries",
+          "name": "Energy storage & batteries",
+          "terms": "storage battery chemistry grid balancing",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.grids",
+          "slug": "grids",
+          "name": "Electricity & grids",
+          "terms": "energy systems power networks grid resilience",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.transport",
+          "slug": "transport",
+          "name": "Sustainable transport",
+          "terms": "electric mobility transit clean transport",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.cities",
+          "slug": "cities",
+          "name": "Cities & buildings",
+          "terms": "architecture construction housing smart cities",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "energy.circular",
+          "slug": "circular",
+          "name": "Circular economy",
+          "terms": "recycling waste reduction resource efficiency",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "humanity",
+      "title": "People & Human Life",
+      "order": 5,
+      "topics": [
+        {
+          "id": "humanity.public-health",
+          "slug": "public-health",
+          "name": "Public health & prevention",
+          "terms": "health population wellness research",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.healthcare",
+          "slug": "healthcare",
+          "name": "Healthcare science",
+          "terms": "medical research education evidence patient rights",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.mental-wellbeing",
+          "slug": "mental-wellbeing",
+          "name": "Mental wellbeing",
+          "terms": "psychology stress resilience wellbeing",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.education",
+          "slug": "education",
+          "name": "Education & learning",
+          "terms": "schools teachers tutoring science education",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.accessibility",
+          "slug": "accessibility",
+          "name": "Disability & accessibility",
+          "terms": "inclusive design assistive technology",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.human-rights",
+          "slug": "human-rights",
+          "name": "Human rights & safety",
+          "terms": "rights humanitarian protection safety",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.community",
+          "slug": "community",
+          "name": "Communities & volunteering",
+          "terms": "community support social services mutual aid",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "humanity.disasters",
+          "slug": "disasters",
+          "name": "Disaster preparedness",
+          "terms": "earthquakes floods emergency planning resilience",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "creativity",
+      "title": "Culture & Creative Worlds",
+      "order": 6,
+      "topics": [
+        {
+          "id": "creativity.film",
+          "slug": "film",
+          "name": "Film & cinema",
+          "terms": "movies film making video production storytelling",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.animation",
+          "slug": "animation",
+          "name": "Animation & 3D",
+          "terms": "character animation VFX 3d production",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.music",
+          "slug": "music",
+          "name": "Music & audio",
+          "terms": "sound voice speech composition audio production",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.visual-art",
+          "slug": "visual-art",
+          "name": "Art & design",
+          "terms": "graphic design photography visual creativity",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.books",
+          "slug": "books",
+          "name": "Books & literature",
+          "terms": "reading writing publishing authors libraries",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.games",
+          "slug": "games",
+          "name": "Games & interactive media",
+          "terms": "video games esports world building",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.languages",
+          "slug": "languages",
+          "name": "Languages & translation",
+          "terms": "language learning multilingual translation",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "creativity.heritage",
+          "slug": "heritage",
+          "name": "History & cultural heritage",
+          "terms": "archives culture museums preservation",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "society",
+      "title": "Society & Economy",
+      "order": 7,
+      "topics": [
+        {
+          "id": "society.finance",
+          "slug": "finance",
+          "name": "Finance & financial literacy",
+          "terms": "personal finance investing budgets financial education",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.economics",
+          "slug": "economics",
+          "name": "Economics & policy",
+          "terms": "markets economic systems economic research",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.entrepreneurship",
+          "slug": "entrepreneurship",
+          "name": "Business & entrepreneurship",
+          "terms": "startups companies sales ecommerce",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.work",
+          "slug": "work",
+          "name": "Jobs & workforce",
+          "terms": "careers training employment work skills",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.law",
+          "slug": "law",
+          "name": "Law & governance",
+          "terms": "law regulation digital rights civil society",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.peace",
+          "slug": "peace",
+          "name": "Diplomacy & peace",
+          "terms": "international relations conflict prevention",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.journalism",
+          "slug": "journalism",
+          "name": "Media & journalism",
+          "terms": "reporting media literacy publishing",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "society.impact",
+          "slug": "impact",
+          "name": "Philanthropy & impact",
+          "terms": "charity animal rescue sustainability humanitarian aid",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    },
+    {
+      "id": "frontiers",
+      "title": "Worlds & Future Frontiers",
+      "order": 8,
+      "topics": [
+        {
+          "id": "frontiers.spatial-world",
+          "slug": "spatial-world",
+          "name": "Spatial 8x8 World & XR",
+          "terms": "virtual reality augmented reality webxr immersive world",
+          "slot": 1,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.wearables",
+          "slug": "wearables",
+          "name": "Smart glasses & wearables",
+          "terms": "wearable computing glasses voice interfaces",
+          "slot": 2,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.mobility",
+          "slug": "mobility",
+          "name": "Autonomous mobility",
+          "terms": "safe self driving systems navigation simulation",
+          "slot": 3,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.drones",
+          "slug": "drones",
+          "name": "Drones & aerial systems",
+          "terms": "drones safe flight research aerial sensing",
+          "slot": 4,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.ocean-exploration",
+          "slug": "ocean-exploration",
+          "name": "Ocean exploration",
+          "terms": "marine robotics submersibles exploration",
+          "slot": 5,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.planetary-missions",
+          "slug": "planetary-missions",
+          "name": "Planetary exploration",
+          "terms": "Mars Moon robotic missions space science",
+          "slot": 6,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.digital-twins",
+          "slug": "digital-twins",
+          "name": "Simulation & digital twins",
+          "terms": "virtual laboratories simulated environments",
+          "slot": 7,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        },
+        {
+          "id": "frontiers.future-ideas",
+          "slug": "future-ideas",
+          "name": "Emerging ideas & research",
+          "terms": "future technology invention speculative research",
+          "slot": 8,
+          "public_state": "TOPIC_DIRECTORY_ONLY",
+          "runtime_state": "NOT_ASSERTED",
+          "experience": "Curated research and future 8x8 topic association; no implied live assistant, tool or specialist",
+          "authority": "NONE",
+          "indexable_detail_page": false
+        }
+      ]
+    }
+  ]
+}

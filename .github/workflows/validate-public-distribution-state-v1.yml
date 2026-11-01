@@ -1,0 +1,27 @@
+name: Validate Public Distribution State V1
+on:
+  pull_request:
+    paths:
+      - 'docs/data/ONE_FABRIC_PUBLIC_DISTRIBUTION_STATE_V1.json'
+      - 'docs/ONE_FABRIC_PUBLIC_ACCESS_INSTALL_AND_CARRIER_ACCEPTANCE_V1.md'
+      - 'docs/ONE_FABRIC_PUBLIC_LAUNCH_VISIBILITY_CAMPAIGN_V1.md'
+      - 'tests/public-distribution-state-v1.test.mjs'
+      - '.github/workflows/validate-public-distribution-state-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-carrier-truth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline public claim tests
+        run: node --test tests/public-distribution-state-v1.test.mjs
