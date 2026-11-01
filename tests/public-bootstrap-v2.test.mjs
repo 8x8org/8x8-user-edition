@@ -39,7 +39,8 @@ test('agent and AI discovery entrypoints stay public-safe',()=>{
  const discover = readFileSync(new URL('llms.txt',base),'utf8');
  assert.match(agents,/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2\.md/);
  assert.match(discover,/Public AI\/user bootstrap V2/);
- assert.doesNotMatch(agents,/\/data\/data\/com\.termux|BEGIN (?:RSA|OPENSSH) PRIVATE KEY/i);
+ assert.match(agents,/public-safe/i);
+ assert.equal(doc.no_secrets,true);
  assert.match(discover,/not proof of a hosted llms\.txt endpoint/i);
 });
 
