@@ -1,5 +1,7 @@
 # One-Fabric Repository Role Contract
 
+> **Public-safe assistant discovery contract (review-only):** [Public Bootstrap V2](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md) · [public manifest](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.json). These resources describe versioned user-facing behavior without private OWNER_ROOT access, credential material or implied live release acceptance.
+
 **Project:** ©️8x8 by FlashTM8 ⚡️🌎🤖  
 **Canonical logical root:** `fabric://8x8/core`  
 **Repository:** `8x8org/8x8-user-edition`  
