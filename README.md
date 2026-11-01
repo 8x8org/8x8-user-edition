@@ -1,5 +1,7 @@
 # 8x8 User Edition
 
+> **Public AI/user bootstrap V2 (review-only):** [Read the public-safe orientation](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md) · [machine-readable bootstrap](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.json). This document is a source candidate, not a newly accepted release or a connection to the owner's private systems. Historical public deployment receipts below must be checked against current immutable source/deployment evidence.
+
 [![Version](https://img.shields.io/badge/8x8%20OS-0.0.1%20Beta-7b61ff)](VERSION.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Contributing](https://img.shields.io/badge/Contributing-guide-brightgreen.svg)](https://github.com/8x8org/.github/blob/main/CONTRIBUTING.md)
