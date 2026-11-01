@@ -50,9 +50,9 @@ Track named branded/nonbranded search queries, verified impressions/clicks and i
 ## Promotion checklist
 
 1. Atlas source and JSON exact-hash agreement; 8 realms × 8 topics, no code-based permissions.
-2. Public boundary scanner must pass, including all existing findings (PR #203 currently blocked on pre-existing public source).
+2. Public boundary scanner must pass at the exact merged/released head. On 2026-11-01, PR #203 head `ba9bbb9ea648e06131e7f1f248665b0d0b12cf5c` passed the scanner after public-safe source reconciliation; this does not certify a deployed product.
 3. Build output must include atlas HTML and JSON; actual human-readable navigation, keyboard access, mobile layout and filtering must pass browser evaluation.
-4. Resolve existing V50/Android/ID/MCP release lineage and SBOM issues without overwriting PR #200/#201/#202's overlapping source.
+4. Preserve the restored V50 root rewrite and R3 rollback. PR #203 exact head `ba9bbb9e` also passed SBOM/Provenance after source-only route correction; separately reconcile PR #200/#201/#202's overlapping Android, Studio, ID and MCP integration before production acceptance.
 5. Verify immutable public deployment on a canonical domain, rendered output and optional approved 3D Gate 3 embedding.
 6. Publish accurate sitemap/structured data only after real deployment; collect actual Search Console and Bing readbacks separately.
 7. Measure meaningful search sessions and authenticated user-task results. No Top-1 or global indexability claim without outside evidence.
