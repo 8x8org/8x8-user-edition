@@ -1,0 +1,81 @@
+{
+  "schema": "8x8.genesis-invites-wallets-referrals.v1",
+  "root": "fabric://8x8/core",
+  "state": "SOURCE_ONLY_FUTURE_GATED",
+  "date": "2026-11-01",
+  "source_authority": "private canonical candidate policy; public source is descriptive only",
+  "genesis": {
+    "max_native_coin_units": "8888888",
+    "genesis_target": "88888",
+    "genesis_vault_backing": "88888",
+    "one_locked_8x8_per_vault": true,
+    "owner_reference_usd": "8.88",
+    "market_price_usd": null,
+    "tradable_supply_verified": false,
+    "launch_date_verified": false,
+    "launch_price_guarantee": false,
+    "fee_policy_candidate_buy_sell_bps": 444,
+    "pure_nonsale_transfer_bps": 0
+  },
+  "users": {
+    "account": "8x8 ID requires production verified auth before binding",
+    "wallet": "optional bring-your-own-wallet; user controls private key",
+    "custody": "no raw secrets or seed phrases; no transfer authority",
+    "wallet_connection_preview": "EIP-1193 injected provider only with explicit click",
+    "server_storage": "none",
+    "proof_of_control": "future nonce origin session signature server verification with replay/expiry rejection; not active"
+  },
+  "payment": {
+    "stripe": "existing verified optional one-time $8.88 support only",
+    "crypto_provider": null,
+    "crypto_settlement_enabled": false,
+    "accepted_crypto_assets": [],
+    "direct_owner_wallet_address": null,
+    "treasury_deposit_address": null,
+    "treasury_collection_enabled": false,
+    "reservations_paid_enabled": false,
+    "airdrop_enabled": false,
+    "allocations_promised": false,
+    "launch_claims_allowed": false
+  },
+  "referral": {
+    "phase": "SHARE_ONLY_NO_REWARD_OR_ATTRIBUTION",
+    "id_generation": "not active",
+    "rewards_live": false,
+    "purchaser_commissions_enabled": false,
+    "token_reward_promises": false,
+    "requires_user_optin_and_antisybil": true,
+    "referral_incentive_disclosure_required": true,
+    "proposed_accounted_events": [
+      "invitation_created",
+      "link_opened_opt_in",
+      "verified_signup",
+      "eligible_use",
+      "reviewed_reward_if_lawful"
+    ]
+  },
+  "support": {
+    "public_feedback_url": "https://github.com/8x8org/8x8-user-edition/issues/new",
+    "public_warning": "Do not disclose identity documents, wallet addresses, private keys, recovery phrases, sensitive health or financial details in public issues",
+    "agent_triage_state": "FUTURE_GATED",
+    "human_escalation_required": [
+      "financial complaints",
+      "safety incidents",
+      "privacy/account issues",
+      "payments and refunds"
+    ]
+  },
+  "readiness": [
+    "legal/token sale jurisdiction classification",
+    "verified production 8x8 ID and account binding",
+    "independently confirmed native chain implementation and audited asset supply",
+    "separate verified custody and signer controls",
+    "treasury accounting and reconcilable settlement receipts",
+    "asset-specific processor/payment network due diligence",
+    "KYC AML sanctions controls when required",
+    "live quotes with expiry and dispute/refund handling",
+    "real token distribution acceptance and freeze/rollback safeguards",
+    "public disclosures, consumer support and event approval"
+  ],
+  "rollback": "No funded value movements or permissions; reversible unmerged source PR"
+}
