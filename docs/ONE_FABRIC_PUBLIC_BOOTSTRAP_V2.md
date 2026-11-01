@@ -46,3 +46,6 @@ Use this document as *orientation*, not as memory ingestion proof or an executio
 
 ## Original creative universe and forward capability vision
 Read `docs/ONE_FABRIC_PUBLIC_CREATIVE_WORLDS_AND_FUTURE_CAPABILITIES_V1.md` for public-safe examples of original films, characters, Studio, World, natural voices, XR, robotics research and independently gated future services. This is a proposed experience map, not a live capability or a permission grant.
+
+## Provider quota resilience and native alternatives
+The future 8x8 experience should be resilient when external AI providers reach limits or become unavailable. Where independently released, a user may select a qualified local, on-device, self-hosted or alternate provider capability under their own permissions and resource budget. A script, storyboard or preview must never be reported as a completed rendered video; a queued task must not be reported as executed. Automatic payment, additional accounts to evade a provider's terms, or unauthorized access to user devices are not permitted. Local alternatives are product-development goals unless a current public release receipt proves their availability.
