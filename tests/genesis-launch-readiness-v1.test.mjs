@@ -9,7 +9,7 @@ test('preserves source 8x8 candidate identities without calling proposed price m
  assert.equal(policy.genesis.market_price_usd,null);
  assert.equal(policy.genesis.launch_price_guarantee,false);
  assert.equal(policy.genesis.genesis_vault_backing,'88888');
- assert.match(page,/not<\\/strong> market price/i);
+ assert.match(page,/not<.strong> market price/i);
 });
 test('no crypto receipt, treasury deposit, token allocation or reward is enabled',()=>{
  assert.equal(policy.payment.crypto_settlement_enabled,false);
