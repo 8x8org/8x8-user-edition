@@ -1,5 +1,9 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { assertPublicBuildSource } from './public-build-source-preflight-v1.mjs';
+
+// Fail closed before dist is cleared or user-facing outputs are emitted.
+assertPublicBuildSource();
 
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
