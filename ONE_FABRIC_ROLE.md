@@ -40,9 +40,9 @@ Browser/PWA and separately certified Telegram/native clients; each channel needs
 
 The wider physical model is:
 
-- **Termux on S22:** hardware-facing body and Android capability boundary.
-- **Ubuntu PRoot:** Linux compute, builds, agents, brokers, databases, and engineering services.
-- **`/storage/emulated/0/8x8 OS`:** owner-visible persistent artifacts, archives, media, models, exports, and receipts—not the primary secret store or executable authority.
+- **User-authorized Android companion:** device-local capability boundary; no owner-private control implementation is distributed in this repository.
+- **Protected execution services:** bounded server-side compute and data services, accessible only through separately verified identity and permissions.
+- **Protected data and media storage:** private assets and credentials remain outside the public client; public release artifacts contain only intended client resources.
 - **GitHub:** versioned source, policy, CI, releases, and provenance—not live runtime proof.
 - **Blockchain:** source plus runtime plus independently operated validators; GitHub presence alone is not mainnet.
 
@@ -88,4 +88,4 @@ Every adoption from this repository into another must record source repository, 
 
 ## Current verification boundary
 
-This role contract classifies intent and authority. It does **not** prove that this repository is cloned on the S22, synchronized into Ubuntu PRoot, deployed publicly, authenticated, healthy, or productive. A fresh read-only device and deployment census is required for those claims.
+This role contract classifies intent and authority. It does **not** prove that this repository is cloned on the S22, synchronized into a protected execution environment, deployed publicly, authenticated, healthy, or productive. A fresh read-only device and deployment census is required for those claims.
