@@ -36,3 +36,14 @@ test('verified public help and support channels never imply sale or custody',()=
  assert.ok(existsSync(new URL('../dist/projects/open-world-2026/genesis.html',import.meta.url)));
  assert.ok(existsSync(new URL('../dist/projects/open-world-2026/genesis-launch-readiness.v1.json',import.meta.url)));
 });
+
+test('public founder invitation links only to nonbinding interest, not a token sale',()=>{
+ const invite=read('projects/genesis-invite/index.html');
+ assert.match(invite,/href="https:\/\/form\.jotform\.com\/263041117453044"/);
+ assert.match(invite,/Join the free community interest list/);
+ assert.match(invite,/does not create an 8x8 account or wallet/);
+ assert.match(invite,/not live or for sale/);
+ assert.match(invite,/https:\/\/github\.com\/8x8org\/8x8-user-edition\/issues\/205/);
+ assert.match(invite,/https:\/\/buy\.stripe\.com\/bJe4gz0aUcOD7N93Fr4Rq01/);
+ assert.ok(existsSync(new URL('../dist/projects/genesis-invite/index.html',import.meta.url)));
+});
