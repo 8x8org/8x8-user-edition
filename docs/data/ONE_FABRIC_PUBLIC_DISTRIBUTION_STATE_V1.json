@@ -1,0 +1,54 @@
+{
+  "schema": "ONE_FABRIC_PUBLIC_DISTRIBUTION_STATE_V1",
+  "canonical_root": "fabric://8x8/core",
+  "classification": "PUBLIC_SAFE_RELEASE_REVIEW",
+  "captured_date_utc": "2026-11-01",
+  "public_product_version": "0.0.1 Beta",
+  "disclaimer": "Source presence, published landing page, READY preview, and beta status are not proof of a joined authenticated product.",
+  "owner_private_access_from_public": false,
+  "automatic_public_release": false,
+  "supported_claim_states": ["PUBLISHED_SHELL", "PREVIEW_DEPLOYED", "SOURCE_PRESENT", "CANDIDATE", "UNKNOWN"],
+  "carriers": [
+    {"id":"vercel_web", "display_name":"Vercel browser/PWA", "claim_state":"PREVIEW_DEPLOYED", "public_url":"https://8x8-os-ecosystem.vercel.app", "source_reference":"8x8org/8x8-user-edition README; connected Vercel 8x8-os-ecosystem project READY preview", "not_proven":["current production login", "end-to-end authenticated task", "cross-device session", "accepted stable release"]},
+    {"id":"wix_site", "display_name":"Wix 8x8org website", "claim_state":"PUBLISHED_SHELL", "public_url":"https://8x8org.wixsite.com/my-site-6", "source_reference":"Connected Wix site context: published, Free plan, Velo enabled, site last updated July 23 2026", "not_proven":["embedded functioning 8x8 app", "shared 8x8 ID session", "paid product checkout"]},
+    {"id":"telegram_miniapp", "display_name":"Telegram Mini App", "claim_state":"SOURCE_PRESENT", "public_url":null, "source_reference":"8x8org/8x8-user-edition/telegram/index.html", "not_proven":["signed Telegram initData verification in live backend", "authenticated session", "public bot menu binding on accepted release"]},
+    {"id":"discord", "display_name":"Discord 8x8 experience", "claim_state":"SOURCE_PRESENT", "public_url":null, "source_reference":"Public V50 role/interface contract and existing 8x8 source", "not_proven":["registered Discord application", "approved OAuth scopes", "Activity or bot client authorized", "completed task"]},
+    {"id":"android_apk", "display_name":"Android signed APK", "claim_state":"SOURCE_PRESENT", "public_url":null, "source_reference":"Existing 8x8 user-device bootstrap and public Android carrier source", "not_proven":["public accepted signed APK/release manifest", "matching signing certificate", "user installation acceptance", "rollback"]},
+    {"id":"device_companion", "display_name":"Optional per-tenant device connector", "claim_state":"SOURCE_PRESENT", "public_url":null, "source_reference":"Existing owner-reviewed user-device bootstrap contract", "not_proven":["public signed installer", "tenant-issued device certificate", "local STOP/revoke acceptance", "remote capability approval"]},
+    {"id":"chatgpt_mcp", "display_name":"8x8 MCP for ChatGPT", "claim_state":"CANDIDATE", "public_url":null, "source_reference":"OpenAI official remote MCP/plugin documentation; 8x8 plugin directory search returned no listing on 2026-11-01", "not_proven":["public listing", "remote HTTPS OAuth endpoint and resource audience validation", "approval", "actual ChatGPT account install"]},
+    {"id":"skills", "display_name":"8x8 skills and agent integrations", "claim_state":"CANDIDATE", "public_url":null, "source_reference":"Public/private bootstrap and skills product goals", "not_proven":["signed skill package", "allowed-install registry", "per-tenant tool scopes", "consumer installation"]},
+    {"id":"ios", "display_name":"iOS native app", "claim_state":"UNKNOWN", "public_url":null, "source_reference":"Historical design and iPhone worker do not establish an App Store product", "not_proven":["iOS release binary", "store review", "signed installation", "user acceptance"]}
+  ],
+  "entitlement": {
+    "free_minutes_proposed":88,
+    "free_period":"NOT_PUBLICLY_ACCEPTED",
+    "subscription_price_usd_proposed":"8.88",
+    "subscription_term_proposed":"monthly",
+    "billing_live":false,
+    "unlimited_usage_guaranteed":false,
+    "source":"8x8org/8x8-user-edition README; private sandbox policy is not live billing"
+  },
+  "cross_surface_gate": {
+    "shared_identity_server_proven":false,
+    "cross_tenant_denial_proven":false,
+    "live_payment_verified":false,
+    "production_8x8_mcp_proven":false,
+    "public_device_pairing_proven":false,
+    "public_signed_apk_verified":false,
+    "honest_status_display_required":true,
+    "release_promotion_allowed":false
+  },
+  "archive": {
+    "historical_url_candidates":896,
+    "historical_external_repo_references":169,
+    "overlapping_preserved_ledger_rows":1269,
+    "archive_exhaustively_reviewed":false,
+    "public_exposure_of_private_source":false
+  },
+  "policy": {
+    "source_code_privacy":"keep server/private source server-side; delivered browser JavaScript cannot be secret",
+    "optional_adb":"explicit user consent, same-LAN pairing, local user-owned device, no public ADB exposure, no owner-grant inheritance",
+    "plugin":"remote OAuth resource-scoped MCP with host-controlled user consent; no universal automatic ChatGPT installation",
+    "marketing":"truthful opt-in publication only, no mass unsolicited messages or fabricated engagement"
+  }
+}
