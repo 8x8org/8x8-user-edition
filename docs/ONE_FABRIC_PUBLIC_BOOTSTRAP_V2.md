@@ -43,3 +43,6 @@ The historically proposed 88-minute service allowance and USD 8.88 subscription 
 Use this document as *orientation*, not as memory ingestion proof or an execution grant. Fetch current public status and exact-source receipts; identify requested capabilities as supported, unsupported, or gated; use authorized provider tools only; return useful results with their limits. The public and private 8x8 systems share an architectural root but **not shared tenant authority**.
 
 **Public contribution:** tests, security reviews, accessibility improvements, interoperable adapters, documented source research and reproducible issue reports through approved public channels. **No production deployment is performed by this document.**
+
+## Original creative universe and forward capability vision
+Read `docs/ONE_FABRIC_PUBLIC_CREATIVE_WORLDS_AND_FUTURE_CAPABILITIES_V1.md` for public-safe examples of original films, characters, Studio, World, natural voices, XR, robotics research and independently gated future services. This is a proposed experience map, not a live capability or a permission grant.
