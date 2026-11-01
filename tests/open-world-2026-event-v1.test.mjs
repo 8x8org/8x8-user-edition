@@ -25,7 +25,7 @@ test('live voluntary support is separate from disabled subscriptions and unlaunc
 test('human-facing event is crawlable and linked from existing public routes',()=>{
  assert.match(html,/<h1>8x8 <em>Open World<\/em> 2026<\/h1>/);
  assert.match(html,/November 1 – December 31, 2026/);
- assert.match(html,/available on an independently verified deployment/i);
+ assert.match(html,/accessible on an independently verified deployment/i);
  assert.match(read('projects/index.html'),/href="\/open-world-2026"/);
  const v=JSON.parse(read('vercel.json'));
  assert.ok(v.rewrites.some(r=>r.source==='/open-world-2026'&&r.destination==='/projects/open-world-2026/index.html'));
@@ -35,5 +35,5 @@ test('event page and policy included in actual built output with no false live t
  assert.ok(existsSync(new URL('../dist/projects/open-world-2026/index.html',import.meta.url)));
  assert.ok(existsSync(new URL('../dist/projects/open-world-2026/event-policy.v1.json',import.meta.url)));
  const built=read('dist/projects/open-world-2026/index.html');
- assert.match(built,/not a verified live production launch/i);
+ assert.match(built,/not confirmation of a live production launch/i);
 });
