@@ -34,6 +34,15 @@ test('existing public entrypoints reference this bootstrap',()=>{
  assert.match(readme,/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2\.md/);
  assert.match(role,/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2\.md/);
 });
+test('agent and AI discovery entrypoints stay public-safe',()=>{
+ const agents = readFileSync(new URL('AGENTS.md',base),'utf8');
+ const discover = readFileSync(new URL('llms.txt',base),'utf8');
+ assert.match(agents,/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2\.md/);
+ assert.match(discover,/Public AI\/user bootstrap V2/);
+ assert.doesNotMatch(agents,/\/data\/data\/com\.termux|BEGIN (?:RSA|OPENSSH) PRIVATE KEY/i);
+ assert.match(discover,/not proof of a hosted llms\.txt endpoint/i);
+});
+
 test('public bootstrapping never grants live authority',()=>{
  assert.match(prose,/not a newly accepted release|not a new release/i);
  assert.match(prose,/No production deployment is performed/i);
