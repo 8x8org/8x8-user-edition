@@ -1,0 +1,49 @@
+name: Validate V50 World Studio Convergence V1
+on:
+  pull_request:
+    paths:
+      - 'projects/open-world-2026/**'
+      - 'tests/open-world-2026-event-v1.test.mjs'
+      - 'tests/genesis-launch-readiness-v1.test.mjs'
+      - 'studio/**'
+      - 'agents/**'
+      - 'atlas/**'
+      - 'observatory/**'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'scripts/build-vercel-static.mjs'
+      - 'scripts/public-build-source-preflight-v1.mjs'
+      - 'tests/public-build-source-preflight-v1.test.mjs'
+      - 'scripts/one-fabric-hosted-release-smoke.mjs'
+      - 'vercel.json'
+      - 'tests/public-v50-world-convergence-v1.test.mjs'
+      - 'tests/hosted-release-audit.test.mjs'
+      - 'tests/media-core.test.mjs'
+      - 'tests/film-808-release-gate.test.mjs'
+      - 'tests/service-worker.test.mjs'
+      - 'tests/agent-room.test.mjs'
+      - 'tests/system-atlas.test.mjs'
+      - '.github/workflows/validate-v50-world-studio-convergence-v1.yml'
+permissions:
+  contents: read
+jobs:
+  convergence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Test inherited PR201 source behavior and PR202 bounded auditor
+        run: |
+          node --test tests/public-build-source-preflight-v1.test.mjs tests/media-core.test.mjs tests/film-808-release-gate.test.mjs tests/service-worker.test.mjs tests/agent-room.test.mjs tests/system-atlas.test.mjs tests/hosted-release-audit.test.mjs
+      - name: Build static app (no deployment)
+        run: npm run build:vercel
+      - name: Verify full user-visible source bundle and 8x8 privacy boundary
+        run: |
+          node --test tests/public-v50-world-convergence-v1.test.mjs tests/open-world-2026-event-v1.test.mjs tests/genesis-launch-readiness-v1.test.mjs
+          python3 scripts/validate_public_information_boundary.py

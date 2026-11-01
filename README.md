@@ -1,5 +1,8 @@
 # 8x8 User Edition
 
+> **2026 OPEN WORLD FREE-PREVIEW EVENT (review branch):** [8x8 Open World 2026](projects/open-world-2026/index.html) · [event terms and truth states](projects/open-world-2026/event-policy.v1.json). November 1–December 31, 2026: public information and **actually available** local-only previews are offered without a software subscription. The live $8.88/month Software Subscription checkout was paused, while [optional one-time $8.88 Stripe support](https://buy.stripe.com/bJe4gz0aUcOD7N93Fr4Rq01) stays separate. There is **no** claim of free unlimited AI credits, completed 8x8 ID/MCP runtime, available NFT/crypto packages, a currently deployed event page or automatic reactivation in 2027. Future reservations are nonbinding and do not charge or promise allocation.
+
+
 > **Public AI/user bootstrap V2 (review-only):** [Read the public-safe orientation](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.md) · [machine-readable bootstrap](docs/ONE_FABRIC_PUBLIC_BOOTSTRAP_V2.json). This document is a source candidate, not a newly accepted release or a connection to the owner's private systems. Historical public deployment receipts below must be checked against current immutable source/deployment evidence.
 
 > **NEW REVIEW-ONLY WORLD DIRECTORY:** [Explore 64 public research subjects across 8 realms](projects/world-atlas/index.html) · [machine-readable subject atlas](projects/world-atlas/subject-atlas.v1.json). This is a searchable public 2D directory for future Gate 3 integration. Topics such as climate, solar power, nuclear-energy research, finance, animals and AI are *subject coverage*, not a claim of running professional services or live planetary data. No public production route or authenticated capability is newly accepted by this branch.

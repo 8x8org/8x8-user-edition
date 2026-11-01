@@ -9,14 +9,51 @@
   "background_color": "#02030a",
   "theme_color": "#03040b",
   "orientation": "any",
-  "categories": ["productivity", "utilities", "developer", "entertainment"],
+  "categories": [
+    "productivity",
+    "utilities",
+    "developer",
+    "entertainment"
+  ],
   "icons": [
-    {"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ],
   "shortcuts": [
-    {"name":"Telegram Mini App","url":"/telegram"},
-    {"name":"Discord","url":"/discord"},
-    {"name":"World","url":"/world"},
-    {"name":"Android","url":"/android"}
+    {
+      "name": "One Fabric System Atlas",
+      "url": "/atlas",
+      "description": "Browse verified and planned capability families"
+    },
+    {
+      "name": "8x8 Studio local media",
+      "url": "/studio",
+      "description": "Local image, audio and video inspector"
+    },
+    {
+      "name": "8x8 Agent Room",
+      "url": "/agents",
+      "description": "Concept agent figures and user-initiated browser voice preview"
+    },
+    {
+      "name": "Telegram Mini App",
+      "url": "/telegram"
+    },
+    {
+      "name": "Discord",
+      "url": "/discord"
+    },
+    {
+      "name": "World",
+      "url": "/world"
+    },
+    {
+      "name": "Android",
+      "url": "/android"
+    }
   ]
 }

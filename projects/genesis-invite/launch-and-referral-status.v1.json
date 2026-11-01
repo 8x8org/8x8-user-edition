@@ -1,0 +1,106 @@
+{
+  "schema": "8x8.genesis.community-invitation-and-referral-readiness.v1",
+  "canonical_root": "fabric://8x8/core",
+  "owner_role": "FlashTM8 OWNER_ROOT",
+  "state": "SOURCE_ONLY_PUBLIC_DISCOVERY_NOT_LIVE_FINANCIAL_LAUNCH",
+  "founder_identity": "FlashTM8",
+  "first_party_public_site": "https://github.com/8x8org/8x8-user-edition/issues/205",
+  "economics": {
+    "source": "horbolsi/8x8 config/ONE_FABRIC_THREE_GATE_ECONOMY_RECONSTRUCTED_V1.json",
+    "source_state": "SOURCE_RECONSTRUCTED_NOT_RUNTIME_PROVEN",
+    "native_asset": "8x8",
+    "native_network": "8x8 Blockchain / 8x8 Network",
+    "max_supply_candidate": 8888888,
+    "founder_initial_reference_usd": "8.88",
+    "reference_is_market_price": false,
+    "reference_is_binding_offer": false,
+    "reference_is_projection": false,
+    "offer_sale_open": false,
+    "airdrop_open": false,
+    "guaranteed_return": false,
+    "virtual_circulation_reported": false,
+    "genesis_user_target_candidate": 88888,
+    "actual_eligible_users_count": "UNKNOWN"
+  },
+  "identity": {
+    "source_pr": 200,
+    "authentication_and_isolation_verified": false,
+    "owner_core_exposed": false
+  },
+  "wallets": {
+    "source": "horbolsi/8x8 config/wallets/ONE_FABRIC_EXTERNAL_WALLET_ADAPTER_MATRIX_V1.json",
+    "wallet_connection_live": false,
+    "allowed_provider_wallets_activated": [],
+    "owner_treasury_address_verified": false,
+    "treasury_deposit_address_public": false,
+    "per_user_non_custodial_wallet_future": true,
+    "signing_consent_separate": true,
+    "private_key_export": false,
+    "chain_id_and_asset_allowlist_required": true
+  },
+  "fiat": {
+    "optional_support_usd_one_time": "8.88",
+    "optional_support_link": "https://buy.stripe.com/bJe4gz0aUcOD7N93Fr4Rq01",
+    "support_buys_no_token": true,
+    "paid_token_reservation": false,
+    "subscription_charge_after_event": false
+  },
+  "crypto_payments": {
+    "active": false,
+    "chains_accepted": [],
+    "assets_accepted": [],
+    "deposits_enabled": false,
+    "quotes_and_finality_proven": false,
+    "settlement_to_treasury": false,
+    "custody_verified": false
+  },
+  "referrals": {
+    "legacy_sources": [
+      "horbolsi/8x8 hub-server/src/routes/referral.ts",
+      "horbolsi/8x8 hub-server/src/services/referral-distributor.ts"
+    ],
+    "legacy_reward_schedule": "5%/2%/1% source example, NOT ACTIVE PROMISE",
+    "existing_referral_signup_acceptance_proven": false,
+    "public_invite_sharing_available_in_source": true,
+    "server_attribution_live": false,
+    "rewards_enabled": false,
+    "token_or_nft_commissions": false,
+    "sybil_resistance_proven": false,
+    "invitee_consent_required": true,
+    "allow_nonrewarded_information_sharing": true
+  },
+  "reservations": {
+    "financial_reservations_open": false,
+    "nonbinding_research_interest_requires_privacy_consent": true,
+    "allocated_tokens": 0,
+    "airdrop_claims_open": false,
+    "locked_allocation_release": "FUTURE_GATED"
+  },
+  "support": {
+    "public_feedback_page": "https://github.com/8x8org/8x8-user-edition/issues/new/choose",
+    "automated_agent_support_verified": false,
+    "public_issue_must_not_contain_secrets": true,
+    "human_escalation_required_for_funds_and_security": true
+  },
+  "promotion_requirements": [
+    "issuer and jurisdiction-specific legal disposition",
+    "two-tenant identity proof",
+    "audited chain and contracts",
+    "verified treasury custody, address and recovery",
+    "approved fiat and crypto provider terms",
+    "asset/network allowlists and sanctions screening",
+    "user consent and wallet-authentication challenge",
+    "payment finality and refunds/chargeback handling",
+    "anti-sybil and referral abuse controls",
+    "airdrop tax and entitlement analysis",
+    "compliance-vetted marketing and exact price disclosures",
+    "testnet issuance/distribution/revocation receipts",
+    "independent security review",
+    "explicit owner approval for live financial effects"
+  ],
+  "release": {
+    "client": "PR #204 review branch",
+    "public_deployment_certified": false,
+    "all_protocol_economic_effects": false
+  }
+}
