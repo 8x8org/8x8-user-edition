@@ -1,0 +1,60 @@
+{
+  "schema": "8x8.open-world-free-preview-event.v1",
+  "as_of": "2026-11-01",
+  "root": "fabric://8x8/core",
+  "organizer": "©️8x8 by FlashTM8 ⚡️🌎🤖",
+  "event": {
+    "id": "open-world-2026",
+    "name": "8x8 Open World 2026 · Free Preview Celebration",
+    "start": "2026-11-01",
+    "end_inclusive": "2026-12-31",
+    "timezone": "America/New_York",
+    "state": "PROPOSED_EVENT_POLICY_SOURCE_ONLY",
+    "free_scope": "Currently available public informational pages, original open-source materials and tested local-only previews where the user can actually reach the deployed product. Does not include unverified premium AI calls, unrestricted model quotas, private agents, devices, paid APIs or commercial service deliverables."
+  },
+  "pricing": {
+    "suspension": "8x8 Software Subscription $8.88/month live Stripe payment link deactivated on 2026-11-01, verified via readback",
+    "future_plan": "88 free minutes and $8.88/month are proposed for 2027 following separately accepted metering, billing, legal disclosures and release acceptance",
+    "automatic_reactivation": false,
+    "existing_subscribers_observed": 0
+  },
+  "support": {
+    "optional_fiat_tip": "https://buy.stripe.com/bJe4gz0aUcOD7N93Fr4Rq01",
+    "currency": "USD",
+    "one_time_usd": 8.88,
+    "verified": "LIVE_STRIPE_LINK_ACTIVE",
+    "no_product_entitlement": true,
+    "refunds_and_disputes": "Stripe checkout/provider disclosures apply; organizer support contact must be clearly identified on deployed commerce site"
+  },
+  "reservations": {
+    "type": "NONBINDING_INTEREST_ONLY",
+    "enabled_payment": false,
+    "collect_payment": false,
+    "no_guaranteed_access": true,
+    "requires_opt_in": true,
+    "source_only": true
+  },
+  "web3": {
+    "native_8x8_coin": "FUTURE_GATED",
+    "vault_nft": "FUTURE_GATED",
+    "crypto_asset_packages": "NOT_FOR_SALE",
+    "crypto_payments": "NOT_VERIFIED",
+    "wallet_addresses_published": false,
+    "no_investment_promises": true
+  },
+  "public_journeys": [
+    "Search 64 seed topics in World Atlas",
+    "Inspect user-provided local media in Studio when deployed",
+    "View conceptual Agent Room and System Atlas",
+    "Read public guides and source for the full 8x8 roadmap"
+  ],
+  "truth": {
+    "public_user_editions_integrated_pr": 204,
+    "release_deployed": false,
+    "authenticated_id_mcp_complete": false,
+    "device_lease_enabled": false,
+    "all_products_free": false,
+    "all_internet_indexed": false
+  },
+  "revocation": "The owner can end or amend the no-cost preview with clear user notice; no silent charging or subscriptions."
+}
