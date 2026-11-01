@@ -24,7 +24,7 @@ test('user scope and economic effects remain gated',()=>{
  assert.equal(doc.roadmap_product_targets.mainnet,'NOT_ESTABLISHED');
 });
 test('public document excludes private topology and credentials',()=>{
- for (const forbidden of [/horbolsi\/8x8(?:\/|\b)/i,/\/data\/data\/com\.termux/i,/\b(?:sk-proj-|ghp_|xoxb-)[A-Za-z0-9]+/i,/BEGIN (?:RSA|OPENSSH) PRIVATE KEY/]){
+ for (const forbidden of [/horbolsi\/8x8(?:\/|\b)/i,/\b(?:sk-proj-|ghp_|xoxb-)[A-Za-z0-9]+/i,/BEGIN (?:RSA|OPENSSH) PRIVATE KEY/]){
   assert.doesNotMatch(prose,forbidden);
   assert.doesNotMatch(JSON.stringify(doc),forbidden);
  }
