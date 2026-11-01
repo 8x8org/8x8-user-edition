@@ -4,6 +4,7 @@ on:
     paths:
       - 'projects/open-world-2026/**'
       - 'tests/open-world-2026-event-v1.test.mjs'
+      - 'tests/genesis-launch-readiness-v1.test.mjs'
       - 'studio/**'
       - 'agents/**'
       - 'atlas/**'
@@ -44,5 +45,5 @@ jobs:
         run: npm run build:vercel
       - name: Verify full user-visible source bundle and 8x8 privacy boundary
         run: |
-          node --test tests/public-v50-world-convergence-v1.test.mjs tests/open-world-2026-event-v1.test.mjs
+          node --test tests/public-v50-world-convergence-v1.test.mjs tests/open-world-2026-event-v1.test.mjs tests/genesis-launch-readiness-v1.test.mjs
           python3 scripts/validate_public_information_boundary.py
