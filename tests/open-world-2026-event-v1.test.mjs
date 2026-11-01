@@ -19,7 +19,7 @@ test('live voluntary support is separate from disabled subscriptions and unlaunc
  assert.equal(policy.reservations.enabled_payment,false);
  assert.equal(policy.web3.crypto_asset_packages,'NOT_FOR_SALE');
  assert.equal(policy.web3.wallet_addresses_published,false);
- assert.match(html,/not a paid subscription/i);
+ assert.match(html,/<strong>not<\/strong> a paid subscription/i);
  assert.match(html,/No paid subscription will be automatically started/i);
 });
 test('human-facing event is crawlable and linked from existing public routes',()=>{
