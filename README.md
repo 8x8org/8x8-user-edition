@@ -140,3 +140,7 @@ The public 8x8 User Edition repository is licensed under the [Apache License 2.0
 ## Security
 
 Do not submit credentials, wallet keys, private messages, biometric templates, protected repository inventory or private-system logs to public issues. See [SECURITY.md](SECURITY.md).
+
+## Multi-carrier access, installations and transparent launch
+
+The public-safe multi-carrier access contract is [Public access and installation guide](docs/ONE_FABRIC_PUBLIC_ACCESS_INSTALL_AND_CARRIER_ACCEPTANCE_V1.md), backed by the [per-carrier evidence manifest](docs/data/ONE_FABRIC_PUBLIC_DISTRIBUTION_STATE_V1.json). Browser/Vercel, Wix discovery, Telegram, Discord, Android, ChatGPT MCP, skills, advanced local device companion and iOS are tracked **separately**; source or screenshots do not establish public availability. Basic users do not need Termux, ADB, repository cloning or owner-private code. No public signed install command is advertised until a verified release exists. Proposed 88 free minutes and $8.88/month remain release-gated, not charged services. The [global discovery campaign draft](docs/ONE_FABRIC_PUBLIC_LAUNCH_VISIBILITY_CAMPAIGN_V1.md) is opt-in and approval-held; it has not published or scheduled any messages.
