@@ -52,3 +52,54 @@ Safe opt-in setup concept:
 
 ## Launch acceptance gates
 No universal launch until the six existing product gates close at a reconciled immutable head: authenticated Web/PWA, artifact provenance, signed Android, 8x8 ID/MCP, Studio/World real task, and agent/owner controls. Add per-carrier entrypoint tests and one complete two-tenant task where source → grant → execution → result → independent receipt → visible output remains identical across web and another authorized carrier. No `Top-1` or `100%` without external benchmarks and a closed denominator.
+
+
+## Guided everyday and advanced 8x8 scenarios
+
+These are **intended use cases and acceptance examples**, not assertions that every workflow is currently released. Check the exact public product version and status at https://github.com/8x8org/8x8-user-edition and https://github.com/8x8org/.github/blob/main/CURRENT_PUBLIC_STATE.md before entering sensitive data.
+
+| Who | Example request after authenticated release | Required real result | Main release limitation |
+|---|---|---|---|
+| Student | "Teach photosynthesis in Arabic and English; quiz me" | source-backed lesson, accessible quiz, saved consented progress | education quality and signed-in memory not yet accepted |
+| Creator | "Make a 30s original subtitled trailer from licensed media" | actual verified playable video, rights, artifact hash and review draft | a script/storyboard is partial, not a rendered film |
+| Accessibility user | "Read this file aloud; provide large text" | authorized text/audio and accessible interaction | rights, voice consent and hardware tests |
+| Developer | "Improve this app, run tests and prepare a rollback" | inspectable code diff, test and source identity | no private repo or deployment grants by default |
+| Small business | "Draft a service FAQ and propose approved support automation" | reviewed draft and individually authorized connectors | no unapproved customer outreach or billing |
+| Scientist | "Compare credible sources and reproduce a calculation" | links, methodology, verifiable computation | research and domain qualification |
+| Animal-care volunteer | "Make multilingual adoption materials from provided facts" | accurate accessible poster/text with human approval | no unsupported veterinary or partnership claim |
+| Player | "Enter a moderated friends-only World room" | an identity-bound session and revocable invites | source for a World is not proof of live multiplayer |
+| Advanced device user | "Connect my phone and approve one diagnostic action" | local device consent, short lease, STOP and receipt | signed companion and device acceptance gated |
+| Finance learner | "Run paper trading simulations and explain risk" | simulated dataset and labeled results | no real orders, wallet signing or guaranteed return |
+| Film team | "Version dialogue, natural voices and captions for my scene" | rights-cleared voice/media asset and reviewed provenance | no unconsented impersonation or invented founder likeness |
+| XR/robotics researcher | "Simulate a safe navigation mission" | simulation, collision and safety verification logs | no assumption of independently actuated physical robot |
+| NGO/community organizer | "Draft an accessible event and invite outline" | opt-in invitation drafts | no unsolicited mass messaging |
+| Founder/private operator | "Show release evidence and dispatch one approved task" | private authenticated controls with scoped receipts | not a public User Edition feature |
+
+### What a new public user does
+1. Inspect the public User Edition and the current state at the links above. The beta discovery carrier is https://8x8-os-ecosystem.vercel.app; its current sign-in and feature status must be verified before use.
+2. Open a genuinely released client and authenticate with a personal isolated 8x8 ID. A Telegram handle, Discord nickname or ChatGPT message is not proof of 8x8 authentication.
+3. Choose the required capability, then approve only its specific connector scopes. Do not upload secrets, private keys, passwords or sensitive documents to an unauthenticated demo.
+4. Ask the agent to execute a bounded job and inspect the actual output and provenance. See limitations and authentic use/read-only/STOP status instead of false green lights.
+5. Revoke individual connector/device permissions and confirm the change. One linked user may operate multiple explicitly paired clients, not inherit the founder's rights.
+
+### How to use 8x8 across surfaces
+- **Web and Wix:** Start with public project status and the existing published Wix discovery site https://8x8org.wixsite.com/my-site-6. A published site is not automatically an accepted authenticated 8x8 product.
+- **Telegram:** The Mini App release must first prove server-side signed session validation; https://core.telegram.org/bots/webapps describes the platform. Do not treat a bot menu link as authorization.
+- **Discord:** An approved integration must use Discord OAuth/interaction validation and map the account to the individual's 8x8 ID. An ordinary server invite is not a tool grant.
+- **Android:** Use the future officially signed 8x8 APK only after the release receipt and signing certificate are independently checked. Normal user journeys do not need ADB or command lines.
+- **Advanced optional device pairing:** A user manually pairs their own Android device with a trusted nearby computer; see https://developer.android.com/tools/adb. No raw pairing codes in chat, no public-network ADB endpoint, no indefinite shell authority. iPhone has different native permission requirements.
+- **ChatGPT MCP:** Search for the 8x8 plugin only when officially published. Custom remote MCP server connections are not universally installable from all ChatGPT mobile clients and may require an eligible managed workspace; https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt. Remote HTTPS/tunnel, tenant-bound OAuth and explicit plugin permissions are mandatory.
+- **Skills:** An installable public skill bundle needs its own publisher identity, version, rights, hash and per-capability permission review; it is not the owner-private software.
+- **88 free minutes and $8.88/month:** These are proposed plan parameters, not live payment instructions. The final product must display usage counting, reset windows, provider restrictions, cost, cancellation and refund policy before collecting a charge.
+
+### Failure and support examples
+**No account service:** Use the public demo without sharing private information; report the feature as unavailable rather than creating a fake local 8x8 ID.
+
+**Provider quota reached:** Preserve the task, check an eligible exact-output native fallback, or deliver a clearly labeled draft/partial result. Do not bypass provider terms by rotating accounts.
+
+**Lost or unsafe device session:** Stop and revoke the individual device grant locally and at the service boundary; do not retry remote control until reauthenticated.
+
+**Need support or contribution:** Use public issues/discussions at https://github.com/8x8org/8x8-user-edition and public organization governance at https://github.com/8x8org/.github, with sanitized descriptions only.
+
+Every real scenario needs a current exact-source client, authenticated account/tenant, granted scoped capability, genuine execution, verified artifact or action, revocation and an evidence receipt. Label PREVIEW_ONLY or UNAVAILABLE wherever any necessary gate is missing.
+
