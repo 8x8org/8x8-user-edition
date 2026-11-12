@@ -34,15 +34,7 @@ A dependency is not automatically active. Source must be adopted, configured, au
 
 ## Runtime placement
 
-Browser/PWA and separately certified Telegram/native clients; each channel needs its own receipt.
-
-The wider physical model is:
-
-- **Termux on S22:** hardware-facing body and Android capability boundary.
-- **Ubuntu PRoot:** Linux compute, builds, agents, brokers, databases, and engineering services.
-- **`/storage/emulated/0/8x8 OS`:** owner-visible persistent artifacts, archives, media, models, exports, and receipts—not the primary secret store or executable authority.
-- **GitHub:** versioned source, policy, CI, releases, and provenance—not live runtime proof.
-- **Blockchain:** source plus runtime plus independently operated validators; GitHub presence alone is not mainnet.
+Public-facing browser/PWA and separately certified native or messaging clients. Private device, agent, storage and control-plane topology stays governed outside this public repository. Each client requires independent authorization and release evidence.
 
 ## Prohibited responsibilities
 
@@ -86,4 +78,4 @@ Every adoption from this repository into another must record source repository, 
 
 ## Current verification boundary
 
-This role contract classifies intent and authority. It does **not** prove that this repository is cloned on the S22, synchronized into Ubuntu PRoot, deployed publicly, authenticated, healthy, or productive. A fresh read-only device and deployment census is required for those claims.
+This role contract classifies intent and authority. It does **not** prove that this repository is cloned on a private device, synchronized into a private runtime, deployed publicly, authenticated, healthy, or productive. A fresh read-only device and deployment census is required for those claims.

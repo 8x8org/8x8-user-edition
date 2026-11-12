@@ -1,0 +1,11 @@
+{
+  "schema": "eightx8.android.update.v1",
+  "available": false,
+  "reason": "NOT_PROMOTED: no production-stable signing identity and no verified public binary",
+  "packageId": null,
+  "versionCode": null,
+  "apkUrl": null,
+  "sha256": null,
+  "signerSha256": null,
+  "notes": "No in-place Android upgrade has been promoted. Development previews are separately identified. Your existing apps and their data remain unchanged."
+}

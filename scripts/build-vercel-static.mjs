@@ -1,4 +1,5 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 
 const out = 'dist';
 rmSync(out, { recursive: true, force: true });
@@ -8,6 +9,17 @@ const items = [
   'v50.html',
   'index.html',
   'manifest.webmanifest',
+  'icon.svg',
+  'sw.js',
+  'styles.css',
+  'app.js',
+  'state',
+  'studio',
+  'observatory',
+  'updates',
+  'agents',
+  'atlas',
+  'mcp',
   'one-fabric-capability-estate-v52.js',
   'one-fabric-interaction-estate-v53.js',
   'one-fabric-public-transparency-v54.js',
@@ -37,6 +49,13 @@ const inject = (path) => {
     const src = tag.match(/src="([^"]+)/)?.[1] || '';
     if (src && !html.includes(src)) html = html.replace('</body>', `${tag}</body>`);
   }
+  // A visible entry point on the existing V50 Web/PWA/Telegram/Android web carrier.
+  if (!html.includes('data-eightx8-studio-launcher')) {
+    html=html.replace('</body>', '<a data-eightx8-studio-launcher href="/studio" aria-label="Open local 8x8 Studio media inspector" style="position:fixed;right:12px;bottom:80px;z-index:150;background:#102d46;color:#ffffff;padding:11px 14px;border:1px solid #74d7ec;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">8x8 Studio ↗</a></body>');
+  }
+  if (!html.includes('data-eightx8-agent-room')) html=html.replace('</body>', '<a data-eightx8-agent-room href="/agents" aria-label="Open 8x8 Agent Room character stage" style="position:fixed;right:12px;bottom:132px;z-index:150;background:#241c4e;color:#ffffff;padding:10px 14px;border:1px solid #9d86ff;border-radius:999px;font:700 12px system-ui;text-decoration:none;box-shadow:0 8px 28px #0009">Agent Room ↗</a></body>');
+  if (!html.includes('data-eightx8-observatory-link')) html=html.replace('</body>', '<a data-eightx8-observatory-link href="/observatory" aria-label="Open read-only One Fabric Observatory preview" style="position:fixed;right:12px;bottom:235px;z-index:150;background:#252f39;color:#fff;padding:10px 14px;border:1px solid #e2b776;border-radius:999px;font:700 12px system-ui;text-decoration:none">Observatory ↗</a></body>');
+  if (!html.includes('data-eightx8-atlas-link')) html=html.replace('</body>', '<a data-eightx8-atlas-link href="/atlas" aria-label="Explore the 8x8 One Fabric System Atlas" style="position:fixed;right:12px;bottom:184px;z-index:150;background:#163523;color:white;padding:10px 14px;border:1px solid #72d9b1;border-radius:999px;font:700 12px system-ui;text-decoration:none">System Atlas ↗</a></body>');
   writeFileSync(path, html);
 };
 
@@ -44,6 +63,15 @@ cpSync('v50.html', `${out}/index.html`);
 inject(`${out}/index.html`);
 inject(`${out}/v50.html`);
 
+// Emit one machine-readable public metadata projection from the SAME Atlas catalog.
+// No owner credentials or callable tool grants are included; this is not a live MCP API.
+const catalogContext = {};
+runInNewContext(readFileSync('atlas/one-fabric-public-catalog-v1.js','utf8'), catalogContext, { timeout: 1500 });
+const publicCatalog = catalogContext.EIGHTX8_PUBLIC_CATALOG;
+if (!publicCatalog || publicCatalog.canonicalRoot !== 'fabric://8x8/core') throw new Error('Invalid One Fabric public catalog');
+mkdirSync(out + '/mcp', { recursive: true });
+writeFileSync(out + '/mcp/one-fabric-capability-catalog-v1.json', JSON.stringify(publicCatalog,null,2) + '\n');
+console.log('ONE_FABRIC_PUBLIC_CATALOG_META=PASS modules=' + publicCatalog.modules.length + ' skills=' + publicCatalog.skills.length);
 console.log('8X8_USER_EDITION_STATIC_BUILD=PASS');
 console.log('CANONICAL_ROOT=fabric://8x8/core');
 console.log('OUTPUT_DIRECTORY=dist');
@@ -52,3 +80,4 @@ console.log('FULL_CAPABILITY_ESTATE_V52_INJECTED=true');
 console.log('INTERACTION_ESTATE_V53_INJECTED=true');
 console.log('PUBLIC_TRANSPARENCY_V54_INJECTED=true');
 console.log('THREE_GATE_EXPERIENCE_V55_INJECTED=true');
+console.log('PUBLIC_STUDIO_ROUTE_AND_ICON_PACKAGED=true');

@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { assessEightOEightAsset as assess, EIGHT_O_EIGHT_SECONDS } from '../studio/film-808-release-gate.mjs';
+test('canonical 8:08 runtime is 488 seconds',()=>assert.equal(EIGHT_O_EIGHT_SECONDS,488));
+test('36-second animatic preview is NOT a full film',()=>{const x=assess({kind:'video',durationSeconds:36});assert.equal(x.asset_class,'NOT_FULL_EIGHT_O_EIGHT');assert.equal(x.publicly_publishable,false);assert.equal(x.observed_duration_seconds,36);});
+test('488 seconds is not evidence of rights or publication',()=>{const x=assess({kind:'video',durationSeconds:488});assert.equal(x.full_episode_duration_match,true);assert.equal(x.release_state,'FUTURE_GATED');assert.equal(x.publicly_publishable,false);});
+test('duration tolerance handles video container rounding',()=>assert.equal(assess({kind:'video',durationSeconds:487.56}).full_episode_duration_match,true));
+test('an image cannot claim video duration',()=>assert.equal(assess({kind:'image',durationSeconds:488}).asset_class,'DURATION_UNVERIFIED'));
+test('NaN and Infinity cannot claim a full film',()=>{for(const d of [NaN,Infinity,-Infinity])assert.equal(assess({kind:'video',durationSeconds:d}).full_episode_duration_match,false)});
+test('negative and zero durations are invalid',()=>{for(const d of [0,-1])assert.equal(assess({kind:'video',durationSeconds:d}).asset_class,'DURATION_UNVERIFIED')});
+test('user-supplied privilege fields cannot force public approval',()=>{const x=assess({kind:'video',durationSeconds:488,ownerApproved:true,rightsVerified:true,destinationConnected:true});assert.equal(x.publicly_publishable,false)});
+test('receipt contains no key or remote URL',()=>{const x=assess({kind:'video',durationSeconds:488});assert.equal(x.root,'fabric://8x8/core');assert.equal(JSON.stringify(x).includes('api_key'),false)});

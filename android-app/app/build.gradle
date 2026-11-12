@@ -1,5 +1,18 @@
 plugins { id 'com.android.application' }
 
+def ownerSignerFields = [
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEYSTORE_FILE'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_STORE_PASSWORD'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEY_ALIAS'),
+    System.getenv('EIGHTX8_ANDROID_SIGNING_KEY_PASSWORD')
+]
+def anyOwnerSigner = ownerSignerFields.any { it != null && !it.trim().isEmpty() }
+def completeOwnerSigner = ownerSignerFields.every { it != null && !it.trim().isEmpty() }
+if (anyOwnerSigner && !completeOwnerSigner)
+    throw new GradleException('8x8 signing configuration incomplete (fail closed)')
+if ('true'.equals(System.getenv('EIGHTX8_REQUIRE_STABLE_SIGNING')) && !completeOwnerSigner)
+    throw new GradleException('Stable signing required but not configured')
+
 android {
     namespace 'world.eightx8.user'
     compileSdk 35
@@ -7,14 +20,72 @@ android {
         applicationId 'world.eightx8.user'
         minSdk 26
         targetSdk 35
-        versionCode 20050
-        versionName '0.2.0-v50'
-        def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-user-8888-8x8-team-url.vercel.app'
+        versionCode 20051
+        versionName '0.2.1-v50-media-rc1'
+        manifestPlaceholders = [eightx8AppLabel: '8x8 OS']
+        def home = project.findProperty('EIGHTX8_BASE_URL') ?: 'https://8x8-os-ecosystem.vercel.app'
         buildConfigField 'String', 'HOME_URL', '"' + home + '"'
     }
+    signingConfigs {
+        ownerPromoted {
+            if (completeOwnerSigner) {
+                storeFile file(ownerSignerFields[0])
+                storePassword ownerSignerFields[1]
+                keyAlias ownerSignerFields[2]
+                keyPassword ownerSignerFields[3]
+            }
+        }
+    }
     buildFeatures { buildConfig true }
+    // Reuse the public Vercel dist as Android assets, never the owner-private core.
+    sourceSets { main { assets.srcDir(rootProject.file('../dist')) } }
     buildTypes {
         debug { applicationIdSuffix '.dev'; versionNameSuffix '-dev' }
-        release { minifyEnabled false }
+        // Distinct preview identity: installs alongside older .dev builds whose
+        // signing key can differ between GitHub Actions and physical devices.
+        // Never substitute a different key for a production in-place update.
+        preview {
+            initWith debug
+            applicationIdSuffix '.preview'
+            versionNameSuffix '-preview'
+            matchingFallbacks = ['debug']
+            manifestPlaceholders = [eightx8AppLabel: '8x8 Preview']
+        }
+        // One-time isolated acceptance app: both previously installed preview/dev
+        // certificates differ from CI-generated debug signers. Preserve their data.
+        // This build type is NOT the long-term update identity.
+        offline {
+            initWith debug
+            applicationIdSuffix '.offline'
+            versionNameSuffix '-offline'
+            matchingFallbacks = ['debug']
+            manifestPlaceholders = [eightx8AppLabel: '8x8 Offline']
+        }
+        release {
+            minifyEnabled false
+            // No owner signing credentials: preserve existing unsigned CI artifact.
+            // A promoted official release requires protected external signing secrets.
+            if (completeOwnerSigner) signingConfig signingConfigs.ownerPromoted
+        }
     }
 }
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}
+
+// Fail closed if GitHub Actions forgets to build the public site first.
+tasks.register('verifyEightx8PublicBundle') {
+    doLast {
+        def bundle = rootProject.file('../dist')
+        def expected = ['index.html', 'studio/index.html', 'observatory/index.html', 'agents/index.html', 'atlas/index.html', 'atlas/one-fabric-public-catalog-v1.js', 'mcp/one-fabric-capability-catalog-v1.json',
+                        'studio/media-core.mjs', 'icon.svg', 'sw.js', 'manifest.webmanifest']
+        expected.each { name ->
+            if (!new File(bundle, name).isFile())
+                throw new GradleException("Missing bundled public UI: " + name)
+        }
+        if (new File(bundle, 'studio/index.html').bytes == new File(bundle, 'agents/index.html').bytes)
+            throw new GradleException('Studio and Agent Room must not be the same fallback document')
+    }
+}
+tasks.named('preBuild') { dependsOn tasks.named('verifyEightx8PublicBundle') }
