@@ -22,7 +22,7 @@ test('real routes and MIME types are present for offline Studio and Agent Room',
 });
 test('untrusted URL schemes, traversals and private API routes are refused',()=>{
  assert.match(activity,/!"https"\.equals\(uri.getScheme\(\)\)/);
- assert.match(activity,/return !permittedOrigin\(request.getUrl\(\)\)/);
+ assert.match(activity,/if \(permittedOrigin\(target\)\) return false;/);
  assert.match(handler,/request.contains\("\.\."\)/);
  for(const fragment of ['api/','oauth/','private/','owner/'])assert.ok(handler.includes(fragment),fragment);
  assert.match(handler,/return missing\(\)/);
@@ -56,4 +56,19 @@ test('main frame failure is visible with a native, local-only recovery path',()=
  assert.match(activity,/web\.loadUrl\(OFFLINE_ENTRY\)/);
  assert.doesNotMatch(activity,/web\.loadUrl\(BuildConfig\.HOME_URL/);
  assert.match(activity,/No agent session has started/);
+});
+
+
+test('external links require a user gesture and HTTPS before leaving the bounded WebView',()=>{
+ assert.match(activity,/request\.isForMainFrame\(\)/);
+ assert.match(activity,/if \(permittedOrigin\(target\)\) return false;/);
+ assert.match(activity,/request\.hasGesture\(\)/);
+ assert.match(activity,/"https"\.equals\(target\.getScheme\(\)\)/);
+ assert.match(activity,/target\.getUserInfo\(\) == null/);
+ assert.match(activity,/target\.getPort\(\) == -1 \|\| target\.getPort\(\) == 443/);
+ assert.match(activity,/new Intent\(Intent\.ACTION_VIEW, target\)/);
+ assert.match(activity,/Intent\.CATEGORY_BROWSABLE/);
+ assert.match(activity,/catch \(ActivityNotFoundException ignored\)/);
+ assert.match(activity,/return true;/);
+ assert.doesNotMatch(activity,/ACTION_CALL|ACTION_DIAL|ACTION_SEND/);
 });
