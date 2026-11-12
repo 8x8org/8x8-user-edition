@@ -114,8 +114,24 @@ public final class MainActivity extends Activity {
       }
       @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         if (!request.isForMainFrame()) return false;
-        // Local public projection or previously approved remote site only.
-        return !permittedOrigin(request.getUrl());
+        Uri target = request.getUrl();
+        // The bundled public projection and the configured approved remote origin
+        // remain inside the WebView. No cross-origin page receives native privileges.
+        if (permittedOrigin(target)) return false;
+        // A link the user deliberately taps may open in their normal HTTPS browser.
+        // Never dispatch redirect, script, subframe, custom-scheme, or credential URLs.
+        if (request.hasGesture()
+            && "https".equals(target.getScheme())
+            && target.getHost() != null && !target.getHost().isEmpty()
+            && target.getUserInfo() == null
+            && (target.getPort() == -1 || target.getPort() == 443)) {
+          Intent external = new Intent(Intent.ACTION_VIEW, target);
+          external.addCategory(Intent.CATEGORY_BROWSABLE);
+          try { startActivity(external); } catch (ActivityNotFoundException ignored) {
+            // No browser: cancel untrusted WebView navigation and keep local app safe.
+          }
+        }
+        return true;
       }
     });
     web.setWebChromeClient(new WebChromeClient() {
