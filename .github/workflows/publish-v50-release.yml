@@ -1,4 +1,6 @@
-name: Publish User Edition V50 Release
+name: Publish User Edition V50 Release — FROZEN (no publication)
+# ©️8x8 One Fabric / existing workflow path, read-only containment.
+# Historical tag v0.2.0 and its four release assets are never modified here.
 on:
   push:
     branches: [main]
@@ -8,48 +10,27 @@ on:
       - 'v50.html'
       - 'android-app/**'
       - '.github/workflows/publish-v50-release.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  publish:
+  release-publishing-frozen:
     if: github.repository == '8x8org/8x8-user-edition'
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.10.2'
-      - name: Validate exact release marker
+      - name: Record non-publishing release freeze receipt
         run: |
-          grep -Fq '0.2.0 Stable · V50' VERSION.md
-          grep -Fq 'USER_EDITION_V50_0.2.0' VERSION.md
-      - name: Build Android carrier artifacts
-        run: |
-          gradle -p android-app --no-daemon clean assembleDebug assembleRelease
-          mkdir -p release-dist
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk release-dist/8x8-user-edition-v50-0.2.0-dev-signed.apk
-          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk release-dist/8x8-user-edition-v50-0.2.0-release-unsigned.apk
-          sha256sum release-dist/*.apk | tee release-dist/SHA256SUMS.txt
-          printf '%s\n' \
-            'DEVELOPMENT_APK=INSTALLABLE_DEBUG_SIGNED' \
-            'RELEASE_APK=UNSIGNED_NOT_PRODUCTION_SIGNED' \
-            'PRODUCTION_SIGNING=NOT_INFERRED' > release-dist/RELEASE_TRUTH.txt
-      - name: Create or update GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if gh release view v0.2.0 >/dev/null 2>&1; then
-            gh release upload v0.2.0 release-dist/* --clobber
-          else
-            gh release create v0.2.0 release-dist/* \
-              --target "$GITHUB_SHA" \
-              --title '8x8 OS User Edition 0.2.0 · V50' \
-              --notes-file RELEASE_NOTES_0.2.0.md
-          fi
+          set -Eeuo pipefail
+          [[ "$GITHUB_REPOSITORY" == '8x8org/8x8-user-edition' ]] || exit 1
+          [[ "$GITHUB_REF" == 'refs/heads/main' ]] || exit 1
+          printf 'V14_RELEASE_PUBLISHING_FROZEN=TRUE\n'
+          printf 'RELEASE_CREATION_OR_UPDATE=DENIED\n'
+          printf 'HISTORIC_RELEASE=v0.2.0\n'
+          printf 'SOURCE_COMMIT=%s\n' "$GITHUB_SHA"
+          printf 'TRIGGER_EVENT=%s\n' "$GITHUB_EVENT_NAME"
+          printf '%s\n' 'This workflow intentionally performs no publishing action.' >> "$GITHUB_STEP_SUMMARY"
