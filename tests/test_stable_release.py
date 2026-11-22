@@ -58,7 +58,13 @@ class StableReleaseContract(unittest.TestCase):
         rewrites = {(r['source'], r['destination']) for r in self.vercel['rewrites']}
         self.assertIn(('/r3', '/index.html'), rewrites)
         self.assertIn(('/stable', '/stable/index.html'), rewrites)
-        self.assertIn(('/', '/v50.html'), rewrites)
+        # The static build copies the V50 carrier into dist/index.html.
+        # A root rewrite must not override that generated artifact.
+        self.assertNotIn('/', {route for route, _ in rewrites})
+        self.assertEqual(self.vercel['outputDirectory'], 'dist')
+        builder = (ROOT / 'scripts/build-vercel-static.mjs').read_text(encoding='utf-8')
+        self.assertIn("cpSync('v50.html', `${out}/index.html`);", builder)
+        self.assertTrue((ROOT / 'v50.html').is_file())
 
 
 if __name__ == '__main__':
