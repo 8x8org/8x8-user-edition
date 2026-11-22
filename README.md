@@ -9,6 +9,8 @@
 
 > **Current cross-repository product/interface checkpoint:** [`8x8org/.github/CURRENT_PUBLIC_STATE.md`](https://github.com/8x8org/.github/blob/main/CURRENT_PUBLIC_STATE.md). Use that page when an older demo, screenshot or legacy 22-module repository conflicts with newer public-state evidence.
 
+> **November 22, 2026 source-scope clarification:** `0.0.1 Beta` is the conservative overall public product maturity label; `0.1.0 Stable` is a separate, gated `PUBLIC_WEB_CLIENT` implementation contract; `0.2.0 Stable · V50` appears in source/release-generation records but is **not** verified as the current production web or signed installed-carrier release. [See the exact-source version and release reconciliation](docs/VERSION_SCOPE_AND_RELEASE_EVIDENCE_20261122.md). No whole-Fabric stable/100% completion is inferred.
+
 8x8 User Edition is the canonical public-safe client for the wider 8x8 Fabric. It exposes an evidence-gated projection of the operating model, Three Realities, public repository DNA, agent archetypes, mission/evidence concepts, Studio, trading research, blockchain research and spatial-interface direction without exposing the private owner control plane.
 
 A separate protected user release train is progressively converging the richer authenticated browser/PWA experience, Telegram Mini App promotion and installed-client/APK path. **Source presence in that train does not make a capability publicly released; the exact browser/Telegram/installer state remains receipt-gated.**
@@ -17,7 +19,7 @@ A separate protected user release train is progressively converging the richer a
 
 **Production:** `https://8x8-os-ecosystem.vercel.app`
 
-The Vercel project name is a historical carrier name. Canonical source authority remains **`8x8org/8x8-user-edition`**. The production carrier currently serves the reviewed 0.0.1 Beta interface, with `/`, `/first-blink`, `/world`, and `/art-board` verified server-side as browser-renderable HTML. See [`docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md`](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md).
+The Vercel project name is a historical carrier name. Canonical source authority remains **`8x8org/8x8-user-edition`**. The previously recorded 0.0.1 Beta carrier receipt documents historical server-side HTML routes at `/`, `/first-blink`, `/world`, and `/art-board`; **it is not a fresh exact-head November 2026 production or physical-browser acceptance receipt**. The latest provider readback and scope differences are listed in [the dated release reconciliation](docs/VERSION_SCOPE_AND_RELEASE_EVIDENCE_20261122.md). The earlier evidence remains linked in [`docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md`](docs/PUBLIC_DEPLOYMENT_RECEIPT_0.0.1.md).
 
 ## ❤️ Sponsor 8x8
 
