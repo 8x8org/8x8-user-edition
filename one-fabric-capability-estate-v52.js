@@ -45,7 +45,7 @@ E('agents.skill_synthesis','Skill Synthesis','agents','SOURCE_PRESENT','Turn ver
 E('agents.agent_bus','Agent Bus','agents','SOURCE_PRESENT','Canonical inter-agent event/message transport and addressed handoffs.'),
 E('agents.relay','A2A / Relay','agents','SOURCE_PRESENT','Governed agent-to-agent communication under One-Fabric authority.'),
 E('agents.pcef','PCEF + Universal Context','agents','SOURCE_PRESENT','Policy/capability execution framework and shared governed context.'),
-E('agents.hermes','Hermes','agents','DORMANT','Historical Hermes runtime/agent lineage preserved as donor capability.'),
+E('agents.historical_coordinator','Historical Coordinator Donor','agents','DORMANT','Historical coordination-runtime lineage retained as a dormant donor; no execution authority is implied.'),
 E('agents.openclaw','OpenClaw','agents','DORMANT','Historical OpenClaw agent/control donor lineage.'),
 E('agents.claude','Claude Provider Lane','agents','SOURCE_PRESENT','Provider/model lane; registered does not imply authenticated or productive.'),
 E('agents.chatgpt','ChatGPT Provider Lane','agents','SOURCE_PRESENT','Provider/model lane inside the same orchestrator root.'),
